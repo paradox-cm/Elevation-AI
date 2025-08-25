@@ -396,13 +396,11 @@ export default function DashboardPage() {
                         <ChartPlaceholder
                           title="Revenue Trend"
                           description="Monthly revenue over time"
-                          chartType="line"
                           height={250}
                         />
                         <ChartPlaceholder
                           title="User Distribution"
                           description="Users by region"
-                          chartType="pie"
                           height={250}
                         />
                       </div>

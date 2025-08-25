@@ -28,7 +28,7 @@ export default function ErrorStatesPage() {
     confirmPassword: "",
     message: ""
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [showSuccess, setShowSuccess] = useState(false)
 
 
@@ -139,9 +139,9 @@ export default function ErrorStatesPage() {
     }
   ]
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const newErrors = {}
+    const newErrors: Record<string, string> = {}
     
     // Validation logic
     if (!formData.email) {

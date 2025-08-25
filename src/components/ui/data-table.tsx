@@ -332,7 +332,7 @@ export function SortableColumn<TData, TValue>({
   title,
   children,
 }: {
-  column: Column<unknown, unknown>
+  column: Column<TData, TValue>
   title: string
   children?: React.ReactNode
 }) {

@@ -58,8 +58,8 @@ const advancedFormSchema = z.object({
   role: z.string().min(1, "Please select your role"),
   experience: z.string().min(1, "Please select your experience level"),
   skills: z.array(z.string()).min(1, "Please select at least one skill"),
-  newsletter: z.boolean().default(false),
-  notifications: z.boolean().default(true),
+  newsletter: z.boolean().default(false).optional(),
+  notifications: z.boolean().default(true).optional(),
   bio: z.string().min(20, "Bio must be at least 20 characters"),
 })
 
@@ -71,8 +71,8 @@ const wizardFormSchema = z.object({
   }),
   preferences: z.object({
     theme: z.string().min(1, "Please select a theme"),
-    notifications: z.boolean().default(true),
-    newsletter: z.boolean().default(false),
+    notifications: z.boolean().default(true).optional(),
+    newsletter: z.boolean().default(false).optional(),
   }),
   confirmation: z.object({
     terms: z.boolean().refine((val) => val === true, "You must accept the terms"),
@@ -893,30 +893,31 @@ export default function FormsPage() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <H3>Input States</H3>
-                    <Form>
-                      <div className="space-y-3">
-                        <div>
-                          <FormLabel>Default Input</FormLabel>
-                          <FormInput placeholder="Default state" />
-                        </div>
-                        <div>
-                          <FormLabel>Success Input</FormLabel>
-                          <FormInput placeholder="Success state" status="success" />
-                        </div>
-                        <div>
-                          <FormLabel>Error Input</FormLabel>
-                          <FormInput placeholder="Error state" status="error" />
-                        </div>
-                        <div>
-                          <FormLabel>Warning Input</FormLabel>
-                          <FormInput placeholder="Warning state" status="warning" />
-                        </div>
-                        <div>
-                          <FormLabel>Input with Icon</FormLabel>
-                          <FormInput placeholder="With icon" icon="search-line" />
+                    <div className="space-y-3">
+                      <div>
+                        <Label>Default Input</Label>
+                        <Input placeholder="Default state" />
+                      </div>
+                      <div>
+                        <Label>Success Input</Label>
+                        <Input placeholder="Success state" className="border-green-500 focus:border-green-500" />
+                      </div>
+                      <div>
+                        <Label>Error Input</Label>
+                        <Input placeholder="Error state" className="border-red-500 focus:border-red-500" />
+                      </div>
+                      <div>
+                        <Label>Warning Input</Label>
+                        <Input placeholder="Warning state" className="border-yellow-500 focus:border-yellow-500" />
+                      </div>
+                      <div>
+                        <Label>Input with Icon</Label>
+                        <div className="relative">
+                          <Input placeholder="With icon" className="pl-10" />
+                          <Icon name="search-line" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                         </div>
                       </div>
-                    </Form>
+                    </div>
                   </div>
 
                   <div className="space-y-4">

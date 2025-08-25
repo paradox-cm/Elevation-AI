@@ -15,7 +15,6 @@ import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 
 export default function DesignTokensPage() {
-  const [selectedToken, setSelectedToken] = useState("primary")
 
   const colorTokens = [
     {
@@ -147,9 +146,9 @@ export default function DesignTokensPage() {
     { name: "Shadows", icon: "stack-line", count: shadowTokens.reduce((acc, cat) => acc + cat.tokens.length, 0) }
   ]
 
-  const getTokenValue = (tokenName) => {
+  const getTokenValue = (tokenName: string) => {
     // This would typically come from your actual design tokens
-    const tokenMap = {
+    const tokenMap: Record<string, string> = {
       primary: "hsl(222.2 84% 4.9%)",
       "primary-foreground": "hsl(210 40% 98%)",
       background: "hsl(0 0% 100%)",
@@ -521,22 +520,22 @@ export default function DesignTokensPage() {
                       <div>    extend: &#123;</div>
                       <div>      colors: &#123;</div>
                       <div>        primary: &#123;</div>
-                      <div>          DEFAULT: 'hsl(var(--primary))',</div>
-                      <div>          foreground: 'hsl(var(--primary-foreground))',</div>
+                      <div>          DEFAULT: &apos;hsl(var(--primary))&apos;,</div>
+                      <div>          foreground: &apos;hsl(var(--primary-foreground))&apos;,</div>
                       <div>        &#125;,</div>
-                      <div>        background: 'hsl(var(--background))',</div>
-                      <div>        foreground: 'hsl(var(--foreground))',</div>
+                      <div>        background: &apos;hsl(var(--background))&apos;,</div>
+                      <div>        foreground: &apos;hsl(var(--foreground))&apos;,</div>
                       <div>      &#125;,</div>
                       <div>      spacing: &#123;</div>
-                      <div>        '1': 'var(--spacing-1)',</div>
-                      <div>        '2': 'var(--spacing-2)',</div>
-                      <div>        '4': 'var(--spacing-4)',</div>
-                      <div>        '6': 'var(--spacing-6)',</div>
+                      <div>        &apos;1&apos;: &apos;var(--spacing-1)&apos;,</div>
+                      <div>        &apos;2&apos;: &apos;var(--spacing-2)&apos;,</div>
+                      <div>        &apos;4&apos;: &apos;var(--spacing-4)&apos;,</div>
+                      <div>        &apos;6&apos;: &apos;var(--spacing-6)&apos;,</div>
                       <div>      &#125;,</div>
                       <div>      fontSize: &#123;</div>
-                      <div>        sm: 'var(--font-size-sm)',</div>
-                      <div>        base: 'var(--font-size-base)',</div>
-                      <div>        lg: 'var(--font-size-lg)',</div>
+                      <div>        sm: &apos;var(--font-size-sm)&apos;,</div>
+                      <div>        base: &apos;var(--font-size-base)&apos;,</div>
+                      <div>        lg: &apos;var(--font-size-lg)&apos;,</div>
                       <div>      &#125;,</div>
                       <div>    &#125;,</div>
                       <div>  &#125;,</div>

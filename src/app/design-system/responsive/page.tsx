@@ -6,13 +6,11 @@ import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H1, H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H4, BodySmall } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -323,7 +321,7 @@ export default function ResponsivePage() {
                           
                           <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
                             <div className="text-muted-foreground">// Mobile First Approach</div>
-                            <div>&lt;div className="grid {example.mobile} {example.tablet} {example.desktop}"&gt;</div>
+                            <div>&lt;div className=&quot;grid {example.mobile} {example.tablet} {example.desktop}&quot;&gt;</div>
                             <div>  &lt;!-- Grid items --&gt;</div>
                             <div>&lt;/div&gt;</div>
                           </div>
@@ -538,10 +536,10 @@ export default function ResponsivePage() {
                         <div>function ResponsiveCard(&#123; children, className &#125;) &#123;</div>
                         <div>  return (</div>
                         <div>    &lt;div className=&#123;cn(</div>
-                        <div>      "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3",</div>
-                        <div>      "gap-4 md:gap-6 lg:gap-8",</div>
-                        <div>      "p-4 md:p-6 lg:p-8",</div>
-                        <div>      "bg-card border rounded-lg",</div>
+                        <div>      &quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3&quot;,</div>
+                        <div>      &quot;gap-4 md:gap-6 lg:gap-8&quot;,</div>
+                        <div>      &quot;p-4 md:p-6 lg:p-8&quot;,</div>
+                        <div>      &quot;bg-card border rounded-lg&quot;,</div>
                         <div>      className</div>
                         <div>    )&#125;&gt;</div>
                         <div>      &#123;children&#125;</div>
@@ -556,16 +554,16 @@ export default function ResponsivePage() {
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
                         <div className="text-muted-foreground">// Custom hook for responsive logic</div>
                         <div>function useBreakpoint() &#123;</div>
-                        <div>  const [breakpoint, setBreakpoint] = useState('sm')</div>
+                        <div>  const [breakpoint, setBreakpoint] = useState(&apos;sm&apos;)</div>
                         <div></div>
                         <div>  useEffect(() =&gt; &#123;</div>
                         <div>    const handleResize = () =&gt; &#123;</div>
                         <div>      const width = window.innerWidth</div>
-                        <div>      if (width &gt;= 1536) setBreakpoint('2xl')</div>
-                        <div>      else if (width &gt;= 1280) setBreakpoint('xl')</div>
-                        <div>      else if (width &gt;= 1024) setBreakpoint('lg')</div>
-                        <div>      else if (width &gt;= 768) setBreakpoint('md')</div>
-                        <div>      else setBreakpoint('sm')</div>
+                        <div>      if (width &gt;= 1536) setBreakpoint(&apos;2xl&apos;)</div>
+                        <div>      else if (width &gt;= 1280) setBreakpoint(&apos;xl&apos;)</div>
+                        <div>      else if (width &gt;= 1024) setBreakpoint(&apos;lg&apos;)</div>
+                        <div>      else if (width &gt;= 768) setBreakpoint(&apos;md&apos;)</div>
+                        <div>      else setBreakpoint(&apos;sm&apos;)</div>
                         <div>    &#125;</div>
                         <div></div>
                         <div>    handleResize()</div>
