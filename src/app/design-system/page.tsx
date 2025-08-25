@@ -97,6 +97,28 @@ export default function DesignSystemPage() {
                 </div>
               </div>
 
+              {/* Font Verification Section */}
+              <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border">
+                <H4 className="text-base font-semibold mb-4">Font Verification</H4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Primary Font (Helvetica Now):</span>
+                    <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-helvetica-now)' }}>
+                      The quick brown fox jumps over the lazy dog
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Fallback Font (System):</span>
+                    <span className="text-sm font-medium" style={{ fontFamily: 'system-ui, sans-serif' }}>
+                      The quick brown fox jumps over the lazy dog
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-2">
+                    If the fonts look different, Helvetica Now is working correctly.
+                  </div>
+                </div>
+              </div>
+
               {/* Quick Actions */}
               <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" asChild>
