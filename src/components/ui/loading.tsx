@@ -234,6 +234,7 @@ export function LoadingStates() {
 
 // Toast Notification Component
 interface ToastProps {
+  id?: string
   type: "success" | "error" | "warning" | "info"
   title: string
   message?: string
@@ -319,9 +320,9 @@ export function Toast({
 export function ToastContainer() {
   const [toasts, setToasts] = React.useState<ToastProps[]>([])
 
-  const addToast = (toast: Omit<ToastProps, 'onClose'>) => {
+  const addToast = (toast: Omit<ToastProps, 'onClose' | 'id'>) => {
     const id = Math.random().toString(36).substr(2, 9)
-    const newToast = { ...toast, onClose: () => removeToast(id) }
+    const newToast = { ...toast, id, onClose: () => removeToast(id) }
     setToasts(prev => [...prev, newToast])
   }
 

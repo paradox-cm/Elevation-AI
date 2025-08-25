@@ -140,7 +140,7 @@ interface UserSettingsProps {
       timezone: string
     }
   }
-  onSave?: (settings: UserSettings) => void
+  onSave?: (settings: UserSettingsProps['settings']) => void
   className?: string
 }
 

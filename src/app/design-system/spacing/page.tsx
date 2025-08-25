@@ -409,7 +409,7 @@ export default function SpacingPage() {
                                 <div className="flex items-center justify-between mb-2">
                                   <span className="font-medium">{example.label}</span>
                                   <Badge variant="outline" className="text-xs">
-                                    {example.spacing} ({example.spacing * 4}px)
+                                    {example.spacing} ({parseFloat(example.spacing) * 4}px)
                                   </Badge>
                                 </div>
                                 <div className={`bg-muted rounded p-2 ${example.class}`}>

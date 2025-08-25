@@ -148,10 +148,12 @@ export default function UserManagementPage() {
       sms: boolean
     }
     privacy: {
-      profileVisibility: string
-      dataSharing: boolean
+      profileVisibility: "public" | "private" | "team"
+      showEmail: boolean
+      showLocation: boolean
     }
     preferences: {
+      theme: "light" | "dark" | "system"
       language: string
       timezone: string
     }

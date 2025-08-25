@@ -367,10 +367,9 @@ export function FAQ({ items, title, description, className }: FAQProps) {
                 <CardTitle className="text-left text-lg">{item.question}</CardTitle>
                 <Icon
                   name={openItems.has(index) ? "arrow-up-s-line" : "arrow-down-s-line"}
-                  className="h-5 w-5 text-muted-foreground flex-shrink-0 ml-4 transition-transform duration-200"
-                  style={{
-                    transform: openItems.has(index) ? 'rotate(180deg)' : 'rotate(0deg)'
-                  }}
+                  className={`h-5 w-5 text-muted-foreground flex-shrink-0 ml-4 transition-transform duration-200 ${
+                    openItems.has(index) ? 'rotate-180' : 'rotate-0'
+                  }`}
                 />
               </div>
             </CardHeader>
