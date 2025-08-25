@@ -15,17 +15,28 @@ import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useDashboardConfig } from "@/hooks/use-dashboard-config"
 import {
   StatsCard,
   MetricDisplay,
   ProgressMetric,
   ActivityFeed,
   QuickActions,
-
   ChartPlaceholder,
 } from "@/components/ui/dashboard"
 
 export default function DashboardPage() {
+  const {
+    config,
+    dashboardLayoutConfig,
+    dashboardMetricConfig,
+    dashboardWidgetConfig,
+    dashboardChartConfig,
+    dashboardActivityConfig,
+    dashboardQuickActionsConfig,
+    dashboardNavigationConfig
+  } = useDashboardConfig()
+
   const [activeTab, setActiveTab] = useState("overview")
 
   // Sample data for dashboard components
@@ -181,6 +192,225 @@ export default function DashboardPage() {
               size="lg"
               centered
             />
+          </Section>
+
+
+
+          {/* Available Variants & Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="list-check" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  All available dashboard layouts, metrics, widgets, charts, activities, quick actions, and navigation configurations.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="layouts" className="w-full">
+                  <TabsList className="grid w-full grid-cols-7">
+                    <TabsTrigger value="layouts">Layouts</TabsTrigger>
+                    <TabsTrigger value="metrics">Metrics</TabsTrigger>
+                    <TabsTrigger value="widgets">Widgets</TabsTrigger>
+                    <TabsTrigger value="charts">Charts</TabsTrigger>
+                    <TabsTrigger value="activities">Activities</TabsTrigger>
+                    <TabsTrigger value="actions">Actions</TabsTrigger>
+                    <TabsTrigger value="navigation">Navigation</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="layouts" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Layout Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.layouts.types.map((layout) => (
+                          <div key={layout.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{layout.name}</div>
+                            <div className="text-xs text-muted-foreground">{layout.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {layout.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Layout Positions</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.layouts.positions.map((position) => (
+                          <div key={position.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{position.name}</div>
+                            <div className="text-xs text-muted-foreground">{position.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="metrics" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Metric Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.metrics.types.map((metric) => (
+                          <div key={metric.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{metric.name}</div>
+                            <div className="text-xs text-muted-foreground">{metric.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {metric.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Metric Displays</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.metrics.displays.map((display) => (
+                          <div key={display.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{display.name}</div>
+                            <div className="text-xs text-muted-foreground">{display.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="widgets" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Widget Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.widgets.types.map((widget) => (
+                          <div key={widget.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{widget.name}</div>
+                            <div className="text-xs text-muted-foreground">{widget.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {widget.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Widget Sizes</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.widgets.sizes.map((size) => (
+                          <div key={size.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{size.name}</div>
+                            <div className="text-xs text-muted-foreground">{size.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="charts" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Chart Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.charts.types.map((chart) => (
+                          <div key={chart.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{chart.name}</div>
+                            <div className="text-xs text-muted-foreground">{chart.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {chart.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Chart Interactions</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.charts.interactions.map((interaction) => (
+                          <div key={interaction.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{interaction.name}</div>
+                            <div className="text-xs text-muted-foreground">{interaction.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="activities" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Activity Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.activities.types.map((activity) => (
+                          <div key={activity.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{activity.name}</div>
+                            <div className="text-xs text-muted-foreground">{activity.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {activity.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Activity Filters</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.activities.filters.map((filter) => (
+                          <div key={filter.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{filter.name}</div>
+                            <div className="text-xs text-muted-foreground">{filter.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="actions" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Quick Action Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.quickActions.types.map((action) => (
+                          <div key={action.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{action.name}</div>
+                            <div className="text-xs text-muted-foreground">{action.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {action.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Quick Action Layouts</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.quickActions.layouts.map((layout) => (
+                          <div key={layout.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{layout.name}</div>
+                            <div className="text-xs text-muted-foreground">{layout.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="navigation" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Navigation Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.navigation.types.map((nav) => (
+                          <div key={nav.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{nav.name}</div>
+                            <div className="text-xs text-muted-foreground">{nav.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {nav.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Navigation Positions</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.navigation.positions.map((position) => (
+                          <div key={position.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{position.name}</div>
+                            <div className="text-xs text-muted-foreground">{position.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* Dashboard System Overview */}

@@ -14,83 +14,19 @@ import { Input } from "@/components/ui/input"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import {
+  lineIcons,
+  fillIcons,
+  iconCategories,
+  iconSizes,
+  iconStyles,
+  iconFoundation,
+  usageGuidelines,
+  implementationExamples
+} from "@/lib/icons-config"
 
 export default function IconsPage() {
   const [searchTerm, setSearchTerm] = useState("")
-
-  const lineIcons = [
-    "home-line", "search-line", "settings-3-line", "user-line", "mail-line", "notification-line", "add-line", "star-line",
-    "heart-line", "download-line", "upload-line", "edit-line", "delete-bin-line", "file-copy-line", "share-line", "link",
-    "calendar-line", "lock-line", "eye-line", "eye-off-line", "sun-line", "moon-line", "computer-line", "menu-line",
-    "arrow-left-line", "arrow-right-line", "arrow-up-line", "arrow-down-line", "arrow-down-s-line", "arrow-up-s-line", "arrow-left-s-line", "arrow-right-s-line",
-    "close-line", "check-line", "more-line", "more-2-line", "refresh-line", "external-link-line", "folder-line", "folder-open-line",
-    "file-line", "file-text-line", "file-pdf-line", "file-word-line", "file-excel-line", "file-image-line", "file-video-line", "file-music-line",
-    "image-line", "camera-line", "video-line", "music-line", "play-line", "pause-line", "stop-line", "skip-forward-line",
-    "skip-back-line", "volume-up-line", "volume-down-line", "volume-mute-line", "headphone-line", "mic-line", "mic-off-line", "speaker-line",
-    "phone-line", "smartphone-line", "tablet-line", "tv-line", "device-line", "wifi-line", "wifi-off-line", "signal-wifi-line",
-    "bluetooth-line", "battery-line", "battery-low-line", "battery-charge-line", "plug-line", "flashlight-line", "bookmark-line", "bookmark-3-line",
-    "flag-line", "flag-2-line", "pin-distance-line", "map-pin-line", "map-line", "road-map-line", "compass-line", "navigation-line",
-    "guide-line", "global-line", "earth-line", "planet-line", "rocket-line", "spacecraft-line", "car-line", "bus-line",
-    "truck-line", "train-line", "subway-line", "ship-line", "plane-line", "taxi-line", "bicycle-line", "motorbike-line",
-    "walk-line", "run-line", "football-line", "basketball-line", "ping-pong-line", "billiards-line", "trophy-line", "medal-line",
-    "award-line", "gift-line", "cake-line", "restaurant-line", "knife-line", "cup-line", "wine-glass-line", "beer-line",
-    "coffee-line", "tea-line", "pizza-line", "hamburger-line", "bread-line", "apple-line", "leaf-line", "plant-line",
-    "tree-line", "flower-line", "seedling-line", "cactus-line", "palm-tree-line", "cherry-blossom-line", "sun-cloudy-line", "cloudy-line",
-    "rainy-line", "snowy-line", "thunderstorms-line", "tornado-line", "typhoon-line", "mist-line", "fire-line", "water-line",
-    "drop-line", "lightbulb-line", "lightbulb-flash-line", "contrast-line", "contrast-2-line", "palette-line", "brush-line", "paint-brush-line",
-    "pencil-line", "pencil-ruler-line", "ruler-line", "scissors-line", "eraser-line", "paint-line", "artboard-line", "layout-line",
-    "layout-2-line", "layout-3-line", "layout-4-line", "layout-5-line", "layout-6-line", "grid-line", "dashboard-line", "stack-line",
-    "inbox-line", "archive-line", "folder-received-line", "folder-transfer-line", "folder-download-line", "folder-upload-line", "folder-zip-line", "folder-settings-line",
-    "folder-shield-line", "folder-lock-line", "folder-user-line", "folder-shared-line", "folders-line", "save-line", "save-2-line", "save-3-line",
-    "hard-drive-line", "hard-drive-2-line", "database-line", "database-2-line", "server-line", "cloud-line", "cloud-off-line", "install-line",
-    "uninstall-line", "download-cloud-line", "upload-cloud-line", "download-2-line", "upload-2-line", "terminal-line", "terminal-box-line", "code-line",
-    "code-s-line", "code-s-slash-line", "brackets-line", "parentheses-line", "function-line", "variable-line", "bug-line", "bug-2-line",
-    "shield-line", "shield-check-line", "shield-cross-line", "shield-flash-line", "shield-keyhole-line", "key-line", "key-2-line", "login-box-line",
-    "logout-box-line", "login-circle-line", "logout-circle-line", "account-box-line", "account-circle-line", "team-line", "group-line", "user-add-line",
-    "user-follow-line", "user-unfollow-line", "user-settings-line", "user-star-line", "user-heart-line", "admin-line", "vip-line", "customer-service-line",
-    "service-line", "question-line", "question-answer-line", "questionnaire-line", "feedback-line", "chat-1-line", "chat-2-line", "chat-3-line",
-    "chat-4-line", "message-line", "message-2-line", "message-3-line", "discuss-line", "speak-line", "translate-line", "translate-2-line",
-    "voice-recognition-line", "record-circle-line", "timer-line", "timer-2-line", "time-line", "history-line", "alarm-line", "alarm-warning-line",
-    "countdown-line", "hourglass-line", "hourglass-2-line", "calendar-2-line", "calendar-event-line", "calendar-todo-line", "calendar-check-line", "todo-line",
-    "list-check-line", "task-line", "clipboard-line", "article-line", "newspaper-line", "book-line", "book-open-line", "book-2-line"
-  ]
-
-  const fillIcons = [
-    "home-fill", "search-fill", "settings-3-fill", "user-fill", "mail-fill", "notification-fill", "add-fill", "star-fill",
-    "heart-fill", "download-fill", "upload-fill", "edit-fill", "delete-bin-fill", "file-copy-fill", "share-fill", "link",
-    "calendar-fill", "lock-fill", "eye-fill", "eye-off-fill", "sun-fill", "moon-fill", "computer-fill", "menu-fill",
-    "arrow-left-fill", "arrow-right-fill", "arrow-up-fill", "arrow-down-fill", "arrow-down-s-fill", "arrow-up-s-fill", "arrow-left-s-fill", "arrow-right-s-fill",
-    "close-fill", "check-fill", "more-fill", "more-2-fill", "refresh-fill", "external-link-fill", "folder-fill", "folder-open-fill",
-    "file-fill", "file-text-fill", "file-pdf-fill", "file-word-fill", "file-excel-fill", "file-image-fill", "file-video-fill", "file-music-fill",
-    "image-fill", "camera-fill", "video-fill", "music-fill", "play-fill", "pause-fill", "stop-fill", "skip-forward-fill",
-    "skip-back-fill", "volume-up-fill", "volume-down-fill", "volume-mute-fill", "headphone-fill", "mic-fill", "mic-off-fill", "speaker-fill",
-    "phone-fill", "smartphone-fill", "tablet-fill", "tv-fill", "device-fill", "wifi-fill", "wifi-off-fill", "signal-wifi-fill",
-    "bluetooth-fill", "battery-fill", "battery-low-fill", "battery-charge-fill", "plug-fill", "flashlight-fill", "bookmark-fill", "bookmark-3-fill",
-    "flag-fill", "flag-2-fill", "pin-distance-fill", "map-pin-fill", "map-fill", "road-map-fill", "compass-fill", "navigation-fill",
-    "guide-fill", "global-fill", "earth-fill", "planet-fill", "rocket-fill", "spacecraft-fill", "car-fill", "bus-fill",
-    "truck-fill", "train-fill", "subway-fill", "ship-fill", "plane-fill", "taxi-fill", "bicycle-fill", "motorbike-fill",
-    "walk-fill", "run-fill", "football-fill", "basketball-fill", "ping-pong-fill", "billiards-fill", "trophy-fill", "medal-fill",
-    "award-fill", "gift-fill", "cake-fill", "restaurant-fill", "knife-fill", "cup-fill", "wine-glass-fill", "beer-fill",
-    "coffee-fill", "tea-fill", "pizza-fill", "hamburger-fill", "bread-fill", "apple-fill", "leaf-fill", "plant-fill",
-    "tree-fill", "flower-fill", "seedling-fill", "cactus-fill", "palm-tree-fill", "cherry-blossom-fill", "sun-cloudy-fill", "cloudy-fill",
-    "rainy-fill", "snowy-fill", "thunderstorms-fill", "tornado-fill", "typhoon-fill", "mist-fill", "fire-fill", "water-fill",
-    "drop-fill", "lightbulb-fill", "lightbulb-flash-fill", "contrast-fill", "contrast-2-fill", "palette-fill", "brush-fill", "paint-brush-fill",
-    "pencil-fill", "pencil-ruler-fill", "ruler-fill", "scissors-fill", "eraser-fill", "paint-fill", "artboard-fill", "layout-fill",
-    "layout-2-fill", "layout-3-fill", "layout-4-fill", "layout-5-fill", "layout-6-fill", "grid-fill", "dashboard-fill", "stack-fill",
-    "inbox-fill", "archive-fill", "folder-received-fill", "folder-transfer-fill", "folder-download-fill", "folder-upload-fill", "folder-zip-fill", "folder-settings-fill",
-    "folder-shield-fill", "folder-lock-fill", "folder-user-fill", "folder-shared-fill", "folders-fill", "save-fill", "save-2-fill", "save-3-fill",
-    "hard-drive-fill", "hard-drive-2-fill", "database-fill", "database-2-fill", "server-fill", "cloud-fill", "cloud-off-fill", "install-fill",
-    "uninstall-fill", "download-cloud-fill", "upload-cloud-fill", "download-2-fill", "upload-2-fill", "terminal-fill", "terminal-box-fill", "code-fill",
-    "code-s-fill", "code-s-slash-fill", "brackets-fill", "parentheses-fill", "function-fill", "variable-fill", "bug-fill", "bug-2-fill",
-    "shield-fill", "shield-check-fill", "shield-cross-fill", "shield-flash-fill", "shield-keyhole-fill", "key-fill", "key-2-fill", "login-box-fill",
-    "logout-box-fill", "login-circle-fill", "logout-circle-fill", "account-box-fill", "account-circle-fill", "team-fill", "group-fill", "user-add-fill",
-    "user-follow-fill", "user-unfollow-fill", "user-settings-fill", "user-star-fill", "user-heart-fill", "admin-fill", "vip-fill", "customer-service-fill",
-    "service-fill", "question-fill", "question-answer-fill", "questionnaire-fill", "feedback-fill", "chat-1-fill", "chat-2-fill", "chat-3-fill",
-    "chat-4-fill", "message-fill", "message-2-fill", "message-3-fill", "discuss-fill", "speak-fill", "translate-fill", "translate-2-fill",
-    "voice-recognition-fill", "record-circle-fill", "timer-fill", "timer-2-fill", "time-fill", "history-fill", "alarm-fill", "alarm-warning-fill",
-    "countdown-fill", "hourglass-fill", "hourglass-2-fill", "calendar-2-fill", "calendar-event-fill", "calendar-todo-fill", "calendar-check-fill", "todo-fill",
-    "list-check-fill", "task-fill", "clipboard-fill", "article-fill", "newspaper-fill", "book-fill", "book-open-fill", "book-2-fill"
-  ]
 
   const filteredLineIcons = lineIcons.filter(icon => 
     icon.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -213,6 +149,179 @@ export default function IconsPage() {
                   <code className="text-sm">
                     {`<Icon name="heart-line" className="text-red-500" />`}
                   </code>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Icon Categories */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Icon Categories</CardTitle>
+              <CardDescription>
+                Organized icon categories with usage examples and best practices
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {iconCategories.map((category) => (
+                  <div key={category.name} className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Icon name={category.icons[0] || "star-line"} size="sm" />
+                      <h3 className="font-semibold">{category.name}</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{category.description}</p>
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-xs font-medium text-muted-foreground">Examples:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {category.examples.slice(0, 3).map((example) => (
+                            <span key={example} className="text-xs bg-muted px-2 py-1 rounded">
+                              {example}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-xs font-medium text-muted-foreground">Best Practices:</span>
+                        <div className="space-y-1 mt-1">
+                          {category.bestPractices.slice(0, 2).map((practice) => (
+                            <div key={practice} className="flex items-start gap-2">
+                              <div className="w-1 h-1 bg-primary rounded-full mt-2"></div>
+                              <span className="text-xs text-muted-foreground">{practice}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Icon Principles */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Icon Principles</CardTitle>
+              <CardDescription>
+                Core principles for effective icon usage in our design system
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Icon name="grid-line" size="sm" />
+                    <h3 className="font-semibold">Consistency</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{iconFoundation.principles.consistency}</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Icon name="eye-line" size="sm" />
+                    <h3 className="font-semibold">Clarity</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{iconFoundation.principles.clarity}</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Icon name="heart-line" size="sm" />
+                    <h3 className="font-semibold">Accessibility</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{iconFoundation.principles.accessibility}</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Icon name="zoom-in-line" size="sm" />
+                    <h3 className="font-semibold">Scalability</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{iconFoundation.principles.scalability}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Usage Guidelines */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Usage Guidelines</CardTitle>
+              <CardDescription>
+                Best practices for using icons effectively in your interfaces
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold mb-3 text-green-600">Do's</h3>
+                  <div className="space-y-2">
+                    {usageGuidelines.do.map((guideline, index) => (
+                      <div key={index} className="flex items-start gap-2">
+                        <Icon name="check-line" size="sm" className="text-green-500 mt-0.5" />
+                        <span className="text-sm">{guideline}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-3 text-red-600">Don'ts</h3>
+                  <div className="space-y-2">
+                    {usageGuidelines.dont.map((guideline, index) => (
+                      <div key={index} className="flex items-start gap-2">
+                        <Icon name="close-line" size="sm" className="text-red-500 mt-0.5" />
+                        <span className="text-sm">{guideline}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Implementation Examples */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Implementation Examples</CardTitle>
+              <CardDescription>
+                Code examples for implementing icons in your components
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold mb-2">{implementationExamples.basicUsage.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-2">{implementationExamples.basicUsage.description}</p>
+                  <div className="bg-muted p-3 rounded font-mono text-sm">
+                    {implementationExamples.basicUsage.code}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">{implementationExamples.withSize.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-2">{implementationExamples.withSize.description}</p>
+                  <div className="bg-muted p-3 rounded font-mono text-sm">
+                    {implementationExamples.withSize.code}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">{implementationExamples.withCustomClasses.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-2">{implementationExamples.withCustomClasses.description}</p>
+                  <div className="bg-muted p-3 rounded font-mono text-sm">
+                    {implementationExamples.withCustomClasses.code}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">{implementationExamples.withAccessibility.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-2">{implementationExamples.withAccessibility.description}</p>
+                  <div className="bg-muted p-3 rounded font-mono text-sm">
+                    {implementationExamples.withAccessibility.code}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">{implementationExamples.inButton.title}</h4>
+                  <p className="text-sm text-muted-foreground mb-2">{implementationExamples.inButton.description}</p>
+                  <div className="bg-muted p-3 rounded font-mono text-sm">
+                    {implementationExamples.inButton.code}
+                  </div>
                 </div>
               </div>
             </CardContent>

@@ -5,13 +5,11 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { Grid } from "@/components/ui/layout/grid"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H1, H2, H3, H4, BodyLarge, BodySmall, Caption } from "@/components/ui/typography"
+import { H4, BodySmall, Caption } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -19,115 +17,19 @@ import { Switch } from "@/components/ui/switch"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import {
+  spacingScale,
+  containerSizes,
+  spacingExamples,
+  spacingRules,
+  spacingFoundation,
+  spacingCategories
+} from "@/lib/spacing-config"
 
 export default function SpacingPage() {
   const [activeTab, setActiveTab] = useState("overview")
   const [showGrid, setShowGrid] = useState(false)
   const [selectedSpacing, setSelectedSpacing] = useState("4")
-
-  // Comprehensive spacing scale
-  const spacingScale = [
-    { name: "0", value: 0, class: "0", description: "No spacing" },
-    { name: "0.5", value: 2, class: "0.5", description: "Tiny spacing" },
-    { name: "1", value: 4, class: "1", description: "Extra small spacing" },
-    { name: "1.5", value: 6, class: "1.5", description: "Small spacing" },
-    { name: "2", value: 8, class: "2", description: "Small spacing" },
-    { name: "2.5", value: 10, class: "2.5", description: "Small-medium spacing" },
-    { name: "3", value: 12, class: "3", description: "Medium spacing" },
-    { name: "3.5", value: 14, class: "3.5", description: "Medium spacing" },
-    { name: "4", value: 16, class: "4", description: "Medium spacing" },
-    { name: "5", value: 20, class: "5", description: "Medium-large spacing" },
-    { name: "6", value: 24, class: "6", description: "Large spacing" },
-    { name: "7", value: 28, class: "7", description: "Large spacing" },
-    { name: "8", value: 32, class: "8", description: "Extra large spacing" },
-    { name: "9", value: 36, class: "9", description: "Extra large spacing" },
-    { name: "10", value: 40, class: "10", description: "Extra large spacing" },
-    { name: "11", value: 44, class: "11", description: "Extra large spacing" },
-    { name: "12", value: 48, class: "12", description: "Extra large spacing" },
-    { name: "14", value: 56, class: "14", description: "Huge spacing" },
-    { name: "16", value: 64, class: "16", description: "Huge spacing" },
-    { name: "20", value: 80, class: "20", description: "Massive spacing" },
-    { name: "24", value: 96, class: "24", description: "Massive spacing" },
-    { name: "28", value: 112, class: "28", description: "Massive spacing" },
-    { name: "32", value: 128, class: "32", description: "Massive spacing" },
-  ]
-
-  // Container sizes
-  const containerSizes = [
-    { name: "xs", value: 475, class: "max-w-xs", description: "Extra small containers" },
-    { name: "sm", value: 640, class: "max-w-sm", description: "Small containers" },
-    { name: "md", value: 768, class: "max-w-md", description: "Medium containers" },
-    { name: "lg", value: 1024, class: "max-w-lg", description: "Large containers" },
-    { name: "xl", value: 1280, class: "max-w-xl", description: "Extra large containers" },
-    { name: "2xl", value: 1536, class: "max-w-2xl", description: "2X large containers" },
-    { name: "3xl", value: 1920, class: "max-w-3xl", description: "3X large containers" },
-    { name: "4xl", value: 2560, class: "max-w-4xl", description: "4X large containers" },
-    { name: "5xl", value: 3200, class: "max-w-5xl", description: "5X large containers" },
-    { name: "6xl", value: 3840, class: "max-w-6xl", description: "6X large containers" },
-    { name: "7xl", value: 4480, class: "max-w-7xl", description: "7X large containers" },
-  ]
-
-  // Spacing usage examples
-  const spacingExamples = [
-    {
-      title: "Component Internal Spacing",
-      description: "Spacing within individual components",
-      examples: [
-        { label: "Button padding", spacing: "2", class: "p-2" },
-        { label: "Card padding", spacing: "4", class: "p-4" },
-        { label: "Form field spacing", spacing: "3", class: "space-y-3" },
-        { label: "Icon button", spacing: "2", class: "p-2" },
-      ]
-    },
-    {
-      title: "Component External Spacing",
-      description: "Spacing between components and sections",
-      examples: [
-        { label: "Card margins", spacing: "4", class: "m-4" },
-        { label: "Section padding", spacing: "8", class: "py-8" },
-        { label: "Grid gaps", spacing: "6", class: "gap-6" },
-        { label: "List item spacing", spacing: "2", class: "space-y-2" },
-      ]
-    },
-    {
-      title: "Layout Spacing",
-      description: "Spacing for page layouts and major sections",
-      examples: [
-        { label: "Page sections", spacing: "12", class: "py-12" },
-        { label: "Hero sections", spacing: "16", class: "py-16" },
-        { label: "Container padding", spacing: "4", class: "px-4" },
-        { label: "Footer spacing", spacing: "8", class: "py-8" },
-      ]
-    }
-  ]
-
-  // Spacing rules and guidelines
-  const spacingRules = [
-    {
-      title: "Consistency",
-      description: "Use the spacing scale consistently throughout your application",
-      icon: "ruler-line",
-      examples: ["Always use predefined spacing values", "Don't mix different spacing systems", "Maintain visual rhythm"]
-    },
-    {
-      title: "Hierarchy",
-      description: "Use spacing to create visual hierarchy and relationships",
-      icon: "layout-line",
-      examples: ["Related elements should have less spacing", "Unrelated elements should have more spacing", "Use spacing to group content"]
-    },
-    {
-      title: "Responsiveness",
-      description: "Adjust spacing for different screen sizes",
-      icon: "smartphone-line",
-      examples: ["Reduce spacing on mobile devices", "Increase spacing on larger screens", "Use responsive spacing utilities"]
-    },
-    {
-      title: "Accessibility",
-      description: "Ensure spacing doesn't interfere with accessibility",
-      icon: "eye-line",
-      examples: ["Maintain sufficient touch targets", "Don't make elements too close together", "Consider screen reader navigation"]
-    }
-  ]
 
   return (
     <PageWrapper>
@@ -213,14 +115,14 @@ export default function SpacingPage() {
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-8">
                       <div className="space-y-4">
-                        <H4>Base Unit: 4px</H4>
+                        <H4>Base Unit: {spacingFoundation.baseUnit}{spacingFoundation.unit}</H4>
                         <div className="space-y-2">
                           <div className="flex items-center justify-between p-3 border rounded-lg">
-                            <span className="font-mono text-sm">4px</span>
+                            <span className="font-mono text-sm">{spacingFoundation.baseUnit}{spacingFoundation.unit}</span>
                             <div className="w-4 h-4 bg-primary rounded"></div>
                           </div>
                           <BodySmall className="text-muted-foreground">
-                            All spacing values are multiples of 4px, ensuring consistency and predictability.
+                            {spacingFoundation.description}
                           </BodySmall>
                         </div>
                       </div>
@@ -249,45 +151,21 @@ export default function SpacingPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-3 gap-6">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <Icon name="component-line" className="h-4 w-4 text-blue-500" />
-                          <H4>Component Spacing</H4>
+                      {Object.entries(spacingCategories).map(([key, category]) => (
+                        <div key={key} className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <Icon name={category.icon} className="h-4 w-4 text-blue-500" />
+                            <H4>{category.title}</H4>
+                          </div>
+                          <BodySmall className="text-muted-foreground">
+                            {category.description}
+                          </BodySmall>
+                          <div className="space-y-1">
+                            <div className="text-xs font-mono">{category.examples[0]}</div>
+                            <div className="text-xs font-mono">{category.range} range</div>
+                          </div>
                         </div>
-                        <BodySmall className="text-muted-foreground">
-                          Internal spacing within components (padding, margins between elements).
-                        </BodySmall>
-                        <div className="space-y-1">
-                          <div className="text-xs font-mono">p-2, p-4, space-y-2</div>
-                          <div className="text-xs font-mono">4px - 16px range</div>
-                        </div>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <Icon name="layout-line" className="h-4 w-4 text-green-500" />
-                          <H4>Layout Spacing</H4>
-                        </div>
-                        <BodySmall className="text-muted-foreground">
-                          Spacing between components and major sections (grids, sections).
-                        </BodySmall>
-                        <div className="space-y-1">
-                          <div className="text-xs font-mono">gap-6, py-8, my-12</div>
-                          <div className="text-xs font-mono">24px - 64px range</div>
-                        </div>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <Icon name="fullscreen-line" className="h-4 w-4 text-purple-500" />
-                          <H4>Page Spacing</H4>
-                        </div>
-                        <BodySmall className="text-muted-foreground">
-                          Large spacing for page-level layouts and major sections.
-                        </BodySmall>
-                        <div className="space-y-1">
-                          <div className="text-xs font-mono">py-16, my-20, px-8</div>
-                          <div className="text-xs font-mono">64px+ range</div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -328,6 +206,11 @@ export default function SpacingPage() {
                               <BodySmall className="text-muted-foreground">
                                 {spacing.description}
                               </BodySmall>
+                              <div className="mt-1">
+                                <div className="text-xs text-muted-foreground">
+                                  Usage: {spacing.usage.slice(0, 2).join(', ')}
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
@@ -373,6 +256,11 @@ export default function SpacingPage() {
                                 <Badge variant="outline" className="text-xs">
                                   {container.class}
                                 </Badge>
+                                {container.breakpoint && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    {container.breakpoint}
+                                  </Badge>
+                                )}
                               </div>
                               <BodySmall className="text-muted-foreground">
                                 {container.description}
@@ -421,6 +309,11 @@ export default function SpacingPage() {
                                   <code className="text-xs bg-muted px-2 py-1 rounded">
                                     {example.class}
                                   </code>
+                                </div>
+                                <div className="mt-1">
+                                  <div className="text-xs text-muted-foreground">
+                                    {example.context}
+                                  </div>
                                 </div>
                               </div>
                             ))}
@@ -496,6 +389,9 @@ export default function SpacingPage() {
                           <div className="flex items-center gap-3">
                             <Icon name={rule.icon} className="h-5 w-5 text-primary" />
                             <H4>{rule.title}</H4>
+                            <Badge variant={rule.category === 'do' ? 'default' : 'destructive'} className="text-xs">
+                              {rule.category === 'do' ? 'Do' : "Don't"}
+                            </Badge>
                           </div>
                           <BodySmall className="text-muted-foreground ml-8">
                             {rule.description}
@@ -529,22 +425,12 @@ export default function SpacingPage() {
                           Do's
                         </H4>
                         <div className="space-y-2">
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-green-500 rounded-full mt-2"></div>
-                            <BodySmall>Use consistent spacing values from the scale</BodySmall>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-green-500 rounded-full mt-2"></div>
-                            <BodySmall>Increase spacing for visual hierarchy</BodySmall>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-green-500 rounded-full mt-2"></div>
-                            <BodySmall>Use responsive spacing for different screen sizes</BodySmall>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-green-500 rounded-full mt-2"></div>
-                            <BodySmall>Group related elements with consistent spacing</BodySmall>
-                          </div>
+                          {spacingRules.filter(rule => rule.category === 'do').map((rule, index) => (
+                            <div key={index} className="flex items-start gap-2">
+                              <div className="w-1 h-1 bg-green-500 rounded-full mt-2"></div>
+                              <BodySmall>{rule.examples[0]}</BodySmall>
+                            </div>
+                          ))}
                         </div>
                       </div>
                       <div className="space-y-4">
@@ -553,22 +439,12 @@ export default function SpacingPage() {
                           Don'ts
                         </H4>
                         <div className="space-y-2">
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-red-500 rounded-full mt-2"></div>
-                            <BodySmall>Mix different spacing systems or arbitrary values</BodySmall>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-red-500 rounded-full mt-2"></div>
-                            <BodySmall>Use too much spacing between related elements</BodySmall>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-red-500 rounded-full mt-2"></div>
-                            <BodySmall>Ignore spacing on mobile devices</BodySmall>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-1 h-1 bg-red-500 rounded-full mt-2"></div>
-                            <BodySmall>Create inconsistent spacing patterns</BodySmall>
-                          </div>
+                          {spacingRules.filter(rule => rule.category === 'dont').map((rule, index) => (
+                            <div key={index} className="flex items-start gap-2">
+                              <div className="w-1 h-1 bg-red-500 rounded-full mt-2"></div>
+                              <BodySmall>{rule.examples[0]}</BodySmall>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>

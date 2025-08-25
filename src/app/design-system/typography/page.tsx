@@ -13,124 +13,16 @@ import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 
+import { 
+  typeScale, 
+  fontWeights, 
+  fontFamilies, 
+  typographyPrinciples, 
+  fontSpecifications, 
+  usageGuidelines 
+} from "@/lib/typography-config"
+
 export default function TypographyPage() {
-  
-  const typeScale = [
-    {
-      name: "Display Large",
-      class: "text-6xl",
-      weight: "font-semibold",
-      lineHeight: "leading-normal",
-      tracking: "tracking-normal",
-      usage: "Hero headlines, page titles",
-      example: "Display Large"
-    },
-    {
-      name: "Display Medium", 
-      class: "text-5xl",
-      weight: "font-semibold",
-      lineHeight: "leading-normal",
-      tracking: "tracking-normal",
-      usage: "Section headlines, major headings",
-      example: "Display Medium"
-    },
-    {
-      name: "Display Small",
-      class: "text-4xl", 
-      weight: "font-semibold",
-      lineHeight: "leading-normal",
-      tracking: "tracking-normal",
-      usage: "Subsection headlines",
-      example: "Display Small"
-    },
-    {
-      name: "Heading Large",
-      class: "text-3xl",
-      weight: "font-medium", 
-      lineHeight: "leading-normal",
-      tracking: "tracking-normal",
-      usage: "Page headings, article titles",
-      example: "Heading Large"
-    },
-    {
-      name: "Heading Medium",
-      class: "text-2xl",
-      weight: "font-medium",
-      lineHeight: "leading-normal",
-      tracking: "tracking-normal",
-      usage: "Section headings, card titles",
-      example: "Heading Medium"
-    },
-    {
-      name: "Heading Small",
-      class: "text-xl",
-      weight: "font-medium",
-      lineHeight: "leading-normal",
-      tracking: "tracking-normal",
-      usage: "Subsection headings, form labels",
-      example: "Heading Small"
-    },
-    {
-      name: "Body Large",
-      class: "text-lg",
-      weight: "font-normal",
-      lineHeight: "leading-relaxed",
-      usage: "Lead paragraphs, important content",
-      example: "Body Large - This is the large body text used for important content and lead paragraphs."
-    },
-    {
-      name: "Body",
-      class: "text-base",
-      weight: "font-normal", 
-      lineHeight: "leading-relaxed",
-      usage: "Main content, paragraphs",
-      example: "Body - This is the standard body text used throughout the application for main content."
-    },
-    {
-      name: "Body Small",
-      class: "text-sm",
-      weight: "font-normal",
-      lineHeight: "leading-relaxed",
-      usage: "Secondary content, captions",
-      example: "Body Small - This is smaller text used for captions and secondary information."
-    },
-    {
-      name: "Caption",
-      class: "text-xs",
-      weight: "font-normal",
-      lineHeight: "leading-relaxed",
-      usage: "Labels, metadata, fine print",
-      example: "Caption - This is the smallest text used for labels and metadata."
-    }
-  ]
-
-  const fontWeights = [
-    { weight: "100", name: "Thin", class: "font-thin" },
-    { weight: "200", name: "Extra Light", class: "font-extralight" },
-    { weight: "300", name: "Light", class: "font-light" },
-    { weight: "400", name: "Regular", class: "font-normal" },
-    { weight: "500", name: "Medium", class: "font-medium" },
-    { weight: "600", name: "Semi Bold", class: "font-semibold" },
-    { weight: "700", name: "Bold", class: "font-bold" },
-    { weight: "800", name: "Extra Bold", class: "font-extrabold" },
-    { weight: "900", name: "Black", class: "font-black" }
-  ]
-
-  const fontFamilies = [
-    {
-      name: "Helvetica Now",
-      class: "font-sans",
-      description: "Primary sans-serif font for all UI text",
-      example: "The quick brown fox jumps over the lazy dog"
-    },
-    {
-      name: "Geist Mono",
-      class: "font-mono", 
-      description: "Monospace font for code and technical content",
-      example: "const example = 'code snippet';"
-    }
-  ]
-
   return (
     <PageWrapper>
       <AppShell
@@ -167,29 +59,29 @@ export default function TypographyPage() {
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Icon name="eye-line" className="h-4 w-4 text-primary" />
-                        <span className="font-semibold">Readability</span>
+                        <Icon name={typographyPrinciples.readability.icon} className="h-4 w-4 text-primary" />
+                        <span className="font-semibold">{typographyPrinciples.readability.title}</span>
                       </div>
                       <P className="text-sm text-muted-foreground">
-                        Optimized for maximum readability across all screen sizes and contexts
+                        {typographyPrinciples.readability.description}
                       </P>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Icon name="ruler-line" className="h-4 w-4 text-primary" />
-                        <span className="font-semibold">Consistency</span>
+                        <Icon name={typographyPrinciples.consistency.icon} className="h-4 w-4 text-primary" />
+                        <span className="font-semibold">{typographyPrinciples.consistency.title}</span>
                       </div>
                       <P className="text-sm text-muted-foreground">
-                        Systematic type scale with predictable sizing and spacing relationships
+                        {typographyPrinciples.consistency.description}
                       </P>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Icon name="responsive-line" className="h-4 w-4 text-primary" />
-                        <span className="font-semibold">Performance</span>
+                        <Icon name={typographyPrinciples.performance.icon} className="h-4 w-4 text-primary" />
+                        <span className="font-semibold">{typographyPrinciples.performance.title}</span>
                       </div>
                       <P className="text-sm text-muted-foreground">
-                        Variable fonts for optimal loading performance and smooth weight transitions
+                        {typographyPrinciples.performance.description}
                       </P>
                     </div>
                   </div>
@@ -203,29 +95,29 @@ export default function TypographyPage() {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Primary Font</span>
-                        <Badge variant="outline">Helvetica Now</Badge>
+                        <Badge variant="outline">{fontSpecifications.primary.name}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Font Type</span>
-                        <Badge variant="outline">Variable</Badge>
+                        <Badge variant="outline">{fontSpecifications.primary.type}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Weight Range</span>
-                        <Badge variant="outline">100-900</Badge>
+                        <Badge variant="outline">{fontSpecifications.primary.weightRange}</Badge>
                       </div>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Monospace Font</span>
-                        <Badge variant="outline">Geist Mono</Badge>
+                        <Badge variant="outline">{fontSpecifications.monospace.name}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Display</span>
-                        <Badge variant="outline">swap</Badge>
+                        <Badge variant="outline">{fontSpecifications.monospace.display}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Subset</span>
-                        <Badge variant="outline">Latin</Badge>
+                        <Badge variant="outline">{fontSpecifications.monospace.subset}</Badge>
                       </div>
                     </div>
                   </div>
@@ -354,33 +246,17 @@ export default function TypographyPage() {
                 <div>
                   <H3 className="mb-3">Hierarchy</H3>
                   <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Use consistent heading levels</span>
-                        <P className="text-sm text-muted-foreground">
-                          Maintain a clear visual hierarchy with H1 → H2 → H3 progression
-                        </P>
+                    {usageGuidelines.hierarchy.map((guideline, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
+                        <div>
+                          <span className="font-medium">{guideline.title}</span>
+                          <P className="text-sm text-muted-foreground">
+                            {guideline.description}
+                          </P>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Limit font weight variations</span>
-                        <P className="text-sm text-muted-foreground">
-                          Use 2-3 weights maximum per page to maintain visual consistency
-                        </P>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Consider line length</span>
-                        <P className="text-sm text-muted-foreground">
-                          Aim for 45-75 characters per line for optimal readability
-                        </P>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
 
@@ -389,39 +265,25 @@ export default function TypographyPage() {
                 <div>
                   <H3 className="mb-3">Accessibility</H3>
                   <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Maintain sufficient contrast</span>
-                        <P className="text-sm text-muted-foreground">
-                          Ensure text meets WCAG AA contrast requirements (4.5:1 for normal text)
-                        </P>
+                    {usageGuidelines.accessibility.map((guideline, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
+                        <div>
+                          <span className="font-medium">{guideline.title}</span>
+                          <P className="text-sm text-muted-foreground">
+                            {guideline.description}
+                          </P>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Use semantic HTML</span>
-                        <P className="text-sm text-muted-foreground">
-                          Use proper heading tags (h1-h6) for screen readers and SEO
-                        </P>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Scale with user preferences</span>
-                        <P className="text-sm text-muted-foreground">
-                          Respect user font size preferences and zoom settings
-                        </P>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </Section>
+
+        
       </Container>
     </AppShell>
     </PageWrapper>

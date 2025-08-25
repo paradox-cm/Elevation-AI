@@ -14,16 +14,20 @@ import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import {
+  breakpoints,
+  gridPrinciples,
+  gridLayouts,
+  gridSpecifications,
+  gridFoundation,
+  cssCustomProperties,
+  tailwindClasses,
+  usageGuidelines,
+  implementationExamples
+} from "@/lib/grid-config"
 
 export default function GridPage() {
   const [activeBreakpoint] = useState("desktop")
-
-  const breakpoints = [
-    { id: "mobile", name: "Mobile", width: "320px", cols: 4 },
-    { id: "tablet", name: "Tablet", width: "768px", cols: 8 },
-    { id: "desktop", name: "Desktop", width: "1024px", cols: 12 },
-    { id: "wide", name: "Wide", width: "1440px", cols: 12 },
-  ]
 
   return (
     <PageWrapper>
@@ -65,26 +69,50 @@ export default function GridPage() {
                         <span className="font-semibold">Responsive</span>
                       </div>
                       <P className="text-sm text-muted-foreground">
-                        Automatically adapts to different screen sizes with appropriate column counts
+                        {gridPrinciples[0].description}
                       </P>
+                      <div className="space-y-1">
+                        {gridPrinciples[0].examples.map((example) => (
+                          <div key={example} className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-primary rounded-full"></div>
+                            <P className="text-xs text-muted-foreground">{example}</P>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Icon name="ruler-line" className="h-4 w-4 text-primary" />
-                        <span className="font-semibold">Consistent</span>
+                        <span className="font-semibold">{gridPrinciples[1].title}</span>
                       </div>
                       <P className="text-sm text-muted-foreground">
-                        Uniform spacing and alignment using standardized gutters and margins
+                        {gridPrinciples[1].description}
                       </P>
+                      <div className="space-y-1">
+                        {gridPrinciples[1].examples.map((example) => (
+                          <div key={example} className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-primary rounded-full"></div>
+                            <P className="text-xs text-muted-foreground">{example}</P>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Icon name="flexibility-line" className="h-4 w-4 text-primary" />
-                        <span className="font-semibold">Flexible</span>
+                        <span className="font-semibold">{gridPrinciples[2].title}</span>
                       </div>
                       <P className="text-sm text-muted-foreground">
-                        Supports various layout patterns from simple cards to complex dashboards
+                        {gridPrinciples[2].description}
                       </P>
+                      <div className="space-y-1">
+                        {gridPrinciples[2].examples.map((example) => (
+                          <div key={example} className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-primary rounded-full"></div>
+                            <P className="text-xs text-muted-foreground">{example}</P>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -100,8 +128,16 @@ export default function GridPage() {
                           <span className="font-semibold">{breakpoint.name}</span>
                           <Badge variant="outline">{breakpoint.width}</Badge>
                         </div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-muted-foreground mb-2">
                           {breakpoint.cols} columns
+                        </div>
+                        <div className="space-y-1">
+                          {breakpoint.usage.map((usage, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              <div className="w-1 h-1 bg-primary rounded-full"></div>
+                              <P className="text-xs text-muted-foreground">{usage}</P>
+                            </div>
+                          ))}
                         </div>
                         <div className="h-2 bg-muted rounded-full overflow-hidden">
                           <div 
@@ -143,10 +179,17 @@ export default function GridPage() {
                 
                 <TabsContent value="content" className="space-y-4">
                   <div className="space-y-2">
-                    <H3>Content Layout</H3>
+                    <H3>{gridLayouts[0].name}</H3>
                     <P className="text-sm text-muted-foreground">
-                      Standard layout with sidebar navigation and main content area
+                      {gridLayouts[0].description}
                     </P>
+                    <div className="flex flex-wrap gap-1">
+                      {gridLayouts[0].examples.map((example) => (
+                        <Badge key={example} variant="outline" className="text-xs">
+                          {example}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4 p-4 bg-muted/20 rounded-lg">
                     <div className="col-span-12 md:col-span-3 h-20 bg-blue-100 dark:bg-blue-900/20 rounded flex items-center justify-center">
@@ -160,10 +203,17 @@ export default function GridPage() {
 
                 <TabsContent value="cards" className="space-y-4">
                   <div className="space-y-2">
-                    <H3>Card Grid</H3>
+                    <H3>{gridLayouts[1].name}</H3>
                     <P className="text-sm text-muted-foreground">
-                      Responsive card layout that adapts from 1 column on mobile to 3 on desktop
+                      {gridLayouts[1].description}
                     </P>
+                    <div className="flex flex-wrap gap-1">
+                      {gridLayouts[1].examples.map((example) => (
+                        <Badge key={example} variant="outline" className="text-xs">
+                          {example}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[1, 2, 3].map((i) => (
@@ -176,10 +226,17 @@ export default function GridPage() {
 
                 <TabsContent value="form" className="space-y-4">
                   <div className="space-y-2">
-                    <H3>Form Layout</H3>
+                    <H3>{gridLayouts[2].name}</H3>
                     <P className="text-sm text-muted-foreground">
-                      Form layout with labels and input fields using grid alignment
+                      {gridLayouts[2].description}
                     </P>
+                    <div className="flex flex-wrap gap-1">
+                      {gridLayouts[2].examples.map((example) => (
+                        <Badge key={example} variant="outline" className="text-xs">
+                          {example}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                   <div className="space-y-4">
                     {[1, 2, 3].map((i) => (
@@ -197,10 +254,17 @@ export default function GridPage() {
 
                 <TabsContent value="dashboard" className="space-y-4">
                   <div className="space-y-2">
-                    <H3>Dashboard Layout</H3>
+                    <H3>{gridLayouts[3].name}</H3>
                     <P className="text-sm text-muted-foreground">
-                      Complex dashboard layout with header, sidebar, main content, and widgets
+                      {gridLayouts[3].description}
                     </P>
+                    <div className="flex flex-wrap gap-1">
+                      {gridLayouts[3].examples.map((example) => (
+                        <Badge key={example} variant="outline" className="text-xs">
+                          {example}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-12 h-16 bg-red-100 dark:bg-red-900/20 rounded flex items-center justify-center">
@@ -251,36 +315,24 @@ export default function GridPage() {
 
                 <div>
                   <H3 className="mb-3">Spacing Scale</H3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Gutter (gap)</span>
-                        <Badge variant="outline">1rem (16px)</Badge>
+                                      <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        {gridSpecifications.filter(spec => spec.category === 'spacing' || spec.category === 'container').map((spec) => (
+                          <div key={spec.name} className="flex items-center justify-between">
+                            <span className="text-sm font-medium">{spec.name}</span>
+                            <Badge variant="outline">{spec.value}</Badge>
+                          </div>
+                        ))}
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Margin</span>
-                        <Badge variant="outline">1.5rem (24px)</Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Container max-width</span>
-                        <Badge variant="outline">1200px</Badge>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Mobile breakpoint</span>
-                        <Badge variant="outline">≥ 320px</Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Tablet breakpoint</span>
-                        <Badge variant="outline">≥ 768px</Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Desktop breakpoint</span>
-                        <Badge variant="outline">≥ 1024px</Badge>
+                      <div className="space-y-3">
+                        {gridSpecifications.filter(spec => spec.category === 'breakpoint').map((spec) => (
+                          <div key={spec.name} className="flex items-center justify-between">
+                            <span className="text-sm font-medium">{spec.name}</span>
+                            <Badge variant="outline">{spec.value}</Badge>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  </div>
                 </div>
 
                 <Separator />
@@ -288,33 +340,145 @@ export default function GridPage() {
                 <div>
                   <H3 className="mb-3">Usage Guidelines</H3>
                   <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Use semantic class names</span>
-                        <P className="text-sm text-muted-foreground">
-                          Prefer descriptive class names like <code>col-span-6</code> over arbitrary values
-                        </P>
+                    {usageGuidelines.do.map((guideline, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
+                        <div>
+                          <span className="font-medium">{guideline}</span>
+                        </div>
                       </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Section>
+
+        {/* CSS Custom Properties & Tailwind Classes */}
+        <Section paddingY="lg">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="code-line" className="h-5 w-5" />
+                  CSS Custom Properties
+                </CardTitle>
+                <CardDescription>
+                  CSS variables for consistent grid spacing and breakpoints across your application.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <H3 className="mb-3">Spacing Variables</H3>
+                    <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                      {cssCustomProperties.spacing.map((spacing, index) => (
+                        <div key={index}>{spacing};</div>
+                      ))}
                     </div>
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Plan for mobile first</span>
-                        <P className="text-sm text-muted-foreground">
-                          Design layouts starting from mobile and progressively enhance for larger screens
-                        </P>
-                      </div>
+                  </div>
+                  <div>
+                    <H3 className="mb-3">Breakpoint Variables</H3>
+                    <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                      {cssCustomProperties.breakpoints.map((breakpoint, index) => (
+                        <div key={index}>{breakpoint};</div>
+                      ))}
                     </div>
-                    <div className="flex items-start gap-3">
-                      <Icon name="check-line" className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <span className="font-medium">Maintain visual hierarchy</span>
-                        <P className="text-sm text-muted-foreground">
-                          Use grid spans to create clear visual relationships between content areas
-                        </P>
-                      </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="settings-line" className="h-5 w-5" />
+                  Tailwind CSS Classes
+                </CardTitle>
+                <CardDescription>
+                  Utility classes for implementing grid layouts in your components.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <H3 className="mb-3">Grid Classes</H3>
+                    <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                      {tailwindClasses.grid.map((grid, index) => (
+                        <div key={index}>{grid}</div>
+                      ))}
                     </div>
+                  </div>
+                  <div>
+                    <H3 className="mb-3">Column Classes</H3>
+                    <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                      {tailwindClasses.columns.map((column, index) => (
+                        <div key={index}>{column}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <H3 className="mb-3">Responsive Classes</H3>
+                    <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                      {tailwindClasses.responsive.map((responsive, index) => (
+                        <div key={index}>{responsive}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </Section>
+
+        {/* Implementation Examples */}
+        <Section paddingY="lg">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Icon name="reactjs-line" className="h-5 w-5" />
+                Implementation Examples
+              </CardTitle>
+              <CardDescription>
+                Code examples for implementing grid layouts in your components.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <H3 className="mb-3">{implementationExamples.basicGrid.title}</H3>
+                  <P className="text-sm text-muted-foreground mb-3">
+                    {implementationExamples.basicGrid.description}
+                  </P>
+                  <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                    {implementationExamples.basicGrid.code.split('\n').map((line, index) => (
+                      <div key={index}>{line}</div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <H3 className="mb-3">{implementationExamples.cardGrid.title}</H3>
+                  <P className="text-sm text-muted-foreground mb-3">
+                    {implementationExamples.cardGrid.description}
+                  </P>
+                  <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                    {implementationExamples.cardGrid.code.split('\n').map((line, index) => (
+                      <div key={index}>{line}</div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <H3 className="mb-3">{implementationExamples.formLayout.title}</H3>
+                  <P className="text-sm text-muted-foreground mb-3">
+                    {implementationExamples.formLayout.description}
+                  </P>
+                  <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                    {implementationExamples.formLayout.code.split('\n').map((line, index) => (
+                      <div key={index}>{line}</div>
+                    ))}
                   </div>
                 </div>
               </div>

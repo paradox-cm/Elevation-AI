@@ -80,41 +80,36 @@ export default function DesignSystemPage() {
                 centered
               />
               
-              {/* Hero Image Placeholder */}
+              {/* Hero Grid */}
               <div className="mt-12 w-full">
                 <div className="relative bg-muted/50 rounded-2xl border border-border overflow-hidden">
-                  <div className="aspect-video bg-background/80 backdrop-blur-sm flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto">
-                        <Icon name="palette-line" className="h-8 w-8 text-primary" />
-                      </div>
-                      <div>
-                        <H3 className="text-lg font-semibold text-foreground">Design System Hero</H3>
-                        <BodySmall className="text-muted-foreground">Placeholder for hero image or illustration</BodySmall>
-                      </div>
+                  <div className="aspect-video bg-background/80 backdrop-blur-sm flex items-center justify-center p-8">
+                    <div className="relative w-full max-w-md h-full">
+                      {/* Grid Paper Background */}
+                      <div 
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: `
+                            linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+                            linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
+                          `,
+                          backgroundSize: '32px 32px',
+                          backgroundPosition: '0 0'
+                        }}
+                      />
+                      {/* Dark mode grid lines */}
+                      <div 
+                        className="absolute inset-0 dark:hidden"
+                        style={{
+                          backgroundImage: `
+                            linear-gradient(to right, #d1d5db 1px, transparent 1px),
+                            linear-gradient(to bottom, #d1d5db 1px, transparent 1px)
+                          `,
+                          backgroundSize: '32px 32px',
+                          backgroundPosition: '0 0'
+                        }}
+                      />
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Font Verification Section */}
-              <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border">
-                <H4 className="text-base font-semibold mb-4">Font Verification</H4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Primary Font (Helvetica Now):</span>
-                    <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-helvetica-now)' }}>
-                      The quick brown fox jumps over the lazy dog
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Fallback Font (System):</span>
-                    <span className="text-sm font-medium" style={{ fontFamily: 'system-ui, sans-serif' }}>
-                      The quick brown fox jumps over the lazy dog
-                    </span>
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-2">
-                    If the fonts look different, Helvetica Now is working correctly.
                   </div>
                 </div>
               </div>

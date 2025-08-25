@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { ReactNode } from "react"
+import { getTypeScaleByComponent } from "@/lib/typography-config"
 
 interface TypographyProps {
   children: ReactNode
@@ -9,33 +10,30 @@ interface TypographyProps {
 
 // Display Components
 export function DisplayLarge({ children, className, as: Component = "h1" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("DisplayLarge")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-6xl font-semibold leading-normal tracking-normal",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function DisplayMedium({ children, className, as: Component = "h1" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("DisplayMedium")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-5xl font-semibold leading-normal tracking-normal",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function DisplaySmall({ children, className, as: Component = "h1" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("DisplaySmall")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-4xl font-semibold leading-normal tracking-normal",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
@@ -43,33 +41,30 @@ export function DisplaySmall({ children, className, as: Component = "h1" }: Typo
 
 // Heading Components
 export function H1({ children, className, as: Component = "h1" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("H1")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-3xl font-medium leading-normal tracking-normal",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function H2({ children, className, as: Component = "h2" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("H2")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-2xl font-medium leading-normal tracking-normal",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function H3({ children, className, as: Component = "h3" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("H3")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-xl font-medium leading-normal tracking-normal",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
@@ -88,44 +83,40 @@ export function H4({ children, className, as: Component = "h4" }: TypographyProp
 
 // Text Components
 export function P({ children, className, as: Component = "p" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("P")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-base font-normal leading-relaxed",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function BodyLarge({ children, className, as: Component = "p" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("BodyLarge")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-lg font-normal leading-relaxed",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function BodySmall({ children, className, as: Component = "p" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("BodySmall")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-sm font-normal leading-relaxed",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )
 }
 
 export function Caption({ children, className, as: Component = "span" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("Caption")
+  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
-    <Component className={cn(
-      "text-xs font-normal leading-relaxed",
-      className
-    )}>
+    <Component className={cn(classes, className)}>
       {children}
     </Component>
   )

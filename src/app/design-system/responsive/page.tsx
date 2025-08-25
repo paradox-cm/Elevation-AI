@@ -14,8 +14,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useResponsiveConfig } from "@/hooks/use-responsive-config"
 
 export default function ResponsivePage() {
+  const {
+    config,
+    breakpointConfig,
+    responsivePatternConfig,
+    gridSystemConfig,
+    responsiveComponentConfig,
+    fluidTypographyConfig,
+    responsiveImageConfig,
+    containerConfig
+  } = useResponsiveConfig()
+
   const [activeBreakpoint, setActiveBreakpoint] = useState("md")
 
   const breakpoints = [
@@ -160,6 +172,221 @@ export default function ResponsivePage() {
               size="lg"
               centered
             />
+          </Section>
+
+
+
+          {/* Available Variants & Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="list-check" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  All available responsive design breakpoints, patterns, grid systems, and responsive components.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="breakpoints" className="w-full">
+                  <TabsList className="grid w-full grid-cols-7">
+                    <TabsTrigger value="breakpoints">Breakpoints</TabsTrigger>
+                    <TabsTrigger value="patterns">Patterns</TabsTrigger>
+                    <TabsTrigger value="grids">Grid Systems</TabsTrigger>
+                    <TabsTrigger value="components">Components</TabsTrigger>
+                    <TabsTrigger value="typography">Typography</TabsTrigger>
+                    <TabsTrigger value="images">Images</TabsTrigger>
+                    <TabsTrigger value="containers">Containers</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="breakpoints" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Breakpoint Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.breakpoints.variants.map((breakpoint) => (
+                          <div key={breakpoint.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{breakpoint.name}</div>
+                            <div className="text-xs text-muted-foreground">{breakpoint.description}</div>
+                            <div className="text-xs font-medium mt-1">Prefix: {breakpoint.prefix}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Device Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.breakpoints.devices.map((device) => (
+                          <div key={device.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{device.name}</div>
+                            <div className="text-xs text-muted-foreground">{device.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="patterns" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Responsive Patterns</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.patterns.types.map((pattern) => (
+                          <div key={pattern.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{pattern.name}</div>
+                            <div className="text-xs text-muted-foreground">{pattern.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Design Approaches</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.patterns.approaches.map((approach) => (
+                          <div key={approach.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{approach.name}</div>
+                            <div className="text-xs text-muted-foreground">{approach.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="grids" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Grid System Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.gridSystems.types.map((system) => (
+                          <div key={system.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{system.name}</div>
+                            <div className="text-xs text-muted-foreground">{system.description}</div>
+                            <div className="text-xs font-medium mt-1">Columns: {system.columns}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Layout Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.gridSystems.layouts.map((layout) => (
+                          <div key={layout.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{layout.name}</div>
+                            <div className="text-xs text-muted-foreground">{layout.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="components" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Responsive Components</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.components.types.map((component) => (
+                          <div key={component.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{component.name}</div>
+                            <div className="text-xs text-muted-foreground">{component.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Component Layouts</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.components.layouts.map((layout) => (
+                          <div key={layout.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{layout.name}</div>
+                            <div className="text-xs text-muted-foreground">{layout.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="typography" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Typography Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.typography.types.map((type) => (
+                          <div key={type.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{type.name}</div>
+                            <div className="text-xs text-muted-foreground">{type.description}</div>
+                            <div className="text-xs font-medium mt-1">Scale: {type.scale}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Typography Scales</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.typography.scales.map((scale) => (
+                          <div key={scale.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{scale.name}</div>
+                            <div className="text-xs text-muted-foreground">{scale.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="images" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Image Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.images.types.map((type) => (
+                          <div key={type.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{type.name}</div>
+                            <div className="text-xs text-muted-foreground">{type.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Image Formats</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.images.formats.map((format) => (
+                          <div key={format.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{format.name}</div>
+                            <div className="text-xs text-muted-foreground">{format.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="containers" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Container Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.containers.types.map((type) => (
+                          <div key={type.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{type.name}</div>
+                            <div className="text-xs text-muted-foreground">{type.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Container Sizes</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.containers.sizes.map((size) => (
+                          <div key={size.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{size.name}</div>
+                            <div className="text-xs text-muted-foreground">{size.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
           
           <Section paddingY="lg">

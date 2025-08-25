@@ -16,166 +16,22 @@ import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
+import {
+  easingCurves,
+  durationScale,
+  animationPrinciples,
+  microInteractions,
+  animationTypes,
+  cssCustomProperties,
+  tailwindClasses,
+  accessibilityConsiderations,
+  implementationExamples,
+  usageGuidelines
+} from "@/lib/motion-config"
 
 export default function MotionPage() {
   const [activeEasing, setActiveEasing] = useState("ease-out")
   const [isAnimating, setIsAnimating] = useState(false)
-
-
-
-  const easingCurves = [
-    {
-      name: "Linear",
-      value: "linear",
-      description: "Constant speed, no acceleration",
-      usage: "Simple progress indicators, loading bars"
-    },
-    {
-      name: "Ease In",
-      value: "ease-in",
-      description: "Slow start, fast finish",
-      usage: "Elements entering the screen, expanding content"
-    },
-    {
-      name: "Ease Out",
-      value: "ease-out",
-      description: "Fast start, slow finish",
-      usage: "Elements leaving the screen, collapsing content"
-    },
-    {
-      name: "Ease In Out",
-      value: "ease-in-out",
-      description: "Slow start and finish, fast middle",
-      usage: "Most UI interactions, button presses"
-    },
-    {
-      name: "Bounce",
-      value: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-      description: "Playful bounce effect",
-      usage: "Success states, celebratory interactions"
-    }
-  ]
-
-  const durationScale = [
-    {
-      name: "Instant",
-      value: "0ms",
-      class: "duration-0",
-      description: "No animation, immediate change",
-      usage: "Critical feedback, error states"
-    },
-    {
-      name: "Fast",
-      value: "150ms",
-      class: "duration-150",
-      description: "Quick, snappy transitions",
-      usage: "Hover states, micro-interactions"
-    },
-    {
-      name: "Normal",
-      value: "300ms",
-      class: "duration-300",
-      description: "Standard transition speed",
-      usage: "Most UI interactions, button presses"
-    },
-    {
-      name: "Slow",
-      value: "500ms",
-      class: "duration-500",
-      description: "Smooth, deliberate transitions",
-      usage: "Page transitions, modal animations"
-    },
-    {
-      name: "Very Slow",
-      value: "700ms",
-      class: "duration-700",
-      description: "Slow, dramatic animations",
-      usage: "Hero animations, attention-grabbing elements"
-    }
-  ]
-
-  const animationPrinciples = [
-    {
-      title: "Purposeful",
-      description: "Every animation should serve a clear purpose and enhance the user experience.",
-      icon: "target-line",
-      examples: ["Providing feedback", "Guiding attention", "Showing relationships"]
-    },
-    {
-      title: "Subtle",
-      description: "Animations should be noticeable but not distracting or overwhelming.",
-      icon: "eye-line",
-      examples: ["Gentle transitions", "Appropriate timing", "Smooth easing"]
-    },
-    {
-      title: "Consistent",
-      description: "Use consistent animation patterns throughout your interface.",
-      icon: "grid-line",
-      examples: ["Standard durations", "Consistent easing", "Unified patterns"]
-    },
-    {
-      title: "Accessible",
-      description: "Respect user preferences and provide options to reduce motion.",
-      icon: "heart-line",
-      examples: ["Reduced motion support", "No motion preferences", "Performance considerations"]
-    }
-  ]
-
-  const microInteractions = [
-    {
-      name: "Button Hover",
-      description: "Subtle scale and shadow changes on hover",
-      trigger: "Hover",
-      duration: "150ms"
-    },
-    {
-      name: "Form Focus",
-      description: "Smooth border color and shadow transitions",
-      trigger: "Focus",
-      duration: "200ms"
-    },
-    {
-      name: "Loading States",
-      description: "Gentle pulse or spin animations",
-      trigger: "Loading",
-      duration: "1000ms"
-    },
-    {
-      name: "Success Feedback",
-      description: "Quick scale and color change",
-      trigger: "Success",
-      duration: "300ms"
-    },
-    {
-      name: "Error States",
-      description: "Gentle shake animation",
-      trigger: "Error",
-      duration: "500ms"
-    }
-  ]
-
-  const animationTypes = [
-    {
-      name: "Fade",
-      description: "Opacity transitions for smooth appearance/disappearance",
-      examples: ["Modal overlays", "Tooltips", "Loading states"]
-    },
-    {
-      name: "Slide",
-      description: "Position-based animations for directional movement",
-      examples: ["Navigation menus", "Sidebars", "Page transitions"]
-    },
-    {
-      name: "Scale",
-      description: "Size changes for emphasis and feedback",
-      examples: ["Button interactions", "Card hover effects", "Focus states"]
-    },
-    {
-      name: "Rotate",
-      description: "Rotation for loading and directional indicators",
-      examples: ["Loading spinners", "Expand/collapse icons", "Direction indicators"]
-    }
-  ]
 
   return (
     <PageWrapper>
@@ -237,6 +93,11 @@ export default function MotionPage() {
                                 </BodySmall>
                               ))}
                             </div>
+                            <div className="mt-2">
+                              <Badge variant="outline" className="text-xs">
+                                {principle.category}
+                              </Badge>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -265,17 +126,33 @@ export default function MotionPage() {
                           <div className="flex-1">
                             <div className="flex items-center space-x-3 mb-2">
                               <H4>{type.name}</H4>
-                              <Badge variant="secondary">Animation Type</Badge>
+                              <Badge variant="secondary">{type.category}</Badge>
                             </div>
                             <BodySmall className="text-muted-foreground mb-3">
                               {type.description}
                             </BodySmall>
-                            <div className="flex flex-wrap gap-1">
-                              {type.examples.map((example) => (
-                                <Badge key={example} variant="outline" className="text-xs">
-                                  {example}
-                                </Badge>
-                              ))}
+                            <div className="space-y-2">
+                              <div>
+                                <BodySmall className="font-medium mb-1">Examples:</BodySmall>
+                                <div className="flex flex-wrap gap-1">
+                                  {type.examples.map((example) => (
+                                    <Badge key={example} variant="outline" className="text-xs">
+                                      {example}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <BodySmall className="font-medium mb-1">Best Practices:</BodySmall>
+                                <div className="space-y-1">
+                                  {type.bestPractices.map((practice, index) => (
+                                    <div key={index} className="flex items-center gap-2">
+                                      <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                      <BodySmall className="text-xs">{practice}</BodySmall>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -294,12 +171,9 @@ export default function MotionPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        <BodySmall>✓ Use animations to provide feedback</BodySmall>
-                        <BodySmall>✓ Keep animations subtle and purposeful</BodySmall>
-                        <BodySmall>✓ Maintain consistent timing and easing</BodySmall>
-                        <BodySmall>✓ Respect reduced motion preferences</BodySmall>
-                        <BodySmall>✓ Test performance on slower devices</BodySmall>
-                        <BodySmall>✓ Use animations to guide user attention</BodySmall>
+                        {usageGuidelines.do.map((guideline, index) => (
+                          <BodySmall key={index}>✓ {guideline}</BodySmall>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -313,12 +187,9 @@ export default function MotionPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        <BodySmall>✗ Animate everything just because you can</BodySmall>
-                        <BodySmall>✗ Use overly long or complex animations</BodySmall>
-                        <BodySmall>✗ Ignore user motion preferences</BodySmall>
-                        <BodySmall>✗ Create animations that cause motion sickness</BodySmall>
-                        <BodySmall>✗ Use animations to hide poor UX</BodySmall>
-                        <BodySmall>✗ Ignore performance implications</BodySmall>
+                        {usageGuidelines.dont.map((guideline, index) => (
+                          <BodySmall key={index}>✗ {guideline}</BodySmall>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -363,7 +234,14 @@ export default function MotionPage() {
                             </BodySmall>
                             <div>
                               <BodySmall className="font-medium mb-1">Usage:</BodySmall>
-                              <BodySmall className="text-muted-foreground">{duration.usage}</BodySmall>
+                              <div className="space-y-1">
+                                {duration.usage.map((usage, index) => (
+                                  <div key={index} className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                    <BodySmall className="text-xs">{usage}</BodySmall>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -431,12 +309,20 @@ export default function MotionPage() {
                               {easing.value}
                             </Badge>
                           </div>
-                          <BodySmall className="text-muted-foreground">
+                          <BodySmall className="text-muted-foreground mb-2">
                             {easing.description}
                           </BodySmall>
-                          <BodySmall className="text-muted-foreground">
-                            <strong>Usage:</strong> {easing.usage}
-                          </BodySmall>
+                          <div>
+                            <BodySmall className="font-medium mb-1">Usage:</BodySmall>
+                            <div className="space-y-1">
+                              {easing.usage.map((usage, index) => (
+                                <div key={index} className="flex items-center gap-2">
+                                  <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                  <BodySmall className="text-xs">{usage}</BodySmall>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -472,9 +358,23 @@ export default function MotionPage() {
                             <BodySmall className="text-muted-foreground mb-3">
                               {interaction.description}
                             </BodySmall>
-                            <div className="flex items-center space-x-4">
-                              <BodySmall className="font-medium">Trigger:</BodySmall>
-                              <Badge variant="outline">{interaction.trigger}</Badge>
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-4">
+                                <BodySmall className="font-medium">Trigger:</BodySmall>
+                                <Badge variant="outline">{interaction.trigger}</Badge>
+                                <BodySmall className="font-medium">Duration:</BodySmall>
+                                <Badge variant="outline">{interaction.duration}</Badge>
+                              </div>
+                              <div>
+                                <BodySmall className="font-medium mb-1">Examples:</BodySmall>
+                                <div className="flex flex-wrap gap-1">
+                                  {interaction.examples.map((example) => (
+                                    <Badge key={example} variant="outline" className="text-xs">
+                                      {example}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -593,15 +493,16 @@ export default function MotionPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* Animation timing variables */</div>
-                      <div>--duration-fast: 150ms;</div>
-                      <div>--duration-normal: 300ms;</div>
-                      <div>--duration-slow: 500ms;</div>
+                      <div className="text-muted-foreground">/* {cssCustomProperties.description} */</div>
+                      <div className="text-muted-foreground">/* Timing variables */</div>
+                      {cssCustomProperties.timing.map((timing, index) => (
+                        <div key={index}>{timing};</div>
+                      ))}
                       <div></div>
                       <div className="text-muted-foreground">/* Easing functions */</div>
-                      <div>--ease-out: cubic-bezier(0, 0, 0.2, 1);</div>
-                      <div>--ease-in: cubic-bezier(0.4, 0, 1, 1);</div>
-                      <div>--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);</div>
+                      {cssCustomProperties.easing.map((easing, index) => (
+                        <div key={index}>{easing};</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -622,20 +523,21 @@ export default function MotionPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
+                      <div className="text-muted-foreground">/* {tailwindClasses.description} */</div>
                       <div className="text-muted-foreground">/* Duration utilities */</div>
-                      <div>duration-150 → transition-duration: 150ms;</div>
-                      <div>duration-300 → transition-duration: 300ms;</div>
-                      <div>duration-500 → transition-duration: 500ms;</div>
+                      {tailwindClasses.duration.map((duration, index) => (
+                        <div key={index}>{duration}</div>
+                      ))}
                       <div></div>
                       <div className="text-muted-foreground">/* Easing utilities */</div>
-                      <div>ease-out → transition-timing-function: cubic-bezier(0, 0, 0.2, 1);</div>
-                      <div>ease-in → transition-timing-function: cubic-bezier(0.4, 0, 1, 1);</div>
-                      <div>ease-in-out → transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);</div>
+                      {tailwindClasses.easing.map((easing, index) => (
+                        <div key={index}>{easing}</div>
+                      ))}
                       <div></div>
                       <div className="text-muted-foreground">/* Animation utilities */</div>
-                      <div>animate-pulse → pulsing animation</div>
-                      <div>animate-spin → spinning animation</div>
-                      <div>animate-bounce → bouncing animation</div>
+                      {tailwindClasses.animations.map((animation, index) => (
+                        <div key={index}>{animation}</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -658,49 +560,20 @@ export default function MotionPage() {
                     <div>
                       <H4 className="mb-3">Animated Button Component</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">&#123;/* Animated button with accessibility */&#125;</div>
-                        <div>function AnimatedButton(&#123; children, className, ...props &#125;) &#123;</div>
-                        <div>  const [isPressed, setIsPressed] = useState(false)</div>
-                        <div></div>
-                        <div>  return (</div>
-                        <div>    &lt;button</div>
-                        <div>      className=&#123;cn(</div>
-                        <div>        &quot;transition-all duration-150 ease-out&quot;,</div>
-                        <div>        &quot;hover:scale-105 hover:shadow-md&quot;,</div>
-                        <div>        &quot;active:scale-95&quot;,</div>
-                        <div>        &quot;focus-visible:ring-2 focus-visible:ring-ring&quot;,</div>
-                        <div>        className</div>
-                        <div>      )&#125;</div>
-                                                 <div>      onMouseDown=&#123;() =&gt; setIsPressed(true)&#125;</div>
-                                                 <div>      onMouseUp=&#123;() =&gt; setIsPressed(false)&#125;</div>
-                                                 <div>      onMouseLeave=&#123;() =&gt; setIsPressed(false)&#125;</div>
-                        <div>      &#123;...props&#125;</div>
-                        <div>    &gt;</div>
-                        <div>      &#123;children&#125;</div>
-                        <div>    &lt;/button&gt;</div>
-                        <div>  )</div>
-                        <div>&#125;</div>
+                        <div className="text-muted-foreground">/* {implementationExamples.reactComponent.description} */</div>
+                        {implementationExamples.reactComponent.code.split('\n').map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
                       </div>
                     </div>
 
                     <div>
                       <H4 className="mb-3">Reduced Motion Hook</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">&#123;/* Hook to respect user motion preferences */&#125;</div>
-                        <div>function useReducedMotion() &#123;</div>
-                        <div>  const [prefersReduced, setPrefersReduced] = useState(false)</div>
-                        <div></div>
-                                                 <div>  useEffect(() =&gt; &#123;</div>
-                        <div>    const mediaQuery = window.matchMedia(&apos;(prefers-reduced-motion: reduce)&apos;)</div>
-                        <div>    setPrefersReduced(mediaQuery.matches)</div>
-                        <div></div>
-                                                                         <div>    const handleChange = (e) =&gt; setPrefersReduced(e.matches)</div>
-                        <div>    mediaQuery.addEventListener(&apos;change&apos;, handleChange)</div>
-                        <div>    return () =&gt; mediaQuery.removeEventListener(&apos;change&apos;, handleChange)</div>
-                        <div>  &#125;, [])</div>
-                        <div></div>
-                        <div>  return prefersReduced</div>
-                        <div>&#125;</div>
+                        <div className="text-muted-foreground">/* {implementationExamples.reducedMotionHook.description} */</div>
+                        {implementationExamples.reducedMotionHook.code.split('\n').map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
                       </div>
                     </div>
                   </CardContent>
@@ -716,19 +589,19 @@ export default function MotionPage() {
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <H4 className="mb-3">Motion Preferences</H4>
+                        <H4 className="mb-3">{accessibilityConsiderations.motion.title}</H4>
                         <div className="space-y-2">
-                          <BodySmall>• Respect `prefers-reduced-motion` media query</BodySmall>
-                          <BodySmall>• Provide options to disable animations</BodySmall>
-                          <BodySmall>• Test with motion-sensitive users</BodySmall>
+                          {accessibilityConsiderations.motion.points.map((point, index) => (
+                            <BodySmall key={index}>• {point}</BodySmall>
+                          ))}
                         </div>
                       </div>
                       <div>
-                        <H4 className="mb-3">Performance</H4>
+                        <H4 className="mb-3">{accessibilityConsiderations.performance.title}</H4>
                         <div className="space-y-2">
-                          <BodySmall>• Use `transform` and `opacity` for smooth animations</BodySmall>
-                          <BodySmall>• Avoid animating layout-triggering properties</BodySmall>
-                          <BodySmall>• Test on lower-end devices</BodySmall>
+                          {accessibilityConsiderations.performance.points.map((point, index) => (
+                            <BodySmall key={index}>• {point}</BodySmall>
+                          ))}
                         </div>
                       </div>
                     </div>

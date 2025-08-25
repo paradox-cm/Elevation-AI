@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useUserManagementConfig } from "@/hooks/use-user-management-config"
 import {
   UserProfile,
   UserSettings,
@@ -27,6 +28,17 @@ import { cn } from "@/lib/utils"
 import { H4 } from "@/components/ui/typography"
 
 export default function UserManagementPage() {
+  const {
+    config,
+    userProfileConfig,
+    userSettingsConfig,
+    teamManagementConfig,
+    userRoleConfig,
+    userInviteConfig,
+    userPermissionsConfig,
+    userAdminConfig
+  } = useUserManagementConfig()
+
   const [activeTab, setActiveTab] = useState("profiles")
   const [showInviteForm, setShowInviteForm] = useState(false)
 
@@ -186,6 +198,225 @@ export default function UserManagementPage() {
               size="lg"
               centered
             />
+          </Section>
+
+
+
+          {/* Available Variants & Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="list-check" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  All available user profiles, settings, team management, roles, invites, permissions, and administration configurations.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="profiles" className="w-full">
+                  <TabsList className="grid w-full grid-cols-7">
+                    <TabsTrigger value="profiles">Profiles</TabsTrigger>
+                    <TabsTrigger value="settings">Settings</TabsTrigger>
+                    <TabsTrigger value="team">Team</TabsTrigger>
+                    <TabsTrigger value="roles">Roles</TabsTrigger>
+                    <TabsTrigger value="invites">Invites</TabsTrigger>
+                    <TabsTrigger value="permissions">Permissions</TabsTrigger>
+                    <TabsTrigger value="admin">Admin</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="profiles" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Profile Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.profiles.types.map((profile) => (
+                          <div key={profile.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{profile.name}</div>
+                            <div className="text-xs text-muted-foreground">{profile.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {profile.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Profile Displays</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.profiles.displays.map((display) => (
+                          <div key={display.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{display.name}</div>
+                            <div className="text-xs text-muted-foreground">{display.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="settings" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Settings Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.settings.types.map((setting) => (
+                          <div key={setting.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{setting.name}</div>
+                            <div className="text-xs text-muted-foreground">{setting.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {setting.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Settings Sections</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.settings.sections.map((section) => (
+                          <div key={section.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{section.name}</div>
+                            <div className="text-xs text-muted-foreground">{section.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="team" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Team Management Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.teamManagement.types.map((team) => (
+                          <div key={team.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{team.name}</div>
+                            <div className="text-xs text-muted-foreground">{team.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {team.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Team Actions</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.teamManagement.actions.map((action) => (
+                          <div key={action.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{action.name}</div>
+                            <div className="text-xs text-muted-foreground">{action.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="roles" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Role Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.roles.types.map((role) => (
+                          <div key={role.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{role.name}</div>
+                            <div className="text-xs text-muted-foreground">{role.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {role.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Role Permissions</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.roles.permissions.map((permission) => (
+                          <div key={permission.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{permission.name}</div>
+                            <div className="text-xs text-muted-foreground">{permission.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="invites" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Invite Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.invites.types.map((invite) => (
+                          <div key={invite.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{invite.name}</div>
+                            <div className="text-xs text-muted-foreground">{invite.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {invite.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Invite Fields</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.invites.fields.map((field) => (
+                          <div key={field.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{field.name}</div>
+                            <div className="text-xs text-muted-foreground">{field.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="permissions" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Permission Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.permissions.types.map((permission) => (
+                          <div key={permission.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{permission.name}</div>
+                            <div className="text-xs text-muted-foreground">{permission.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {permission.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Permission Models</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.permissions.models.map((model) => (
+                          <div key={model.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{model.name}</div>
+                            <div className="text-xs text-muted-foreground">{model.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="admin" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Admin Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {config.admin.types.map((admin) => (
+                          <div key={admin.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{admin.name}</div>
+                            <div className="text-xs text-muted-foreground">{admin.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {admin.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Admin Features</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.admin.features.map((feature) => (
+                          <div key={feature.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{feature.name}</div>
+                            <div className="text-xs text-muted-foreground">{feature.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* User Management System Overview */}

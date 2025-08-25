@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useLayoutPatternsConfig } from "@/hooks/use-layout-patterns-config"
 import {
   HeroSection,
   ContentSection,
@@ -31,6 +32,19 @@ import {
 
 export default function LayoutPatternsPage() {
   const [activeTab, setActiveTab] = useState("hero")
+  const {
+    config,
+    heroSectionConfig,
+    contentSectionConfig,
+    featureGridConfig,
+    statsSectionConfig,
+    testimonialSectionConfig,
+    ctaSectionConfig,
+    sidebarLayoutConfig,
+    twoColumnLayoutConfig,
+    containerConfig,
+    pageLayoutConfig,
+  } = useLayoutPatternsConfig()
 
   // Sample data for components
   const features = [
@@ -175,6 +189,8 @@ export default function LayoutPatternsPage() {
               </CardContent>
             </Card>
           </Section>
+
+
 
           {/* Layout Components Showcase */}
           <Section paddingY="lg">
@@ -552,6 +568,176 @@ export default function LayoutPatternsPage() {
                 </Card>
               </TabsContent>
             </Tabs>
+          </Section>
+
+          {/* Available Variants */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="palette-line" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  Complete list of available layout pattern variants and configuration options
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="hero" className="w-full">
+                  <TabsList className="grid w-full grid-cols-5">
+                    <TabsTrigger value="hero">Hero</TabsTrigger>
+                    <TabsTrigger value="content">Content</TabsTrigger>
+                    <TabsTrigger value="grids">Grids</TabsTrigger>
+                    <TabsTrigger value="layouts">Layouts</TabsTrigger>
+                    <TabsTrigger value="pages">Pages</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="hero" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Hero Section Variants</H3>
+                      <div className="grid gap-3">
+                        {config.heroSections.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Hero Section Sizes</H3>
+                      <div className="grid gap-3">
+                        {config.heroSections.sizes.map((size) => (
+                          <div key={size.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{size.name}</div>
+                              <div className="text-sm text-muted-foreground">Padding: {size.padding}</div>
+                            </div>
+                            <Badge variant="secondary">{size.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="content" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Content Section Variants</H3>
+                      <div className="grid gap-3">
+                        {config.contentSections.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Padding Options</H3>
+                      <div className="grid gap-3">
+                        {config.contentSections.padding.map((padding) => (
+                          <div key={padding.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{padding.name}</div>
+                              <div className="text-sm text-muted-foreground">Padding: {padding.padding}</div>
+                            </div>
+                            <Badge variant="secondary">{padding.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="grids" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Feature Grid Variants</H3>
+                      <div className="grid gap-3">
+                        {config.featureGrids.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Column Options</H3>
+                      <div className="grid gap-3">
+                        {config.featureGrids.columns.map((columns) => (
+                          <div key={columns.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{columns.name}</div>
+                              <div className="text-sm text-muted-foreground">{columns.columns} columns, {columns.responsive ? "Responsive" : "Fixed"}</div>
+                            </div>
+                            <Badge variant="secondary">{columns.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="layouts" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Sidebar Layout Variants</H3>
+                      <div className="grid gap-3">
+                        {config.sidebarLayouts.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Two Column Layout Variants</H3>
+                      <div className="grid gap-3">
+                        {config.twoColumnLayouts.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="pages" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Page Layout Variants</H3>
+                      <div className="grid gap-3">
+                        {config.pageLayouts.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Sections: {variant.sections.join(", ")}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* Best Practices */}

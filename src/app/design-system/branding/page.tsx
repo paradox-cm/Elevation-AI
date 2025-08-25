@@ -6,16 +6,31 @@ import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H1, H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Icon from "@/components/ui/icon"
+import { Logo } from "@/components/ui/logo"
+import { Favicon, AppIcon, CircleIcon, CompactLogo } from "@/components/ui/brand-icons"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useBrandingConfig } from "@/hooks/use-branding-config"
 
 export default function BrandingPage() {
+  const {
+    config,
+    logoConfig,
+    brandColorConfig,
+    typographyConfig,
+    brandVoiceConfig,
+    brandGuidelineConfig,
+    brandAssetConfig,
+    brandApplicationConfig
+  } = useBrandingConfig()
+
   return (
     <PageWrapper>
       <AppShell
@@ -32,56 +47,36 @@ export default function BrandingPage() {
             />
           </Section>
 
-          {/* Primary Logo */}
+
+
+
+
+
+
+          {/* Elevation AI Logo */}
           <Section paddingY="lg">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Icon name="image-line" className="h-5 w-5" />
-                  Primary Logo
+                  Elevation AI Logo
                 </CardTitle>
                 <CardDescription>
                   The primary Elevation AI logo used across all applications and marketing materials.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-8">
-                  {/* Light Version */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <H4>Light Version</H4>
-                      <Badge variant="outline">Primary</Badge>
-                    </div>
-                    <div className="h-24 bg-background border rounded-lg flex items-center justify-center p-4">
-                      <H1 className="text-2xl">Elevation AI</H1>
-                    </div>
-                    <div className="space-y-2">
-                      <BodySmall className="text-muted-foreground">Usage:</BodySmall>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>• Light backgrounds</li>
-                        <li>• Primary brand applications</li>
-                        <li>• Marketing materials</li>
-                      </ul>
-                    </div>
+                <div className="space-y-4">
+                  <div className="h-32 bg-background border rounded-lg flex items-center justify-center p-6">
+                    <Logo width={300} height={52} />
                   </div>
-
-                  {/* Dark Version */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <H4>Dark Version</H4>
-                      <Badge variant="outline">Alternative</Badge>
-                    </div>
-                    <div className="h-24 bg-foreground border rounded-lg flex items-center justify-center p-4">
-                      <H1 className="text-2xl text-background">Elevation AI</H1>
-                    </div>
-                    <div className="space-y-2">
-                      <BodySmall className="text-muted-foreground">Usage:</BodySmall>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>• Dark backgrounds</li>
-                        <li>• High contrast situations</li>
-                        <li>• Accessibility requirements</li>
-                      </ul>
-                    </div>
+                  <div className="space-y-2 text-center">
+                    <BodySmall className="text-muted-foreground">Usage:</BodySmall>
+                    <ul className="text-sm space-y-1 text-muted-foreground">
+                      <li>• Light backgrounds</li>
+                      <li>• Primary brand applications</li>
+                      <li>• Marketing materials</li>
+                    </ul>
                   </div>
                 </div>
               </CardContent>
@@ -105,7 +100,7 @@ export default function BrandingPage() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="space-y-3">
                     <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                      <H2 className="text-lg">Elevation AI</H2>
+                      <Logo width={120} height={21} />
                     </div>
                     <div className="text-center">
                       <BodySmall className="font-medium">Full Logo</BodySmall>
@@ -115,17 +110,17 @@ export default function BrandingPage() {
 
                   <div className="space-y-3">
                     <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                      <H2 className="text-lg">EA</H2>
+                      <CompactLogo width={60} height={21} />
                     </div>
                     <div className="text-center">
-                      <BodySmall className="font-medium">Abbreviated</BodySmall>
+                      <BodySmall className="font-medium">Compact Logo</BodySmall>
                       <BodySmall className="text-muted-foreground">Space constraints</BodySmall>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                      <Icon name="mountain-line" className="h-8 w-8" />
+                      <Favicon width={32} height={32} />
                     </div>
                     <div className="text-center">
                       <BodySmall className="font-medium">Icon Only</BodySmall>
@@ -142,7 +137,7 @@ export default function BrandingPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-3">
                       <div className="h-12 bg-primary rounded-lg flex items-center justify-center p-2">
-                        <H3 className="text-sm text-primary-foreground">Elevation AI</H3>
+                        <Logo width={80} height={14} variant="dark" />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Primary Background</BodySmall>
@@ -152,7 +147,7 @@ export default function BrandingPage() {
 
                     <div className="space-y-3">
                       <div className="h-12 bg-muted rounded-lg flex items-center justify-center p-2">
-                        <H3 className="text-sm">Elevation AI</H3>
+                        <Logo width={80} height={14} />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Muted Background</BodySmall>
@@ -282,10 +277,7 @@ export default function BrandingPage() {
 
                     <div className="space-y-3">
                       <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <div className="flex items-center gap-3">
-                          <Icon name="mountain-line" className="h-6 w-6" />
-                          <H3 className="text-lg">Elevation AI</H3>
-                        </div>
+                        <Logo width={100} height={18} />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Sidebar Logo</BodySmall>
@@ -304,8 +296,8 @@ export default function BrandingPage() {
                     <div className="space-y-3">
                       <div className="h-32 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center p-6">
                         <div className="text-center text-primary-foreground">
-                          <H2 className="text-2xl mb-2">Elevation AI</H2>
-                          <BodyLarge>Design System for Modern Applications</BodyLarge>
+                          <Logo width={200} height={35} />
+                          <BodyLarge className="mt-4">Design System for Modern Applications</BodyLarge>
                         </div>
                       </div>
                       <div className="text-center">
@@ -317,8 +309,8 @@ export default function BrandingPage() {
                     <div className="space-y-3">
                       <div className="h-32 bg-card border rounded-lg flex items-center justify-center p-6">
                         <div className="text-center">
-                          <H2 className="text-xl mb-2">Elevation AI</H2>
-                          <BodySmall className="text-muted-foreground">Professional UI Components</BodySmall>
+                          <Logo width={150} height={26} />
+                          <BodySmall className="text-muted-foreground mt-4">Professional UI Components</BodySmall>
                         </div>
                       </div>
                       <div className="text-center">
@@ -337,7 +329,7 @@ export default function BrandingPage() {
                   <div className="grid md:grid-cols-3 gap-6">
                     <div className="space-y-3">
                       <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <Icon name="mountain-line" className="h-8 w-8" />
+                        <Favicon width={32} height={32} />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Favicon</BodySmall>
@@ -347,7 +339,7 @@ export default function BrandingPage() {
 
                     <div className="space-y-3">
                       <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <Icon name="mountain-line" className="h-6 w-6" />
+                        <AppIcon width={48} height={48} />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">App Icon</BodySmall>
@@ -357,7 +349,7 @@ export default function BrandingPage() {
 
                     <div className="space-y-3">
                       <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <H3 className="text-sm">EA</H3>
+                        <CircleIcon width={40} height={40} />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Social Media</BodySmall>

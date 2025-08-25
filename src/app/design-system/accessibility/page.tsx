@@ -1,6 +1,5 @@
 "use client"
 
-
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
@@ -14,10 +13,21 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
+import { useAccessibilityConfig } from "@/hooks/use-accessibility-config"
 
 export default function AccessibilityPage() {
-
-
+  const {
+    config,
+    wcagLevelConfig,
+    accessibilityPrincipleConfig,
+    colorContrastConfig,
+    keyboardNavigationConfig,
+    screenReaderConfig,
+    focusManagementConfig,
+    testingToolConfig,
+    accessibilityAuditConfig,
+    complianceConfig
+  } = useAccessibilityConfig()
 
   const wcagLevels = [
     {
@@ -159,6 +169,250 @@ export default function AccessibilityPage() {
               size="lg"
               centered
             />
+          </Section>
+
+
+
+          {/* Available Variants & Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="list-check" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  All available accessibility standards, WCAG compliance levels, testing methods, and accessibility features.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="wcag" className="w-full">
+                  <TabsList className="grid w-full grid-cols-7">
+                    <TabsTrigger value="wcag">WCAG Levels</TabsTrigger>
+                    <TabsTrigger value="principles">Principles</TabsTrigger>
+                    <TabsTrigger value="contrast">Color Contrast</TabsTrigger>
+                    <TabsTrigger value="keyboard">Keyboard</TabsTrigger>
+                    <TabsTrigger value="screenReader">Screen Reader</TabsTrigger>
+                    <TabsTrigger value="testing">Testing</TabsTrigger>
+                    <TabsTrigger value="compliance">Compliance</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="wcag" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">WCAG Compliance Levels</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.wcagLevels.levels.map((level) => (
+                          <div key={level.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{level.name}</div>
+                            <div className="text-xs text-muted-foreground">{level.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Priority Levels</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.wcagLevels.priorities.map((priority) => (
+                          <div key={priority.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{priority.name}</div>
+                            <div className="text-xs text-muted-foreground">{priority.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="principles" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Accessibility Principles</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.principles.types.map((principle) => (
+                          <div key={principle.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{principle.name}</div>
+                            <div className="text-xs text-muted-foreground">{principle.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Guidelines</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.principles.guidelines.map((guideline) => (
+                          <div key={guideline.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{guideline.name}</div>
+                            <div className="text-xs text-muted-foreground">{guideline.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="contrast" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Color Contrast Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.colorContrast.types.map((type) => (
+                          <div key={type.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{type.name}</div>
+                            <div className="text-xs text-muted-foreground">{type.description}</div>
+                            <div className="text-xs font-medium mt-1">Ratio: {type.ratio}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Testing Tools</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.colorContrast.tools.map((tool) => (
+                          <div key={tool.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{tool.name}</div>
+                            <div className="text-xs text-muted-foreground">{tool.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="keyboard" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Keyboard Navigation Features</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.keyboardNavigation.features.map((feature) => (
+                          <div key={feature.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{feature.name}</div>
+                            <div className="text-xs text-muted-foreground">{feature.description}</div>
+                            <div className="text-xs font-medium mt-1">Priority: {feature.priority}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Testing Methods</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.keyboardNavigation.testing.map((test) => (
+                          <div key={test.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{test.name}</div>
+                            <div className="text-xs text-muted-foreground">{test.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="screenReader" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Screen Reader Features</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.screenReaders.features.map((feature) => (
+                          <div key={feature.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{feature.name}</div>
+                            <div className="text-xs text-muted-foreground">{feature.description}</div>
+                            <div className="text-xs font-medium mt-1">Priority: {feature.priority}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Screen Reader Tools</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.screenReaders.tools.map((tool) => (
+                          <div key={tool.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{tool.name}</div>
+                            <div className="text-xs text-muted-foreground">{tool.description}</div>
+                            <div className="text-xs font-medium mt-1">Platform: {tool.platform}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="testing" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Testing Tool Categories</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.testingTools.categories.map((category) => (
+                          <div key={category.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{category.name}</div>
+                            <div className="text-xs text-muted-foreground">{category.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Testing Tools</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.testingTools.tools.map((tool) => (
+                          <div key={tool.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{tool.name}</div>
+                            <div className="text-xs text-muted-foreground">{tool.description}</div>
+                            <div className="text-xs font-medium mt-1">Type: {tool.type}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Audit Types</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.audits.types.map((audit) => (
+                          <div key={audit.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{audit.name}</div>
+                            <div className="text-xs text-muted-foreground">{audit.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Audit Methods</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.audits.methods.map((method) => (
+                          <div key={method.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{method.name}</div>
+                            <div className="text-xs text-muted-foreground">{method.description}</div>
+                            <div className="text-xs font-medium mt-1">Duration: {method.duration}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="compliance" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Compliance Standards</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.compliance.standards.map((standard) => (
+                          <div key={standard.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{standard.name}</div>
+                            <div className="text-xs text-muted-foreground">{standard.description}</div>
+                            <div className="text-xs font-medium mt-1">Region: {standard.region}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Compliance Requirements</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.compliance.requirements.map((requirement) => (
+                          <div key={requirement.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{requirement.name}</div>
+                            <div className="text-xs text-muted-foreground">{requirement.description}</div>
+                            <div className="text-xs font-medium mt-1">Standard: {requirement.standard}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
           
           <Section paddingY="lg">

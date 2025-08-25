@@ -6,167 +6,29 @@ import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H1, H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H4, BodySmall } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
+
 import Icon from "@/components/ui/icon"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import {
+  shadowScale,
+  elevationLevels,
+  componentExamples,
+  usageGuidelines,
+  cssCustomProperties,
+  tailwindClasses,
+  accessibilityConsiderations,
+  implementationExamples
+} from "@/lib/shadows-elevation-config"
 
 export default function ShadowsElevationPage() {
   const [activeShadow, setActiveShadow] = useState("md")
-
-  const shadowScale = [
-    {
-      name: "None",
-      value: "none",
-      class: "shadow-none",
-      description: "No shadow for flat, minimal designs",
-      elevation: "Ground level"
-    },
-    {
-      name: "Extra Small",
-      value: "xs",
-      class: "shadow-xs",
-      description: "Subtle depth for small interactive elements",
-      elevation: "1px above surface"
-    },
-    {
-      name: "Small",
-      value: "sm",
-      class: "shadow-sm",
-      description: "Light shadow for cards and containers",
-      elevation: "2px above surface"
-    },
-    {
-      name: "Medium",
-      value: "md",
-      class: "shadow-md",
-      description: "Standard shadow for primary content",
-      elevation: "4px above surface"
-    },
-    {
-      name: "Large",
-      value: "lg",
-      class: "shadow-lg",
-      description: "Prominent shadow for important elements",
-      elevation: "8px above surface"
-    },
-    {
-      name: "Extra Large",
-      value: "xl",
-      class: "shadow-xl",
-      description: "Strong shadow for hero elements",
-      elevation: "16px above surface"
-    },
-    {
-      name: "2XL",
-      value: "2xl",
-      class: "shadow-2xl",
-      description: "Maximum shadow for modal overlays",
-      elevation: "24px above surface"
-    }
-  ]
-
-  const elevationLevels = [
-    {
-      name: "Ground Level",
-      description: "No elevation, flat surfaces",
-      usage: "Backgrounds, base containers",
-      examples: ["Page backgrounds", "Base cards", "Form fields"]
-    },
-    {
-      name: "Level 1",
-      description: "Minimal elevation for subtle depth",
-      usage: "Small interactive elements",
-      examples: ["Buttons", "Badges", "Small cards"]
-    },
-    {
-      name: "Level 2",
-      description: "Light elevation for content areas",
-      usage: "Primary content containers",
-      examples: ["Content cards", "Navigation bars", "Form sections"]
-    },
-    {
-      name: "Level 3",
-      description: "Medium elevation for important content",
-      usage: "Key interface elements",
-      examples: ["Main cards", "Sidebars", "Toolbars"]
-    },
-    {
-      name: "Level 4",
-      description: "High elevation for prominent elements",
-      usage: "Hero sections and key actions",
-      examples: ["Hero cards", "Call-to-action buttons", "Important alerts"]
-    },
-    {
-      name: "Level 5",
-      description: "Maximum elevation for overlays",
-      usage: "Modal dialogs and floating elements",
-      examples: ["Modals", "Dropdowns", "Tooltips", "Floating action buttons"]
-    }
-  ]
-
-  const componentExamples = [
-    {
-      name: "Cards",
-      shadow: "shadow-md",
-      description: "Content containers use medium shadows for clear hierarchy"
-    },
-    {
-      name: "Buttons",
-      shadow: "shadow-xs",
-      description: "Interactive elements use subtle shadows for depth"
-    },
-    {
-      name: "Modals",
-      shadow: "shadow-2xl",
-      description: "Overlay elements use maximum shadows for prominence"
-    },
-    {
-      name: "Navigation",
-      shadow: "shadow-sm",
-      description: "Navigation bars use light shadows for separation"
-    },
-    {
-      name: "Hero Sections",
-      shadow: "shadow-xl",
-      description: "Prominent sections use large shadows for impact"
-    },
-    {
-      name: "Floating Elements",
-      shadow: "shadow-lg",
-      description: "Floating elements use prominent shadows for elevation"
-    }
-  ]
-
-  const usageGuidelines = [
-    {
-      title: "Visual Hierarchy",
-      description: "Use shadows to create clear visual hierarchy and guide user attention.",
-      icon: "layers-line"
-    },
-    {
-      title: "Consistency",
-      description: "Maintain consistent shadow usage across similar component types.",
-      icon: "grid-line"
-    },
-    {
-      title: "Accessibility",
-      description: "Ensure sufficient contrast and avoid relying solely on shadows for information.",
-      icon: "eye-line"
-    },
-    {
-      title: "Performance",
-      description: "Use shadows sparingly on mobile devices to maintain smooth performance.",
-      icon: "speed-line"
-    }
-  ]
 
   return (
     <PageWrapper>
@@ -234,6 +96,11 @@ export default function ShadowsElevationPage() {
                           <BodySmall className="text-muted-foreground leading-relaxed">
                             {shadow.description}
                           </BodySmall>
+                          <div className="mt-2">
+                            <div className="text-xs text-muted-foreground">
+                              Usage: {shadow.usage.slice(0, 2).join(', ')}
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -317,11 +184,11 @@ export default function ShadowsElevationPage() {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="grid gap-6">
-                      {elevationLevels.map((level, index) => (
+                      {elevationLevels.map((level) => (
                         <div key={level.name} className="flex items-start space-x-4 p-4 border rounded-lg">
                           <div className="flex-shrink-0">
-                            <div className={`w-16 h-16 bg-card border rounded-lg flex items-center justify-center ${index === 0 ? 'shadow-none' : index === 1 ? 'shadow-xs' : index === 2 ? 'shadow-sm' : index === 3 ? 'shadow-md' : index === 4 ? 'shadow-lg' : 'shadow-xl'}`}>
-                              <span className="text-xs font-medium">L{index}</span>
+                            <div className={`w-16 h-16 bg-card border rounded-lg flex items-center justify-center ${level.shadowClass}`}>
+                              <span className="text-xs font-medium">L{level.level}</span>
                             </div>
                           </div>
                           
@@ -329,7 +196,7 @@ export default function ShadowsElevationPage() {
                             <div className="flex items-center space-x-3 mb-2">
                               <H4>{level.name}</H4>
                               <Badge variant="secondary" className="text-xs">
-                                Level {index}
+                                Level {level.level}
                               </Badge>
                             </div>
                             <BodySmall className="text-muted-foreground mb-3">
@@ -345,6 +212,16 @@ export default function ShadowsElevationPage() {
                                     {example}
                                   </Badge>
                                 ))}
+                              </div>
+                              <div className="mt-2">
+                                <BodySmall className="font-medium mb-1">Use Cases:</BodySmall>
+                                <div className="flex flex-wrap gap-1">
+                                  {level.useCases.slice(0, 2).map((useCase) => (
+                                    <Badge key={useCase} variant="secondary" className="text-xs">
+                                      {useCase}
+                                    </Badge>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -386,15 +263,21 @@ export default function ShadowsElevationPage() {
                       </div>
                       
                       <div className="space-y-4">
-                        <H4>Interactive Elements</H4>
+                        <H4>Component Examples</H4>
                         <div className="space-y-3">
-                          <Button className="shadow-xs">Button (Level 1)</Button>
-                          <div className="p-3 bg-card border rounded-lg shadow-sm">
-                            <BodySmall>Small Card (Level 2)</BodySmall>
-                          </div>
-                          <div className="p-4 bg-card border rounded-lg shadow-md">
-                            <BodySmall>Medium Card (Level 3)</BodySmall>
-                          </div>
+                          {componentExamples.slice(0, 3).map((example) => (
+                            <div key={example.name} className="p-3 bg-card border rounded-lg">
+                              <div className="flex items-center justify-between mb-2">
+                                <BodySmall className="font-medium">{example.name}</BodySmall>
+                                <Badge variant="outline" className="text-xs">
+                                  {example.elevationLevel}
+                                </Badge>
+                              </div>
+                              <BodySmall className="text-muted-foreground text-xs">
+                                {example.description}
+                              </BodySmall>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -426,10 +309,23 @@ export default function ShadowsElevationPage() {
                             <Icon name={guideline.icon} className="h-5 w-5 text-primary" />
                           </div>
                           <div>
-                            <H4 className="mb-2">{guideline.title}</H4>
-                            <BodySmall className="text-muted-foreground leading-relaxed">
+                            <div className="flex items-center gap-2 mb-2">
+                              <H4>{guideline.title}</H4>
+                              <Badge variant={guideline.category === 'do' ? 'default' : 'destructive'} className="text-xs">
+                                {guideline.category === 'do' ? 'Do' : "Don't"}
+                              </Badge>
+                            </div>
+                            <BodySmall className="text-muted-foreground leading-relaxed mb-2">
                               {guideline.description}
                             </BodySmall>
+                            <div className="space-y-1">
+                              {guideline.examples.slice(0, 2).map((example, index) => (
+                                <div key={index} className="flex items-center gap-2">
+                                  <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                  <BodySmall className="text-xs">{example}</BodySmall>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -447,11 +343,9 @@ export default function ShadowsElevationPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        <BodySmall>✓ Use shadows to create clear visual hierarchy</BodySmall>
-                        <BodySmall>✓ Maintain consistent elevation across similar components</BodySmall>
-                        <BodySmall>✓ Consider the relationship between shadows and content</BodySmall>
-                        <BodySmall>✓ Test shadows in both light and dark modes</BodySmall>
-                        <BodySmall>✓ Use elevation to guide user attention</BodySmall>
+                        {usageGuidelines.filter(guideline => guideline.category === 'do').map((guideline, index) => (
+                          <BodySmall key={index}>✓ {guideline.examples[0]}</BodySmall>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -465,11 +359,9 @@ export default function ShadowsElevationPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        <BodySmall>✗ Use too many different shadow levels randomly</BodySmall>
-                        <BodySmall>✗ Rely solely on shadows for information hierarchy</BodySmall>
-                        <BodySmall>✗ Apply heavy shadows to small elements</BodySmall>
-                        <BodySmall>✗ Ignore performance impact on mobile devices</BodySmall>
-                        <BodySmall>✗ Use shadows that don't match your design language</BodySmall>
+                        {usageGuidelines.filter(guideline => guideline.category === 'dont').map((guideline, index) => (
+                          <BodySmall key={index}>✗ {guideline.examples[0]}</BodySmall>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -489,19 +381,19 @@ export default function ShadowsElevationPage() {
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <H4 className="mb-3">Visual Considerations</H4>
+                        <H4 className="mb-3">{accessibilityConsiderations.visual.title}</H4>
                         <div className="space-y-2">
-                          <BodySmall>• Ensure sufficient contrast between elevated elements</BodySmall>
-                          <BodySmall>• Don't rely solely on shadows for information</BodySmall>
-                          <BodySmall>• Consider users with visual impairments</BodySmall>
+                          {accessibilityConsiderations.visual.points.map((point, index) => (
+                            <BodySmall key={index}>• {point}</BodySmall>
+                          ))}
                         </div>
                       </div>
                       <div>
-                        <H4 className="mb-3">Performance Considerations</H4>
+                        <H4 className="mb-3">{accessibilityConsiderations.performance.title}</H4>
                         <div className="space-y-2">
-                          <BodySmall>• Limit shadow complexity on mobile devices</BodySmall>
-                          <BodySmall>• Use hardware acceleration when possible</BodySmall>
-                          <BodySmall>• Test performance on lower-end devices</BodySmall>
+                          {accessibilityConsiderations.performance.points.map((point, index) => (
+                            <BodySmall key={index}>• {point}</BodySmall>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -527,13 +419,10 @@ export default function ShadowsElevationPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* Shadow scale values */</div>
-                      <div>--shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);</div>
-                      <div>--shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);</div>
-                      <div>--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);</div>
-                      <div>--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);</div>
-                      <div>--shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);</div>
-                      <div>--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);</div>
+                      <div className="text-muted-foreground">/* {cssCustomProperties.description} */</div>
+                      {cssCustomProperties.values.map((value, index) => (
+                        <div key={index}>{value}</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -554,18 +443,15 @@ export default function ShadowsElevationPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* Shadow utilities */</div>
-                      <div>shadow-none → box-shadow: none;</div>
-                      <div>shadow-xs   → box-shadow: var(--shadow-xs);</div>
-                      <div>shadow-sm   → box-shadow: var(--shadow-sm);</div>
-                      <div>shadow-md   → box-shadow: var(--shadow-md);</div>
-                      <div>shadow-lg   → box-shadow: var(--shadow-lg);</div>
-                      <div>shadow-xl   → box-shadow: var(--shadow-xl);</div>
-                      <div>shadow-2xl  → box-shadow: var(--shadow-2xl);</div>
+                      <div className="text-muted-foreground">/* {tailwindClasses.description} */</div>
+                      {tailwindClasses.utilities.map((utility, index) => (
+                        <div key={index}>{utility}</div>
+                      ))}
                       <div></div>
-                      <div className="text-muted-foreground">/* Hover states */</div>
-                      <div>hover:shadow-lg → box-shadow: var(--shadow-lg) on hover</div>
-                      <div>focus:shadow-lg → box-shadow: var(--shadow-lg) on focus</div>
+                      <div className="text-muted-foreground">/* States */</div>
+                      {tailwindClasses.states.map((state, index) => (
+                        <div key={index}>{state}</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -586,39 +472,22 @@ export default function ShadowsElevationPage() {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div>
-                      <H4 className="mb-3">React Component Example</H4>
+                      <H4 className="mb-3">{implementationExamples.reactComponent.title}</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">// Using Tailwind classes</div>
-                        <div>function ElevatedCard(props) &#123;</div>
-                        <div>  const &#123; children, elevation = 'md' &#125; = props</div>
-                        <div>  const shadowClass = `shadow-$&#123;elevation&#125;`</div>
-                        <div>  return (</div>
-                        <div>    &lt;div className=&#123;cn(</div>
-                        <div>      "bg-card border rounded-lg p-6",</div>
-                        <div>      shadowClass</div>
-                        <div>    )&#125;&gt;</div>
-                        <div>      &#123;children&#125;</div>
-                        <div>    &lt;/div&gt;</div>
-                        <div>  )</div>
-                        <div>&#125;</div>
+                        <div className="text-muted-foreground">// {implementationExamples.reactComponent.description}</div>
+                        {implementationExamples.reactComponent.code.split('\n').map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
                       </div>
                     </div>
 
                     <div>
-                      <H4 className="mb-3">Custom CSS Example</H4>
+                      <H4 className="mb-3">{implementationExamples.customCSS.title}</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">/* Using CSS custom properties */</div>
-                        <div>.elevated-card &#123;</div>
-                        <div>  box-shadow: var(--shadow-md);</div>
-                        <div>  background: var(--card);</div>
-                        <div>  border: 1px solid var(--border);</div>
-                        <div>  border-radius: var(--radius-lg);</div>
-                        <div>&#125;</div>
-                        <div></div>
-                        <div className="text-muted-foreground">/* Elevation variants */</div>
-                        <div>.elevated-card--high &#123;</div>
-                        <div>  box-shadow: var(--shadow-xl);</div>
-                        <div>&#125;</div>
+                        <div className="text-muted-foreground">/* {implementationExamples.customCSS.description} */</div>
+                        {implementationExamples.customCSS.code.split('\n').map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
                       </div>
                     </div>
                   </CardContent>

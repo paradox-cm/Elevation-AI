@@ -14,111 +14,21 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import Icon from "@/components/ui/icon"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import {
+  radiusScale,
+  componentExamples,
+  usageGuidelines,
+  cssCustomProperties,
+  tailwindClasses,
+  accessibilityConsiderations,
+  implementationExamples,
+  customizationExamples
+} from "@/lib/corner-radius-config"
 
 export default function CornerRadiusPage() {
   const [activeRadius, setActiveRadius] = useState("md")
-
-  const radiusScale = [
-    {
-      name: "None",
-      value: "0px",
-      class: "rounded-none",
-      description: "Sharp corners for technical or data-heavy interfaces"
-    },
-    {
-      name: "Small",
-      value: "6px",
-      class: "rounded-sm",
-      cssVar: "--radius-sm",
-      description: "Subtle rounding for compact elements"
-    },
-    {
-      name: "Medium",
-      value: "8px", 
-      class: "rounded-md",
-      cssVar: "--radius-md",
-      description: "Default radius for most interactive elements"
-    },
-    {
-      name: "Default",
-      value: "10px",
-      class: "rounded-lg",
-      cssVar: "--radius-lg",
-      description: "Base radius for cards and containers"
-    },
-    {
-      name: "Large",
-      value: "14px",
-      class: "rounded-xl",
-      cssVar: "--radius-xl", 
-      description: "Prominent elements and hero components"
-    },
-    {
-      name: "Full",
-      value: "9999px",
-      class: "rounded-full",
-      description: "Circular elements like avatars and pills"
-    }
-  ]
-
-  const componentExamples = [
-    {
-      name: "Buttons",
-      radius: "rounded-md",
-      description: "Standard interactive elements use medium radius for balance between modern and accessible"
-    },
-    {
-      name: "Cards",
-      radius: "rounded-xl",
-      description: "Content containers use large radius to create clear visual hierarchy"
-    },
-    {
-      name: "Inputs",
-      radius: "rounded-md", 
-      description: "Form elements use medium radius for consistency with buttons"
-    },
-    {
-      name: "Badges",
-      radius: "rounded-md",
-      description: "Small informational elements use medium radius"
-    },
-    {
-      name: "Avatars",
-      radius: "rounded-full",
-      description: "Profile images are fully rounded for recognition and friendliness"
-    },
-    {
-      name: "Icons",
-      radius: "rounded-lg",
-      description: "Icon containers use default radius to complement the overall design"
-    }
-  ]
-
-  const usageGuidelines = [
-    {
-      title: "Hierarchy",
-      description: "Larger radius values create more visual prominence. Use sparingly for hero elements.",
-      icon: "stack-line"
-    },
-    {
-      title: "Consistency",
-      description: "Maintain consistent radius across similar component types throughout your interface.",
-      icon: "grid-line"
-    },
-    {
-      title: "Context",
-      description: "Consider the overall design language - more rounded for friendly, less for technical.",
-      icon: "palette-line"
-    },
-    {
-      title: "Accessibility",
-      description: "Ensure sufficient contrast at rounded corners and avoid extremely small radii.",
-      icon: "eye-line"
-    }
-  ]
 
   return (
     <PageWrapper>
@@ -179,6 +89,11 @@ export default function CornerRadiusPage() {
                           <BodySmall className="text-muted-foreground leading-relaxed">
                             {radius.description}
                           </BodySmall>
+                          <div className="mt-2">
+                            <div className="text-xs text-muted-foreground">
+                              Usage: {radius.usage.slice(0, 2).join(', ')}
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -254,36 +169,44 @@ export default function CornerRadiusPage() {
                             <div className="flex items-center space-x-3 mb-2">
                               <H4>{component.name}</H4>
                               <Badge variant="secondary" className="font-mono text-xs">
-                                {component.radius}
+                                {component.radiusClass}
                               </Badge>
                             </div>
-                            <BodySmall className="text-muted-foreground">
+                            <BodySmall className="text-muted-foreground mb-2">
                               {component.description}
                             </BodySmall>
+                            <div className="space-y-1">
+                              {component.useCases.slice(0, 2).map((useCase, index) => (
+                                <div key={index} className="flex items-center gap-2">
+                                  <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                  <BodySmall className="text-xs">{useCase}</BodySmall>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                           
                           <div className="flex-shrink-0">
                             {component.name === "Buttons" && (
-                              <Button className={component.radius}>Example</Button>
+                              <Button className={component.radiusClass}>Example</Button>
                             )}
                             {component.name === "Cards" && (
-                              <div className={`w-20 h-16 bg-card border shadow-sm ${component.radius} flex items-center justify-center`}>
+                              <div className={`w-20 h-16 bg-card border shadow-sm ${component.radiusClass} flex items-center justify-center`}>
                                 <BodySmall>Card</BodySmall>
                               </div>
                             )}
                             {component.name === "Inputs" && (
-                              <Input placeholder="Input" className={`w-20 ${component.radius}`} />
+                              <Input placeholder="Input" className={`w-20 ${component.radiusClass}`} />
                             )}
                             {component.name === "Badges" && (
-                              <Badge className={component.radius}>Badge</Badge>
+                              <Badge className={component.radiusClass}>Badge</Badge>
                             )}
                             {component.name === "Avatars" && (
-                              <Avatar className={component.radius}>
-                                <AvatarFallback>AV</AvatarFallback>
-                              </Avatar>
+                              <div className={`w-10 h-10 bg-primary/20 ${component.radiusClass} flex items-center justify-center`}>
+                                <BodySmall className="text-xs">AV</BodySmall>
+                              </div>
                             )}
                             {component.name === "Icons" && (
-                              <div className={`p-2 bg-primary/10 ${component.radius}`}>
+                              <div className={`p-2 bg-primary/10 ${component.radiusClass}`}>
                                 <Icon name="star-line" className="h-4 w-4 text-primary" />
                               </div>
                             )}
@@ -318,9 +241,9 @@ export default function CornerRadiusPage() {
                         <Card>
                           <CardHeader>
                             <div className="flex items-center space-x-3">
-                              <Avatar>
-                                <AvatarFallback>JD</AvatarFallback>
-                              </Avatar>
+                              <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                                <BodySmall className="text-xs">JD</BodySmall>
+                              </div>
                               <div>
                                 <CardTitle>John Doe</CardTitle>
                                 <CardDescription>Software Engineer</CardDescription>
@@ -360,10 +283,23 @@ export default function CornerRadiusPage() {
                             <Icon name={guideline.icon} className="h-5 w-5 text-primary" />
                           </div>
                           <div>
-                            <H4 className="mb-2">{guideline.title}</H4>
-                            <BodySmall className="text-muted-foreground leading-relaxed">
+                            <div className="flex items-center gap-2 mb-2">
+                              <H4>{guideline.title}</H4>
+                              <Badge variant={guideline.category === 'do' ? 'default' : 'destructive'} className="text-xs">
+                                {guideline.category === 'do' ? 'Do' : "Don't"}
+                              </Badge>
+                            </div>
+                            <BodySmall className="text-muted-foreground leading-relaxed mb-2">
                               {guideline.description}
                             </BodySmall>
+                            <div className="space-y-1">
+                              {guideline.examples.slice(0, 2).map((example, index) => (
+                                <div key={index} className="flex items-center gap-2">
+                                  <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                  <BodySmall className="text-xs">{example}</BodySmall>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -381,11 +317,9 @@ export default function CornerRadiusPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        <BodySmall>✓ Use consistent radius values within component families</BodySmall>
-                        <BodySmall>✓ Apply larger radius to more prominent elements</BodySmall>
-                        <BodySmall>✓ Consider the overall brand personality</BodySmall>
-                        <BodySmall>✓ Test accessibility with screen readers</BodySmall>
-                        <BodySmall>✓ Maintain visual hierarchy through radius variation</BodySmall>
+                        {usageGuidelines.filter(guideline => guideline.category === 'do').map((guideline, index) => (
+                          <BodySmall key={index}>✓ {guideline.examples[0]}</BodySmall>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -399,11 +333,9 @@ export default function CornerRadiusPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        <BodySmall>✗ Mix too many different radius values randomly</BodySmall>
-                        <BodySmall>✗ Use extremely large radius on small elements</BodySmall>
-                        <BodySmall>✗ Apply inconsistent radius to similar components</BodySmall>
-                        <BodySmall>✗ Ignore the relationship between radius and element size</BodySmall>
-                        <BodySmall>✗ Compromise accessibility for aesthetic preferences</BodySmall>
+                        {usageGuidelines.filter(guideline => guideline.category === 'dont').map((guideline, index) => (
+                          <BodySmall key={index}>✗ {guideline.examples[0]}</BodySmall>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -416,19 +348,19 @@ export default function CornerRadiusPage() {
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <H4 className="mb-3">Visual Considerations</H4>
+                        <H4 className="mb-3">{accessibilityConsiderations.visual.title}</H4>
                         <div className="space-y-2">
-                          <BodySmall>• Ensure sufficient contrast at rounded corners</BodySmall>
-                          <BodySmall>• Avoid extremely small radius that may appear broken</BodySmall>
-                          <BodySmall>• Consider how radius affects focus indicators</BodySmall>
+                          {accessibilityConsiderations.visual.points.map((point, index) => (
+                            <BodySmall key={index}>• {point}</BodySmall>
+                          ))}
                         </div>
                       </div>
                       <div>
-                        <H4 className="mb-3">Interactive Considerations</H4>
+                        <H4 className="mb-3">{accessibilityConsiderations.interactive.title}</H4>
                         <div className="space-y-2">
-                          <BodySmall>• Maintain consistent touch targets regardless of radius</BodySmall>
-                          <BodySmall>• Ensure hover states work well with rounded corners</BodySmall>
-                          <BodySmall>• Test with keyboard navigation and focus states</BodySmall>
+                          {accessibilityConsiderations.interactive.points.map((point, index) => (
+                            <BodySmall key={index}>• {point}</BodySmall>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -447,14 +379,13 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">&#123;/* Base radius value */&#125;</div>
-                      <div>--radius: 0.625rem; /* 10px */</div>
+                      <div className="text-muted-foreground">/* {cssCustomProperties.description} */</div>
+                      <div>{cssCustomProperties.baseValue}</div>
                       <div></div>
-                      <div className="text-muted-foreground">&#123;/* Calculated radius scale */&#125;</div>
-                      <div>--radius-sm: calc(var(--radius) - 4px); /* 6px */</div>
-                      <div>--radius-md: calc(var(--radius) - 2px); /* 8px */</div>
-                      <div>--radius-lg: var(--radius);              /* 10px */</div>
-                      <div>--radius-xl: calc(var(--radius) + 4px); /* 14px */</div>
+                      <div className="text-muted-foreground">/* Calculated radius scale */</div>
+                      {cssCustomProperties.calculatedValues.map((value, index) => (
+                        <div key={index}>{value}</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -468,19 +399,15 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">&#123;/* Corner radius utilities */&#125;</div>
-                      <div>rounded-none → border-radius: 0px;</div>
-                      <div>rounded-sm   → border-radius: 6px;</div>
-                      <div>rounded-md   → border-radius: 8px;</div>
-                      <div>rounded-lg   → border-radius: 10px;</div>
-                      <div>rounded-xl   → border-radius: 14px;</div>
-                      <div>rounded-full → border-radius: 9999px;</div>
+                      <div className="text-muted-foreground">/* {tailwindClasses.description} */</div>
+                      {tailwindClasses.utilities.map((utility, index) => (
+                        <div key={index}>{utility}</div>
+                      ))}
                       <div></div>
-                      <div className="text-muted-foreground">&#123;/* Directional radius */&#125;</div>
-                      <div>rounded-t-lg → border-top-left-radius: 10px;</div>
-                      <div>             border-top-right-radius: 10px;</div>
-                      <div>rounded-l-lg → border-top-left-radius: 10px;</div>
-                      <div>             border-bottom-left-radius: 10px;</div>
+                      <div className="text-muted-foreground">/* Directional radius */</div>
+                      {tailwindClasses.directional.map((direction, index) => (
+                        <div key={index}>{direction}</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -494,39 +421,22 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div>
-                      <H4 className="mb-3">React Component Example</H4>
+                      <H4 className="mb-3">{implementationExamples.reactComponent.title}</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">&#123;/* Using Tailwind classes */&#125;</div>
-                        <div>function Card(props) &#123;</div>
-                        <div>  const &#123; children, className &#125; = props</div>
-                        <div>  return (</div>
-                        <div>    &lt;div className=&#123;cn(</div>
-                        <div>      &quot;bg-card border rounded-xl shadow-sm&quot;,</div>
-                        <div>      className</div>
-                        <div>    )&#125;&gt;</div>
-                        <div>      &#123;children&#125;</div>
-                        <div>    &lt;/div&gt;</div>
-                        <div>  )</div>
-                        <div>&#125;</div>
+                        <div className="text-muted-foreground">/* {implementationExamples.reactComponent.description} */</div>
+                        {implementationExamples.reactComponent.code.split('\n').map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
                       </div>
                     </div>
 
                     <div>
-                      <H4 className="mb-3">Custom CSS Example</H4>
+                      <H4 className="mb-3">{implementationExamples.customCSS.title}</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">&#123;/* Using CSS custom properties */&#125;</div>
-                        <div>.custom-card &#123;</div>
-                        <div>  border-radius: var(--radius-lg);</div>
-                        <div>  background: var(--card);</div>
-                        <div>  border: 1px solid var(--border);</div>
-                        <div>&#125;</div>
-                        <div></div>
-                        <div className="text-muted-foreground">&#123;/* Responsive radius */&#125;</div>
-                        <div>@media (max-width: 768px) &#123;</div>
-                        <div>  .custom-card &#123;</div>
-                        <div>    border-radius: var(--radius-md);</div>
-                        <div>  &#125;</div>
-                        <div>&#125;</div>
+                        <div className="text-muted-foreground">/* {implementationExamples.customCSS.description} */</div>
+                        {implementationExamples.customCSS.code.split('\n').map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))}
                       </div>
                     </div>
                   </CardContent>
@@ -541,20 +451,23 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">&#123;/* Override in your CSS */&#125;</div>
-                      <div>:root &#123;</div>
-                      <div>  --radius: 0.5rem; /* More subtle rounding */</div>
-                      <div>&#125;</div>
+                      <div className="text-muted-foreground">/* {customizationExamples.subtle.title} */</div>
+                      <div className="text-muted-foreground">/* {customizationExamples.subtle.description} */</div>
+                      {customizationExamples.subtle.code.split('\n').map((line, index) => (
+                        <div key={index}>{line}</div>
+                      ))}
                       <div></div>
-                      <div className="text-muted-foreground">&#123;/* Or for sharp, technical look */&#125;</div>
-                      <div>:root &#123;</div>
-                      <div>  --radius: 0.25rem; /* Minimal rounding */</div>
-                      <div>&#125;</div>
+                      <div className="text-muted-foreground">/* {customizationExamples.technical.title} */</div>
+                      <div className="text-muted-foreground">/* {customizationExamples.technical.description} */</div>
+                      {customizationExamples.technical.code.split('\n').map((line, index) => (
+                        <div key={index}>{line}</div>
+                      ))}
                       <div></div>
-                      <div className="text-muted-foreground">&#123;/* For friendly, approachable feel */&#125;</div>
-                      <div>:root &#123;</div>
-                      <div>  --radius: 1rem; /* More pronounced rounding */</div>
-                      <div>&#125;</div>
+                      <div className="text-muted-foreground">/* {customizationExamples.friendly.title} */</div>
+                      <div className="text-muted-foreground">/* {customizationExamples.friendly.description} */</div>
+                      {customizationExamples.friendly.code.split('\n').map((line, index) => (
+                        <div key={index}>{line}</div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

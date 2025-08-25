@@ -8,19 +8,17 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { Grid } from "@/components/ui/layout/grid"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H3, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useFormsConfig } from "@/hooks/use-forms-config"
 import {
   Form,
   FormControl,
@@ -38,9 +36,8 @@ import {
   FormActions,
   FormProgress,
 } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
 
 // Form validation schemas
@@ -86,6 +83,20 @@ type AdvancedFormData = z.infer<typeof advancedFormSchema>
 type WizardFormData = z.infer<typeof wizardFormSchema>
 
 export default function FormsPage() {
+  const {
+    config,
+    formLayoutConfig,
+    formValidationConfig,
+    formInputConfig,
+    formSelectConfig,
+    formCheckboxConfig,
+    formRadioConfig,
+    formSwitchConfig,
+    formTextareaConfig,
+    formWizardConfig,
+    formStatusConfig
+  } = useFormsConfig()
+
   const [wizardStep, setWizardStep] = useState(1)
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error" | "loading">("idle")
 
@@ -182,6 +193,236 @@ export default function FormsPage() {
               size="lg"
               centered
             />
+          </Section>
+
+
+
+          {/* Available Variants & Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="list-check" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  All available variants, sizes, and configuration options for form components.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="layouts" className="w-full">
+                  <TabsList className="grid w-full grid-cols-5">
+                    <TabsTrigger value="layouts">Layouts</TabsTrigger>
+                    <TabsTrigger value="validation">Validation</TabsTrigger>
+                    <TabsTrigger value="inputs">Inputs</TabsTrigger>
+                    <TabsTrigger value="controls">Controls</TabsTrigger>
+                    <TabsTrigger value="advanced">Advanced</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="layouts" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Form Layout Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.layouts.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Layout Spacings</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        {config.layouts.spacings.map((spacing) => (
+                          <div key={spacing.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{spacing.name}</div>
+                            <div className="text-xs text-muted-foreground">{spacing.pixels}px</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="validation" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Validation Modes</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.validation.modes.map((mode) => (
+                          <div key={mode.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{mode.name}</div>
+                            <div className="text-xs text-muted-foreground">{mode.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Validation Styles</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.validation.styles.map((style) => (
+                          <div key={style.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{style.name}</div>
+                            <div className="text-xs text-muted-foreground">{style.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="inputs" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Input Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.inputs.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Input Sizes</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        {config.inputs.sizes.map((size) => (
+                          <div key={size.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{size.name}</div>
+                            <div className="text-xs text-muted-foreground">{size.height}px</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Select Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.selects.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Textarea Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.textareas.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="controls" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Checkbox Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.checkboxes.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Radio Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.radios.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Radio Layouts</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.radios.layouts.map((layout) => (
+                          <div key={layout.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{layout.name}</div>
+                            <div className="text-xs text-muted-foreground">{layout.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Switch Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.switches.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="advanced" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Wizard Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.wizards.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Progress Styles</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.wizards.progressStyles.map((style) => (
+                          <div key={style.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{style.name}</div>
+                            <div className="text-xs text-muted-foreground">{style.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Status Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.status.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Status Positions</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.status.positions.map((position) => (
+                          <div key={position.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{position.name}</div>
+                            <div className="text-xs text-muted-foreground">{position.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* Form System Overview */}
@@ -388,7 +629,7 @@ export default function FormsPage() {
                           title="Personal Information"
                           description="Basic details about yourself"
                         >
-                          <Grid cols={2} gap={4}>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                               control={advancedForm.control}
                               name="firstName"
@@ -416,7 +657,7 @@ export default function FormsPage() {
                                 </FormItem>
                               )}
                             />
-                          </Grid>
+                          </div>
 
                           <FormField
                             control={advancedForm.control}
@@ -437,7 +678,7 @@ export default function FormsPage() {
                             )}
                           />
 
-                          <Grid cols={2} gap={4}>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                               control={advancedForm.control}
                               name="phone"
@@ -469,14 +710,14 @@ export default function FormsPage() {
                                 </FormItem>
                               )}
                             />
-                          </Grid>
+                          </div>
                         </FormSection>
 
                         <FormSection
                           title="Professional Information"
                           description="Your work experience and skills"
                         >
-                          <Grid cols={2} gap={4}>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                               control={advancedForm.control}
                               name="role"
@@ -523,7 +764,7 @@ export default function FormsPage() {
                                 </FormItem>
                               )}
                             />
-                          </Grid>
+                          </div>
 
                           <FormField
                             control={advancedForm.control}
@@ -651,7 +892,7 @@ export default function FormsPage() {
                             title="Personal Information"
                             description="Let's start with your basic details"
                           >
-                            <Grid cols={2} gap={4}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <FormField
                                 control={wizardForm.control}
                                 name="personalInfo.firstName"
@@ -679,7 +920,7 @@ export default function FormsPage() {
                                   </FormItem>
                                 )}
                               />
-                            </Grid>
+                            </div>
 
                             <FormField
                               control={wizardForm.control}

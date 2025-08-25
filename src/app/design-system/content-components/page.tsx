@@ -5,15 +5,15 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { Grid } from "@/components/ui/layout/grid"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H3, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useContentComponentsConfig } from "@/hooks/use-content-components-config"
 import {
   ArticleLayout,
   MediaCard,
@@ -26,6 +26,18 @@ import {
 } from "@/components/ui/content-components"
 
 export default function ContentComponentsPage() {
+  const {
+    config,
+    articleLayoutConfig,
+    mediaCardConfig,
+    galleryConfig,
+    timelineConfig,
+    faqConfig,
+    contentBlockConfig,
+    quoteConfig,
+    socialShareConfig
+  } = useContentComponentsConfig()
+
   const [activeTab, setActiveTab] = useState("articles")
 
   // Sample data for components
@@ -128,6 +140,185 @@ export default function ContentComponentsPage() {
               size="lg"
               centered
             />
+          </Section>
+
+
+
+          {/* Available Variants & Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="list-check" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  All available variants, sizes, and configuration options for content components.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="articles" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="articles">Articles</TabsTrigger>
+                    <TabsTrigger value="media">Media</TabsTrigger>
+                    <TabsTrigger value="interactive">Interactive</TabsTrigger>
+                    <TabsTrigger value="content">Content</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="articles" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Article Layout Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.articleLayouts.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Author Avatar Sizes</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.articleLayouts.authorAvatarSizes.map((size) => (
+                          <div key={size.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{size.name}</div>
+                            <div className="text-xs text-muted-foreground">{size.width}×{size.height}px</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="media" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Media Card Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.mediaCards.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Aspect Ratios</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.mediaCards.aspectRatios.map((ratio) => (
+                          <div key={ratio.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{ratio.name}</div>
+                            <div className="text-xs text-muted-foreground">{ratio.ratio}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Gallery Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.galleries.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="interactive" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Timeline Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.timelines.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">FAQ Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.faqs.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">FAQ Animations</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.faqs.animations.map((animation) => (
+                          <div key={animation.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{animation.name}</div>
+                            <div className="text-xs text-muted-foreground">{animation.duration}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="content" className="space-y-6">
+                    <div>
+                      <H4 className="mb-3">Content Block Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.contentBlocks.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Quote Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.quotes.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Social Share Variants</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {config.socialShare.variants.map((variant) => (
+                          <div key={variant.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{variant.name}</div>
+                            <div className="text-xs text-muted-foreground">{variant.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <H4 className="mb-3">Social Share Platforms</H4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {config.socialShare.platforms.map((platform) => (
+                          <div key={platform.id} className="p-3 border rounded-lg">
+                            <div className="font-medium text-sm">{platform.name}</div>
+                            <div className="text-xs text-muted-foreground">{platform.color}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* Content Components Overview */}
@@ -289,7 +480,7 @@ export default function ContentComponentsPage() {
                     {/* Media Cards */}
                     <div>
                       <H3 className="mb-6">Media Cards</H3>
-                      <Grid cols={2} gap={6}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <MediaCard
                           title="Product Showcase"
                           description="Beautiful product photography with overlay actions"
@@ -321,7 +512,7 @@ export default function ContentComponentsPage() {
                             },
                           ]}
                         />
-                      </Grid>
+                      </div>
                     </div>
 
                     <Separator />

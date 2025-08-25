@@ -14,6 +14,11 @@ import { Badge } from "@/components/ui/badge"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 
+import {
+  semanticColors,
+  colorPalettes
+} from "@/lib/colors-config"
+
 export default function ColorsPage() {
   const { theme, resolvedTheme } = useTheme()
   
@@ -50,34 +55,15 @@ export default function ColorsPage() {
                 <CardDescription>Core interface colors</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Background</span>
-                    <Badge variant="outline">bg-background</Badge>
+                {semanticColors.slice(0, 4).map((color) => (
+                  <div key={color.class} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{color.name}</span>
+                      <Badge variant="outline">{color.class}</Badge>
+                    </div>
+                    <div className={`h-12 rounded-md border ${color.class}`}></div>
                   </div>
-                  <div className="h-12 rounded-md bg-background border"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Foreground</span>
-                    <Badge variant="outline">text-foreground</Badge>
-                  </div>
-                  <div className="h-12 rounded-md bg-foreground border"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Primary</span>
-                    <Badge variant="outline">bg-primary</Badge>
-                  </div>
-                  <div className="h-12 rounded-md bg-primary border"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Secondary</span>
-                    <Badge variant="outline">bg-secondary</Badge>
-                  </div>
-                  <div className="h-12 rounded-md bg-secondary border"></div>
-                </div>
+                ))}
               </CardContent>
             </Card>
 
@@ -87,34 +73,15 @@ export default function ColorsPage() {
                 <CardDescription>Colors for borders, inputs, and states</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Muted</span>
-                    <Badge variant="outline">bg-muted</Badge>
+                {semanticColors.slice(4, 8).map((color) => (
+                  <div key={color.class} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{color.name}</span>
+                      <Badge variant="outline">{color.class}</Badge>
+                    </div>
+                    <div className={`h-12 rounded-md border ${color.class}`}></div>
                   </div>
-                  <div className="h-12 rounded-md bg-muted border"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Accent</span>
-                    <Badge variant="outline">bg-accent</Badge>
-                  </div>
-                  <div className="h-12 rounded-md bg-accent border"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Destructive</span>
-                    <Badge variant="outline">bg-destructive</Badge>
-                  </div>
-                  <div className="h-12 rounded-md bg-destructive border"></div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Border</span>
-                    <Badge variant="outline">border-border</Badge>
-                  </div>
-                  <div className="h-12 rounded-md border border-border"></div>
-                </div>
+                ))}
               </CardContent>
             </Card>
           </Grid>
@@ -128,191 +95,62 @@ export default function ColorsPage() {
             size="md"
           />
           
-          {/* Elevation (Primary Brand Color) */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#0e62fd' }}></div>
-                Elevation
-                <Badge variant="secondary">Primary Brand</Badge>
-              </CardTitle>
-              <CardDescription>Primary brand color - #0e62fd</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-10 gap-2">
-                {[
-                  { shade: 50, hex: '#f5f9ff' },
-                  { shade: 100, hex: '#e0efff' },
-                  { shade: 200, hex: '#badbff' },
-                  { shade: 300, hex: '#94c6ff' },
-                  { shade: 400, hex: '#479cff' },
-                  { shade: 500, hex: '#0e62fd' },
-                  { shade: 600, hex: '#0d58e4' },
-                  { shade: 700, hex: '#0a49bd' },
-                  { shade: 800, hex: '#083996' },
-                  { shade: 900, hex: '#052864' },
-                ].map(({ shade, hex }) => (
-                  <div key={shade} className="space-y-2">
-                    <div className="text-xs text-center font-mono text-muted-foreground">
-                      {shade}
+          {/* Primary Brand Color */}
+          {colorPalettes.filter(palette => palette.isPrimary).map((palette) => (
+            <Card key={palette.color} className="mb-8">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: palette.hex }}></div>
+                  {palette.name}
+                  <Badge variant="secondary">Primary Brand</Badge>
+                </CardTitle>
+                <CardDescription>{palette.description} - {palette.hex}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-10 gap-2">
+                  {palette.shades.map(({ shade, hex }) => (
+                    <div key={shade} className="space-y-2">
+                      <div className="text-xs text-center font-mono text-muted-foreground">
+                        {shade}
+                      </div>
+                      <div 
+                        className="h-16 rounded-md border"
+                        style={{ backgroundColor: hex }}
+                      ></div>
+                      <div className="text-xs text-center font-mono text-muted-foreground">
+                        {shade === 500 ? hex : ''}
+                      </div>
                     </div>
-                    <div 
-                      className="h-16 rounded-md border"
-                      style={{ backgroundColor: hex }}
-                    ></div>
-                    <div className="text-xs text-center font-mono text-muted-foreground">
-                      {shade === 500 ? hex : ''}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
 
           {/* Other Color Palettes */}
           <div className="space-y-6">
-            {[
-              { 
-                name: 'Periwinkle', 
-                color: 'periwinkle', 
-                hex: '#7458f4',
-                shades: [
-                  { shade: 50, hex: '#f8f7fe' },
-                  { shade: 100, hex: '#f1eefe' },
-                  { shade: 200, hex: '#dcd5fc' },
-                  { shade: 300, hex: '#c7bcfb' },
-                  { shade: 400, hex: '#9e8af7' },
-                  { shade: 500, hex: '#7458f4' },
-                  { shade: 600, hex: '#684fdc' },
-                  { shade: 700, hex: '#5742b7' },
-                  { shade: 800, hex: '#463592' },
-                  { shade: 900, hex: '#2e2362' },
-                ]
-              },
-              { 
-                name: 'Green', 
-                color: 'green', 
-                hex: '#12c55d',
-                shades: [
-                  { shade: 50, hex: '#f6fdf9' },
-                  { shade: 100, hex: '#e3faee' },
-                  { shade: 200, hex: '#baf2d5' },
-                  { shade: 300, hex: '#91eabb' },
-                  { shade: 400, hex: '#48db88' },
-                  { shade: 500, hex: '#12c55d' },
-                  { shade: 600, hex: '#10b055' },
-                  { shade: 700, hex: '#0d9147' },
-                  { shade: 800, hex: '#0a7239' },
-                  { shade: 900, hex: '#064b26' },
-                ]
-              },
-              { 
-                name: 'Red', 
-                color: 'red', 
-                hex: '#df3523',
-                shades: [
-                  { shade: 50, hex: '#fdf5f4' },
-                  { shade: 100, hex: '#fcebe9' },
-                  { shade: 200, hex: '#f7ccc8' },
-                  { shade: 300, hex: '#f2aea7' },
-                  { shade: 400, hex: '#e97265' },
-                  { shade: 500, hex: '#df3523' },
-                  { shade: 600, hex: '#c93020' },
-                  { shade: 700, hex: '#a7281a' },
-                  { shade: 800, hex: '#862015' },
-                  { shade: 900, hex: '#59150e' },
-                ]
-              },
-              { 
-                name: 'Gold', 
-                color: 'gold', 
-                hex: '#ebbc48',
-                shades: [
-                  { shade: 50, hex: '#fefcf6' },
-                  { shade: 100, hex: '#fdf8ed' },
-                  { shade: 200, hex: '#faeed1' },
-                  { shade: 300, hex: '#f7e4b6' },
-                  { shade: 400, hex: '#f1d07f' },
-                  { shade: 500, hex: '#ebbc48' },
-                  { shade: 600, hex: '#d3a943' },
-                  { shade: 700, hex: '#b38f38' },
-                  { shade: 800, hex: '#92752e' },
-                  { shade: 900, hex: '#604e1f' },
-                ]
-              },
-              { 
-                name: 'Magenta', 
-                color: 'magenta', 
-                hex: '#e433c3',
-                shades: [
-                  { shade: 50, hex: '#fef6fb' },
-                  { shade: 100, hex: '#fceaf6' },
-                  { shade: 200, hex: '#f8ccee' },
-                  { shade: 300, hex: '#f4ade5' },
-                  { shade: 400, hex: '#ec70d4' },
-                  { shade: 500, hex: '#e433c3' },
-                  { shade: 600, hex: '#cd2eaf' },
-                  { shade: 700, hex: '#aa2691' },
-                  { shade: 800, hex: '#861f73' },
-                  { shade: 900, hex: '#59144d' },
-                ]
-              },
-              { 
-                name: 'Cyan', 
-                color: 'cyan', 
-                hex: '#5bc8f7',
-                shades: [
-                  { shade: 50, hex: '#f7fcff' },
-                  { shade: 100, hex: '#effafe' },
-                  { shade: 200, hex: '#d6f1fd' },
-                  { shade: 300, hex: '#bde9fc' },
-                  { shade: 400, hex: '#8cd8f9' },
-                  { shade: 500, hex: '#5bc8f7' },
-                  { shade: 600, hex: '#52b4de' },
-                  { shade: 700, hex: '#4496b9' },
-                  { shade: 800, hex: '#377894' },
-                  { shade: 900, hex: '#245063' },
-                ]
-              },
-              { 
-                name: 'Zinc', 
-                color: 'zinc', 
-                hex: '#71717a',
-                shades: [
-                  { shade: 50, hex: '#fafafa' },
-                  { shade: 100, hex: '#f4f4f5' },
-                  { shade: 200, hex: '#e4e4e7' },
-                  { shade: 300, hex: '#d4d4d8' },
-                  { shade: 400, hex: '#a1a1aa' },
-                  { shade: 500, hex: '#71717a' },
-                  { shade: 600, hex: '#52525b' },
-                  { shade: 700, hex: '#3f3f46' },
-                  { shade: 800, hex: '#27272a' },
-                  { shade: 900, hex: '#18181b' },
-                ]
-              },
-            ].map(({ name, color, hex, shades }) => (
-              <Card key={color}>
+            {colorPalettes.filter(palette => !palette.isPrimary).map((palette) => (
+              <Card key={palette.color}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <div 
                       className="w-4 h-4 rounded"
-                      style={{ backgroundColor: hex }}
+                      style={{ backgroundColor: palette.hex }}
                     ></div>
-                    {name}
+                    {palette.name}
                   </CardTitle>
-                  <CardDescription>Base color: {hex}</CardDescription>
+                  <CardDescription>{palette.description} - {palette.hex}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-10 gap-1">
-                    {shades.map(({ shade, hex: shadeHex }) => (
+                    {palette.shades.map(({ shade, hex }) => (
                       <div key={shade} className="space-y-1">
                         <div className="text-xs text-center font-mono text-muted-foreground">
                           {shade}
                         </div>
                         <div 
                           className="h-12 rounded border"
-                          style={{ backgroundColor: shadeHex }}
+                          style={{ backgroundColor: hex }}
                         ></div>
                       </div>
                     ))}
@@ -450,6 +288,8 @@ export default function ColorsPage() {
             </Card>
           </Grid>
         </Section>
+
+
       </Container>
     </AppShell>
     </PageWrapper>

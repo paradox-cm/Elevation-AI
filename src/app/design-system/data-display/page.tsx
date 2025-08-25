@@ -1,6 +1,5 @@
 "use client"
 
-
 import { ColumnDef } from "@tanstack/react-table"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
@@ -19,6 +18,7 @@ import { Progress } from "@/components/ui/progress"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { useDataDisplayConfig } from "@/hooks/use-data-display-config"
 import {
   DataTable,
   DataTableWithActions,
@@ -132,7 +132,19 @@ const projects: Project[] = [
 ]
 
 export default function DataDisplayPage() {
-
+  const {
+    config,
+    tableConfig,
+    emptyStateConfig,
+    dataCardConfig,
+    progressIndicatorConfig,
+    chartConfig,
+    listConfig,
+    statusIndicatorConfig,
+    paginationConfig,
+    searchFilterConfig,
+    dataVisualizationConfig,
+  } = useDataDisplayConfig()
 
   // User table columns
   const userColumns: ColumnDef<User>[] = [
@@ -359,6 +371,8 @@ export default function DataDisplayPage() {
             </Card>
           </Section>
 
+
+
           {/* Data Tables */}
           <Section paddingY="lg">
             <Tabs defaultValue="users" className="w-full">
@@ -505,6 +519,243 @@ export default function DataDisplayPage() {
                     </div>
                   </div>
                 </Grid>
+              </CardContent>
+            </Card>
+          </Section>
+
+          {/* Available Variants */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="palette-line" className="h-5 w-5" />
+                  Available Variants & Options
+                </CardTitle>
+                <CardDescription>
+                  Complete list of available data display variants and configuration options
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="tables" className="w-full">
+                  <TabsList className="grid w-full grid-cols-6">
+                    <TabsTrigger value="tables">Tables</TabsTrigger>
+                    <TabsTrigger value="empty-states">Empty States</TabsTrigger>
+                    <TabsTrigger value="data-cards">Data Cards</TabsTrigger>
+                    <TabsTrigger value="progress">Progress</TabsTrigger>
+                    <TabsTrigger value="charts">Charts</TabsTrigger>
+                    <TabsTrigger value="status">Status</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="tables" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Table Variants</H3>
+                      <div className="grid gap-3">
+                        {config.tables.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Features: {variant.features.join(", ")}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Table Sizes</H3>
+                      <div className="grid gap-3">
+                        {config.tables.sizes.map((size) => (
+                          <div key={size.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{size.name}</div>
+                              <div className="text-sm text-muted-foreground">Padding: {size.padding}, Font: {size.fontSize}</div>
+                            </div>
+                            <Badge variant="secondary">{size.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="empty-states" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Empty State Variants</H3>
+                      <div className="grid gap-3">
+                        {config.emptyStates.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Icon Style: {variant.iconStyle}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Empty State Sizes</H3>
+                      <div className="grid gap-3">
+                        {config.emptyStates.sizes.map((size) => (
+                          <div key={size.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{size.name}</div>
+                              <div className="text-sm text-muted-foreground">Padding: {size.padding}, Icon: {size.iconSize}</div>
+                            </div>
+                            <Badge variant="secondary">{size.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="data-cards" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Data Card Variants</H3>
+                      <div className="grid gap-3">
+                        {config.dataCards.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Layout: {variant.layout}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Data Card Sizes</H3>
+                      <div className="grid gap-3">
+                        {config.dataCards.sizes.map((size) => (
+                          <div key={size.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{size.name}</div>
+                              <div className="text-sm text-muted-foreground">Padding: {size.padding}, Font: {size.fontSize}</div>
+                            </div>
+                            <Badge variant="secondary">{size.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="progress" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Progress Indicator Variants</H3>
+                      <div className="grid gap-3">
+                        {config.progressIndicators.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Style: {variant.style}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Progress Indicator Sizes</H3>
+                      <div className="grid gap-3">
+                        {config.progressIndicators.sizes.map((size) => (
+                          <div key={size.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{size.name}</div>
+                              <div className="text-sm text-muted-foreground">Height: {size.height}, Font: {size.fontSize}</div>
+                            </div>
+                            <Badge variant="secondary">{size.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="charts" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Chart Variants</H3>
+                      <div className="grid gap-3">
+                        {config.charts.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Responsive: {variant.responsive ? "Yes" : "No"}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Chart Types</H3>
+                      <div className="grid gap-3">
+                        {config.charts.types.map((type) => (
+                          <div key={type.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{type.name}</div>
+                              <div className="text-sm text-muted-foreground">{type.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Use Case: {type.useCase}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{type.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="status" className="space-y-4">
+                    <div>
+                      <H3 className="mb-3">Status Indicator Variants</H3>
+                      <div className="grid gap-3">
+                        {config.statusIndicators.variants.map((variant) => (
+                          <div key={variant.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{variant.name}</div>
+                              <div className="text-sm text-muted-foreground">{variant.description}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Style: {variant.style}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{variant.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <H3 className="mb-3">Status Indicator Colors</H3>
+                      <div className="grid gap-3">
+                        {config.statusIndicators.colors.map((color) => (
+                          <div key={color.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                              <div className="font-medium">{color.name}</div>
+                              <div className="text-sm text-muted-foreground">{color.meaning}</div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Color: {color.color}
+                              </div>
+                            </div>
+                            <Badge variant="secondary">{color.id}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
           </Section>
