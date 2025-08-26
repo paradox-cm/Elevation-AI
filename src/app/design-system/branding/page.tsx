@@ -18,7 +18,7 @@ import { Favicon, AppIcon, CircleIcon, CompactLogo } from "@/components/ui/brand
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { useBrandingConfig } from "@/hooks/use-branding-config"
-import { PlasmaBackground } from "@/components/ui/plasma-background"
+
 
 export default function BrandingPage() {
   const {
@@ -68,7 +68,7 @@ export default function BrandingPage() {
               </CardHeader>
               <CardContent>
                 <div className="h-96 border rounded-lg flex items-center justify-center p-6 relative overflow-hidden">
-                  <PlasmaBackground className="absolute inset-0" />
+          
                   <div className="relative z-10">
                     <Logo width={300} height={52} />
                   </div>
