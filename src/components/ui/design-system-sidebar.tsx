@@ -22,6 +22,7 @@ export function DesignSystemSidebar() {
             { name: "Typography", href: "/design-system/typography", icon: "text", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Spacing", href: "/design-system/spacing", icon: "ruler-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Corner Radius", href: "/design-system/corner-radius", icon: "shape-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+            { name: "Transparency & Glass", href: "/design-system/transparency", icon: "contrast-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Shadows & Elevation", href: "/design-system/shadows-elevation", icon: "stack-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Design Tokens", href: "/design-system/design-tokens", icon: "palette-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Icons", href: "/design-system/icons", icon: "star-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
@@ -33,7 +34,7 @@ export function DesignSystemSidebar() {
       items: [
         { name: "Components", href: "/design-system/components", icon: "apps-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Content Components", href: "/design-system/content-components", icon: "article-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-        { name: "Dashboard Components", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Dashboard", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Analytics", href: "/design-system/analytics", icon: "bar-chart-box-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Data Display", href: "/design-system/data-display", icon: "database-2-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Forms", href: "/design-system/forms", icon: "file-list-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },

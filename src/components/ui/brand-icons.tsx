@@ -29,7 +29,7 @@ export function AppIcon({ className, width = 64, height = 64, priority = false }
   return (
     <div className={cn("relative", className)}>
       <Image
-        src="/images/branding/E-AI-Sqaure.svg"
+        src="/images/branding/E-AI-Squircle.svg"
         alt="Elevation AI App Icon"
         width={width}
         height={height}

@@ -18,6 +18,7 @@ import { Favicon, AppIcon, CircleIcon, CompactLogo } from "@/components/ui/brand
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { useBrandingConfig } from "@/hooks/use-branding-config"
+import { PlasmaBackground } from "@/components/ui/plasma-background"
 
 export default function BrandingPage() {
   const {
@@ -65,18 +66,11 @@ export default function BrandingPage() {
                   The primary Elevation AI logo used across all applications and marketing materials.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="h-48 bg-background border rounded-lg flex items-center justify-center p-6">
+              <CardContent>
+                <div className="h-96 border rounded-lg flex items-center justify-center p-6 relative overflow-hidden">
+                  <PlasmaBackground className="absolute inset-0" />
+                  <div className="relative z-10">
                     <Logo width={300} height={52} />
-                  </div>
-                  <div className="space-y-2 text-center">
-                    <BodySmall className="text-muted-foreground">Usage:</BodySmall>
-                    <div className="text-sm space-y-1 text-muted-foreground">
-                      <div>Light backgrounds</div>
-                      <div>Primary brand applications</div>
-                      <div>Marketing materials</div>
-                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -99,8 +93,8 @@ export default function BrandingPage() {
                 {/* Logo Variations Grid */}
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="space-y-3">
-                    <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                      <Logo width={120} height={21} />
+                    <div className="h-20 bg-muted rounded-lg flex items-center justify-center p-3">
+                      <Logo width={150} height={26} />
                     </div>
                     <div className="text-center">
                       <BodySmall className="font-medium">Full Logo</BodySmall>
@@ -109,8 +103,8 @@ export default function BrandingPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                      <CompactLogo width={60} height={21} />
+                    <div className="h-20 bg-muted rounded-lg flex items-center justify-center p-3">
+                      <CompactLogo width={75} height={26} />
                     </div>
                     <div className="text-center">
                       <BodySmall className="font-medium">Compact Logo</BodySmall>
@@ -119,8 +113,8 @@ export default function BrandingPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                      <Favicon width={32} height={32} />
+                    <div className="h-20 bg-muted rounded-lg flex items-center justify-center p-3">
+                      <Favicon width={40} height={40} />
                     </div>
                     <div className="text-center">
                       <BodySmall className="font-medium">Icon Only</BodySmall>
@@ -136,8 +130,8 @@ export default function BrandingPage() {
                   <H4>Contextual Variations</H4>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-3">
-                      <div className="h-12 bg-primary rounded-lg flex items-center justify-center p-2">
-                        <Logo width={80} height={14} variant="dark" />
+                      <div className="h-15 bg-primary rounded-lg flex items-center justify-center p-2">
+                        <Logo width={100} height={18} variant="dark" />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Primary Background</BodySmall>
@@ -146,12 +140,130 @@ export default function BrandingPage() {
                     </div>
 
                     <div className="space-y-3">
-                      <div className="h-12 bg-muted rounded-lg flex items-center justify-center p-2">
-                        <Logo width={80} height={14} />
+                      <div className="h-15 bg-muted rounded-lg flex items-center justify-center p-2">
+                        <Logo width={100} height={18} />
                       </div>
                       <div className="text-center">
                         <BodySmall className="font-medium">Muted Background</BodySmall>
                         <BodySmall className="text-muted-foreground">Cards, sections</BodySmall>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Section>
+
+          {/* Logo Examples */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="play-circle-line" className="h-5 w-5" />
+                  Logo Usage Examples
+                </CardTitle>
+                <CardDescription>
+                  Real-world examples of how the logo should be used across different applications and contexts.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                {/* Web Applications */}
+                <div className="space-y-4">
+                  <H4>Web Applications</H4>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <div className="h-16 bg-background border rounded-lg flex items-center justify-between px-4">
+                        <H3 className="text-lg">Elevation AI</H3>
+                        <div className="flex items-center gap-2">
+                          <Button size="sm">Dashboard</Button>
+                          <Button size="sm" variant="outline">Settings</Button>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">Navigation Header</BodySmall>
+                        <BodySmall className="text-muted-foreground">Primary web app navigation</BodySmall>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
+                        <Logo width={100} height={18} />
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">Sidebar Logo</BodySmall>
+                        <BodySmall className="text-muted-foreground">Collapsed sidebar state</BodySmall>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Marketing Materials */}
+                <div className="space-y-4">
+                  <H4>Marketing Materials</H4>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <div className="h-32 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center p-6">
+                        <div className="text-center text-primary-foreground">
+                          <Logo width={150} height={26} variant="dark" />
+                          <BodyLarge className="mt-4">Your Universe. Intelligently Orchestrated.</BodyLarge>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">Hero Section</BodySmall>
+                        <BodySmall className="text-muted-foreground">Landing page hero</BodySmall>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="h-32 bg-card border rounded-lg flex items-center justify-center p-6">
+                        <div className="text-center">
+                          <Logo width={150} height={26} />
+                          <BodySmall className="text-muted-foreground mt-4">The Command Center for Enterprise AI.</BodySmall>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">Business Card</BodySmall>
+                        <BodySmall className="text-muted-foreground">Print and digital cards</BodySmall>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Digital Assets */}
+                <div className="space-y-4">
+                  <H4>Digital Assets</H4>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="space-y-3">
+                      <div className="h-20 bg-muted rounded-lg flex items-center justify-center p-3">
+                        <Favicon width={40} height={40} />
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">Favicon</BodySmall>
+                        <BodySmall className="text-muted-foreground">40px × 40px</BodySmall>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="h-20 bg-muted rounded-lg flex items-center justify-center p-3">
+                        <AppIcon width={60} height={60} />
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">App Icon</BodySmall>
+                        <BodySmall className="text-muted-foreground">Mobile applications</BodySmall>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="h-20 bg-muted rounded-lg flex items-center justify-center p-3">
+                        <CircleIcon width={50} height={50} />
+                      </div>
+                      <div className="text-center">
+                        <BodySmall className="font-medium">Social Media</BodySmall>
+                        <BodySmall className="text-muted-foreground">Profile pictures</BodySmall>
                       </div>
                     </div>
                   </div>
@@ -238,124 +350,6 @@ export default function BrandingPage() {
                     <BodySmall className="text-center mt-2">
                       Minimum clear space should equal the height of the &quot;E&quot; in &quot;Elevation&quot;
                     </BodySmall>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </Section>
-
-          {/* Logo Examples */}
-          <Section paddingY="lg">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="play-circle-line" className="h-5 w-5" />
-                  Logo Usage Examples
-                </CardTitle>
-                <CardDescription>
-                  Real-world examples of how the logo should be used across different applications and contexts.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-8">
-                {/* Web Applications */}
-                <div className="space-y-4">
-                  <H4>Web Applications</H4>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <div className="h-16 bg-background border rounded-lg flex items-center justify-between px-4">
-                        <H3 className="text-lg">Elevation AI</H3>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm">Dashboard</Button>
-                          <Button size="sm" variant="outline">Settings</Button>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">Navigation Header</BodySmall>
-                        <BodySmall className="text-muted-foreground">Primary web app navigation</BodySmall>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <Logo width={100} height={18} />
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">Sidebar Logo</BodySmall>
-                        <BodySmall className="text-muted-foreground">Collapsed sidebar state</BodySmall>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Marketing Materials */}
-                <div className="space-y-4">
-                  <H4>Marketing Materials</H4>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <div className="h-32 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center p-6">
-                        <div className="text-center text-primary-foreground">
-                          <Logo width={200} height={35} />
-                          <BodyLarge className="mt-4">Design System for Modern Applications</BodyLarge>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">Hero Section</BodySmall>
-                        <BodySmall className="text-muted-foreground">Landing page hero</BodySmall>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="h-32 bg-card border rounded-lg flex items-center justify-center p-6">
-                        <div className="text-center">
-                          <Logo width={150} height={26} />
-                          <BodySmall className="text-muted-foreground mt-4">Professional UI Components</BodySmall>
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">Business Card</BodySmall>
-                        <BodySmall className="text-muted-foreground">Print and digital cards</BodySmall>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Digital Assets */}
-                <div className="space-y-4">
-                  <H4>Digital Assets</H4>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div className="space-y-3">
-                      <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <Favicon width={32} height={32} />
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">Favicon</BodySmall>
-                        <BodySmall className="text-muted-foreground">32px × 32px</BodySmall>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <AppIcon width={48} height={48} />
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">App Icon</BodySmall>
-                        <BodySmall className="text-muted-foreground">Mobile applications</BodySmall>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="h-16 bg-muted rounded-lg flex items-center justify-center p-3">
-                        <CircleIcon width={40} height={40} />
-                      </div>
-                      <div className="text-center">
-                        <BodySmall className="font-medium">Social Media</BodySmall>
-                        <BodySmall className="text-muted-foreground">Profile pictures</BodySmall>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </CardContent>

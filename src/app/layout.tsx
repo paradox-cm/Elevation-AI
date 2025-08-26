@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   title: "Elevation AI Design System",
   description: "A comprehensive design system built for modern applications",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: "/images/Favicon.png",
+    shortcut: "/images/Favicon.png",
+    apple: "/images/Favicon.png",
   },
 };
 

@@ -69,7 +69,7 @@ export default function ComponentsPage() {
         header={<DesignSystemNavigation />}
         sidebar={<DesignSystemSidebar />}
     >
-      <Container>
+              <Container size="2xl">
         <Section paddingY="xl">
           <PageHeader
             title="Components"
@@ -606,6 +606,73 @@ export default function ComponentsPage() {
                     </div>
                   </CollapsibleContent>
                 </Collapsible>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Clickable Cards</CardTitle>
+                <CardDescription>Cards that are clickable without buttons, using hover effects for visual feedback.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Grid cols={3} gap={4}>
+                  <Card 
+                    className="h-full transition-all duration-200 cursor-pointer hover:shadow-lg hover:bg-primary/5 hover:border-primary/20"
+                    onClick={() => console.log('Card clicked!')}
+                  >
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Icon name="file-text-line" className="w-4 h-4 text-primary" />
+                        </div>
+                        Clickable Card
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>
+                        This entire card is clickable with hover effects. No button needed.
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+
+                  <Card 
+                    className="h-full transition-all duration-200 cursor-pointer hover:shadow-lg hover:bg-primary/5 hover:border-primary/20"
+                    onClick={() => console.log('Card clicked!')}
+                  >
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Icon name="building-2-line" className="w-4 h-4 text-primary" />
+                        </div>
+                        Interactive Card
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>
+                        Hover to see the visual feedback with enhanced shadows and colors.
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+
+                  <Card 
+                    className="h-full transition-all duration-200 cursor-pointer hover:shadow-lg hover:bg-primary/5 hover:border-primary/20"
+                    onClick={() => console.log('Card clicked!')}
+                  >
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Icon name="user-line" className="w-4 h-4 text-primary" />
+                        </div>
+                        Navigation Card
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>
+                        Perfect for navigation patterns and content previews.
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+                </Grid>
               </CardContent>
             </Card>
           </div>

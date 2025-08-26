@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Icon from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 interface DesignSystemNavigationProps {
   currentPage?: string
@@ -23,7 +24,8 @@ export function DesignSystemNavigation({
 
   const navigationLinks = [
     { href: "/", label: "Home" },
-    { href: "/design-system", label: "Design System", active: currentPage === "overview" }
+    { href: "/design-system", label: "Design System", active: currentPage === "overview" },
+    { href: "/wireframes", label: "Wireframes", active: currentPage === "wireframes" }
   ]
 
   return (
@@ -32,7 +34,9 @@ export function DesignSystemNavigation({
         {/* Logo */}
         <div className="flex items-center">
           <div className="flex items-center space-x-2">
-            <Logo width={100} height={18} />
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Logo width={100} height={18} />
+            </Link>
             {showBadge && <Badge variant="secondary">{badgeText}</Badge>}
           </div>
         </div>

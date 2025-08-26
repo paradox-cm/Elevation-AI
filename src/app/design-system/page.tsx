@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { Favicon } from "@/components/ui/brand-icons"
+
 import Link from "next/link"
 
 export default function DesignSystemPage() {
@@ -25,6 +26,7 @@ export default function DesignSystemPage() {
         { name: "Typography", href: "/design-system/typography", icon: "text", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Spacing", href: "/design-system/spacing", icon: "ruler-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Corner Radius", href: "/design-system/corner-radius", icon: "shape-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Transparency & Glass", href: "/design-system/transparency", icon: "contrast-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Shadows & Elevation", href: "/design-system/shadows-elevation", icon: "stack-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Design Tokens", href: "/design-system/design-tokens", icon: "palette-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Icons", href: "/design-system/icons", icon: "star-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
@@ -37,7 +39,7 @@ export default function DesignSystemPage() {
       items: [
         { name: "Components", href: "/design-system/components", icon: "apps-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Content Components", href: "/design-system/content-components", icon: "article-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-        { name: "Dashboard Components", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Dashboard", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Analytics", href: "/design-system/analytics", icon: "bar-chart-box-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Data Display", href: "/design-system/data-display", icon: "database-2-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Forms", href: "/design-system/forms", icon: "file-list-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
@@ -70,7 +72,7 @@ export default function DesignSystemPage() {
         header={<DesignSystemNavigation currentPage="overview" />}
         sidebar={<DesignSystemSidebar />}
       >
-        <Container>
+        <Container size="2xl">
           {/* Hero Section */}
           <Section paddingY="xl" className="relative overflow-hidden">
             <div className="relative z-10">
@@ -235,7 +237,7 @@ export default function DesignSystemPage() {
                 <Button size="lg" variant="outline" asChild>
                   <Link href="/design-system/colors">
                     <Icon name="palette-line" className="h-4 w-4 mr-2" />
-                    View Foundation
+                    View Color Palette
                   </Link>
                 </Button>
               </div>
@@ -286,7 +288,7 @@ export default function DesignSystemPage() {
           </Section>
 
           {/* Getting Started Section */}
-          <Section paddingY="xl" className="bg-muted/50">
+          <Section paddingY="xl" className="bg-muted/50 rounded-lg">
             <div className="max-w-4xl mx-auto text-center">
               <H2 className="text-2xl font-bold mb-4">Getting Started</H2>
               <BodyLarge className="text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -306,7 +308,7 @@ export default function DesignSystemPage() {
                       Explore our comprehensive documentation to understand design principles and component usage.
                     </BodySmall>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/design-system/components">View Documentation</Link>
+                      <Link href="/design-system/documentation">View Documentation</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -323,7 +325,7 @@ export default function DesignSystemPage() {
                       Get started with our component library and start building your application.
                     </BodySmall>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/design-system/implementation">Install Guide</Link>
+                      <Link href="/design-system/installation">Install Guide</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -340,7 +342,7 @@ export default function DesignSystemPage() {
                       Learn about our design philosophy and principles that guide our component decisions.
                     </BodySmall>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href="/design-system/accessibility">View Principles</Link>
+                      <Link href="/design-system/principles">View Principles</Link>
                     </Button>
                   </CardContent>
                 </Card>

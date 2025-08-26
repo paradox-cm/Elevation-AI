@@ -10,6 +10,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, H4, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
@@ -57,6 +58,7 @@ export default function DashboardPage() {
       trend: { value: 8.2, isPositive: true, period: "last week" },
       icon: "user-line",
       iconColor: "text-blue-500",
+      variant: "info" as const,
     },
     {
       title: "Conversion Rate",
@@ -184,14 +186,185 @@ export default function DashboardPage() {
         header={<DesignSystemNavigation />}
         sidebar={<DesignSystemSidebar />}
       >
-        <Container>
+        <Container size="2xl">
           <Section paddingY="xl">
             <PageHeader
-              title="Dashboard Components"
-              description="Comprehensive dashboard components for building powerful business analytics and monitoring interfaces with real-time data visualization."
+              title="Dashboard"
+              description="Complete dashboard interface showcasing real-time analytics, metrics, and business intelligence components."
               size="lg"
               centered
             />
+          </Section>
+
+          {/* Full Dashboard Mockup */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="dashboard-line" className="h-5 w-5" />
+                  Live Dashboard Interface
+                </CardTitle>
+                <CardDescription>
+                  A complete dashboard interface demonstrating real-world usage of our components
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="bg-background border-b">
+                  {/* Dashboard Header */}
+                  <div className="flex items-center justify-between p-6 border-b">
+                    <div className="flex items-center gap-4">
+                      <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <Icon name="dashboard-line" className="h-5 w-5 text-primary-foreground" />
+                      </div>
+                      <div>
+                        <H3>Elevation AI Analytics</H3>
+                        <BodySmall className="text-muted-foreground">Real-time business intelligence</BodySmall>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Button variant="outline" size="sm">
+                        <Icon name="download-line" className="h-4 w-4 mr-2" />
+                        Export
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Icon name="settings-3-line" className="h-4 w-4 mr-2" />
+                        Settings
+                      </Button>
+                      <Button size="sm">
+                        <Icon name="refresh-line" className="h-4 w-4 mr-2" />
+                        Refresh
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Dashboard Content */}
+                  <div className="p-6 space-y-6">
+                    {/* Stats Overview */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {statsData.map((stat, index) => (
+                        <StatsCard key={index} {...stat} />
+                      ))}
+                    </div>
+
+                    {/* Main Content Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      {/* Charts Section */}
+                      <div className="lg:col-span-2 space-y-8">
+                        {/* Revenue Chart */}
+                        <Card>
+                          <CardHeader>
+                            <CardTitle className="flex items-center justify-between">
+                              <span>Revenue Analytics</span>
+                              <div className="flex items-center gap-2">
+                                <Button variant="outline" size="sm">7D</Button>
+                                <Button variant="outline" size="sm">30D</Button>
+                                <Button variant="outline" size="sm">90D</Button>
+                              </div>
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <ChartPlaceholder
+                              title="Revenue Trend"
+                              description="Monthly revenue performance"
+                              height={300}
+                            />
+                          </CardContent>
+                        </Card>
+
+                                                 {/* User Activity */}
+                         <Card>
+                           <CardHeader>
+                             <CardTitle>User Activity Overview</CardTitle>
+                           </CardHeader>
+                           <CardContent>
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                               <div>
+                                 <H4 className="mb-4">Top Performing Pages</H4>
+                                 <div className="space-y-3">
+                                   {[
+                                     { page: "Dashboard", views: "12,847", growth: "+12%" },
+                                     { page: "Analytics", views: "8,234", growth: "+8%" },
+                                     { page: "Settings", views: "5,123", growth: "+5%" },
+                                     { page: "Profile", views: "3,456", growth: "+3%" }
+                                   ].map((item, index) => (
+                                     <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                                       <div>
+                                         <BodySmall className="font-medium">{item.page}</BodySmall>
+                                         <BodySmall className="text-muted-foreground">{item.views} views</BodySmall>
+                                       </div>
+                                       <Badge variant="secondary">{item.growth}</Badge>
+                                     </div>
+                                   ))}
+                                 </div>
+                               </div>
+                               <div>
+                                 <H4 className="mb-4">System Health</H4>
+                                 <div className="space-y-4">
+                                   {progressData.slice(0, 3).map((item, index) => (
+                                     <ProgressMetric key={index} {...item} />
+                                   ))}
+                                 </div>
+                               </div>
+                             </div>
+                           </CardContent>
+                         </Card>
+
+                         {/* Recent Activity */}
+                         <Card>
+                           <CardHeader>
+                             <CardTitle>Recent Activity</CardTitle>
+                           </CardHeader>
+                           <CardContent>
+                             <ActivityFeed
+                               activities={activityData}
+                               title=""
+                               maxItems={6}
+                             />
+                           </CardContent>
+                         </Card>
+                      </div>
+
+                                             {/* Sidebar */}
+                       <div className="space-y-6">
+                                                 {/* Quick Actions */}
+                        <QuickActions
+                          actions={quickActions}
+                          title="Quick Actions"
+                        />
+
+                         {/* System Status */}
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>System Status</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-3">
+                              {[
+                                { service: "API Gateway", status: "operational", uptime: "99.9%" },
+                                { service: "Database", status: "operational", uptime: "99.8%" },
+                                { service: "CDN", status: "operational", uptime: "99.9%" },
+                                { service: "Monitoring", status: "operational", uptime: "100%" }
+                              ].map((item, index) => (
+                                <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                                  <div>
+                                    <BodySmall className="font-medium">{item.service}</BodySmall>
+                                    <BodySmall className="text-muted-foreground">{item.uptime} uptime</BodySmall>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                                    <BodySmall className="text-green-600">{item.status}</BodySmall>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* Dashboard System Overview */}

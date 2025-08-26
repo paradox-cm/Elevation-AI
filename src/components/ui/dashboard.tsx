@@ -22,7 +22,7 @@ interface StatsCardProps {
   }
   icon?: string
   iconColor?: string
-  variant?: "default" | "success" | "warning" | "error"
+  variant?: "default" | "success" | "warning" | "error" | "info"
   className?: string
 }
 
@@ -41,6 +41,7 @@ export function StatsCard({
     success: "border-green-200 dark:border-green-800",
     warning: "border-yellow-200 dark:border-yellow-800",
     error: "border-red-200 dark:border-red-800",
+    info: "border-blue-200 dark:border-blue-800",
   }
 
   return (
@@ -301,16 +302,18 @@ export function QuickActions({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {actions.map((action, index) => (
             <Button
               key={index}
               variant={action.variant || "outline"}
               onClick={action.onClick}
-              className="h-auto p-3 flex flex-col items-center space-y-2"
+              className="h-auto p-4 flex flex-col items-center space-y-3 hover:shadow-md transition-all"
             >
-              <Icon name={action.icon} className="h-5 w-5" />
-              <div className="text-center">
+              <div className="p-2 rounded-lg bg-muted/50">
+                <Icon name={action.icon} className="h-5 w-5" />
+              </div>
+              <div className="text-center space-y-1">
                 <div className="font-medium text-sm">{action.label}</div>
                 {action.description && (
                   <BodySmall className="text-muted-foreground text-xs">
@@ -392,16 +395,116 @@ export function ChartPlaceholder({
           <CardDescription>{description}</CardDescription>
         )}
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         <div
-          className="flex items-center justify-center border-2 border-dashed border-muted-foreground/25 rounded-lg bg-muted/25"
-          style={{ height }}
+          className="relative border rounded-lg bg-background p-4"
+          style={{ height: height - 48 }}
         >
-          <div className="text-center space-y-2">
-            <Icon name="bar-chart-line" className="h-8 w-8 text-muted-foreground mx-auto" />
-            <BodySmall className="text-muted-foreground">
-              Chart visualization would appear here
-            </BodySmall>
+          {/* Chart Area */}
+          <div className="relative h-full">
+            {/* Chart Header Legend */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                <BodySmall className="font-medium">Revenue</BodySmall>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                <BodySmall className="font-medium">Growth</BodySmall>
+              </div>
+            </div>
+
+            {/* Y-axis labels */}
+            <div className="absolute left-0 top-8 bottom-0 flex flex-col justify-between text-xs text-muted-foreground">
+              <span>$150k</span>
+              <span>$100k</span>
+              <span>$50k</span>
+              <span>$0</span>
+            </div>
+
+            {/* Chart bars and line */}
+            <div className="ml-12 h-full flex items-end justify-between gap-2" style={{ height: 'calc(100% - 32px)' }}>
+              {/* Bar Chart */}
+              <div className="flex-1 flex items-end justify-between gap-1">
+                {[
+                  { value: 85, height: 85, label: 'Jan' },
+                  { value: 78, height: 78, label: 'Feb' },
+                  { value: 82, height: 82, label: 'Mar' },
+                  { value: 65, height: 65, label: 'Apr' },
+                  { value: 72, height: 72, label: 'May' },
+                  { value: 58, height: 58, label: 'Jun' },
+                  { value: 45, height: 45, label: 'Jul' },
+                  { value: 52, height: 52, label: 'Aug' },
+                  { value: 38, height: 38, label: 'Sep' },
+                  { value: 48, height: 48, label: 'Oct' },
+                  { value: 32, height: 32, label: 'Nov' },
+                  { value: 25, height: 25, label: 'Dec' }
+                ].map((bar, index) => (
+                  <div key={index} className="flex flex-col items-center flex-1">
+                    <div 
+                      className="w-full bg-primary/20 rounded-t-sm relative group"
+                      style={{ height: `${bar.height}%` }}
+                    >
+                      <div className="absolute inset-0 bg-primary/40 rounded-t-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">{bar.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Line Chart Overlay */}
+              <svg className="absolute inset-0 ml-12 pointer-events-none" style={{ height: 'calc(100% - 52px)', top: '32px' }}>
+                <polyline
+                  fill="none"
+                  stroke="rgb(34 197 94)"
+                  strokeWidth="2"
+                  points="
+                    0,85 8.33,78 16.67,82 25,65 33.33,72 41.67,58 50,45 58.33,52 66.67,38 75,48 83.33,32 91.67,25
+                  "
+                />
+                {/* Data points */}
+                <circle cx="0" cy="85" r="3" fill="rgb(34 197 94)" />
+                <circle cx="8.33" cy="78" r="3" fill="rgb(34 197 94)" />
+                <circle cx="16.67" cy="82" r="3" fill="rgb(34 197 94)" />
+                <circle cx="25" cy="65" r="3" fill="rgb(34 197 94)" />
+                <circle cx="33.33" cy="72" r="3" fill="rgb(34 197 94)" />
+                <circle cx="41.67" cy="58" r="3" fill="rgb(34 197 94)" />
+                <circle cx="50" cy="45" r="3" fill="rgb(34 197 94)" />
+                <circle cx="58.33" cy="52" r="3" fill="rgb(34 197 94)" />
+                <circle cx="66.67" cy="38" r="3" fill="rgb(34 197 94)" />
+                <circle cx="75" cy="48" r="3" fill="rgb(34 197 94)" />
+                <circle cx="83.33" cy="32" r="3" fill="rgb(34 197 94)" />
+                <circle cx="91.67" cy="25" r="3" fill="rgb(34 197 94)" />
+              </svg>
+            </div>
+
+            {/* Grid lines */}
+            <div className="absolute inset-0 ml-12 pointer-events-none" style={{ top: '32px', height: 'calc(100% - 32px)' }}>
+              <div className="h-full flex flex-col justify-between">
+                <div className="border-t border-muted/20"></div>
+                <div className="border-t border-muted/20"></div>
+                <div className="border-t border-muted/20"></div>
+                <div className="border-t border-muted/20"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Chart Footer */}
+        <div className="flex items-center justify-between mt-4 pt-4 border-t">
+          <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
+              <span className="text-muted-foreground">Monthly Revenue</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              <span className="text-muted-foreground">Trend Line</span>
+            </div>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            Last updated: 2 min ago
           </div>
         </div>
       </CardContent>
