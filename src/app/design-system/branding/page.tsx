@@ -67,16 +67,16 @@ export default function BrandingPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
-                  <div className="h-32 bg-background border rounded-lg flex items-center justify-center p-6">
+                  <div className="h-48 bg-background border rounded-lg flex items-center justify-center p-6">
                     <Logo width={300} height={52} />
                   </div>
                   <div className="space-y-2 text-center">
                     <BodySmall className="text-muted-foreground">Usage:</BodySmall>
-                    <ul className="text-sm space-y-1 text-muted-foreground">
-                      <li>• Light backgrounds</li>
-                      <li>• Primary brand applications</li>
-                      <li>• Marketing materials</li>
-                    </ul>
+                    <div className="text-sm space-y-1 text-muted-foreground">
+                      <div>Light backgrounds</div>
+                      <div>Primary brand applications</div>
+                      <div>Marketing materials</div>
+                    </div>
                   </div>
                 </div>
               </CardContent>

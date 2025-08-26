@@ -87,174 +87,6 @@ export default function InteractiveStatesPage() {
             />
           </Section>
 
-
-
-          {/* Available Variants & Options */}
-          <Section paddingY="lg">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="list-check" className="h-5 w-5" />
-                  Available Variants & Options
-                </CardTitle>
-                <CardDescription>
-                  All available variants, sizes, and configuration options for interactive states.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="loading" className="w-full">
-                  <TabsList className="grid w-full grid-cols-4">
-                    <TabsTrigger value="loading">Loading</TabsTrigger>
-                    <TabsTrigger value="feedback">Feedback</TabsTrigger>
-                    <TabsTrigger value="buttons">Buttons</TabsTrigger>
-                    <TabsTrigger value="forms">Forms</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="loading" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Loading Spinner Variants</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {config.loadingSpinners.variants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Loading Spinner Sizes</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {config.loadingSpinners.sizes.map((size) => (
-                          <div key={size.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{size.name}</div>
-                            <div className="text-xs text-muted-foreground">{size.width}×{size.height}px</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Loading Overlay Variants</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {config.loadingOverlays.variants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Skeleton Variants</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {config.skeletons.variants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="feedback" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Toast Variants</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {config.toasts.variants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Toast Positions</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {config.toasts.positions.map((position) => (
-                          <div key={position.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{position.name}</div>
-                            <div className="text-xs text-muted-foreground">{position.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Progress Steps Variants</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {config.progressSteps.variants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="buttons" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Button Loading Variants</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {config.buttonStates.loadingVariants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Button Hover Effects</H4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {config.buttonStates.hoverEffects.map((effect) => (
-                          <div key={effect.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{effect.name}</div>
-                            <div className="text-xs text-muted-foreground">{effect.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="forms" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Form Validation Styles</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {config.formStates.validationStyles.map((style) => (
-                          <div key={style.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{style.name}</div>
-                            <div className="text-xs text-muted-foreground">{style.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Form Loading Variants</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {config.formStates.loadingVariants.map((variant) => (
-                          <div key={variant.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{variant.name}</div>
-                            <div className="text-xs text-muted-foreground">{variant.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </Section>
-
-          {/* Interactive States Overview */}
           <Section paddingY="lg">
             <Card>
               <CardHeader>
@@ -310,7 +142,7 @@ export default function InteractiveStatesPage() {
               </TabsList>
 
               {/* Loading States */}
-              <TabsContent value="loading" className="space-y-6">
+              <TabsContent value="loading" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Loading Spinners & Overlays</CardTitle>
@@ -433,7 +265,7 @@ export default function InteractiveStatesPage() {
               </TabsContent>
 
               {/* User Feedback */}
-              <TabsContent value="feedback" className="space-y-6">
+              <TabsContent value="feedback" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Toast Notifications</CardTitle>
@@ -489,7 +321,7 @@ export default function InteractiveStatesPage() {
               </TabsContent>
 
               {/* Interactive Elements */}
-              <TabsContent value="interactive" className="space-y-6">
+              <TabsContent value="interactive" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Interactive Form Elements</CardTitle>

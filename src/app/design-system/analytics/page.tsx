@@ -220,222 +220,7 @@ export default function AnalyticsPage() {
 
 
 
-          {/* Available Variants & Options */}
-          <Section paddingY="lg">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="list-check" className="h-5 w-5" />
-                  Available Variants & Options
-                </CardTitle>
-                <CardDescription>
-                  All available analytics metrics, chart types, data visualizations, filters, dashboards, reports, and tracking configurations.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="metrics" className="w-full">
-                  <TabsList className="grid w-full grid-cols-7">
-                    <TabsTrigger value="metrics">Metrics</TabsTrigger>
-                    <TabsTrigger value="charts">Charts</TabsTrigger>
-                    <TabsTrigger value="visualizations">Visualizations</TabsTrigger>
-                    <TabsTrigger value="filters">Filters</TabsTrigger>
-                    <TabsTrigger value="dashboards">Dashboards</TabsTrigger>
-                    <TabsTrigger value="reports">Reports</TabsTrigger>
-                    <TabsTrigger value="tracking">Tracking</TabsTrigger>
-                  </TabsList>
 
-                  <TabsContent value="metrics" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Metric Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {config.metrics.types.map((metric) => (
-                          <div key={metric.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{metric.name}</div>
-                            <div className="text-xs text-muted-foreground">{metric.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {metric.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Metric Formats</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.metrics.formats.map((format) => (
-                          <div key={format.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{format.name}</div>
-                            <div className="text-xs text-muted-foreground">{format.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="charts" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Chart Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                        {config.charts.types.map((chart) => (
-                          <div key={chart.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{chart.name}</div>
-                            <div className="text-xs text-muted-foreground">{chart.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {chart.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Chart Interactions</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.charts.interactions.map((interaction) => (
-                          <div key={interaction.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{interaction.name}</div>
-                            <div className="text-xs text-muted-foreground">{interaction.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="visualizations" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Visualization Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {config.visualizations.types.map((viz) => (
-                          <div key={viz.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{viz.name}</div>
-                            <div className="text-xs text-muted-foreground">{viz.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {viz.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Visualization Components</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.visualizations.components.map((component) => (
-                          <div key={component.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{component.name}</div>
-                            <div className="text-xs text-muted-foreground">{component.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="filters" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Filter Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {config.filters.types.map((filter) => (
-                          <div key={filter.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{filter.name}</div>
-                            <div className="text-xs text-muted-foreground">{filter.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {filter.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Filter Behaviors</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.filters.behaviors.map((behavior) => (
-                          <div key={behavior.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{behavior.name}</div>
-                            <div className="text-xs text-muted-foreground">{behavior.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="dashboards" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Dashboard Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.dashboards.types.map((dashboard) => (
-                          <div key={dashboard.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{dashboard.name}</div>
-                            <div className="text-xs text-muted-foreground">{dashboard.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {dashboard.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Dashboard Layouts</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {config.dashboards.layouts.map((layout) => (
-                          <div key={layout.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{layout.name}</div>
-                            <div className="text-xs text-muted-foreground">{layout.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="reports" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Report Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.reports.types.map((report) => (
-                          <div key={report.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{report.name}</div>
-                            <div className="text-xs text-muted-foreground">{report.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {report.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Report Formats</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.reports.formats.map((format) => (
-                          <div key={format.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{format.name}</div>
-                            <div className="text-xs text-muted-foreground">{format.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="tracking" className="space-y-6">
-                    <div>
-                      <H4 className="mb-3">Tracking Types</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {config.tracking.types.map((tracking) => (
-                          <div key={tracking.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{tracking.name}</div>
-                            <div className="text-xs text-muted-foreground">{tracking.description}</div>
-                            <div className="text-xs font-medium mt-1">Type: {tracking.type}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <H4 className="mb-3">Tracking Triggers</H4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {config.tracking.triggers.map((trigger) => (
-                          <div key={trigger.id} className="p-3 border rounded-lg">
-                            <div className="font-medium text-sm">{trigger.name}</div>
-                            <div className="text-xs text-muted-foreground">{trigger.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </Section>
 
           {/* Analytics System Overview */}
           <Section paddingY="lg">
@@ -494,7 +279,7 @@ export default function AnalyticsPage() {
               </TabsList>
 
               {/* Analytics Overview */}
-              <TabsContent value="overview" className="space-y-6">
+              <TabsContent value="overview" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Complete Analytics Dashboard</CardTitle>
@@ -553,7 +338,7 @@ export default function AnalyticsPage() {
               </TabsContent>
 
               {/* Metrics Showcase */}
-              <TabsContent value="metrics" className="space-y-6">
+              <TabsContent value="metrics" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Analytics Metrics Components</CardTitle>
@@ -632,7 +417,7 @@ export default function AnalyticsPage() {
               </TabsContent>
 
               {/* Charts Showcase */}
-              <TabsContent value="charts" className="space-y-6">
+              <TabsContent value="charts" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Chart & Visualization Components</CardTitle>
@@ -716,7 +501,7 @@ export default function AnalyticsPage() {
               </TabsContent>
 
               {/* Analytics Tools Showcase */}
-              <TabsContent value="tools" className="space-y-6">
+              <TabsContent value="tools" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Analytics Tools & Filters</CardTitle>

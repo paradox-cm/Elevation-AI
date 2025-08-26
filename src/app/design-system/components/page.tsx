@@ -85,6 +85,7 @@ export default function ComponentsPage() {
             title="Buttons"
             description="Different button variants and sizes."
             size="md"
+            className="mb-8"
           />
           <Card>
             <CardHeader>
@@ -125,6 +126,7 @@ export default function ComponentsPage() {
             title="Form Components"
             description="Input fields, selects, and form controls."
             size="md"
+            className="mb-8"
           />
           <Grid cols={2} gap={4} className="mt-8">
             <Card>
@@ -209,6 +211,7 @@ export default function ComponentsPage() {
             title="Data Display"
             description="Tables, badges, avatars, and progress indicators."
             size="md"
+            className="mb-8"
           />
           <Grid cols={2} gap={4} className="mt-8">
             <Card>
@@ -275,6 +278,7 @@ export default function ComponentsPage() {
             title="Navigation"
             description="Breadcrumbs, pagination, and navigation menus."
             size="md"
+            className="mb-8"
           />
           <div className="space-y-6">
             <Card>
@@ -340,6 +344,7 @@ export default function ComponentsPage() {
             title="Overlays & Dialogs"
             description="Modals, popovers, tooltips, and dropdowns."
             size="md"
+            className="mb-8"
           />
           <Card>
             <CardHeader>
@@ -526,6 +531,7 @@ export default function ComponentsPage() {
             title="Layout & Structure"
             description="Cards, separators, tabs, and accordion."
             size="md"
+            className="mb-8"
           />
           <div className="space-y-6">
             <Card>
@@ -611,6 +617,7 @@ export default function ComponentsPage() {
             title="Alerts & Feedback"
             description="Alert messages and notification components."
             size="md"
+            className="mb-8"
           />
           <div className="space-y-4">
             <Alert>
@@ -636,6 +643,7 @@ export default function ComponentsPage() {
             title="Data Table"
             description="Structured data display with tables."
             size="md"
+            className="mb-8"
           />
           <Card>
             <CardHeader>
@@ -684,6 +692,7 @@ export default function ComponentsPage() {
             title="Advanced Components"
             description="Calendar, carousel, command palette, and more."
             size="md"
+            className="mb-8"
           />
           
           <div className="space-y-6">
@@ -804,6 +813,7 @@ export default function ComponentsPage() {
             title="Utility Components"
             description="Separators, scroll areas, and aspect ratios."
             size="md"
+            className="mb-8"
           />
           
           <div className="space-y-6">
@@ -902,6 +912,7 @@ export default function ComponentsPage() {
             title="Menu Components"
             description="Menubar and navigation menu components."
             size="md"
+            className="mb-8"
           />
           
           <div className="space-y-6">

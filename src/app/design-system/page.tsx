@@ -5,12 +5,13 @@ import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Icon from "@/components/ui/icon"
-import { H1, H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H2, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
+import { Favicon } from "@/components/ui/brand-icons"
 import Link from "next/link"
 
 export default function DesignSystemPage() {
@@ -80,42 +81,151 @@ export default function DesignSystemPage() {
                 centered
               />
               
-              {/* Hero Grid */}
-              <div className="mt-12 w-full">
-                <div className="relative bg-muted/50 rounded-2xl border border-border overflow-hidden">
-                  <div className="aspect-video bg-background/80 backdrop-blur-sm flex items-center justify-center p-8">
-                    <div className="relative w-full max-w-md h-full">
-                      {/* Grid Paper Background */}
+              {/* Hero Grid Container */}
+              <div className="mt-12 w-full h-[600px] relative bg-muted/50 rounded-2xl border border-border overflow-hidden">
+                {/* Centered Icon */}
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <Favicon width={100} height={100} priority />
+                </div>
+                
+                {/* Full Grid Background */}
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm">
+                  {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness */}
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0.05) 50%, transparent 90%),
+                        radial-gradient(circle at 80% 80%, rgba(75, 85, 99, 0.4) 0%, rgba(75, 85, 99, 0.05) 50%, transparent 90%),
+                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.02) 60%, transparent 95%),
+                        radial-gradient(circle at 30% 70%, rgba(75, 85, 99, 0.2) 0%, rgba(75, 85, 99, 0.02) 60%, transparent 95%)
+                      `,
+                      backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
+                      backgroundPosition: '0% 0%, 100% 100%, 50% 50%, 25% 75%',
+                      animation: 'plasma-flow 12s ease-in-out infinite',
+                      filter: 'blur(16px)',
+                      WebkitMask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      WebkitMaskSize: '32px 32px',
+                      WebkitMaskPosition: '0 0',
+                      mask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      maskSize: '32px 32px',
+                      maskPosition: '0 0'
+                    }}
+                  />
+                  
+                  {/* Additional Soft Blur Layer */}
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 70%),
+                        radial-gradient(circle at 40% 60%, rgba(75, 85, 99, 0.18) 0%, transparent 70%),
+                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 80%),
+                        radial-gradient(circle at 10% 90%, rgba(75, 85, 99, 0.12) 0%, transparent 80%)
+                      `,
+                      backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
+                      backgroundPosition: '75% 25%, 10% 90%, 50% 50%, 90% 10%',
+                      animation: 'plasma-flow 12s ease-in-out infinite reverse',
+                      filter: 'blur(24px)',
+                      WebkitMask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      WebkitMaskSize: '32px 32px',
+                      WebkitMaskPosition: '0 0',
+                      mask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      maskSize: '32px 32px',
+                      maskPosition: '0 0'
+                    }}
+                  />
+                  
+                  {/* Extra Softness Layer */}
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 80%),
+                        radial-gradient(circle at 75% 75%, rgba(75, 85, 99, 0.1) 0%, transparent 80%)
+                      `,
+                      backgroundSize: '1000px 1000px, 1200px 1200px',
+                      backgroundPosition: '0% 0%, 100% 100%',
+                      animation: 'plasma-flow 12s ease-in-out infinite',
+                      filter: 'blur(32px)',
+                      WebkitMask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      WebkitMaskSize: '32px 32px',
+                      WebkitMaskPosition: '0 0',
+                      mask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      maskSize: '32px 32px',
+                      maskPosition: '0 0'
+                    }}
+                  />
+                  
+                  {/* Base Grid Structure - Subtle for reference */}
                       <div 
                         className="absolute inset-0"
                         style={{
                           backgroundImage: `
-                            linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-                            linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
+                        linear-gradient(to right, rgba(229, 231, 235, 0.1) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(229, 231, 235, 0.1) 1px, transparent 1px)
                           `,
                           backgroundSize: '32px 32px',
                           backgroundPosition: '0 0'
                         }}
                       />
+                  
                       {/* Dark mode grid lines */}
                       <div 
                         className="absolute inset-0 dark:hidden"
                         style={{
                           backgroundImage: `
-                            linear-gradient(to right, #d1d5db 1px, transparent 1px),
-                            linear-gradient(to bottom, #d1d5db 1px, transparent 1px)
+                        linear-gradient(to right, rgba(209, 213, 219, 0.1) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(209, 213, 219, 0.1) 1px, transparent 1px)
                           `,
                           backgroundSize: '32px 32px',
                           backgroundPosition: '0 0'
                         }}
                       />
                     </div>
-                  </div>
-                </div>
+                
+                {/* CSS Animation for Plasma Effect */}
+                <style jsx>{`
+                  @keyframes plasma-flow {
+                    0% {
+                      background-position: 0% 0%, 100% 100%, 50% 50%, 25% 75%;
+                    }
+                    25% {
+                      background-position: 100% 0%, 0% 100%, 75% 25%, 50% 50%;
+                    }
+                    50% {
+                      background-position: 100% 100%, 0% 0%, 25% 75%, 75% 25%;
+                    }
+                    75% {
+                      background-position: 0% 100%, 100% 0%, 50% 50%, 25% 25%;
+                    }
+                    100% {
+                      background-position: 0% 0%, 100% 100%, 50% 50%, 25% 75%;
+                    }
+                  }
+                `}</style>
               </div>
 
               {/* Quick Actions */}
-              <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" asChild>
                   <Link href="/design-system/components">
                     <Icon name="apps-line" className="h-4 w-4 mr-2" />
@@ -133,8 +243,8 @@ export default function DesignSystemPage() {
           </Section>
 
           {/* Design System Categories */}
-          <Section paddingY="xl">
-            <div className="space-y-16">
+          <Section paddingY="lg">
+            <div className="space-y-12">
               {designSystemCategories.map((category) => (
                 <div key={category.title}>
                   <div className="mb-8">
