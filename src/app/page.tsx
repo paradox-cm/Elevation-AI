@@ -1,3 +1,5 @@
+"use client"
+
 import { AppShell, Container, Section } from "@/components/ui/layout";
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation";
 import { PageWrapper } from "@/components/page-wrapper";
