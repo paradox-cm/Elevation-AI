@@ -19,7 +19,7 @@ interface SiteStructureItem {
   title: string
   description: string
   pageNumber?: number
-  status: 'completed' | 'to-create' | 'dropdown'
+  status: 'completed' | 'to-create' | 'dropdown' | 'wip' | 'pending'
   icon: React.ComponentType<{ className?: string }>
   children?: SiteStructureItem[]
   href?: string
