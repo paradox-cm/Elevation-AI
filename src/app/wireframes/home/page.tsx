@@ -132,8 +132,8 @@ function HeroSection() {
   return (
     <Section paddingY="2xl" className="min-h-[80vh] flex items-center">
       <Container size="2xl">
-        <Grid cols={2} className="items-center gap-8 lg:gap-12">
-          {/* Left Content */}
+        <div className="space-y-12 lg:space-y-16">
+          {/* Content */}
           <div className="space-y-6 lg:space-y-8">
             <div className="space-y-4 lg:space-y-6">
               <H1 className="text-4xl sm:text-5xl lg:text-6xl">
@@ -148,7 +148,7 @@ function HeroSection() {
             </Button>
           </div>
 
-          {/* Right Visual */}
+          {/* Visual */}
           <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] rounded-xl lg:rounded-2xl flex items-center justify-center border border-border/50 overflow-hidden">
             {/* Static Grid of Dots Background */}
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm">
@@ -186,7 +186,7 @@ function HeroSection() {
               />
             </div>
           </div>
-        </Grid>
+        </div>
       </Container>
     </Section>
   )

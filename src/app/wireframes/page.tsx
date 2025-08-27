@@ -31,7 +31,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Home',
     description: 'Main landing page and entry point',
     pageNumber: 1,
-    status: 'completed',
+    status: 'wip',
     icon: FileText,
     href: '/'
   },
@@ -40,7 +40,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Platform',
     description: 'Core platform features and capabilities',
     pageNumber: 2,
-    status: 'completed',
+    status: 'pending',
     icon: Building2,
     href: '/platform'
   },
@@ -63,7 +63,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Private Market Organizations',
             description: 'Solutions for private equity and venture capital',
             pageNumber: 3,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/private-markets'
           },
@@ -72,7 +72,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Public Market Organizations',
             description: 'Solutions for public market participants',
             pageNumber: 4,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/public-markets'
           },
@@ -81,7 +81,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Banks',
             description: 'Banking and financial institution solutions',
             pageNumber: 5,
-            status: 'completed',
+            status: 'pending',
             icon: Building2,
             href: '/solutions/banks'
           },
@@ -90,7 +90,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Enterprise',
             description: 'Large enterprise organization solutions',
             pageNumber: 6,
-            status: 'completed',
+            status: 'pending',
             icon: Building2,
             href: '/solutions/enterprise'
           },
@@ -99,7 +99,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Government',
             description: 'Government and public sector solutions',
             pageNumber: 7,
-            status: 'completed',
+            status: 'pending',
             icon: Building2,
             href: '/solutions/government'
           }
@@ -117,7 +117,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Creating & Growing a New Venture',
             description: 'Solutions for startups and new ventures',
             pageNumber: 8,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/creating-growing'
           },
@@ -126,7 +126,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Scaling a Venture',
             description: 'Solutions for growth-stage companies',
             pageNumber: 9,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/scaling'
           },
@@ -135,7 +135,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Exiting a Venture',
             description: 'Solutions for exit strategies and transitions',
             pageNumber: 10,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/exiting'
           },
@@ -144,7 +144,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Post-IPO Growth',
             description: 'Solutions for post-IPO companies',
             pageNumber: 11,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/post-ipo'
           },
@@ -153,7 +153,7 @@ const siteStructure: SiteStructureItem[] = [
             title: 'Post-Exit Family Office Creation',
             description: 'Solutions for family office establishment',
             pageNumber: 12,
-            status: 'completed',
+            status: 'pending',
             icon: TrendingUp,
             href: '/solutions/family-office'
           }
@@ -166,7 +166,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Pricing',
     description: 'Pricing plans and packages',
     pageNumber: 13,
-    status: 'completed',
+    status: 'pending',
     icon: CreditCard,
     href: '/pricing'
   },
@@ -190,7 +190,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Careers',
         description: 'Career opportunities and job listings',
         pageNumber: 14,
-        status: 'completed',
+        status: 'pending',
         icon: Briefcase,
         href: '/resources/careers'
       },
@@ -199,7 +199,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Partners',
         description: 'Partnership opportunities and programs',
         pageNumber: 15,
-        status: 'completed',
+        status: 'pending',
         icon: Handshake,
         href: '/resources/partners'
       },
@@ -208,7 +208,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Investors',
         description: 'Information for investors and stakeholders',
         pageNumber: 16,
-        status: 'completed',
+        status: 'pending',
         icon: TrendingUp,
         href: '/resources/investors'
       },
@@ -217,7 +217,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'For Developers & Platforms',
         description: 'Developer resources and platform integrations',
         pageNumber: 17,
-        status: 'completed',
+        status: 'pending',
         icon: Code,
         href: '/resources/developers'
       },
@@ -238,8 +238,10 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
   
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'completed':
-        return <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">Completed</Badge>
+      case 'wip':
+        return <Badge variant="default" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">WIP</Badge>
+      case 'pending':
+        return <Badge variant="secondary">Pending</Badge>
       case 'to-create':
         return <Badge variant="secondary">To Create</Badge>
       case 'dropdown':
@@ -385,12 +387,12 @@ export default function WireframesPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Building2 className="w-5 h-5" />
-                    Completed
+                    WIP
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-green-600">15</div>
-                  <p className="text-sm text-muted-foreground">Pages ready for production</p>
+                  <div className="text-3xl font-bold text-yellow-600">1</div>
+                  <p className="text-sm text-muted-foreground">Pages in progress</p>
                 </CardContent>
               </Card>
               
@@ -398,12 +400,12 @@ export default function WireframesPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Code className="w-5 h-5" />
-                    To Create
+                    Pending
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-orange-600">2</div>
-                  <p className="text-sm text-muted-foreground">Pages in development</p>
+                  <div className="text-3xl font-bold text-orange-600">16</div>
+                  <p className="text-sm text-muted-foreground">Pages to be developed</p>
                 </CardContent>
               </Card>
             </Grid>
