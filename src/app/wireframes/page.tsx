@@ -291,37 +291,39 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
       className={`h-full transition-all duration-200 cursor-pointer hover:shadow-lg hover:bg-primary/5 hover:border-primary/20`}
       onClick={handleCardClick}
     >
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
+      <CardHeader className="pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-lg bg-primary/10 flex-shrink-0">
               <IconComponent className="w-5 h-5 text-primary" />
             </div>
-            <div>
-              <CardTitle className="text-lg">{item.title}</CardTitle>
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-lg leading-tight">{item.title}</CardTitle>
               {item.pageNumber && (
-                <p className="text-sm text-muted-foreground">Page {item.pageNumber}</p>
+                <p className="text-sm text-muted-foreground mt-1">Page {item.pageNumber}</p>
               )}
             </div>
           </div>
-          {getStatusBadge(item.status)}
+          <div className="flex-shrink-0">
+            {getStatusBadge(item.status)}
+          </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <CardDescription className="mb-4">{item.description}</CardDescription>
+      <CardContent className="pt-0">
+        <CardDescription className="mb-4 text-sm leading-relaxed">{item.description}</CardDescription>
         
         {item.children && (
-          <div className="space-y-2">
+          <div className="space-y-3">
             <p className="text-sm font-medium text-muted-foreground">Sub-sections:</p>
-            <div className="space-y-1">
+            <div className="space-y-2">
               {item.children.map((child) => (
-                <div key={child.id} className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2">
-                    <ChevronRight className="w-3 h-3 text-muted-foreground" />
-                    {child.title}
+                <div key={child.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 text-sm">
+                  <span className="flex items-center gap-2 text-foreground">
+                    <ChevronRight className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                    <span className="truncate">{child.title}</span>
                   </span>
                   {child.pageNumber && (
-                    <span className="text-xs text-muted-foreground">Page {child.pageNumber}</span>
+                    <span className="text-xs text-muted-foreground sm:text-sm">Page {child.pageNumber}</span>
                   )}
                 </div>
               ))}
@@ -356,7 +358,7 @@ export default function WireframesPage() {
               description="Primary navigation items and their hierarchical organization"
               size="md"
             />
-            <Grid cols={3} gap={6} className="mt-8">
+            <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={6} className="mt-8">
               {siteStructure.map((item) => (
                 <SiteStructureCard key={item.id} item={item} />
               ))}
@@ -369,43 +371,43 @@ export default function WireframesPage() {
               description="Overview of our site structure and completion status"
               size="md"
             />
-            <Grid cols={3} gap={6} className="mt-8">
+            <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={6} className="mt-8">
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5" />
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                     Total Pages
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">17</div>
-                  <p className="text-sm text-muted-foreground">Main content pages</p>
+                <CardContent className="pt-0">
+                  <div className="text-2xl sm:text-3xl font-bold">17</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Main content pages</p>
                 </CardContent>
               </Card>
               
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Building2 className="w-5 h-5" />
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     WIP
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-yellow-600">1</div>
-                  <p className="text-sm text-muted-foreground">Pages in progress</p>
+                <CardContent className="pt-0">
+                  <div className="text-2xl sm:text-3xl font-bold text-yellow-600">1</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Pages in progress</p>
                 </CardContent>
               </Card>
               
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Code className="w-5 h-5" />
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <Code className="w-4 h-4 sm:w-5 sm:h-5" />
                     Pending
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-orange-600">16</div>
-                  <p className="text-sm text-muted-foreground">Pages to be developed</p>
+                <CardContent className="pt-0">
+                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">16</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Pages to be developed</p>
                 </CardContent>
               </Card>
             </Grid>
