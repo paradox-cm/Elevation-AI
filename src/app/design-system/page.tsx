@@ -73,7 +73,7 @@ export default function DesignSystemPage() {
         sidebar={<DesignSystemSidebar />}
       >
         <Container size="2xl">
-          {/* Hero Section */}
+          {/* Hero Section - Mobile Optimized */}
           <Section paddingY="xl" className="relative overflow-hidden">
             <div className="relative z-10">
               <PageHeader
@@ -83,11 +83,16 @@ export default function DesignSystemPage() {
                 centered
               />
               
-              {/* Hero Grid Container */}
-              <div className="mt-12 w-full h-[600px] relative bg-muted/50 rounded-2xl border border-border overflow-hidden">
-                {/* Centered Icon */}
+              {/* Hero Grid Container - Mobile Optimized */}
+              <div className="mt-8 sm:mt-12 w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] relative bg-muted/50 rounded-xl sm:rounded-2xl border border-border overflow-hidden">
+                {/* Centered Icon - Responsive Sizing */}
                 <div className="absolute inset-0 flex items-center justify-center z-20">
-                  <Favicon width={100} height={100} priority />
+                  <Favicon 
+                    width={60} 
+                    height={60} 
+                    className="sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-[100px] lg:h-[100px]" 
+                    priority 
+                  />
                 </div>
                 
                 {/* Full Grid Background */}
@@ -226,15 +231,15 @@ export default function DesignSystemPage() {
                 `}</style>
               </div>
 
-              {/* Quick Actions */}
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" asChild>
+              {/* Quick Actions - Mobile Optimized */}
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button size="lg" className="w-full sm:w-auto" asChild>
                   <Link href="/design-system/components">
                     <Icon name="apps-line" className="h-4 w-4 mr-2" />
                     Browse Components
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
                   <Link href="/design-system/colors">
                     <Icon name="palette-line" className="h-4 w-4 mr-2" />
                     View Color Palette
@@ -244,35 +249,35 @@ export default function DesignSystemPage() {
             </div>
           </Section>
 
-          {/* Design System Categories */}
+          {/* Design System Categories - Mobile Optimized */}
           <Section paddingY="lg">
-            <div className="space-y-12">
+            <div className="space-y-8 sm:space-y-12">
               {designSystemCategories.map((category) => (
                 <div key={category.title}>
-                  <div className="mb-8">
-                    <H2 className="text-2xl font-bold mb-2">{category.title}</H2>
-                    <BodyLarge className="text-muted-foreground max-w-2xl">
+                  <div className="mb-6 sm:mb-8">
+                    <H2 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">{category.title}</H2>
+                    <BodyLarge className="text-muted-foreground max-w-2xl text-sm sm:text-base">
                       {category.description}
                     </BodyLarge>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {category.items.map((item) => (
-                      <Card key={item.name} className="group hover:shadow-md transition-shadow">
-                        <CardHeader>
+                      <Card key={item.name} className="group hover:shadow-md transition-shadow cursor-pointer">
+                        <CardHeader className="pb-3 sm:pb-4">
                           <div className="flex items-center space-x-3">
-                            <div className={`p-2 rounded-lg ${item.bgColor}`}>
-                              <Icon name={item.icon} className={`h-5 w-5 ${item.color}`} />
+                            <div className={`p-2 sm:p-2.5 rounded-lg ${item.bgColor} flex-shrink-0`}>
+                              <Icon name={item.icon} className={`h-4 w-4 sm:h-5 sm:w-5 ${item.color}`} />
                             </div>
-                            <div>
-                              <CardTitle className="text-lg">{item.name}</CardTitle>
+                            <div className="min-w-0 flex-1">
+                              <CardTitle className="text-base sm:text-lg leading-tight">{item.name}</CardTitle>
                             </div>
                           </div>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="pt-0">
                           <div className="flex items-center justify-between">
-                            <Button variant="ghost" size="sm" asChild className="group-hover:bg-muted hover:bg-primary/10 dark:hover:bg-blue-600/20">
-                              <Link href={item.href}>
+                            <Button variant="ghost" size="sm" asChild className="group-hover:bg-muted hover:bg-primary/10 dark:hover:bg-blue-600/20 w-full sm:w-auto justify-start">
+                              <Link href={item.href} className="flex items-center">
                                 Explore
                                 <Icon name="arrow-right-line" className="h-4 w-4 ml-1" />
                               </Link>
@@ -287,61 +292,61 @@ export default function DesignSystemPage() {
             </div>
           </Section>
 
-          {/* Getting Started Section */}
+          {/* Getting Started Section - Mobile Optimized */}
           <Section paddingY="xl" className="bg-muted/50 rounded-lg">
             <div className="max-w-4xl mx-auto text-center">
-              <H2 className="text-2xl font-bold mb-4">Getting Started</H2>
-              <BodyLarge className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <H2 className="text-xl sm:text-2xl font-bold mb-4">Getting Started</H2>
+              <BodyLarge className="text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto text-sm sm:text-base">
                 Ready to start building with our design system? Follow our comprehensive guides to get up and running quickly.
               </BodyLarge>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <Card className="text-center">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Icon name="book-line" className="h-6 w-6 text-primary" />
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <Icon name="book-line" className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
-                    <CardTitle>Read the Docs</CardTitle>
+                    <CardTitle className="text-base sm:text-lg">Read the Docs</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <BodySmall className="text-muted-foreground mb-4">
+                    <BodySmall className="text-muted-foreground mb-4 text-sm">
                       Explore our comprehensive documentation to understand design principles and component usage.
                     </BodySmall>
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
                       <Link href="/design-system/documentation">View Documentation</Link>
                     </Button>
                   </CardContent>
                 </Card>
 
                 <Card className="text-center">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Icon name="code-line" className="h-6 w-6 text-green-500" />
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <Icon name="code-line" className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
                     </div>
-                    <CardTitle>Install Components</CardTitle>
+                    <CardTitle className="text-base sm:text-lg">Install Components</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <BodySmall className="text-muted-foreground mb-4">
+                    <BodySmall className="text-muted-foreground mb-4 text-sm">
                       Get started with our component library and start building your application.
                     </BodySmall>
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
                       <Link href="/design-system/installation">Install Guide</Link>
                     </Button>
                   </CardContent>
                 </Card>
 
-                <Card className="text-center">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Icon name="lightbulb-line" className="h-6 w-6 text-purple-500" />
+                <Card className="text-center sm:col-span-2 lg:col-span-1">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <Icon name="lightbulb-line" className="h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
                     </div>
-                    <CardTitle>Design Principles</CardTitle>
+                    <CardTitle className="text-base sm:text-lg">Design Principles</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <BodySmall className="text-muted-foreground mb-4">
+                    <BodySmall className="text-muted-foreground mb-4 text-sm">
                       Learn about our design philosophy and principles that guide our component decisions.
                     </BodySmall>
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
                       <Link href="/design-system/principles">View Principles</Link>
                     </Button>
                   </CardContent>

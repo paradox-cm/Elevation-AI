@@ -1,7 +1,9 @@
 "use client"
 
 import { PageWrapper } from "@/components/page-wrapper"
-import { AppShell } from "@/components/ui/layout/app-shell"
+import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
+import { MobileOnlyNavigation } from "@/components/ui/mobile-only-navigation"
+import { MobileMenu } from "@/components/ui/mobile-menu"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { Grid } from "@/components/ui/layout/grid"
@@ -9,7 +11,6 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { ChevronRight, ExternalLink, FileText, Building2, Users, CreditCard, BookOpen, Shield, Briefcase, Handshake, TrendingUp, Code, Newspaper } from "lucide-react"
 import { useRouter } from "next/navigation"
 
@@ -333,8 +334,9 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
 export default function WireframesPage() {
   return (
     <PageWrapper>
-      <AppShell
-        header={<DesignSystemNavigation currentPage="wireframes" />}
+      <MobileOnlyLayout
+        header={<MobileOnlyNavigation currentPage="wireframes" />}
+        mobileMenu={<MobileMenu currentPage="wireframes" />}
       >
         <Container size="2xl">
           <Section paddingY="xl">
@@ -407,7 +409,7 @@ export default function WireframesPage() {
             </Grid>
           </Section>
         </Container>
-      </AppShell>
+      </MobileOnlyLayout>
     </PageWrapper>
   )
 }

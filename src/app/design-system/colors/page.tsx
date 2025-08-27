@@ -5,7 +5,6 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { Grid } from "@/components/ui/layout/grid"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 
 import { Button } from "@/components/ui/button"
@@ -114,7 +113,7 @@ export default function ColorsPage() {
             description="Core principles that guide our color usage"
             size="md"
           />
-          <Grid cols={3} gap={6} className="mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             {Object.entries(colorPrinciples).map(([key, principle]) => (
               <Card key={key}>
                 <CardHeader>
@@ -130,7 +129,7 @@ export default function ColorsPage() {
                 </CardContent>
               </Card>
             ))}
-          </Grid>
+          </div>
         </Section>
 
         {/* Semantic Colors */}
@@ -148,7 +147,7 @@ export default function ColorsPage() {
             </TabsList>
             
             <TabsContent value="ui" className="mt-6">
-              <Grid cols={2} gap={6}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Core UI Colors</CardTitle>
@@ -186,11 +185,11 @@ export default function ColorsPage() {
                     ))}
                   </CardContent>
                 </Card>
-              </Grid>
+              </div>
             </TabsContent>
 
             <TabsContent value="utility" className="mt-6">
-              <Grid cols={2} gap={6}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Interactive Colors</CardTitle>
@@ -228,7 +227,7 @@ export default function ColorsPage() {
                     ))}
                   </CardContent>
                 </Card>
-              </Grid>
+              </div>
             </TabsContent>
 
             <TabsContent value="system" className="mt-6">
@@ -323,7 +322,7 @@ export default function ColorsPage() {
             description="Material 3 inspired color combinations for surfaces and content"
             size="md"
           />
-          <Grid cols={2} gap={6} className="mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
             {colorCombinations.map((combination, index) => (
               <Card key={index}>
                 <CardHeader>
@@ -376,7 +375,7 @@ export default function ColorsPage() {
                 </CardContent>
               </Card>
             ))}
-          </Grid>
+          </div>
         </Section>
 
         {/* Accessibility Guidelines */}
@@ -386,7 +385,7 @@ export default function ColorsPage() {
             description="WCAG compliant contrast ratios and accessibility best practices"
             size="md"
           />
-          <Grid cols={2} gap={6} className="mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
             <Card>
               <CardHeader>
                 <CardTitle>Contrast Ratios</CardTitle>
@@ -445,7 +444,7 @@ export default function ColorsPage() {
                 </Alert>
               </CardContent>
             </Card>
-          </Grid>
+          </div>
         </Section>
 
         {/* Color Usage Examples */}
@@ -464,7 +463,7 @@ export default function ColorsPage() {
             </TabsList>
             
             <TabsContent value="interactive" className="mt-6">
-              <Grid cols={2} gap={6}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Buttons & Interactive Elements</CardTitle>
@@ -543,11 +542,11 @@ export default function ColorsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </Grid>
+              </div>
             </TabsContent>
 
             <TabsContent value="surfaces" className="mt-6">
-              <Grid cols={2} gap={6}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Background & Surface Colors</CardTitle>
@@ -630,11 +629,11 @@ export default function ColorsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </Grid>
+              </div>
             </TabsContent>
 
             <TabsContent value="typography" className="mt-6">
-              <Grid cols={2} gap={6}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Text Hierarchy</CardTitle>
@@ -682,11 +681,11 @@ export default function ColorsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </Grid>
+              </div>
             </TabsContent>
 
             <TabsContent value="data" className="mt-6">
-              <Grid cols={2} gap={6}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Data Visualization</CardTitle>
@@ -738,7 +737,7 @@ export default function ColorsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </Grid>
+              </div>
             </TabsContent>
           </Tabs>
         </Section>

@@ -1,27 +1,27 @@
 "use client"
 
-import { useSidebar } from "@/components/ui/layout/app-shell"
+import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 import { Navigation } from "@/components/ui/navigation"
 
-interface DesignSystemNavigationProps {
+interface MobileOnlyNavigationProps {
   currentPage?: string
   showBadge?: boolean
   badgeText?: string
 }
 
-export function DesignSystemNavigation({ 
+export function MobileOnlyNavigation({ 
   currentPage,
   showBadge = true,
   badgeText = "Design System"
-}: DesignSystemNavigationProps) {
-  const { setSidebarOpen } = useSidebar()
+}: MobileOnlyNavigationProps) {
+  const { setMobileMenuOpen } = useMobileMenu()
 
   return (
     <Navigation
       currentPage={currentPage}
       showBadge={showBadge}
       badgeText={badgeText}
-      onMobileMenuToggle={() => setSidebarOpen(true)}
+      onMobileMenuToggle={() => setMobileMenuOpen(true)}
       showMobileMenuButton={true}
     />
   )

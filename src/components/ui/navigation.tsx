@@ -1,88 +1,82 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
-import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { Logo } from "@/components/ui/logo"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Icon from "@/components/ui/icon"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 interface NavigationProps {
-  logo?: React.ReactNode
-  links?: Array<{
-    href: string
-    label: string
-    external?: boolean
-  }>
-  className?: string
+  currentPage?: string
+  showBadge?: boolean
+  badgeText?: string
+  onMobileMenuToggle?: () => void
+  showMobileMenuButton?: boolean
 }
 
 export function Navigation({ 
-  logo, 
-  links = [],
-  className 
+  currentPage,
+  showBadge = true,
+  badgeText = "Design System",
+  onMobileMenuToggle,
+  showMobileMenuButton = true
 }: NavigationProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const navigationLinks = [
+    { href: "/", label: "Home" },
+    { href: "/design-system", label: "Design System", active: currentPage === "overview" },
+    { href: "/wireframes", label: "Wireframes", active: currentPage === "wireframes" }
+  ]
 
   return (
-    <nav className={cn(
-      "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-      className
-    )}>
-      <div className="w-full px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
-        {/* Logo */}
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-16 items-center justify-between">
+        {/* Logo - Mobile Optimized */}
         <div className="flex items-center">
-          {logo && (
-            <Link href="/" className="flex items-center space-x-2">
-              {logo}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Logo width={100} height={18} />
             </Link>
-          )}
+            {showBadge && (
+              <Badge variant="secondary" className="text-xs sm:text-sm px-2 py-1">
+                {badgeText}
+              </Badge>
+            )}
+          </div>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex md:items-center md:space-x-6">
-          {links.map((link) => (
-            <Link
+        <div className="hidden lg:flex lg:items-center lg:space-x-6">
+          {navigationLinks.map((link) => (
+            <a
               key={link.href}
               href={link.href}
-              target={link.external ? "_blank" : undefined}
-              rel={link.external ? "noopener noreferrer" : undefined}
-              className="text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md",
+                link.active ? "text-foreground bg-muted" : "text-foreground/60 hover:bg-muted/50"
+              )}
             >
               {link.label}
-            </Link>
+            </a>
           ))}
           <ThemeToggle />
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="flex items-center space-x-2 md:hidden">
+        {/* Mobile & Tablet Navigation - Optimized Touch Targets */}
+        <div className="flex items-center space-x-1 sm:space-x-2 lg:hidden">
           <ThemeToggle />
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Icon name="menu-line" className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col space-y-4 mt-8">
-                {links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-lg font-medium transition-colors hover:text-foreground/80 text-foreground/60"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </SheetContent>
-          </Sheet>
+          {showMobileMenuButton && onMobileMenuToggle && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-10 w-10 sm:h-11 sm:w-11"
+              onClick={onMobileMenuToggle}
+            >
+              <Icon name="menu-line" className="h-5 w-5" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          )}
         </div>
       </div>
     </nav>

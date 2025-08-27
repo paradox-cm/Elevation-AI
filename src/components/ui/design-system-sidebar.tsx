@@ -68,23 +68,23 @@ export function DesignSystemSidebar() {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-6">
-      <div className="space-y-4">
+    <div className="h-full overflow-y-auto p-4 sm:p-6">
+      <div className="space-y-3 sm:space-y-4">
         <div>
-          <H3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          <H3 className="text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Design System
           </H3>
           <nav className="space-y-1">
             <Link 
               href="/design-system" 
               className={cn(
-                "flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                "flex items-center space-x-3 px-3 py-3 sm:py-2 text-sm font-medium rounded-lg transition-colors",
                 pathname === "/design-system" 
                   ? "text-blue-500 bg-blue-500/10" 
                   : "text-blue-500 hover:text-blue-600 hover:bg-blue-500/10"
               )}
             >
-              <div className="w-6 h-6 rounded flex items-center justify-center bg-blue-500/10">
+              <div className="w-6 h-6 rounded flex items-center justify-center bg-blue-500/10 flex-shrink-0">
                 <Icon name="home-line" className="h-4 w-4 text-blue-500" />
               </div>
               <span>Overview</span>
@@ -101,7 +101,7 @@ export function DesignSystemSidebar() {
             <CollapsibleTrigger asChild>
               <Button
                 variant="ghost"
-                className="w-full justify-between py-3 px-3 h-auto font-semibold text-muted-foreground uppercase tracking-wider text-sm hover:bg-muted"
+                className="w-full justify-between py-3 px-3 h-auto font-semibold text-muted-foreground uppercase tracking-wider text-xs sm:text-sm hover:bg-muted rounded-lg"
               >
                 <span>{category.title}</span>
                 <Icon 
@@ -110,23 +110,23 @@ export function DesignSystemSidebar() {
                 />
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3">
+            <CollapsibleContent className="mt-2 sm:mt-3">
               <nav className="space-y-1">
                 {category.items.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "flex items-center space-x-2 px-3 py-2 text-sm rounded-md transition-colors",
+                      "flex items-center space-x-3 px-3 py-3 sm:py-2 text-sm rounded-lg transition-colors",
                       pathname === item.href
                         ? "text-primary bg-primary/10"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     )}
                   >
-                    <div className={`w-6 h-6 rounded flex items-center justify-center ${item.bgColor}`}>
+                    <div className={`w-6 h-6 rounded flex items-center justify-center ${item.bgColor} flex-shrink-0`}>
                       <Icon name={item.icon} className={`h-3 w-3 ${item.color}`} />
                     </div>
-                    <span>{item.name}</span>
+                    <span className="truncate">{item.name}</span>
                   </Link>
                 ))}
               </nav>

@@ -27,13 +27,13 @@ export interface FontFamily {
   variable?: string
 }
 
-// Type Scale Configuration
+// Type Scale Configuration - Mobile First
 export const typeScale: TypeScaleItem[] = [
   {
     name: "Display Large",
-    class: "text-6xl",
+    class: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl",
     weight: "font-semibold",
-    lineHeight: "leading-normal",
+    lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
     usage: "Hero headlines, page titles",
     example: "Display Large",
@@ -41,9 +41,9 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Display Medium", 
-    class: "text-5xl",
+    class: "text-2xl sm:text-3xl md:text-4xl lg:text-5xl",
     weight: "font-semibold",
-    lineHeight: "leading-normal",
+    lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
     usage: "Section headlines, major headings",
     example: "Display Medium",
@@ -51,9 +51,9 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Display Small",
-    class: "text-4xl", 
+    class: "text-xl sm:text-2xl md:text-3xl lg:text-4xl", 
     weight: "font-semibold",
-    lineHeight: "leading-normal",
+    lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
     usage: "Subsection headlines",
     example: "Display Small",
@@ -61,9 +61,9 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Heading Large",
-    class: "text-3xl",
+    class: "text-lg sm:text-xl md:text-2xl lg:text-3xl",
     weight: "font-medium", 
-    lineHeight: "leading-normal",
+    lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
     usage: "Page headings, article titles",
     example: "Heading Large",
@@ -71,9 +71,9 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Heading Medium",
-    class: "text-2xl",
+    class: "text-base sm:text-lg md:text-xl lg:text-2xl",
     weight: "font-medium",
-    lineHeight: "leading-normal",
+    lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
     usage: "Section headings, card titles",
     example: "Heading Medium",
@@ -81,9 +81,9 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Heading Small",
-    class: "text-xl",
+    class: "text-sm sm:text-base md:text-lg lg:text-xl",
     weight: "font-medium",
-    lineHeight: "leading-normal",
+    lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
     usage: "Subsection headings, form labels",
     example: "Heading Small",
@@ -91,7 +91,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Body Large",
-    class: "text-lg",
+    class: "text-sm sm:text-base md:text-lg",
     weight: "font-normal",
     lineHeight: "leading-relaxed",
     tracking: "tracking-normal",
@@ -101,22 +101,22 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Body",
-    class: "text-base",
-    weight: "font-normal", 
+    class: "text-sm sm:text-base",
+    weight: "font-normal",
     lineHeight: "leading-relaxed",
     tracking: "tracking-normal",
-    usage: "Main content, paragraphs",
-    example: "Body - This is the standard body text used throughout the application for main content.",
+    usage: "Regular body text, paragraphs",
+    example: "Body - This is the standard body text used for regular content and paragraphs throughout the application.",
     component: "P"
   },
   {
     name: "Body Small",
-    class: "text-sm",
+    class: "text-xs sm:text-sm",
     weight: "font-normal",
     lineHeight: "leading-relaxed",
     tracking: "tracking-normal",
-    usage: "Secondary content, captions",
-    example: "Body Small - This is smaller text used for captions and secondary information.",
+    usage: "Secondary text, captions, metadata",
+    example: "Body Small - This is smaller text used for secondary information and metadata.",
     component: "BodySmall"
   },
   {
@@ -124,9 +124,9 @@ export const typeScale: TypeScaleItem[] = [
     class: "text-xs",
     weight: "font-normal",
     lineHeight: "leading-relaxed",
-    tracking: "tracking-normal",
-    usage: "Labels, metadata, fine print",
-    example: "Caption - This is the smallest text used for labels and metadata.",
+    tracking: "tracking-wide",
+    usage: "Image captions, form hints, small labels",
+    example: "Caption - Small text for captions and hints",
     component: "Caption"
   }
 ]
@@ -185,17 +185,16 @@ export const typographyPrinciples = {
 export const fontSpecifications = {
   primary: {
     name: "Helvetica Now",
-    type: "Variable",
     weightRange: "100-900",
-    display: "swap",
-    subset: "Latin"
+    variable: true
+  },
+  fallback: {
+    name: "System Fonts"
   },
   monospace: {
-    name: "Geist Mono",
-    type: "Google Font",
-    display: "swap", 
-    subset: "Latin"
-  }
+    name: "Geist Mono"
+  },
+  loadingStrategy: "Font Display Swap"
 }
 
 // Usage Guidelines
