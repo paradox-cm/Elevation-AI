@@ -85,15 +85,17 @@ export default function DesignSystemPage() {
               
               {/* Hero Grid Container - Mobile Optimized */}
               <div className="mt-8 sm:mt-12 w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] relative bg-muted/50 rounded-xl sm:rounded-2xl border border-border overflow-hidden">
-                {/* Centered Icon - Responsive Sizing */}
-                <div className="absolute inset-0 flex items-center justify-center z-20">
-                  <Favicon 
-                    width={60} 
-                    height={60} 
-                    className="sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-[100px] lg:h-[100px]" 
-                    priority 
-                  />
-                </div>
+                                 {/* Centered Icon - Responsive Sizing */}
+                 <div className="absolute inset-0 flex items-center justify-center z-20">
+                                      <div className="flex items-center justify-center w-full h-full transform translate-y-8">
+                      <Favicon 
+                        width={100} 
+                        height={100} 
+                        className="sm:w-35 sm:h-35 md:w-40 md:h-40 lg:w-[175px] lg:h-[175px]" 
+                        priority 
+                      />
+                    </div>
+                 </div>
                 
                 {/* Full Grid Background */}
                 <div className="absolute inset-0 bg-background/80 backdrop-blur-sm">
@@ -102,10 +104,10 @@ export default function DesignSystemPage() {
                     className="absolute inset-0"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0.05) 50%, transparent 90%),
-                        radial-gradient(circle at 80% 80%, rgba(75, 85, 99, 0.4) 0%, rgba(75, 85, 99, 0.05) 50%, transparent 90%),
-                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.02) 60%, transparent 95%),
-                        radial-gradient(circle at 30% 70%, rgba(75, 85, 99, 0.2) 0%, rgba(75, 85, 99, 0.02) 60%, transparent 95%)
+                        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 90%),
+                        radial-gradient(circle at 80% 80%, rgba(156, 163, 175, 0.4) 0%, rgba(156, 163, 175, 0.08) 50%, transparent 90%),
+                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.35) 0%, rgba(59, 130, 246, 0.05) 60%, transparent 95%),
+                        radial-gradient(circle at 30% 70%, rgba(156, 163, 175, 0.25) 0%, rgba(156, 163, 175, 0.04) 60%, transparent 95%)
                       `,
                       backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
                       backgroundPosition: '0% 0%, 100% 100%, 50% 50%, 25% 75%',
@@ -131,10 +133,10 @@ export default function DesignSystemPage() {
                     className="absolute inset-0"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 70%),
-                        radial-gradient(circle at 40% 60%, rgba(75, 85, 99, 0.18) 0%, transparent 70%),
-                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 80%),
-                        radial-gradient(circle at 10% 90%, rgba(75, 85, 99, 0.12) 0%, transparent 80%)
+                        radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.25) 0%, transparent 70%),
+                        radial-gradient(circle at 40% 60%, rgba(156, 163, 175, 0.2) 0%, transparent 70%),
+                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 80%),
+                        radial-gradient(circle at 10% 90%, rgba(156, 163, 175, 0.18) 0%, transparent 80%)
                       `,
                       backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
                       backgroundPosition: '75% 25%, 10% 90%, 50% 50%, 90% 10%',
@@ -160,8 +162,8 @@ export default function DesignSystemPage() {
                     className="absolute inset-0"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 80%),
-                        radial-gradient(circle at 75% 75%, rgba(75, 85, 99, 0.1) 0%, transparent 80%)
+                        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 80%),
+                        radial-gradient(circle at 75% 75%, rgba(156, 163, 175, 0.12) 0%, transparent 80%)
                       `,
                       backgroundSize: '1000px 1000px, 1200px 1200px',
                       backgroundPosition: '0% 0%, 100% 100%',
@@ -187,8 +189,8 @@ export default function DesignSystemPage() {
                         className="absolute inset-0"
                         style={{
                           backgroundImage: `
-                        linear-gradient(to right, rgba(229, 231, 235, 0.1) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(229, 231, 235, 0.1) 1px, transparent 1px)
+                        linear-gradient(to right, rgba(229, 231, 235, 0.03) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(229, 231, 235, 0.03) 1px, transparent 1px)
                           `,
                           backgroundSize: '32px 32px',
                           backgroundPosition: '0 0'
@@ -200,8 +202,8 @@ export default function DesignSystemPage() {
                         className="absolute inset-0 dark:hidden"
                         style={{
                           backgroundImage: `
-                        linear-gradient(to right, rgba(209, 213, 219, 0.1) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(209, 213, 219, 0.1) 1px, transparent 1px)
+                        linear-gradient(to right, rgba(209, 213, 219, 0.03) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(209, 213, 219, 0.03) 1px, transparent 1px)
                           `,
                           backgroundSize: '32px 32px',
                           backgroundPosition: '0 0'
