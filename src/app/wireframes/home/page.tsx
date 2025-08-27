@@ -132,7 +132,7 @@ function HeroSection() {
   return (
     <Section paddingY="2xl" className="min-h-[80vh] flex items-center">
       <Container size="2xl">
-        <Grid cols={{ base: 1, lg: 2 }} className="items-center gap-8 lg:gap-12">
+        <Grid cols={2} className="items-center gap-8 lg:gap-12">
           {/* Left Content */}
           <div className="space-y-6 lg:space-y-8">
             <div className="space-y-4 lg:space-y-6">

@@ -27,16 +27,7 @@ export function PageTemplate({
   return (
     <PageWrapper>
       <AppShell
-        header={
-          <Navigation
-            logo={
-              <div className="flex items-center space-x-2">
-                <Logo width={100} height={18} />
-              </div>
-            }
-            links={navigationLinks}
-          />
-        }
+        header={<Navigation />}
       >
         <Container>
           <Section paddingY="xl">

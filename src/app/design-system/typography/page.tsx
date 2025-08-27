@@ -98,8 +98,8 @@ export default function TypographyPage() {
                         <Badge variant="outline">{fontSpecifications.primary.name}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Font Type</span>
-                        <Badge variant="outline">{fontSpecifications.primary.type}</Badge>
+                        <span className="text-sm font-medium">Variable Font</span>
+                        <Badge variant="outline">{fontSpecifications.primary.variable ? "Yes" : "No"}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Weight Range</span>
@@ -112,12 +112,12 @@ export default function TypographyPage() {
                         <Badge variant="outline">{fontSpecifications.monospace.name}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Display</span>
-                        <Badge variant="outline">{fontSpecifications.monospace.display}</Badge>
+                        <span className="text-sm font-medium">Font Type</span>
+                        <Badge variant="outline">Monospace</Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Subset</span>
-                        <Badge variant="outline">{fontSpecifications.monospace.subset}</Badge>
+                        <span className="text-sm font-medium">Usage</span>
+                        <Badge variant="outline">Code & Technical</Badge>
                       </div>
                     </div>
                   </div>
