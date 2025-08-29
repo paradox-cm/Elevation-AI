@@ -13,8 +13,15 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1920px",
       },
+    },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1600px',  // Increased to ensure 1512px triggers lg, not xl
+      '2xl': '2560px', // Adjusted for ultra-wide displays like 3360px
     },
     extend: {
       colors: {
@@ -136,6 +143,27 @@ module.exports = {
           800: '#083996',
           900: '#052864',
         },
+      },
+      spacing: {
+        '29': '116px',
+        '60': '240px',
+        '72': '288px',
+        '80': '320px',
+        '86': '344px',
+        '96': '384px',
+        '104': '416px',
+        '120': '480px',
+      },
+      maxWidth: {
+        'screen-sm': '640px',
+        'screen-md': '768px',
+        'screen-lg': '1024px',
+        'screen-xl': '1600px',
+        'screen-2xl': '2560px',
+      },
+      fontSize: {
+        '7xl': ['4.5rem', { lineHeight: '1.1' }],
+        '8xl': ['6rem', { lineHeight: '1.1' }],
       },
       borderRadius: {
         lg: "var(--radius)",

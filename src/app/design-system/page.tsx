@@ -296,7 +296,7 @@ export default function DesignSystemPage() {
           </Section>
 
           {/* Getting Started Section - Mobile Optimized */}
-          <Section paddingY="xl" className="bg-muted/50 rounded-lg">
+          <Section paddingY="xl" paddingX="lg" className="bg-muted/50 rounded-lg">
             <div className="max-w-4xl mx-auto text-center">
               <H2 className="text-xl sm:text-2xl font-bold mb-4">Getting Started</H2>
               <BodyLarge className="text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto text-sm sm:text-base">

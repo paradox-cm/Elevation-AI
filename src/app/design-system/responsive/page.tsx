@@ -51,25 +51,25 @@ export default function ResponsivePage() {
       name: "Desktop",
       prefix: "lg",
       minWidth: "1024px",
-      maxWidth: "1279px",
-      description: "Standard desktop screens",
+      maxWidth: "1599px",
+      description: "Standard desktop screens and 14-inch MacBooks (1512px)",
       usage: "Full desktop experience"
     },
     {
       name: "Large Desktop",
       prefix: "xl",
-      minWidth: "1280px",
-      maxWidth: "1535px",
-      description: "Large desktop monitors",
-      usage: "Enhanced desktop experience"
+      minWidth: "1600px",
+      maxWidth: "2559px",
+      description: "Large desktop monitors and ultra-wide displays",
+      usage: "Enhanced desktop experience with larger typography and components"
     },
     {
       name: "Extra Large",
       prefix: "2xl",
-      minWidth: "1536px",
+      minWidth: "2560px",
       maxWidth: "∞",
-      description: "Ultra-wide and 4K displays",
-      usage: "Maximum desktop experience"
+      description: "Ultra-wide displays, 4K monitors, and 3360px+ screens",
+      usage: "Maximum desktop experience with full-width content utilization"
     }
   ]
 
@@ -81,80 +81,80 @@ export default function ResponsivePage() {
       benefits: ["Better performance", "Simpler codebase", "Progressive enhancement"]
     },
     {
-      name: "Container Queries",
-      description: "Style elements based on their container size, not viewport",
-      icon: "layout-line",
-      benefits: ["Component-based design", "Reusable components", "Better modularity"]
-    },
-    {
-      name: "Fluid Typography",
-      description: "Typography that scales smoothly across screen sizes",
+      name: "Progressive Typography Scaling",
+      description: "Typography that scales progressively from mobile to 2XL with specific breakpoint behavior",
       icon: "text",
-      benefits: ["Consistent reading experience", "No layout shifts", "Better accessibility"]
+      benefits: ["Consistent reading experience", "LG breakpoint preservation", "XL/2XL enhancement"]
     },
     {
-      name: "Responsive Images",
-      description: "Images that adapt to different screen sizes and resolutions",
+      name: "Container Width Optimization",
+      description: "Containers that grow to fill full width on larger screens with proper padding",
+      icon: "layout-line",
+      benefits: ["Full-width content utilization", "Proper padding on all breakpoints", "No content stacking"]
+    },
+    {
+      name: "Component Size Scaling",
+      description: "Components like logos and icons that scale appropriately across breakpoints",
       icon: "image-line",
-      benefits: ["Faster loading", "Better performance", "Optimal quality"]
+      benefits: ["Visual balance", "Proper proportions", "Consistent sizing"]
     }
   ]
 
   const gridExamples = [
     {
-      name: "Basic Grid",
-      mobile: "grid-cols-1",
-      tablet: "md:grid-cols-2",
-      desktop: "lg:grid-cols-3",
-      description: "Simple responsive grid layout"
+      name: "Footer Grid",
+      mobile: "grid-cols-2",
+      tablet: "md:grid-cols-5",
+      desktop: "lg:grid-cols-5",
+      description: "Two-column mobile footer, five-column desktop"
     },
     {
-      name: "Card Grid",
-      mobile: "grid-cols-1 gap-4",
-      tablet: "md:grid-cols-2 md:gap-6",
-      desktop: "lg:grid-cols-3 lg:gap-8",
-      description: "Responsive card layout with spacing"
+      name: "Container Padding",
+      mobile: "px-4 sm:px-6 lg:px-8",
+      tablet: "px-4 sm:px-6 lg:px-8",
+      desktop: "px-4 sm:px-6 lg:px-8",
+      description: "Consistent padding across all breakpoints"
     },
     {
-      name: "Sidebar Layout",
-      mobile: "flex-col",
-      tablet: "md:flex-row md:space-x-6",
-      desktop: "lg:space-x-8",
-      description: "Responsive sidebar and main content"
+      name: "Typography Scaling",
+      mobile: "text-3xl sm:text-4xl md:text-5xl",
+      tablet: "lg:text-4xl",
+      desktop: "xl:text-5xl 2xl:text-6xl",
+      description: "Progressive typography scaling with LG preservation"
     },
     {
-      name: "Navigation",
-      mobile: "flex-col space-y-2",
-      tablet: "md:flex-row md:space-x-4 md:space-y-0",
-      desktop: "lg:space-x-6",
-      description: "Responsive navigation menu"
+      name: "Component Sizing",
+      mobile: "w-29 h-29 sm:w-40 sm:h-40",
+      tablet: "lg:w-48 lg:h-48",
+      desktop: "xl:w-48 xl:h-48 2xl:w-64 2xl:h-64",
+      description: "Responsive component sizing with breakpoint-specific values"
     }
   ]
 
   const responsiveComponents = [
     {
-      name: "Navigation",
-      mobile: "Hamburger menu, stacked items",
-      tablet: "Horizontal menu, reduced items",
-      desktop: "Full horizontal menu, all items visible"
+      name: "Perlin Logo",
+      mobile: "w-29 h-29 (116px)",
+      tablet: "sm:w-40 sm:h-40 (160px), lg:w-48 lg:h-48 (192px)",
+      desktop: "xl:w-48 xl:h-48 (192px), 2xl:w-64 2xl:h-64 (256px)"
     },
     {
-      name: "Cards",
-      mobile: "Single column, full width",
-      tablet: "Two columns, medium spacing",
-      desktop: "Three columns, generous spacing"
+      name: "Typography",
+      mobile: "text-3xl sm:text-4xl md:text-5xl",
+      tablet: "lg:text-4xl (preserved from MD)",
+      desktop: "xl:text-5xl 2xl:text-6xl (enhanced scaling)"
     },
     {
-      name: "Forms",
-      mobile: "Stacked fields, full width",
-      tablet: "Side-by-side fields where appropriate",
-      desktop: "Multi-column layouts, optimal spacing"
+      name: "Containers",
+      mobile: "px-4 sm:px-6 lg:px-8",
+      tablet: "Consistent padding across breakpoints",
+      desktop: "lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]"
     },
     {
-      name: "Tables",
-      mobile: "Card-based layout, scrollable",
-      tablet: "Compact table, horizontal scroll",
-      desktop: "Full table, all columns visible"
+      name: "Footer Layout",
+      mobile: "grid-cols-2 (two-column layout)",
+      tablet: "md:grid-cols-5 (five-column layout)",
+      desktop: "Consistent five-column layout with left-justified copyright"
     }
   ]
 

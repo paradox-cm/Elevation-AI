@@ -258,7 +258,7 @@ export const responsiveConfig: ResponsiveConfig = {
       {
         id: "xl",
         name: "Extra Large",
-        description: "Large desktop monitors",
+        description: "Large desktop monitors and wide displays",
         prefix: "xl",
         className: "breakpoint-xl"
       },
@@ -781,8 +781,8 @@ export const responsiveConfig: ResponsiveConfig = {
         sm: "640px",
         md: "768px",
         lg: "1024px",
-        xl: "1280px",
-        "2xl": "1536px"
+        xl: "1600px",
+        "2xl": "2560px"
       },
       padding: "1rem",
       margin: "0 auto",

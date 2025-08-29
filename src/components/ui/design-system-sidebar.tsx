@@ -72,9 +72,6 @@ export function DesignSystemSidebar() {
     <div className="h-full overflow-y-auto p-4 sm:p-6">
       <div className="space-y-3 sm:space-y-4">
         <div>
-          <H3 className="text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Design System
-          </H3>
           <nav className="space-y-1">
             <Link 
               href="/design-system" 

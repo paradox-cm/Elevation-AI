@@ -1,0 +1,154 @@
+# **Design System Alignment Report**
+
+## **Summary**
+I aligned the wireframes home page with the centralized design system to ensure proper XL and 2XL breakpoint behavior on 4K monitors, including typography scaling, container max-widths, and component sizing. **Note: Breakpoints were adjusted to ensure 14-inch MacBook (1512px) triggers the LG breakpoint, with proper progressive scaling from smaller to larger, and containers now grow to fill ultra-wide screens.**
+
+## **Issues Identified**
+1. **Breakpoint Mismatch**: Tailwind config breakpoints weren't properly defined
+2. **Typography Scaling**: Typography config only went up to `lg` breakpoint, missing XL/2XL
+3. **Container Sizing**: Container max-widths didn't match design system specifications
+4. **Missing Font Sizes**: `text-7xl` and `text-8xl` classes didn't exist
+5. **Custom Width Classes**: `w-86` and `w-104` classes weren't defined
+6. **LG Breakpoint Interference**: Initial changes incorrectly affected the `lg` breakpoint
+7. **14-inch MacBook Compatibility**: 1512px width was triggering XL instead of LG breakpoint
+8. **Container Width Restrictions**: Content wasn't filling full width on larger screens
+9. **Ultra-wide Screen Support**: 3360px screens weren't triggering 2XL breakpoint
+10. **Container Growth Limitations**: Page containers weren't growing on XL/2XL breakpoints
+
+## **Changes Made**
+
+### **1. Tailwind Configuration (`tailwind.config.js`)**
+- **Adjusted Breakpoint Definitions**: 
+  ```javascript
+  screens: {
+    'sm': '640px',
+    'md': '768px', 
+    'lg': '1024px',
+    'xl': '1600px',  // Increased to ensure 1512px triggers lg, not xl
+    '2xl': '2560px', // Adjusted for ultra-wide displays like 3360px
+  }
+  ```
+- **Fixed Container Breakpoint Conflict**: 
+  ```javascript
+  container: {
+    screens: {
+      "2xl": "2560px", // Aligned with main breakpoints
+    },
+  }
+  ```
+- **Added Custom Spacing**: 
+  ```javascript
+  spacing: {
+    '29': '116px',  // Mobile Perlin logo
+    '60': '240px',  // SM/LG Perlin logo (kept original)
+    '72': '288px',  // Unused (reverted)
+    '86': '344px',  // XL Perlin logo (20% larger)
+    '104': '416px', // 2XL Perlin logo (20% larger)
+  }
+  ```
+- **Updated Container Max-Widths**:
+  ```javascript
+  maxWidth: {
+    'screen-sm': '640px',
+    'screen-md': '768px',
+    'screen-lg': '1024px',
+    'screen-xl': '1600px',
+    'screen-2xl': '2560px',
+  }
+  ```
+- **Added Custom Font Sizes**:
+  ```javascript
+  fontSize: {
+    '7xl': ['4.5rem', { lineHeight: '1.1' }], // 72px
+    '8xl': ['6rem', { lineHeight: '1.1' }],   // 96px
+  }
+  ```
+
+### **2. Typography Configuration (`src/lib/typography-config.ts`)**
+- **Updated Typography Classes** to include XL and 2XL breakpoints while preserving LG:
+  - **Display Large**: `lg:text-6xl` → `xl:text-7xl` → `2xl:text-8xl`
+  - **Display Medium**: `lg:text-5xl` → `xl:text-6xl` → `2xl:text-7xl`
+  - **Display Small**: `lg:text-4xl` → `xl:text-5xl` → `2xl:text-6xl`
+  - **Heading Large**: `lg:text-3xl` → `xl:text-4xl` → `2xl:text-5xl`
+  - **Heading Medium**: `lg:text-2xl` → `xl:text-3xl` → `2xl:text-4xl`
+  - **Heading Small**: `lg:text-xl` → `xl:text-2xl` → `2xl:text-3xl`
+  - **Body Large**: `lg:text-lg` → `xl:text-xl` → `2xl:text-2xl` (reverted from `lg:text-xl`)
+
+### **3. Perlin Logo Sizing (`src/app/wireframes/home/page.tsx`)**
+- **Corrected Progressive Sizing**:
+  ```jsx
+  className="w-29 h-29 sm:w-60 sm:h-60 lg:w-60 lg:h-60 xl:w-86 xl:h-86 2xl:w-104 2xl:h-104"
+  ```
+- **Size Progression**: 116px → 240px → 240px (LG kept original) → 344px → 416px
+
+### **4. Home Page Text Corrections**
+- **Fixed BodyLarge Components**: Reverted `lg:text-xl` to `lg:text-lg` for unifying text sections
+- **Fixed Card Titles**: Reverted `lg:text-xl` to `lg:text-lg` for card components
+- **Maintained XL/2XL Scaling**: Kept larger sizes for `xl:text-xl` and `2xl:text-2xl`
+
+### **5. Container Width Improvements**
+- **Updated All Section Containers**: 
+  ```jsx
+  // Before: size="2xl"
+  // After: size="full" className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl"
+  ```
+- **Enhanced Responsive Padding**:
+  ```jsx
+  className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16"
+  ```
+- **Full-Width Support**: Content now fills full width on 2XL screens with proper padding
+
+### **6. Hero and Unifying Text Sizing**
+- **Progressive Display Sizing**:
+  ```jsx
+  // Hero Headline
+  className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl"
+  
+  // Unifying Text
+  className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl"
+  ```
+- **Breakpoint-Specific Sizing**:
+  - **LG**: Display Small (36px)
+  - **XL**: Display Medium (48px)
+  - **2XL**: Display Large (60px)
+
+### **7. Responsive Configuration Updates**
+- **Updated Breakpoint Descriptions**: Clarified XL and 2XL usage
+- **Synchronized Max-Widths**: Aligned with Tailwind configuration
+- **Ultra-wide Support**: Added support for 3360px+ screens
+
+## **Design System Integration**
+- **Centralized Breakpoints**: Now using design system's breakpoint definitions
+- **Container Scaling**: Aligned with responsive config max-widths
+- **Typography Consistency**: All text follows centralized typography scale
+- **Progressive Enhancement**: Mobile-first approach with proper XL/2XL scaling
+- **LG Breakpoint Preservation**: Maintained original LG breakpoint behavior
+- **14-inch MacBook Compatibility**: 1512px width now correctly triggers LG breakpoint
+- **Ultra-wide Screen Support**: 3360px+ screens now trigger 2XL breakpoint
+
+## **Expected Results**
+- **14-inch MacBook (1512px)**: Triggers LG breakpoint with appropriate sizing
+- **LG Screens** (≥1024px): Original typography and component sizes (unchanged)
+- **XL Screens** (≥1600px): Larger typography, bigger Perlin logo, wider containers
+- **2XL Screens** (≥2560px): Maximum typography sizes, largest Perlin logo, full container utilization
+- **Ultra-wide Screens** (3360px+): Proper 2XL breakpoint behavior with full-width content
+- **4K Monitors**: Proper use of screen real estate without breaking design consistency
+- **Responsive Behavior**: Smooth progressive scaling from smaller to larger across all breakpoints
+- **Content Utilization**: Text and containers fill full width on larger screens without stacking
+- **Container Growth**: Page containers grow progressively on XL and 2XL breakpoints
+
+## **Files Modified**
+1. `tailwind.config.js` - Adjusted breakpoints, spacing, max-widths, and font sizes
+2. `src/lib/typography-config.ts` - Updated typography classes for XL/2XL (preserved LG)
+3. `src/app/wireframes/home/page.tsx` - Updated Perlin logo sizing, fixed text classes, container widths, and progressive display sizing
+4. `src/lib/responsive-config.ts` - Synchronized breakpoint definitions and max-widths
+
+## **Next Steps**
+- Test on 14-inch MacBook to verify LG breakpoint behavior
+- Test on ultra-wide screens (3360px+) to verify 2XL breakpoint behavior
+- Test on 4K monitor to verify XL/2XL breakpoint behavior
+- Verify typography scaling works correctly with progressive ramp-up
+- Ensure container max-widths allow content to fill full width
+- Check that text doesn't stack inappropriately on larger screens
+- Confirm LG breakpoint behavior remains unchanged for existing users
+- Verify container growth on XL and 2XL breakpoints

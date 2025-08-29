@@ -11,7 +11,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, ExternalLink, FileText, Building2, Users, CreditCard, BookOpen, Shield, Briefcase, Handshake, TrendingUp, Code, Newspaper } from "lucide-react"
+import { ChevronRight, ExternalLink, FileText, Building2, Users, CreditCard, BookOpen, Shield, Briefcase, Handshake, TrendingUp, Code, Newspaper, LogIn, MessageSquare } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 interface SiteStructureItem {
@@ -230,6 +230,24 @@ const siteStructure: SiteStructureItem[] = [
         href: '/resources/blog-news'
       }
     ]
+  },
+  {
+    id: 'login',
+    title: 'Login',
+    description: 'User authentication and account access',
+    pageNumber: 18,
+    status: 'to-create',
+    icon: LogIn,
+    href: '/wireframes/login'
+  },
+  {
+    id: 'request-demo',
+    title: 'Request a Demo',
+    description: 'Demo request form and scheduling interface',
+    pageNumber: 19,
+    status: 'to-create',
+    icon: MessageSquare,
+    href: '/wireframes/request-demo'
   }
 ]
 
@@ -276,7 +294,9 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
       'partners': '/wireframes/resources/partners',
       'investors': '/wireframes/resources/investors',
       'developers': '/wireframes/resources/developers-platforms',
-      'blog-news': '/wireframes/resources/blog-news'
+      'blog-news': '/wireframes/resources/blog-news',
+      'login': '/wireframes/login',
+      'request-demo': '/wireframes/request-demo'
     }
 
     const wireframeRoute = wireframeRoutes[item.id]
@@ -380,7 +400,7 @@ export default function WireframesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold">17</div>
+                  <div className="text-2xl sm:text-3xl font-bold">19</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Main content pages</p>
                 </CardContent>
               </Card>
@@ -406,7 +426,7 @@ export default function WireframesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">16</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">18</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Pages to be developed</p>
                 </CardContent>
               </Card>

@@ -295,11 +295,11 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
   }, [width, height])
 
   return (
-    <div ref={containerRef} className={cn("relative", className)} style={{ width, height }}>
+    <div ref={containerRef} className={cn("relative", className)}>
       {/* Animated Canvas - Only visible element */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 z-20"
+        className="absolute inset-0 z-20 w-full h-full"
         style={{
           mask: `url(/images/branding/E-AI-Arrow.svg)`,
           WebkitMask: `url(/images/branding/E-AI-Arrow.svg)`,

@@ -12,15 +12,16 @@ import { Badge } from "@/components/ui/badge"
 import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
-import { H1, H2, H3, H4, BodyLarge, BodySmall, DisplayLarge } from "@/components/ui/typography"
+import { H1, H2, H3, H4, BodyLarge, BodySmall, DisplayLarge, DisplayMedium } from "@/components/ui/typography"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standards"
+import { calculateActiveSlide, getScrollSpacerHeight, ScrollEventManager } from "@/lib/scroll-standards"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
+import { CollapsibleCard } from "@/components/ui/collapsible-card"
 
 // Typewriter Text Component
 function TypewriterText({ text, speed = 200, delay = 0, skipAnimation = false }: { text: string; speed?: number; delay?: number; skipAnimation?: boolean }) {
@@ -178,17 +179,31 @@ function Header() {
 
         {/* Right CTAs */}
         <div className="hidden lg:flex items-center space-x-3">
-          <Button variant="outline" size="sm" className="text-xs xl:text-sm hover:bg-muted/50">
-            Explore the Platform
+          <Button variant="outline" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
+            <Link href="/about">
+              About Us
+            </Link>
           </Button>
           <Button size="sm" className="text-xs xl:text-sm hover:bg-primary/90">
             Request a Demo
+          </Button>
+          <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
+            <Link href="/wireframes/login">
+              <Icon name="login-box-line" className="h-4 w-4 mr-1" />
+              Login
+            </Link>
           </Button>
           <ThemeToggle />
         </div>
 
         {/* Mobile menu button */}
         <div className="flex items-center space-x-2 lg:hidden">
+          <Button variant="ghost" size="sm" asChild className="text-xs hover:bg-muted/50">
+            <Link href="/wireframes/login">
+              <Icon name="login-box-line" className="h-4 w-4 mr-1" />
+              Login
+            </Link>
+          </Button>
           <ThemeToggle />
           <Button 
             variant="ghost" 
@@ -209,14 +224,14 @@ function Header() {
 function HeroSection() {
   return (
     <Section paddingY="xl" className="min-h-[70vh] sm:min-h-[80vh] flex items-center">
-      <Container size="2xl" className="px-4 sm:px-6">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-              <H1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">
+              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight">
                 Your Universe. Intelligently Orchestrated.
-              </H1>
+              </div>
               <BodyLarge className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
                 We are an agentic knowledge and work orchestration platform, helping you adapt to the agentic era through our platform and concierge team.
               </BodyLarge>
@@ -258,13 +273,151 @@ function HeroSection() {
             </div>
 
             {/* Perlin Icon */}
-            <div className="w-29 h-29 sm:w-60 sm:h-60 lg:w-72 lg:h-72 flex items-center justify-center relative z-10 mx-auto">
+            <div className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-64 2xl:h-64 flex items-center justify-center relative z-10 mx-auto">
               <AnimatedFavicon 
-                width={116} 
-                height={116} 
-                className="sm:w-60 sm:h-60 lg:w-72 lg:h-72"
+                width={256}
+                height={256}
+                className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-64 2xl:h-64"
               />
             </div>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
+// Problem Introduction Section
+function ProblemIntroductionSection() {
+  const [activeStep, setActiveStep] = React.useState(0)
+  const sectionRef = React.useRef<HTMLDivElement>(null)
+  
+  const texts = [
+    {
+      text: "Your business's greatest asset—its collective data and knowledge—is trapped, locked away and underused.",
+      key: "problem-first-text"
+    },
+    {
+      text: "Scattered across apps, trapped in conversations, and buried in documents, it slows decisions and generates blind spots.",
+      key: "problem-second-text"
+    },
+    {
+      text: "Elevation AI unlocks it all, transforming fragmentation into focus, delivering clarity, precision and control.",
+      key: "problem-third-text"
+    }
+  ]
+
+  // Scroll-triggered carousel with standardized behavior
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return
+      
+      const rect = sectionRef.current.getBoundingClientRect()
+      const containerHeight = 400 // Height of the carousel container
+      
+      // Calculate which step should be active based on scroll position
+      if (rect.top <= 0 && rect.bottom >= containerHeight) {
+        // Section is in viewport, use custom calculation for ProblemIntroductionSection
+        const scrollProgress = Math.abs(rect.top) / containerHeight
+        
+        // Custom logic: All slides get 400px more scroll space, third slide gets additional 100px (500px total)
+        const baseSlideHeight = 450 // Standard slide height
+        const firstSlideHeight = baseSlideHeight + 400 // 400px extra for first slide
+        const secondSlideHeight = baseSlideHeight + 400 // 400px extra for second slide
+        const thirdSlideHeight = baseSlideHeight + 500 // 500px extra for third slide (400px + 100px additional)
+        
+        let activeStep = 0
+        if (scrollProgress < (firstSlideHeight / containerHeight)) {
+          // First slide
+          activeStep = 0
+        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight) / containerHeight)) {
+          // Second slide
+          activeStep = 1
+        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight) / containerHeight)) {
+          // Third slide with extra scroll space
+          activeStep = 2
+        } else {
+          // Section complete, stay on last slide
+          activeStep = 2
+        }
+        
+        setActiveStep(activeStep)
+      } else if (rect.top > 0) {
+        // Section is above viewport
+        setActiveStep(0)
+      } else {
+        // Section is below viewport
+        setActiveStep(texts.length - 1)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [texts.length])
+
+  return (
+    <Section paddingY="xl" className="relative">
+      {/* Blue Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-600/15 to-blue-500/10"></div>
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
+        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
+          {/* Mobile Layout */}
+          <div className="block lg:hidden">
+            <div className="space-y-6">
+              {texts.map((textItem, index) => (
+                <div key={index} className="text-left">
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
+                    {textItem.text}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop Layout - Scroll-triggered Carousel */}
+          <div className="hidden lg:block relative" ref={sectionRef}>
+            {/* Carousel Container */}
+            <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
+              <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
+                {/* Text Container */}
+                <div className="relative h-96">
+                  {texts.map((textItem, index) => (
+                    <div
+                      key={index}
+                      className={`transition-opacity duration-75 absolute inset-0 ${
+                        index === activeStep
+                          ? 'opacity-100'
+                          : 'opacity-0 pointer-events-none'
+                      }`}
+                    >
+                      <div className="h-full flex items-center">
+                        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
+                          {textItem.text}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Slide Indicators */}
+                <div className="absolute bottom-0 left-0 flex gap-2">
+                  {texts.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveStep(index)}
+                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
+                        index === activeStep
+                          ? 'bg-blue-600 dark:bg-blue-400' 
+                          : 'bg-gray-300 dark:bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Scroll Spacer */}
+            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
           </div>
         </div>
       </Container>
@@ -280,7 +433,7 @@ function ProblemSection() {
   const problems = [
     {
       title: "Unified Knowledge Platform",
-      description: "Transform fragmented systems into a single source of truth. We break down the walls between your departments and tools, creating a unified platform where no more hunting for that one file you know you saw in an email three weeks ago.",
+      description: "Work from a single source of truth. We break down the walls between your departments and tools, creating a unified platform where no more hunting for that one file you know you saw in an email three weeks ago.",
       icon: "database-2-line"
     },
     {
@@ -362,43 +515,24 @@ function ProblemSection() {
 
     return (
     <Section paddingY="xl" className="bg-muted/30">
-      <Container size="2xl" className="px-4 sm:px-6">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
-          {/* Mobile Header */}
-          <div className="block lg:hidden text-left sm:text-center space-y-4 sm:space-y-6 max-w-3xl sm:mx-auto mb-8">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight">From Fragmentation to Focus</H2>
-            <BodyLarge className="text-muted-foreground text-base sm:text-lg leading-relaxed">
-              Your business's greatest asset—its collective knowledge and data—is trapped. It's scattered across disconnected applications, siloed in team conversations, and buried in documents. Elevation AI fixes this.
-            </BodyLarge>
-          </div>
-
           {/* Mobile Layout */}
           <div className="block lg:hidden">
             <div className="space-y-6">
               {problems.map((problem, index) => (
-                <Card key={index} className="border-border/50">
-                  <CardHeader className="pb-6">
-                    <div className="space-y-6">
-                      {/* Icon and Title */}
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name={problem.icon} size="2xl" className="text-primary" />
-                        </div>
-                        <H3 className="text-xl sm:text-2xl">{problem.title}</H3>
-                      </div>
-                      
-                      {/* Description */}
-                      <BodyLarge className="text-muted-foreground leading-relaxed">
-                        {problem.description}
-                      </BodyLarge>
-                      
-                      {/* Visual Placeholder */}
-                      <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
-                        <BodyLarge className="text-muted-foreground">Visual Placeholder</BodyLarge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
+                <CollapsibleCard
+                  key={index}
+                  title={problem.title}
+                  icon={problem.icon}
+                  description={problem.description}
+                  defaultOpen={index === 0}
+                >
+                  {/* Visual Placeholder */}
+                  <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
+                    <BodyLarge className="text-muted-foreground">Visual Placeholder</BodyLarge>
+                  </div>
+                </CollapsibleCard>
               ))}
             </div>
           </div>
@@ -409,13 +543,6 @@ function ProblemSection() {
             <div className="sticky top-20 h-[calc(100vh-8rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
               <div className="w-full h-[calc(100vh-12rem)] lg:h-[calc(100vh-11rem)] xl:h-[calc(100vh-10rem)] 2xl:h-[calc(100vh-9rem)] relative flex items-center">
                 <div className="w-full flex flex-col items-center justify-center min-h-0">
-                  {/* Section Header */}
-                  <div className="text-center space-y-4 lg:space-y-6 xl:space-y-8 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto mb-8 lg:mb-10 xl:mb-12">
-                    <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">From Fragmentation to Focus</H2>
-                    <BodyLarge className="text-muted-foreground text-lg lg:text-xl xl:text-2xl leading-relaxed">
-                      Your business's greatest asset—its collective knowledge and data—is trapped. It's scattered across disconnected applications, siloed in team conversations, and buried in documents. Elevation AI fixes this.
-                    </BodyLarge>
-                  </div>
                   {/* Carousel Container */}
                   <div className="relative w-full h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]">
                   {problems.map((problem, index) => (
@@ -454,9 +581,9 @@ function ProblemSection() {
                       {/* Card Content */}
                       <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 transition-colors duration-300 flex-1 rounded-l-none h-full">
                         <CardHeader className="h-full flex flex-col justify-center p-6 lg:p-8 xl:p-10 2xl:p-12">
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full">
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full w-full">
                             {/* Content */}
-                            <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6">
+                            <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
                               <H3 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">{problem.title}</H3>
                               <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
                                 {problem.description}
@@ -492,18 +619,13 @@ function UnifyingStatementSection() {
   const [activeStep, setActiveStep] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
   
-  // State for tracking animation completion
-  const [hasFirstAnimationEverCompleted, setHasFirstAnimationEverCompleted] = React.useState(false)
-  const [hasSecondAnimationEverCompleted, setHasSecondAnimationEverCompleted] = React.useState(false)
-  const [hasThirdAnimationEverCompleted, setHasThirdAnimationEverCompleted] = React.useState(false)
-  
   const texts = [
     {
-      text: "Elevation AI unifies your universe, transforming this chaos into your most powerful competitive advantage.",
+      text: "Unify your systems, transform chaos into your most powerful competitive advantage.",
       key: "first-text"
     },
     {
-      text: "Turn scattered knowledge into precision, collaboration, and clarity at enterprise scale.",
+      text: "Turn scattered knowledge into precision, collaboration, and clarity you can act on—at enterprise scale.",
       key: "second-text"
     },
     {
@@ -547,17 +669,6 @@ function UnifyingStatementSection() {
         }
         
         setActiveStep(activeStep)
-        
-        // Mark animations as completed when they become active
-        if (activeStep >= 0 && !hasFirstAnimationEverCompleted) {
-          setHasFirstAnimationEverCompleted(true)
-        }
-        if (activeStep >= 1 && !hasSecondAnimationEverCompleted) {
-          setHasSecondAnimationEverCompleted(true)
-        }
-        if (activeStep >= 2 && !hasThirdAnimationEverCompleted) {
-          setHasThirdAnimationEverCompleted(true)
-        }
       } else if (rect.top > 0) {
         // Section is above viewport
         setActiveStep(0)
@@ -569,28 +680,22 @@ function UnifyingStatementSection() {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [texts.length, hasFirstAnimationEverCompleted, hasSecondAnimationEverCompleted])
+  }, [texts.length])
 
   return (
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-600/15 to-blue-500/10"></div>
-      <Container size="2xl" className="px-4 sm:px-6 relative z-10">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Mobile Layout */}
           <div className="block lg:hidden">
             <div className="space-y-6">
               {texts.map((textItem, index) => (
                 <div key={index} className="text-left">
-                  <DisplayLarge className="text-primary">
-                    <TypewriterText 
-                      key={textItem.key}
-                      text={textItem.text}
-                      speed={50}
-                      delay={0}
-                      skipAnimation={index === 0 ? hasFirstAnimationEverCompleted : index === 1 ? hasSecondAnimationEverCompleted : hasThirdAnimationEverCompleted}
-                    />
-                  </DisplayLarge>
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
+                    {textItem.text}
+                  </div>
                 </div>
               ))}
             </div>
@@ -600,7 +705,7 @@ function UnifyingStatementSection() {
           <div className="hidden lg:block relative" ref={sectionRef}>
                          {/* Carousel Container */}
              <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
-               <div className="w-full max-w-4xl relative">
+               <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
                  {/* Text Container */}
                  <div className="relative h-96">
                    {texts.map((textItem, index) => (
@@ -613,15 +718,9 @@ function UnifyingStatementSection() {
                        }`}
                      >
                        <div className="h-full flex items-center">
-                         <DisplayLarge className="text-primary text-left">
-                           <TypewriterText 
-                             key={textItem.key}
-                             text={textItem.text}
-                             speed={50}
-                             delay={0}
-                             skipAnimation={index === 0 ? hasFirstAnimationEverCompleted : index === 1 ? hasSecondAnimationEverCompleted : hasThirdAnimationEverCompleted}
-                           />
-                         </DisplayLarge>
+                         <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
+                           {textItem.text}
+                         </div>
                        </div>
                      </div>
                    ))}
@@ -630,9 +729,10 @@ function UnifyingStatementSection() {
                                    {/* Slide Indicators */}
                   <div className="absolute bottom-0 left-0 flex gap-2">
                   {texts.map((_, index) => (
-                    <div 
+                    <button
                       key={index}
-                      className={`h-1 w-22 transition-colors duration-300 rounded-full ${
+                      onClick={() => setActiveStep(index)}
+                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
                         index === activeStep
                           ? 'bg-blue-600 dark:bg-blue-400' 
                           : 'bg-gray-300 dark:bg-gray-600'
@@ -656,6 +756,7 @@ function UnifyingStatementSection() {
 function PlatformSection() {
   const [activeTab, setActiveTab] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
+  const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
   
   const features = [
     {
@@ -680,69 +781,72 @@ function PlatformSection() {
     }
   ]
 
-  // Scroll-triggered tab switching with standardized behavior
+  // Initialize scroll event manager
   React.useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return
+    if (!sectionRef.current) return
+
+    // Create scroll event manager for one-action-one-tab behavior
+    scrollManagerRef.current = new ScrollEventManager(features.length, (tabIndex) => {
+      console.log(`Tab changed to: ${tabIndex}`)
+      setActiveTab(tabIndex)
+    })
+
+    // Handle wheel events (primary method)
+    const handleWheel = (event: WheelEvent) => {
+      if (!scrollManagerRef.current || !sectionRef.current) return
       
       const rect = sectionRef.current.getBoundingClientRect()
-      // Responsive container height calculation matching actual container heights
-      let containerHeight
-      if (window.innerWidth >= 1536) { // 2XL
-        containerHeight = 550 // matches h-[550px]
-      } else if (window.innerWidth >= 1400) { // XL (adjusted for 14" MacBook Pro)
-        containerHeight = 500 // matches h-[500px]
-      } else { // LG
-        containerHeight = 450 // matches h-[450px]
-      }
       
-      // Calculate which tab should be active based on scroll position
-      if (rect.top <= 0 && rect.bottom >= containerHeight) {
-        // Section is in viewport, use custom calculation for PlatformSection
-        const scrollProgress = Math.abs(rect.top) / containerHeight
-        
-        // Custom logic: All tabs get 400px more scroll space, third tab gets additional 100px (500px total), fourth tab gets additional 100px (500px total) (matching ProblemSection)
-        const baseSlideHeight = containerHeight
-        const firstSlideHeight = baseSlideHeight + 400 // 400px extra for first tab
-        const secondSlideHeight = baseSlideHeight + 400 // 400px extra for second tab
-        const thirdSlideHeight = baseSlideHeight + 500 // 500px extra for third tab (400px + 100px additional)
-        const fourthSlideHeight = baseSlideHeight + 500 // 500px extra for fourth tab (400px + 100px additional)
-        
-        let activeTab = 0
-        if (scrollProgress < (firstSlideHeight / containerHeight)) {
-          // First tab with extra scroll space
-          activeTab = 0
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight) / containerHeight)) {
-          // Second tab with extra scroll space
-          activeTab = 1
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight) / containerHeight)) {
-          // Third tab with extra scroll space
-          activeTab = 2
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight + fourthSlideHeight) / containerHeight)) {
-          // Fourth tab with extra scroll space
-          activeTab = 3
-        } else {
-          // Section complete, stay on last tab
-          activeTab = features.length - 1
-        }
-        
-        setActiveTab(activeTab)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setActiveTab(0)
-      } else {
-        // Section is below viewport
-        setActiveTab(features.length - 1)
+      // Handle wheel event
+      const changed = scrollManagerRef.current.handleWheel(event.deltaY, rect)
+      if (changed) {
+        console.log(`Wheel event triggered tab change to: ${scrollManagerRef.current.getCurrentSlide()}`)
+        // Prevent default scroll behavior when we handle the wheel event
+        event.preventDefault()
       }
     }
 
+    // Handle scroll events (fallback for non-wheel devices)
+    const handleScroll = () => {
+      if (!scrollManagerRef.current || !sectionRef.current) return
+      
+      const scrollY = window.scrollY
+      const rect = sectionRef.current.getBoundingClientRect()
+      
+      // Handle scroll event
+      const changed = scrollManagerRef.current.handleScroll(scrollY, rect)
+      if (changed) {
+        console.log(`Scroll event triggered tab change to: ${scrollManagerRef.current.getCurrentSlide()}`)
+      }
+    }
+
+    // Add event listeners
+    // Use wheel events as primary method
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    // Use scroll events as fallback
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('scroll', handleScroll)
+      if (scrollManagerRef.current) {
+        scrollManagerRef.current.destroy()
+      }
+    }
   }, [features.length])
+
+  // Handle manual tab clicks
+  const handleTabClick = (tabIndex: number) => {
+    setActiveTab(tabIndex)
+    // Update the scroll manager to know about the manual change
+    if (scrollManagerRef.current) {
+      scrollManagerRef.current.setCurrentSlide(tabIndex)
+    }
+  }
 
   return (
     <Section paddingY="xl">
-      <Container size="2xl" className="px-4 sm:px-6">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Mobile Header */}
           <div className="block lg:hidden text-left sm:text-center space-y-4 sm:space-y-6 max-w-3xl sm:mx-auto mb-8">
@@ -756,34 +860,25 @@ function PlatformSection() {
           <div className="block lg:hidden">
             <div className="space-y-6">
               {features.map((feature, index) => (
-                <Card key={index} className="border-border/50">
-                  <CardHeader className="pb-6">
-                    <div className="space-y-6">
-                      {/* Icon and Title */}
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                          <Icon name={feature.icon} size="2xl" className="text-blue-600" />
-                        </div>
-                        <CardTitle className="text-xl sm:text-2xl">{feature.title}</CardTitle>
-                      </div>
-                      
-                      {/* Description */}
-                      <BodyLarge className="text-muted-foreground leading-relaxed">
-                        {feature.description}
-                      </BodyLarge>
-                      
-                      {/* CTA Button */}
-                      <Button size="lg" className="w-full sm:w-auto">
-                        Explore the Platform
-                      </Button>
-                      
-                      {/* Visual Placeholder */}
-                      <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
-                        <BodyLarge className="text-muted-foreground">Platform Visualization</BodyLarge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
+                <CollapsibleCard
+                  key={index}
+                  title={feature.title}
+                  icon={feature.icon}
+                  description={feature.description}
+                  defaultOpen={index === 0}
+                  iconClassName="text-blue-600"
+                  iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
+                >
+                  {/* CTA Button */}
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Explore the Platform
+                  </Button>
+                  
+                  {/* Visual Placeholder */}
+                  <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
+                    <BodyLarge className="text-muted-foreground">Platform Visualization</BodyLarge>
+                  </div>
+                </CollapsibleCard>
               ))}
             </div>
           </div>
@@ -793,14 +888,7 @@ function PlatformSection() {
             {/* Sticky Tab Container */}
             <div className="sticky top-20 h-[calc(100vh-8rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
               <div className="w-full h-[calc(100vh-12rem)] lg:h-[calc(100vh-11rem)] xl:h-[calc(100vh-10rem)] 2xl:h-[calc(100vh-9rem)] relative flex items-center">
-                <div className="w-full flex flex-col items-center justify-center min-h-0">
-                  {/* Section Header */}
-                  <div className="text-center space-y-4 lg:space-y-6 xl:space-y-8 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto mb-8 lg:mb-10 xl:mb-12">
-                    <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">The Elevation AI Platform</H2>
-                    <BodyLarge className="text-muted-foreground text-lg lg:text-xl xl:text-2xl leading-relaxed">
-                      A unified, agentic platform to power your entire operation.
-                    </BodyLarge>
-                  </div>
+                                  <div className="w-full flex flex-col items-center justify-center min-h-0">
 
                   {/* Tab Content Container */}
                   <div className="relative w-full h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]">
@@ -820,7 +908,7 @@ function PlatformSection() {
                               {features.map((featureTab, tabIndex) => (
                                 <button
                                   key={tabIndex}
-                                  onClick={() => setActiveTab(tabIndex)}
+                                  onClick={() => handleTabClick(tabIndex)}
                                   className={`px-4 py-2 lg:px-5 lg:py-2.5 xl:px-6 xl:py-3 rounded-lg text-sm lg:text-base xl:text-lg font-medium transition-all duration-300 ${
                                     activeTab === tabIndex
                                       ? 'bg-blue-600 text-white shadow-lg'
@@ -890,10 +978,10 @@ function HowWeDoItSection() {
 
   return (
     <Section paddingY="xl" className="bg-muted/30">
-      <Container size="2xl">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-12 lg:space-y-16">
           {/* Section Header */}
-          <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:mx-auto">
+          <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
             <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">More Than a Platform. A Partnership.</H2>
           </div>
 
@@ -919,7 +1007,7 @@ function HowWeDoItSection() {
                           <Icon name={approach.icon} size="2xl" className="text-primary" />
                         )}
                       </div>
-                      <CardTitle className="text-lg lg:text-xl">{approach.title}</CardTitle>
+                                                      <CardTitle className="text-lg lg:text-lg xl:text-xl 2xl:text-2xl">{approach.title}</CardTitle>
                     </div>
                     
                     {/* Description */}
@@ -976,10 +1064,10 @@ function WhoWeServeSection() {
 
   return (
     <Section paddingY="xl">
-      <Container size="2xl">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-12 lg:space-y-16">
           {/* Section Header */}
-          <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:mx-auto">
+          <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
             <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">Solutions for Your Unique Universe</H2>
             <BodyLarge className="text-muted-foreground">
               We provide tailored solutions for your specific industry, all powered by our core platform and expert concierge team.
@@ -996,7 +1084,7 @@ function WhoWeServeSection() {
                                               <Icon name={solution.icon} size="2xl" className="text-primary" />
                     </div>
                     <div className="space-y-2">
-                      <CardTitle className="text-lg lg:text-xl">{solution.title}</CardTitle>
+                                                      <CardTitle className="text-lg lg:text-lg xl:text-xl 2xl:text-2xl">{solution.title}</CardTitle>
                       <BodyLarge className="text-muted-foreground">{solution.description}</BodyLarge>
                     </div>
                   </div>
@@ -1014,8 +1102,8 @@ function WhoWeServeSection() {
 function ClosingCTASection() {
   return (
     <Section paddingY="xl" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
-      <Container size="2xl">
-        <div className="text-center space-y-8 lg:space-y-12 max-w-4xl mx-auto">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+        <div className="text-center space-y-8 lg:space-y-12 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
           <div className="space-y-4 lg:space-y-6">
             <H2 className="text-3xl sm:text-4xl lg:text-5xl">Elevate Your Organization</H2>
             <BodyLarge className="text-muted-foreground">
@@ -1027,8 +1115,10 @@ function ClosingCTASection() {
             <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
               Request a Demo
             </Button>
-            <Button variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-              Explore the Platform
+            <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+              <Link href="/about">
+                About Us
+              </Link>
             </Button>
           </div>
           
@@ -1045,15 +1135,15 @@ function ClosingCTASection() {
 function Footer() {
   return (
     <footer className="border-t bg-muted/30 transition-colors duration-300">
-      <Container size="2xl">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="py-12 lg:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-12">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
             {/* Brand */}
             <div className="space-y-4">
               <Logo width={120} height={21} />
-              <BodySmall className="text-muted-foreground">
-                Your Universe. Intelligently Orchestrated.
-              </BodySmall>
+                              <BodySmall className="text-muted-foreground">
+                  The business orchestration platform.
+                </BodySmall>
             </div>
             
             {/* Platform */}
@@ -1124,10 +1214,10 @@ function Footer() {
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Content Column */}
             <div className="flex-1 text-left space-y-2">
-              <H3 className="text-sm font-medium uppercase tracking-wider">Stay Updated</H3>
-              <BodyLarge className="text-muted-foreground">
+              <H3 className="text-xs font-medium uppercase tracking-wider text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs 2xl:text-xs">Stay Updated</H3>
+              <BodySmall className="text-muted-foreground">
                 Get the latest insights on agentic AI, platform updates, and industry trends delivered to your inbox.
-              </BodyLarge>
+              </BodySmall>
             </div>
             
             {/* Form Column */}
@@ -1135,9 +1225,9 @@ function Footer() {
                                 <input
                     type="email"
                     placeholder="Enter your email"
-                    className="flex-1 px-4 py-2 border border-border rounded-md bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="flex-1 px-4 py-2 h-10 border border-border rounded-md bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   />
-              <Button variant="secondary" className="px-6 py-2">
+              <Button variant="secondary" className="px-6 h-10">
                 Subscribe
               </Button>
             </div>
@@ -1145,10 +1235,10 @@ function Footer() {
           
           <Separator className="my-4 lg:my-6" />
           
-                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-             <BodySmall className="text-muted-foreground text-left">
-               © 2025 Elevation AI. All rights reserved.
-             </BodySmall>
+          <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-4">
+            <BodySmall className="text-muted-foreground text-left">
+              © 2025 Elevation AI. All rights reserved.
+            </BodySmall>
             <div className="flex gap-6">
               <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
@@ -1171,6 +1261,7 @@ export default function WireframesHomePage() {
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
             <HeroSection />
+            <ProblemIntroductionSection />
             <ProblemSection />
             <UnifyingStatementSection />
             <PlatformSection />

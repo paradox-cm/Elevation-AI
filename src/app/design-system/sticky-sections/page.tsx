@@ -129,27 +129,138 @@ export default function StickySectionsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <H3>1. Import Standards</H3>
+                <H3>1. Import ScrollEventManager</H3>
                 <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
-{`import { calculateActiveSlide, SCROLL_STANDARDS } from '@/lib/scroll-standards'`}
+{`import { ScrollEventManager } from '@/lib/scroll-standards'`}
                 </pre>
               </div>
               
               <div className="space-y-2">
-                <H3>2. Use Standardized Calculation</H3>
+                <H3>2. Initialize ScrollEventManager</H3>
                 <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
-{`const activeStep = calculateActiveSlide(rect, containerHeight, totalSlides)`}
+{`const [activeTab, setActiveTab] = React.useState(0)
+const sectionRef = React.useRef<HTMLDivElement>(null)
+const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
+
+React.useEffect(() => {
+  if (!sectionRef.current) return
+  scrollManagerRef.current = new ScrollEventManager(totalSlides, (tabIndex) => {
+    setActiveTab(tabIndex)
+  })
+  // ... event listeners
+}, [totalSlides])`}
                 </pre>
               </div>
               
               <div className="space-y-2">
-                <H3>3. Container Structure</H3>
+                <H3>3. Handle Manual Interactions</H3>
                 <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
-{`<div className="sticky top-20 h-[calc(100vh-5rem)]">
-  {/* Content */}
+{`const handleTabClick = (tabIndex: number) => {
+  setActiveTab(tabIndex)
+  if (scrollManagerRef.current) {
+    scrollManagerRef.current.setCurrentSlide(tabIndex)
+  }
+}`}
+                </pre>
+              </div>
+              
+              <div className="space-y-2">
+                <H3>4. Container Structure</H3>
+                <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+{`<div ref={sectionRef} className="sticky top-20 h-[calc(100vh-5rem)]">
+  {/* Content with activeTab state */}
 </div>
-<div style={{ height: getScrollSpacerHeight(totalSlides) }}></div> {/* Dynamic scroll spacer */}`}
+<div className="h-[400px * slides + 200px]">
+  {/* Scroll spacer */}
+</div>`}
                 </pre>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* ScrollEventManager Features */}
+          <Card>
+            <CardHeader>
+              <CardTitle>ScrollEventManager Features</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <H3>Core Features</H3>
+                  <ul className="space-y-1 text-sm">
+                    <li>• One-action-one-slide behavior</li>
+                    <li>• Manual slide setting with setCurrentSlide()</li>
+                    <li>• Debounced scroll events (150ms)</li>
+                    <li>• Cooldown periods (500ms)</li>
+                    <li>• Automatic cleanup on destroy()</li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <H3>Event Handling</H3>
+                  <ul className="space-y-1 text-sm">
+                    <li>• Wheel events with passive: false</li>
+                    <li>• Scroll events with passive: true</li>
+                    <li>• Prevents default on wheel events</li>
+                    <li>• Handles both mouse and trackpad input</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Implementation Examples */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Implementation Examples</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <H3>PlatformSection (Tab Navigation)</H3>
+                  <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+{`// Features array with 5 tabs
+const features = [/* ... */]
+const [activeTab, setActiveTab] = React.useState(0)
+const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
+
+// Initialize with 5 slides
+scrollManagerRef.current = new ScrollEventManager(features.length, (tabIndex) => {
+  setActiveTab(tabIndex)
+})
+
+// Handle tab clicks
+const handleTabClick = (tabIndex: number) => {
+  setActiveTab(tabIndex)
+  if (scrollManagerRef.current) {
+    scrollManagerRef.current.setCurrentSlide(tabIndex)
+  }
+}`}
+                  </pre>
+                </div>
+                
+                <div className="space-y-2">
+                  <H3>ProblemSection (Step Indicators)</H3>
+                  <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+{`// 5 steps with step indicators
+const steps = [/* ... */]
+const [activeStep, setActiveStep] = React.useState(0)
+const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
+
+// Initialize with 5 slides
+scrollManagerRef.current = new ScrollEventManager(steps.length, (stepIndex) => {
+  setActiveStep(stepIndex)
+})
+
+// Handle step clicks
+const handleStepClick = (stepIndex: number) => {
+  setActiveStep(stepIndex)
+  if (scrollManagerRef.current) {
+    scrollManagerRef.current.setCurrentSlide(stepIndex)
+  }
+}`}
+                  </pre>
+                </div>
               </div>
             </CardContent>
           </Card>
