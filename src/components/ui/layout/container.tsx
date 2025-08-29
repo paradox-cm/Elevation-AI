@@ -21,7 +21,7 @@ export function Container({
   children, 
   className, 
   as: Component = "div",
-  size = "xl" 
+  size = "2xl" 
 }: ContainerProps) {
   return (
     <Component

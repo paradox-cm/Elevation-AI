@@ -53,7 +53,8 @@ export default function DesignSystemPage() {
         { name: "Layout Patterns", href: "/design-system/layout-patterns", icon: "layout-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Interactive States", href: "/design-system/interactive-states", icon: "loader-4-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Motion & Animation", href: "/design-system/motion", icon: "play-circle-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-        { name: "Error States & Feedback", href: "/design-system/error-states", icon: "error-warning-line", color: "text-blue-500", bgColor: "bg-blue-500/10" }
+        { name: "Error States & Feedback", href: "/design-system/error-states", icon: "error-warning-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Sticky Sections", href: "/design-system/sticky-sections", icon: "arrow-up-down-line", color: "text-blue-500", bgColor: "bg-blue-500/10" }
       ]
     },
     {
