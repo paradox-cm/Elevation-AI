@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
-import { H1, H2, H3, H4, BodyLarge, BodySmall, DisplayLarge, DisplayMedium } from "@/components/ui/typography"
+import { H1, H2, H3, H4, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { cn } from "@/lib/utils"
@@ -95,7 +95,7 @@ function Header() {
   const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20 transition-colors duration-300" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -118,8 +118,26 @@ function Header() {
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
             </button>
             {/* Mega menu for Solutions */}
-            <div className="absolute top-full left-0 mt-2 w-[600px] bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <div className="p-6 grid grid-cols-2 gap-8">
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[800px] bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="p-6 grid grid-cols-3 gap-8">
+                {/* Featured Content */}
+                <div className="space-y-4">
+                  <div className="w-full h-32 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <Icon name="lightbulb-line" className="h-6 w-6 text-primary" />
+                      </div>
+                      <div className="text-xs text-muted-foreground">AI-Powered Solutions</div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-base text-foreground mb-2">Transform Your Business</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Discover tailored solutions that leverage AI to drive growth, efficiency, and innovation across your organization.
+                    </p>
+                  </div>
+                </div>
+
                 {/* By Industry */}
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Industry</h3>
@@ -278,7 +296,9 @@ function HeroSection() {
 // Problem Introduction Section
 function ProblemIntroductionSection() {
   const [activeStep, setActiveStep] = React.useState(0)
+  const [mobileActiveStep, setMobileActiveStep] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
+  const mobileSectionRef = React.useRef<HTMLDivElement>(null)
   
   const texts = [
     {
@@ -295,10 +315,10 @@ function ProblemIntroductionSection() {
     }
   ]
 
-  // Scroll-triggered carousel with standardized behavior
+  // Desktop scroll-triggered carousel with standardized behavior
   React.useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return
+      if (!sectionRef.current || window.innerWidth < 1024) return
       
       const rect = sectionRef.current.getBoundingClientRect()
       const containerHeight = 400 // Height of the carousel container
@@ -343,6 +363,49 @@ function ProblemIntroductionSection() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [texts.length])
 
+  // Mobile scroll-triggered carousel
+  React.useEffect(() => {
+    const handleMobileScroll = () => {
+      if (!mobileSectionRef.current || window.innerWidth >= 1024) return
+      
+      const rect = mobileSectionRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Calculate which step should be active based on scroll position for mobile
+      if (rect.top <= 0 && rect.bottom >= windowHeight * 0.5) {
+        // Section is in viewport, calculate progress based on mobile-appropriate scroll height
+        const mobileScrollHeight = windowHeight * 2 // 2x viewport height for comfortable scrolling
+        const scrollProgress = Math.abs(rect.top) / mobileScrollHeight
+        
+        // Equal distribution for all slides
+        const slideThreshold = 1 / 3
+        
+        let mobileActiveStep = 0
+        if (scrollProgress < slideThreshold) {
+          // First slide - 33.33% of scroll space
+          mobileActiveStep = 0
+        } else if (scrollProgress < slideThreshold * 2) {
+          // Second slide - 33.33% of scroll space
+          mobileActiveStep = 1
+        } else {
+          // Third slide - 33.33% of scroll space
+          mobileActiveStep = 2
+        }
+        
+        setMobileActiveStep(mobileActiveStep)
+      } else if (rect.top > 0) {
+        // Section is above viewport
+        setMobileActiveStep(0)
+      } else {
+        // Section is below viewport
+        setMobileActiveStep(texts.length - 1)
+      }
+    }
+
+    window.addEventListener('scroll', handleMobileScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleMobileScroll)
+  }, [texts.length])
+
   return (
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
@@ -350,16 +413,49 @@ function ProblemIntroductionSection() {
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Mobile Layout */}
-          <div className="block lg:hidden">
-            <div className="space-y-6">
-              {texts.map((textItem, index) => (
-                <div key={index} className="text-left">
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
-                    {textItem.text}
-                  </div>
+          <div className="block lg:hidden relative" ref={mobileSectionRef}>
+            {/* Carousel Container */}
+            <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
+              <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
+                {/* Text Container */}
+                <div className="relative h-96">
+                  {texts.map((textItem, index) => (
+                    <div
+                      key={index}
+                      className={`transition-opacity duration-75 absolute inset-0 ${
+                        index === mobileActiveStep
+                          ? 'opacity-100'
+                          : 'opacity-0 pointer-events-none'
+                      }`}
+                    >
+                      <div className="h-full flex items-center">
+                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary">
+                          {textItem.text}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                
+                {/* Slide Indicators */}
+                <div className="absolute bottom-0 left-0 flex gap-2">
+                  {texts.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setMobileActiveStep(index)}
+                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
+                        index === mobileActiveStep
+                          ? 'bg-blue-600 dark:bg-blue-400' 
+                          : 'bg-gray-300 dark:bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
+            
+            {/* Scroll Spacer */}
+            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
           </div>
 
           {/* Desktop Layout - Scroll-triggered Carousel */}
@@ -421,14 +517,14 @@ function ProblemSection() {
   
   const problems = [
     {
-      title: "Unified Knowledge Platform",
+      title: "The Unified Knowledge Platform",
       description: "Work from a single source of truth. We break down the walls between your departments and tools, creating a unified platform where no more hunting for that one file you know you saw in an email three weeks ago.",
       icon: "database-2-line"
     },
     {
       title: "Intelligent Process Automation",
       description: "Eliminate operational bottlenecks with smart automation. We identify and automate the manual, repetitive processes that slow down your growth, freeing your best people from manual data entry to focus on what they were hired to do.",
-      icon: "loader-4-line"
+      icon: "brain-line"
     },
     {
       title: "Real-Time Business Intelligence",
@@ -454,23 +550,28 @@ function ProblemSection() {
       const scrollTop = window.scrollY
       
       let activeCard = 0
+      
       cards.forEach((card, index) => {
         const rect = card.getBoundingClientRect()
         const cardTop = rect.top + scrollTop
         const cardHeight = rect.height
         
-        // Card is considered "active" when its top is in the upper third of the viewport
-        if (cardTop <= scrollTop + windowHeight * 0.4 && cardTop + cardHeight > scrollTop + windowHeight * 0.2) {
+        // Much earlier trigger for scroll down - expand when card is approaching the viewport
+        // Use 80% of viewport height for earlier expansion on scroll down
+        if (cardTop <= scrollTop + windowHeight * 0.8 && cardTop + cardHeight > scrollTop + windowHeight * 0.1) {
           activeCard = index
         }
       })
       
-      setMobileActiveCard(activeCard)
+      // Only update if the active card has changed
+      if (activeCard !== mobileActiveCard) {
+        setMobileActiveCard(activeCard)
+      }
     }
 
     window.addEventListener('scroll', handleMobileScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleMobileScroll)
-  }, [])
+  }, [mobileActiveCard])
 
   // Desktop scroll-triggered carousel with standardized behavior
   React.useEffect(() => {
@@ -585,7 +686,7 @@ function ProblemSection() {
                           <button
                             key={stepIndex}
                             onClick={() => setActiveStep(stepIndex)}
-                            className={`flex-1 border-2 flex items-center justify-center text-lg font-medium transition-all duration-300 ${
+                            className={`flex-1 border flex items-center justify-center text-lg font-medium transition-all duration-300 ${
                               stepIndex === activeStep
                                 ? 'bg-primary border-primary text-white shadow-lg'
                                 : stepIndex < activeStep
@@ -616,7 +717,9 @@ function ProblemSection() {
                             
                             {/* Image Placeholder */}
                             <div className="h-full bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
-                              <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">Visual Placeholder</BodyLarge>
+                              <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-4 lg:p-6 xl:p-8 2xl:p-10">
+                                <Icon name={problem.icon} className="text-blue-600 text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl" />
+                              </div>
                             </div>
                           </div>
                         </CardHeader>
@@ -641,7 +744,9 @@ function ProblemSection() {
 // Unifying Statement Section
 function UnifyingStatementSection() {
   const [activeStep, setActiveStep] = React.useState(0)
+  const [mobileActiveStep, setMobileActiveStep] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
+  const mobileSectionRef = React.useRef<HTMLDivElement>(null)
   
   const texts = [
     {
@@ -658,10 +763,10 @@ function UnifyingStatementSection() {
     }
   ]
 
-  // Scroll-triggered carousel with standardized behavior
+  // Desktop scroll-triggered carousel with standardized behavior
   React.useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return
+      if (!sectionRef.current || window.innerWidth < 1024) return
       
       const rect = sectionRef.current.getBoundingClientRect()
       const containerHeight = 400 // Height of the carousel container
@@ -706,6 +811,49 @@ function UnifyingStatementSection() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [texts.length])
 
+  // Mobile scroll-triggered carousel
+  React.useEffect(() => {
+    const handleMobileScroll = () => {
+      if (!mobileSectionRef.current || window.innerWidth >= 1024) return
+      
+      const rect = mobileSectionRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Calculate which step should be active based on scroll position for mobile
+      if (rect.top <= 0 && rect.bottom >= windowHeight * 0.5) {
+        // Section is in viewport, calculate progress based on mobile-appropriate scroll height
+        const mobileScrollHeight = windowHeight * 2 // 2x viewport height for comfortable scrolling
+        const scrollProgress = Math.abs(rect.top) / mobileScrollHeight
+        
+        // Equal distribution for all slides
+        const slideThreshold = 1 / 3
+        
+        let mobileActiveStep = 0
+        if (scrollProgress < slideThreshold) {
+          // First slide - 33.33% of scroll space
+          mobileActiveStep = 0
+        } else if (scrollProgress < slideThreshold * 2) {
+          // Second slide - 33.33% of scroll space
+          mobileActiveStep = 1
+        } else {
+          // Third slide - 33.33% of scroll space
+          mobileActiveStep = 2
+        }
+        
+        setMobileActiveStep(mobileActiveStep)
+      } else if (rect.top > 0) {
+        // Section is above viewport
+        setMobileActiveStep(0)
+      } else {
+        // Section is below viewport
+        setMobileActiveStep(texts.length - 1)
+      }
+    }
+
+    window.addEventListener('scroll', handleMobileScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleMobileScroll)
+  }, [texts.length])
+
   return (
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
@@ -713,16 +861,49 @@ function UnifyingStatementSection() {
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Mobile Layout */}
-          <div className="block lg:hidden">
-            <div className="space-y-6">
-              {texts.map((textItem, index) => (
-                <div key={index} className="text-left">
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
-                    {textItem.text}
-                  </div>
+          <div className="block lg:hidden relative" ref={mobileSectionRef}>
+            {/* Carousel Container */}
+            <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
+              <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
+                {/* Text Container */}
+                <div className="relative h-96">
+                  {texts.map((textItem, index) => (
+                    <div
+                      key={index}
+                      className={`transition-opacity duration-75 absolute inset-0 ${
+                        index === mobileActiveStep
+                          ? 'opacity-100'
+                          : 'opacity-0 pointer-events-none'
+                      }`}
+                    >
+                      <div className="h-full flex items-center">
+                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary">
+                          {textItem.text}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                
+                {/* Slide Indicators */}
+                <div className="absolute bottom-0 left-0 flex gap-2">
+                  {texts.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setMobileActiveStep(index)}
+                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
+                        index === mobileActiveStep
+                          ? 'bg-blue-600 dark:bg-blue-400' 
+                          : 'bg-gray-300 dark:bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
+            
+            {/* Scroll Spacer */}
+            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
           </div>
 
           {/* Desktop Layout - Scroll-triggered Carousel */}
@@ -818,23 +999,44 @@ function PlatformSection() {
       const scrollTop = window.scrollY
       
       let activeCard = 0
+      let sectionInView = false
+      
       cards.forEach((card, index) => {
         const rect = card.getBoundingClientRect()
         const cardTop = rect.top + scrollTop
         const cardHeight = rect.height
         
-        // Card is considered "active" when its top is in the upper third of the viewport
-        if (cardTop <= scrollTop + windowHeight * 0.4 && cardTop + cardHeight > scrollTop + windowHeight * 0.2) {
+        // Much earlier trigger for scroll down - expand when card is approaching the viewport
+        // Use 80% of viewport height for earlier expansion on scroll down
+        if (cardTop <= scrollTop + windowHeight * 0.8 && cardTop + cardHeight > scrollTop + windowHeight * 0.1) {
           activeCard = index
+          sectionInView = true
         }
       })
       
-      setMobileActiveCard(activeCard)
+      // If section is not in view and we're scrolling down past it, keep the last card expanded
+      if (!sectionInView) {
+        const lastCard = cards[cards.length - 1]
+        if (lastCard) {
+          const lastCardRect = lastCard.getBoundingClientRect()
+          const lastCardTop = lastCardRect.top + scrollTop
+          
+          // If we've scrolled past the last card, keep it expanded
+          if (lastCardTop < scrollTop) {
+            activeCard = cards.length - 1
+          }
+        }
+      }
+      
+      // Only update if the active card has changed
+      if (activeCard !== mobileActiveCard) {
+        setMobileActiveCard(activeCard)
+      }
     }
 
     window.addEventListener('scroll', handleMobileScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleMobileScroll)
-  }, [])
+  }, [mobileActiveCard])
 
   // Desktop scroll event manager
   React.useEffect(() => {
@@ -903,14 +1105,6 @@ function PlatformSection() {
     <Section paddingY="xl">
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
-          {/* Mobile Header */}
-          <div className="block lg:hidden text-left sm:text-center space-y-4 sm:space-y-6 max-w-3xl sm:mx-auto mb-8">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl leading-tight">The Elevation AI Platform</H2>
-            <BodyLarge className="text-muted-foreground text-base sm:text-lg">
-              A unified, agentic platform to power your entire operation.
-            </BodyLarge>
-          </div>
-
           {/* Mobile Layout */}
           <div className="block lg:hidden">
             <div className="space-y-6">
@@ -928,15 +1122,15 @@ function PlatformSection() {
                     iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
                     isInViewport={index === mobileActiveCard}
                   >
-                    {/* CTA Button */}
-                    <Button size="lg" className="w-full sm:w-auto">
-                      Explore the Platform
-                    </Button>
-                    
                     {/* Visual Placeholder */}
                     <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
                       <BodyLarge className="text-muted-foreground">Platform Visualization</BodyLarge>
                     </div>
+                    
+                    {/* CTA Button */}
+                    <Button size="lg" className="w-full sm:w-auto">
+                      Explore the Platform
+                    </Button>
                   </CollapsibleCard>
                 </div>
               ))}
