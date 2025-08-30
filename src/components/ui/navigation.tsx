@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 
+
 interface NavigationProps {
   currentPage?: string
   showBadge?: boolean
@@ -17,23 +18,69 @@ interface NavigationProps {
   showMobileMenuButton?: boolean
 }
 
-export function Navigation({ 
+// Wrapper component to handle mobile menu context availability
+function NavigationWithMobileMenu({ 
   currentPage,
   showBadge = true,
   badgeText = "Design System",
   onMobileMenuToggle,
   showMobileMenuButton = true
 }: NavigationProps) {
-  // Try to use mobile menu context, but don't fail if not available
-  let mobileMenuContext = null
-  try {
-    mobileMenuContext = useMobileMenu()
-  } catch (error) {
-    // Mobile menu context not available, continue without it
-  }
+  const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
   
-  const mobileMenuOpen = mobileMenuContext?.mobileMenuOpen || false
-  const setMobileMenuOpen = mobileMenuContext?.setMobileMenuOpen || (() => {})
+  return (
+    <NavigationContent
+      currentPage={currentPage}
+      showBadge={showBadge}
+      badgeText={badgeText}
+      onMobileMenuToggle={onMobileMenuToggle}
+      showMobileMenuButton={showMobileMenuButton}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={setMobileMenuOpen}
+    />
+  )
+}
+
+// Fallback component when mobile menu context is not available
+function NavigationWithoutMobileMenu({ 
+  currentPage,
+  showBadge = true,
+  badgeText = "Design System",
+  onMobileMenuToggle,
+  showMobileMenuButton = true
+}: NavigationProps) {
+  return (
+    <NavigationContent
+      currentPage={currentPage}
+      showBadge={showBadge}
+      badgeText={badgeText}
+      onMobileMenuToggle={onMobileMenuToggle}
+      showMobileMenuButton={showMobileMenuButton}
+      mobileMenuOpen={false}
+      setMobileMenuOpen={() => {}}
+    />
+  )
+}
+
+// Main navigation component that tries to use mobile menu context
+export function Navigation(props: NavigationProps) {
+  try {
+    return <NavigationWithMobileMenu {...props} />
+  } catch {
+    return <NavigationWithoutMobileMenu {...props} />
+  }
+}
+
+// Internal component that contains the actual navigation logic
+function NavigationContent({ 
+  currentPage,
+  showBadge = true,
+  badgeText = "Design System",
+  onMobileMenuToggle,
+  showMobileMenuButton = true,
+  mobileMenuOpen = false,
+  setMobileMenuOpen = () => {}
+}: NavigationProps & { mobileMenuOpen?: boolean; setMobileMenuOpen?: (open: boolean) => void }) {
   const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/design-system", label: "Design System", active: currentPage === "overview" },
