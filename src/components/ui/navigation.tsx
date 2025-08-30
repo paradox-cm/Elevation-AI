@@ -32,16 +32,6 @@ export function Navigation({
   const mobileMenuOpen = mobileMenuContext?.mobileMenuOpen || false
   const setMobileMenuOpen = mobileMenuContext?.setMobileMenuOpen || (() => {})
 
-// Internal component that contains the actual navigation logic
-function NavigationContent({ 
-  currentPage,
-  showBadge = true,
-  badgeText = "Design System",
-  onMobileMenuToggle,
-  showMobileMenuButton = true,
-  mobileMenuOpen = false,
-  setMobileMenuOpen = () => {}
-}: NavigationProps & { mobileMenuOpen?: boolean; setMobileMenuOpen?: (open: boolean) => void }) {
   const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/design-system", label: "Design System", active: currentPage === "overview" },
