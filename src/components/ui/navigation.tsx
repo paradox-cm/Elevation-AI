@@ -7,7 +7,8 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import Icon from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
+import { useContext } from "react"
+import { MobileMenuContext } from "@/components/ui/layout/mobile-only-layout"
 
 
 interface NavigationProps {
@@ -18,58 +19,18 @@ interface NavigationProps {
   showMobileMenuButton?: boolean
 }
 
-// Wrapper component to handle mobile menu context availability
-function NavigationWithMobileMenu({ 
+// Main navigation component
+export function Navigation({ 
   currentPage,
   showBadge = true,
   badgeText = "Design System",
   onMobileMenuToggle,
   showMobileMenuButton = true
 }: NavigationProps) {
-  const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
-  
-  return (
-    <NavigationContent
-      currentPage={currentPage}
-      showBadge={showBadge}
-      badgeText={badgeText}
-      onMobileMenuToggle={onMobileMenuToggle}
-      showMobileMenuButton={showMobileMenuButton}
-      mobileMenuOpen={mobileMenuOpen}
-      setMobileMenuOpen={setMobileMenuOpen}
-    />
-  )
-}
-
-// Fallback component when mobile menu context is not available
-function NavigationWithoutMobileMenu({ 
-  currentPage,
-  showBadge = true,
-  badgeText = "Design System",
-  onMobileMenuToggle,
-  showMobileMenuButton = true
-}: NavigationProps) {
-  return (
-    <NavigationContent
-      currentPage={currentPage}
-      showBadge={showBadge}
-      badgeText={badgeText}
-      onMobileMenuToggle={onMobileMenuToggle}
-      showMobileMenuButton={showMobileMenuButton}
-      mobileMenuOpen={false}
-      setMobileMenuOpen={() => {}}
-    />
-  )
-}
-
-// Main navigation component that tries to use mobile menu context
-export function Navigation(props: NavigationProps) {
-  try {
-    return <NavigationWithMobileMenu {...props} />
-  } catch {
-    return <NavigationWithoutMobileMenu {...props} />
-  }
-}
+  // Safely access mobile menu context if available
+  const mobileMenuContext = useContext(MobileMenuContext)
+  const mobileMenuOpen = mobileMenuContext?.mobileMenuOpen || false
+  const setMobileMenuOpen = mobileMenuContext?.setMobileMenuOpen || (() => {})
 
 // Internal component that contains the actual navigation logic
 function NavigationContent({ 

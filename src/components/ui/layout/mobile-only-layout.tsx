@@ -13,7 +13,7 @@ interface MobileMenuContextType {
   setMobileMenuOpen: (open: boolean) => void
 }
 
-const MobileMenuContext = createContext<MobileMenuContextType | null>(null)
+export const MobileMenuContext = createContext<MobileMenuContextType | null>(null)
 
 export function useMobileMenu() {
   const context = useContext(MobileMenuContext)
