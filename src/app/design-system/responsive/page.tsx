@@ -10,7 +10,7 @@ import { H4, BodySmall } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -175,16 +175,16 @@ export default function ResponsivePage() {
           </Section>
 
           <Section paddingY="lg">
-            <Tabs defaultValue="breakpoints" className="space-y-8">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="breakpoints">Breakpoints</TabsTrigger>
-                <TabsTrigger value="patterns">Patterns</TabsTrigger>
-                <TabsTrigger value="components">Components</TabsTrigger>
-                <TabsTrigger value="implementation">Implementation</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="breakpoints" className="space-y-8">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="breakpoints">Breakpoints</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="patterns">Patterns</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="components">Components</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="implementation">Implementation</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Breakpoints Tab */}
-              <TabsContent value="breakpoints" className="space-y-8">
+              <ResponsiveTabsContent value="breakpoints" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Breakpoint System</CardTitle>
@@ -278,10 +278,10 @@ export default function ResponsivePage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Patterns Tab */}
-              <TabsContent value="patterns" className="space-y-8">
+              <ResponsiveTabsContent value="patterns" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Responsive Design Patterns</CardTitle>
@@ -397,10 +397,10 @@ export default function ResponsivePage() {
                     </CardContent>
                   </Card>
                 </div>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Components Tab */}
-              <TabsContent value="components" className="space-y-8">
+              <ResponsiveTabsContent value="components" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Responsive Component Examples</CardTitle>
@@ -479,10 +479,10 @@ export default function ResponsivePage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Implementation Tab */}
-              <TabsContent value="implementation" className="space-y-8">
+              <ResponsiveTabsContent value="implementation" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>CSS Custom Properties</CardTitle>
@@ -620,8 +620,8 @@ export default function ResponsivePage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

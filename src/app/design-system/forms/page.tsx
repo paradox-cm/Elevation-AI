@@ -12,7 +12,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Icon from "@/components/ui/icon"
@@ -242,15 +242,15 @@ export default function FormsPage() {
 
           {/* Form Examples */}
           <Section paddingY="lg">
-            <Tabs defaultValue="basic" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="basic">Basic Form</TabsTrigger>
-                <TabsTrigger value="advanced">Advanced Form</TabsTrigger>
-                <TabsTrigger value="wizard">Form Wizard</TabsTrigger>
-              </TabsList>
+                      <ResponsiveTabs defaultValue="basic" className="w-full">
+            <ResponsiveTabsList className="grid w-full grid-cols-3">
+              <ResponsiveTabsTrigger value="basic">Basic Form</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="advanced">Advanced Form</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="wizard">Form Wizard</ResponsiveTabsTrigger>
+            </ResponsiveTabsList>
 
               {/* Basic Form */}
-              <TabsContent value="basic" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="basic" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Customer Support Contact Form</CardTitle>
@@ -372,10 +372,10 @@ export default function FormsPage() {
                     </Form>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Advanced Form */}
-              <TabsContent value="advanced" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="advanced" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Developer Profile Registration</CardTitle>
@@ -628,10 +628,10 @@ export default function FormsPage() {
                     </Form>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Wizard Form */}
-              <TabsContent value="wizard" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="wizard" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Project Setup Wizard</CardTitle>
@@ -885,8 +885,8 @@ export default function FormsPage() {
                     </Form>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
 
           {/* Form Components Showcase */}

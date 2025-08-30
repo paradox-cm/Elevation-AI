@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import Icon from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 
 interface NavigationProps {
   currentPage?: string
@@ -23,6 +24,16 @@ export function Navigation({
   onMobileMenuToggle,
   showMobileMenuButton = true
 }: NavigationProps) {
+  // Try to use mobile menu context, but don't fail if not available
+  let mobileMenuContext = null
+  try {
+    mobileMenuContext = useMobileMenu()
+  } catch (error) {
+    // Mobile menu context not available, continue without it
+  }
+  
+  const mobileMenuOpen = mobileMenuContext?.mobileMenuOpen || false
+  const setMobileMenuOpen = mobileMenuContext?.setMobileMenuOpen || (() => {})
   const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/design-system", label: "Design System", active: currentPage === "overview" },
@@ -66,15 +77,15 @@ export function Navigation({
         {/* Mobile & Tablet Navigation - Optimized Touch Targets */}
         <div className="flex items-center space-x-1 sm:space-x-2 lg:hidden">
           <ThemeToggle />
-          {showMobileMenuButton && onMobileMenuToggle && (
+          {showMobileMenuButton && (
             <Button 
               variant="ghost" 
               size="icon" 
               className="h-10 w-10 sm:h-11 sm:w-11"
-              onClick={onMobileMenuToggle}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <Icon name="menu-line" className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
+              <Icon name={mobileMenuOpen ? "close-line" : "menu-line"} className="h-5 w-5" />
+              <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Toggle menu"}</span>
             </Button>
           )}
         </div>

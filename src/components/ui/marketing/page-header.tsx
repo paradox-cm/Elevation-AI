@@ -18,17 +18,17 @@ const sizeClasses = {
 }
 
 const titleSizes = {
-  sm: "text-2xl font-bold tracking-tight",
-  md: "text-3xl font-bold tracking-tight",
-  lg: "text-4xl font-bold tracking-tight",
-  xl: "text-5xl font-bold tracking-tight"
+  sm: "text-xl sm:text-2xl font-bold tracking-tight",
+  md: "text-2xl sm:text-3xl font-bold tracking-tight",
+  lg: "text-3xl sm:text-4xl font-bold tracking-tight",
+  xl: "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"
 }
 
 const descriptionSizes = {
-  sm: "text-sm text-muted-foreground",
-  md: "text-base text-muted-foreground",
-  lg: "text-lg text-muted-foreground",
-  xl: "text-xl text-muted-foreground"
+  sm: "text-xs sm:text-sm text-muted-foreground",
+  md: "text-sm sm:text-base text-muted-foreground",
+  lg: "text-base sm:text-lg text-muted-foreground",
+  xl: "text-base sm:text-lg md:text-xl text-muted-foreground"
 }
 
 export function PageHeader({ 

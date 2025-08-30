@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
@@ -47,16 +47,16 @@ export default function CornerRadiusPage() {
                       </Section>
             
             <Section paddingY="lg">
-              <Tabs defaultValue="scale" className="space-y-8">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="scale">Radius Scale</TabsTrigger>
-                <TabsTrigger value="components">Components</TabsTrigger>
-                <TabsTrigger value="guidelines">Guidelines</TabsTrigger>
-                <TabsTrigger value="implementation">Implementation</TabsTrigger>
-              </TabsList>
+              <ResponsiveTabs defaultValue="scale" className="space-y-8">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="scale">Radius Scale</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="components">Components</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="guidelines">Guidelines</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="implementation">Implementation</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Radius Scale Tab */}
-              <TabsContent value="scale" className="space-y-8">
+              <ResponsiveTabsContent value="scale" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Corner Radius Scale</CardTitle>
@@ -150,10 +150,10 @@ export default function CornerRadiusPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Components Tab */}
-              <TabsContent value="components" className="space-y-8">
+              <ResponsiveTabsContent value="components" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Component Usage</CardTitle>
@@ -264,10 +264,10 @@ export default function CornerRadiusPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Guidelines Tab */}
-              <TabsContent value="guidelines" className="space-y-8">
+              <ResponsiveTabsContent value="guidelines" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Usage Guidelines</CardTitle>
@@ -366,10 +366,10 @@ export default function CornerRadiusPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Implementation Tab */}
-              <TabsContent value="implementation" className="space-y-8">
+              <ResponsiveTabsContent value="implementation" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>CSS Custom Properties</CardTitle>
@@ -471,8 +471,8 @@ export default function CornerRadiusPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

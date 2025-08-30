@@ -85,24 +85,55 @@ export default function DesignSystemPage() {
               />
               
               {/* Hero Grid Container - Mobile Optimized */}
-              <div className="mt-8 sm:mt-12 w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] relative bg-muted/50 rounded-xl sm:rounded-2xl border border-border overflow-hidden">
-                                 {/* Centered Icon - Responsive Sizing */}
-                 <div className="absolute inset-0 flex items-center justify-center z-20">
-                                      <div className="flex items-center justify-center w-full h-full transform translate-y-8">
-                      <Favicon 
-                        width={100} 
-                        height={100} 
-                        className="sm:w-35 sm:h-35 md:w-40 md:h-40 lg:w-[175px] lg:h-[175px]" 
-                        priority 
-                      />
-                    </div>
-                 </div>
+              <div className="mt-8 sm:mt-12 w-full h-[200px] sm:h-[218px] md:h-[318px] lg:h-[418px] relative bg-muted/50 rounded-xl sm:rounded-2xl border border-border overflow-hidden">
+                {/* Centered Icon - Responsive Sizing */}
+                <div className="absolute inset-0 z-20">
+                  <div 
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-y-[calc(-50%+40px)] lg:translate-y-[calc(-50%+40px)]"
+                  >
+                    <Favicon 
+                      width={100} 
+                      height={100} 
+                      className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-[175px] lg:h-[175px]" 
+                      priority 
+                    />
+                  </div>
+                </div>
                 
                 {/* Full Grid Background */}
                 <div className="absolute inset-0 bg-background/80 backdrop-blur-sm">
-                  {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness */}
+                  {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness - Mobile */}
                   <div 
-                    className="absolute inset-0"
+                    className="absolute inset-0 sm:hidden"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 90%),
+                        radial-gradient(circle at 80% 80%, rgba(156, 163, 175, 0.4) 0%, rgba(156, 163, 175, 0.08) 50%, transparent 90%),
+                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.35) 0%, rgba(59, 130, 246, 0.05) 60%, transparent 95%),
+                        radial-gradient(circle at 30% 70%, rgba(156, 163, 175, 0.25) 0%, rgba(156, 163, 175, 0.04) 60%, transparent 95%)
+                      `,
+                      backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
+                      backgroundPosition: '0% 0%, 100% 100%, 50% 50%, 25% 75%',
+                      animation: 'plasma-flow 12s ease-in-out infinite',
+                      filter: 'blur(16px)',
+                      WebkitMask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      WebkitMaskSize: '16px 16px',
+                      WebkitMaskPosition: '0 0',
+                      mask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      maskSize: '16px 16px',
+                      maskPosition: '0 0'
+                    }}
+                  />
+                  
+                  {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness - Desktop */}
+                  <div 
+                    className="absolute inset-0 hidden sm:block"
                     style={{
                       backgroundImage: `
                         radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 90%),
@@ -129,9 +160,38 @@ export default function DesignSystemPage() {
                     }}
                   />
                   
-                  {/* Additional Soft Blur Layer */}
+                  {/* Additional Soft Blur Layer - Mobile */}
                   <div 
-                    className="absolute inset-0"
+                    className="absolute inset-0 sm:hidden"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.25) 0%, transparent 70%),
+                        radial-gradient(circle at 40% 60%, rgba(156, 163, 175, 0.2) 0%, transparent 70%),
+                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 80%),
+                        radial-gradient(circle at 10% 90%, rgba(156, 163, 175, 0.18) 0%, transparent 80%)
+                      `,
+                      backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
+                      backgroundPosition: '75% 25%, 10% 90%, 50% 50%, 90% 10%',
+                      animation: 'plasma-flow 12s ease-in-out infinite reverse',
+                      filter: 'blur(24px)',
+                      WebkitMask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      WebkitMaskSize: '16px 16px',
+                      WebkitMaskPosition: '0 0',
+                      mask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      maskSize: '16px 16px',
+                      maskPosition: '0 0'
+                    }}
+                  />
+                  
+                  {/* Additional Soft Blur Layer - Desktop */}
+                  <div 
+                    className="absolute inset-0 hidden sm:block"
                     style={{
                       backgroundImage: `
                         radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.25) 0%, transparent 70%),
@@ -158,9 +218,36 @@ export default function DesignSystemPage() {
                     }}
                   />
                   
-                  {/* Extra Softness Layer */}
+                  {/* Extra Softness Layer - Mobile */}
                   <div 
-                    className="absolute inset-0"
+                    className="absolute inset-0 sm:hidden"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 80%),
+                        radial-gradient(circle at 75% 75%, rgba(156, 163, 175, 0.12) 0%, transparent 80%)
+                      `,
+                      backgroundSize: '1000px 1000px, 1200px 1200px',
+                      backgroundPosition: '0% 0%, 100% 100%',
+                      animation: 'plasma-flow 12s ease-in-out infinite',
+                      filter: 'blur(32px)',
+                      WebkitMask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      WebkitMaskSize: '16px 16px',
+                      WebkitMaskPosition: '0 0',
+                      mask: `
+                        linear-gradient(to right, black 1px, transparent 1px),
+                        linear-gradient(to bottom, black 1px, transparent 1px)
+                      `,
+                      maskSize: '16px 16px',
+                      maskPosition: '0 0'
+                    }}
+                  />
+                  
+                  {/* Extra Softness Layer - Desktop */}
+                  <div 
+                    className="absolute inset-0 hidden sm:block"
                     style={{
                       backgroundImage: `
                         radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 80%),
@@ -185,9 +272,22 @@ export default function DesignSystemPage() {
                     }}
                   />
                   
-                  {/* Base Grid Structure - Subtle for reference */}
+                                        {/* Base Grid Structure - Subtle for reference */}
                       <div 
-                        className="absolute inset-0"
+                        className="absolute inset-0 sm:hidden"
+                        style={{
+                          backgroundImage: `
+                        linear-gradient(to right, rgba(229, 231, 235, 0.015) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(229, 231, 235, 0.015) 1px, transparent 1px)
+                          `,
+                          backgroundSize: '16px 16px',
+                          backgroundPosition: '0 0'
+                        }}
+                      />
+                      
+                      {/* Base Grid Structure - Desktop */}
+                      <div 
+                        className="absolute inset-0 hidden sm:block"
                         style={{
                           backgroundImage: `
                         linear-gradient(to right, rgba(229, 231, 235, 0.03) 1px, transparent 1px),
@@ -198,9 +298,22 @@ export default function DesignSystemPage() {
                         }}
                       />
                   
-                      {/* Dark mode grid lines */}
+                      {/* Dark mode grid lines - Mobile */}
                       <div 
-                        className="absolute inset-0 dark:hidden"
+                        className="absolute inset-0 dark:hidden sm:hidden"
+                        style={{
+                          backgroundImage: `
+                        linear-gradient(to right, rgba(209, 213, 219, 0.015) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(209, 213, 219, 0.015) 1px, transparent 1px)
+                          `,
+                          backgroundSize: '16px 16px',
+                          backgroundPosition: '0 0'
+                        }}
+                      />
+                      
+                      {/* Dark mode grid lines - Desktop */}
+                      <div 
+                        className="absolute inset-0 dark:hidden hidden sm:block"
                         style={{
                           backgroundImage: `
                         linear-gradient(to right, rgba(209, 213, 219, 0.03) 1px, transparent 1px),

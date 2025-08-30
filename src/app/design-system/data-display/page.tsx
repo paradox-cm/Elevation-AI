@@ -11,7 +11,7 @@ import { H3, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
@@ -375,14 +375,14 @@ export default function DataDisplayPage() {
 
           {/* Data Tables */}
           <Section paddingY="lg">
-            <Tabs defaultValue="users" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="users">User Management</TabsTrigger>
-                <TabsTrigger value="projects">Project Tracking</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="users" className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-2">
+                <ResponsiveTabsTrigger value="users">User Management</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="projects">Project Tracking</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Users Table */}
-              <TabsContent value="users" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="users" className="space-y-6 mt-6">
                 <DataTableWithActions
                   columns={userColumns}
                   data={users}
@@ -410,10 +410,10 @@ export default function DataDisplayPage() {
                     },
                   ]}
                 />
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Projects Table */}
-              <TabsContent value="projects" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="projects" className="space-y-6 mt-6">
                 <DataTable
                   columns={projectColumns}
                   data={projects}
@@ -430,8 +430,8 @@ export default function DataDisplayPage() {
                     },
                   }}
                 />
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
 
           {/* Empty States Showcase */}

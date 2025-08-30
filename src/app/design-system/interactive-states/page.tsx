@@ -10,7 +10,7 @@ import { H3, H4, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -134,15 +134,15 @@ export default function InteractiveStatesPage() {
 
           {/* Interactive Components */}
           <Section paddingY="lg">
-            <Tabs defaultValue="loading" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="loading">Loading States</TabsTrigger>
-                <TabsTrigger value="feedback">User Feedback</TabsTrigger>
-                <TabsTrigger value="interactive">Interactive Elements</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="loading" className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-3">
+                <ResponsiveTabsTrigger value="loading">Loading States</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="feedback">User Feedback</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="interactive">Interactive Elements</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Loading States */}
-              <TabsContent value="loading" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="loading" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Loading Spinners & Overlays</CardTitle>
@@ -262,10 +262,10 @@ export default function InteractiveStatesPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* User Feedback */}
-              <TabsContent value="feedback" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="feedback" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Toast Notifications</CardTitle>
@@ -318,10 +318,10 @@ export default function InteractiveStatesPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Interactive Elements */}
-              <TabsContent value="interactive" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="interactive" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Interactive Form Elements</CardTitle>
@@ -398,8 +398,8 @@ export default function InteractiveStatesPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
 
           {/* Best Practices */}

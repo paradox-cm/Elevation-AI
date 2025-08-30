@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Logo } from "@/components/ui/logo"
 
 // Create context for mobile menu state
 interface MobileMenuContextType {
@@ -45,7 +46,10 @@ export function MobileOnlyLayout({
     <MobileMenuContext.Provider value={{ mobileMenuOpen, setMobileMenuOpen }}>
       <div className={cn("min-h-screen", className)}>
         {header && (
-          <header className="fixed top-0 left-0 right-0 z-50">
+          <header className={cn(
+            "fixed top-0 left-0 right-0 z-50 transition-colors duration-150",
+            (mobileMenuOpen || mobileMenu) && "!bg-background"
+          )}>
             {header}
           </header>
         )}
@@ -54,7 +58,7 @@ export function MobileOnlyLayout({
           {/* Mobile menu overlay */}
           {mobileMenu && mobileMenuOpen && (
             <div 
-              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+              className="fixed inset-0 z-35 bg-black/20 backdrop-blur-md lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
           )}
@@ -62,24 +66,10 @@ export function MobileOnlyLayout({
           {/* Mobile Menu Drawer - Only visible on mobile/tablet */}
           {mobileMenu && (
             <aside className={cn(
-              "flex-shrink-0 bg-background border-l border-border",
-              "fixed top-0 bottom-0 right-0 z-50 w-61 sm:w-68 transform transition-transform duration-300 ease-in-out lg:hidden",
-              mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+              "flex-shrink-0 bg-background border-b border-border",
+              "fixed top-0 left-0 right-0 z-45 h-[80vh] transform transition-transform duration-150 ease-out lg:hidden",
+              mobileMenuOpen ? "translate-y-14 sm:translate-y-16" : "-translate-y-full"
             )}>
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border h-14 sm:h-16">
-                <h2 className="text-lg font-semibold">Menu</h2>
-                <div className="flex items-center space-x-2">
-                  <ThemeToggle />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-9 w-9 sm:h-10 sm:w-10"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Icon name="close-line" className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
               <div className="h-full overflow-y-auto">
                 {mobileMenu}
               </div>

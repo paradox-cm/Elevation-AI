@@ -8,7 +8,7 @@ import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
@@ -190,16 +190,16 @@ export default function ContentComponentsPage() {
 
           {/* Content Components Showcase */}
           <Section paddingY="lg">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="articles">Articles</TabsTrigger>
-                <TabsTrigger value="media">Media</TabsTrigger>
-                <TabsTrigger value="interactive">Interactive</TabsTrigger>
-                <TabsTrigger value="content">Content Blocks</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="articles">Articles</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="media">Media</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="interactive">Interactive</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="content">Content Blocks</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Articles */}
-              <TabsContent value="articles" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="articles" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Article Layout Components</CardTitle>
@@ -286,10 +286,10 @@ export default function ContentComponentsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Media */}
-              <TabsContent value="media" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="media" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Media Components</CardTitle>
@@ -345,10 +345,10 @@ export default function ContentComponentsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Interactive */}
-              <TabsContent value="interactive" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="interactive" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Interactive Content Components</CardTitle>
@@ -376,10 +376,10 @@ export default function ContentComponentsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Content Blocks */}
-              <TabsContent value="content" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="content" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Content Block Patterns</CardTitle>
@@ -467,8 +467,8 @@ export default function ContentComponentsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
 
           {/* Best Practices */}

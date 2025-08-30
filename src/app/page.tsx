@@ -17,7 +17,13 @@ export default function Home() {
         <Container>
           <Section paddingY="xl" className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
             <div className="text-center">
-              <AnimatedFavicon width={200} height={200} />
+              <div className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-64 2xl:h-64 flex items-center justify-center relative z-10 mx-auto">
+                <AnimatedFavicon
+                  width={256}
+                  height={256}
+                  className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-64 2xl:h-64"
+                />
+              </div>
             </div>
           </Section>
         </Container>

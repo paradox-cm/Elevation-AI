@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, H4, BodySmall } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -178,17 +178,17 @@ export default function DesignTokensPage() {
           </Section>
           
           <Section paddingY="lg">
-            <Tabs defaultValue="overview" className="space-y-8">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="colors">Colors</TabsTrigger>
-                <TabsTrigger value="spacing">Spacing</TabsTrigger>
-                <TabsTrigger value="typography">Typography</TabsTrigger>
-                <TabsTrigger value="implementation">Implementation</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="overview" className="space-y-8">
+              <ResponsiveTabsList className="grid w-full grid-cols-5">
+                <ResponsiveTabsTrigger value="overview">Overview</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="colors">Colors</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="spacing">Spacing</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="typography">Typography</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="implementation">Implementation</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Overview Tab */}
-              <TabsContent value="overview" className="space-y-8">
+              <ResponsiveTabsContent value="overview" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -303,10 +303,10 @@ export default function DesignTokensPage() {
                     </CardContent>
                   </Card>
                 </div>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Colors Tab */}
-              <TabsContent value="colors" className="space-y-8">
+              <ResponsiveTabsContent value="colors" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Color Token System</CardTitle>
@@ -350,10 +350,10 @@ export default function DesignTokensPage() {
                     ))}
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Spacing Tab */}
-              <TabsContent value="spacing" className="space-y-8">
+              <ResponsiveTabsContent value="spacing" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -402,10 +402,10 @@ export default function DesignTokensPage() {
                     ))}
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Typography Tab */}
-              <TabsContent value="typography" className="space-y-8">
+              <ResponsiveTabsContent value="typography" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -453,10 +453,10 @@ export default function DesignTokensPage() {
                     ))}
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Implementation Tab */}
-              <TabsContent value="implementation" className="space-y-8">
+              <ResponsiveTabsContent value="implementation" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -613,8 +613,8 @@ export default function DesignTokensPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

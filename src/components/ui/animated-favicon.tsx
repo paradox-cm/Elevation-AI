@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { cn } from "@/lib/utils"
 
 interface AnimatedFaviconProps {
@@ -12,6 +12,40 @@ interface AnimatedFaviconProps {
 export function AnimatedFavicon({ className, width = 100, height = 100 }: AnimatedFaviconProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const animationRef = useRef<number | undefined>(undefined)
+  const lastTimeRef = useRef<number>(0)
+  const isVisibleRef = useRef<boolean>(true)
+
+  // Pre-calculate color values for better performance
+  const brandColors = [
+    { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } },
+    { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } },
+    { name: 'Green', hex: '#12c55d', rgb: { r: 18, g: 197, b: 93 } },
+    { name: 'Red', hex: '#df3523', rgb: { r: 223, g: 53, b: 35 } },
+    { name: 'Gold', hex: '#ebbc48', rgb: { r: 235, g: 188, b: 72 } },
+    { name: 'Magenta', hex: '#e433c3', rgb: { r: 228, g: 51, b: 195 } },
+    { name: 'Cyan', hex: '#5bc8f7', rgb: { r: 91, g: 200, b: 247 } }
+  ]
+
+  // Convert hex to RGB (cached version)
+  const hexToRgb = useCallback((hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 0, g: 0, b: 0 }
+  }, [])
+
+  // Visibility change handler for performance optimization
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      isVisibleRef.current = !document.hidden
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -196,103 +230,119 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
       }
     }
 
-
-
     // Initialize Perlin noise
     const rctx = new SmallPRNG(+new Date())
     const p = new Perlin()
     p.init(() => rctx.random(0, 255))
 
-    // Elevation AI 500 color variants (excluding Zinc)
-    const brandColors = [
-      { name: 'Elevation', hex: '#0e62fd' },
-      { name: 'Periwinkle', hex: '#7458f4' },
-      { name: 'Green', hex: '#12c55d' },
-      { name: 'Red', hex: '#df3523' },
-      { name: 'Gold', hex: '#ebbc48' },
-      { name: 'Magenta', hex: '#e433c3' },
-      { name: 'Cyan', hex: '#5bc8f7' }
-    ]
+    // Performance optimization: Pre-calculate constants
+    const rmin = -1, rmax = 1
+    const scaleX = 0.005
+    const scaleY = 0.005
+    const speed = 0.0002
+    const colorTransitionSpeed = 0.005
+    const waveMultiplier = 3072
+    const threshold = 0.15
+    const fadeAlpha = 0.3
 
-    // Convert hex to RGB
-    function hexToRgb(hex: string) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-      return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      } : { r: 0, g: 0, b: 0 }
-    }
-
+    // Performance optimization: Cache color calculations
     let colorIndex = 0
     let colorTransition = 0
-    const rmin = -1, rmax = 1
+    let currentR = brandColors[0].rgb.r
+    let currentG = brandColors[0].rgb.g
+    let currentB = brandColors[0].rgb.b
 
-    function animate() {
-      requestAnimationFrame(animate)
-      
-      // Update color transition (slower)
-      colorTransition += 0.005  // Reduced from 0.01 for slower color changes
+    // Performance optimization: Throttled animation function
+    const animate = (currentTime: number) => {
+      // Throttle animation when tab is not visible
+      if (!isVisibleRef.current) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+
+      // Throttle to ~60fps for better performance
+      if (currentTime - lastTimeRef.current < 16) { // ~60fps
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastTimeRef.current = currentTime
+
+      // Pre-warm the animation for smoother initial frames
+      if (!lastTimeRef.current) {
+        lastTimeRef.current = currentTime
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+
+      // Update color transition
+      colorTransition += colorTransitionSpeed
       if (colorTransition >= 1) {
         colorTransition = 0
         colorIndex = (colorIndex + 1) % brandColors.length
       }
 
-      // Clear with fade effect
-      if (ctx) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'
-        ctx.fillRect(0, 0, width, height)
-      }
+      // Clear canvas and add solid black background
+      ctx.fillStyle = 'rgba(0, 0, 0, 1)'
+      ctx.fillRect(0, 0, width, height)
       
       const time = Date.now()
-      const speed = 0.0002  // Reduced from 0.0005 for slower movement
       const z = time * speed
       
       // Get current and next colors for smooth transition
-      const currentColor = hexToRgb(brandColors[colorIndex].hex)
-      const nextColor = hexToRgb(brandColors[(colorIndex + 1) % brandColors.length].hex)
+      const currentColor = brandColors[colorIndex].rgb
+      const nextColor = brandColors[(colorIndex + 1) % brandColors.length].rgb
       
       // Interpolate between colors
-      const r = Math.round(currentColor.r + (nextColor.r - currentColor.r) * colorTransition)
-      const g = Math.round(currentColor.g + (nextColor.g - currentColor.g) * colorTransition)
-      const b = Math.round(currentColor.b + (nextColor.b - currentColor.b) * colorTransition)
+      currentR = Math.round(currentColor.r + (nextColor.r - currentColor.r) * colorTransition)
+      currentG = Math.round(currentColor.g + (nextColor.g - currentColor.g) * colorTransition)
+      currentB = Math.round(currentColor.b + (nextColor.b - currentColor.b) * colorTransition)
 
       // Create image data for pixel manipulation
-      if (!ctx) return
       const imageData = ctx.getImageData(0, 0, width, height)
       const data = imageData.data
 
-      for(let i = 0; i < data.length; i += 4) {
+      // Performance optimization: Use more efficient loop
+      const dataLength = data.length
+      for(let i = 0; i < dataLength; i += 4) {
         const x = (i / 4) % width
         const y = Math.floor((i / 4) / width)
         
-        // Scale coordinates for noise (larger/thicker filaments)
-        const xx = (x * 0.008)  // Reduced from 0.02 for larger scale patterns
-        const yy = (y * 0.008)  // Reduced from 0.02 for larger scale patterns
+        // Scale coordinates for noise
+        const xx = x * scaleX
+        const yy = y * scaleY
         
         // Get noise value
         const n = p.simplex3d(xx, yy, z)
         const nn = ((n - rmin) / (rmax - rmin))
         
-        // Create wave effect (less dense, larger scale)
+        // Create wave effect
         const wave = Math.abs(nn - 0.5)
-        const f = ((255 - Math.min(Math.max(wave * 2048, 0), 255))) / 255  // Reduced from 4096 for less density
+        const f = ((255 - Math.min(Math.max(wave * waveMultiplier, 0), 255))) / 255
         
-        if(f > 0.2) {  // Increased threshold from 0.1 to 0.2 for less plasma density
-          data[i] = f * r     // Red
-          data[i + 1] = f * g // Green
-          data[i + 2] = f * b // Blue
-          data[i + 3] = 255   // Alpha
+        if(f > threshold) {
+          data[i] = f * currentR     // Red
+          data[i + 1] = f * currentG // Green
+          data[i + 2] = f * currentB // Blue
+          data[i + 3] = 255          // Alpha
         }
       }
 
-      if (ctx) {
-        ctx.putImageData(imageData, 0, 0)
-      }
+      ctx.putImageData(imageData, 0, 0)
+      animationRef.current = requestAnimationFrame(animate)
     }
 
-    animate()
-  }, [width, height])
+    // Small delay to ensure smooth initial animation
+    setTimeout(() => {
+      animationRef.current = requestAnimationFrame(animate)
+    }, 100)
+
+    // Cleanup function
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [width, height, hexToRgb])
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>

@@ -10,7 +10,7 @@ import { H4, BodySmall } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { useAccessibilityConfig } from "@/hooks/use-accessibility-config"
@@ -172,16 +172,16 @@ export default function AccessibilityPage() {
           </Section>
 
           <Section paddingY="lg">
-            <Tabs defaultValue="overview" className="space-y-8">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="guidelines">Guidelines</TabsTrigger>
-                <TabsTrigger value="testing">Testing</TabsTrigger>
-                <TabsTrigger value="implementation">Implementation</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="overview" className="space-y-8">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="overview">Overview</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="guidelines">Guidelines</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="testing">Testing</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="implementation">Implementation</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Overview Tab */}
-              <TabsContent value="overview" className="space-y-8">
+              <ResponsiveTabsContent value="overview" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>WCAG Compliance Levels</CardTitle>
@@ -280,10 +280,10 @@ export default function AccessibilityPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Guidelines Tab */}
-              <TabsContent value="guidelines" className="space-y-8">
+              <ResponsiveTabsContent value="guidelines" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Color Contrast Guidelines</CardTitle>
@@ -419,10 +419,10 @@ export default function AccessibilityPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Testing Tab */}
-              <TabsContent value="testing" className="space-y-8">
+              <ResponsiveTabsContent value="testing" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Testing Tools & Methods</CardTitle>
@@ -527,10 +527,10 @@ export default function AccessibilityPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Implementation Tab */}
-              <TabsContent value="implementation" className="space-y-8">
+              <ResponsiveTabsContent value="implementation" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Semantic HTML</CardTitle>
@@ -667,8 +667,8 @@ export default function AccessibilityPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

@@ -92,7 +92,7 @@ function TypewriterText({ text, speed = 200, delay = 0, skipAnimation = false }:
 
 // Header Component
 function Header() {
-  const { setMobileMenuOpen } = useMobileMenu()
+  const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300">
@@ -106,11 +106,6 @@ function Header() {
 
         {/* Center Navigation */}
         <nav className="hidden xl:flex items-center space-x-4">
-          {/* Home */}
-          <Link href="/" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
-            Home
-          </Link>
-          
           {/* Platform */}
           <Link href="/platform" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
             Platform
@@ -179,18 +174,15 @@ function Header() {
 
         {/* Right CTAs */}
         <div className="hidden lg:flex items-center space-x-3">
-          <Button variant="outline" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-            <Link href="/about">
-              About Us
-            </Link>
-          </Button>
-          <Button size="sm" className="text-xs xl:text-sm hover:bg-primary/90">
-            Request a Demo
-          </Button>
           <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
             <Link href="/wireframes/login">
               <Icon name="login-box-line" className="h-4 w-4 mr-1" />
               Login
+            </Link>
+          </Button>
+          <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
+            <Link href="/wireframes/demo">
+              Request a Demo
             </Link>
           </Button>
           <ThemeToggle />
@@ -198,21 +190,15 @@ function Header() {
 
         {/* Mobile menu button */}
         <div className="flex items-center space-x-2 lg:hidden">
-          <Button variant="ghost" size="sm" asChild className="text-xs hover:bg-muted/50">
-            <Link href="/wireframes/login">
-              <Icon name="login-box-line" className="h-4 w-4 mr-1" />
-              Login
-            </Link>
-          </Button>
           <ThemeToggle />
           <Button 
             variant="ghost" 
             size="icon" 
             className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-muted/50"
-            onClick={() => setMobileMenuOpen(true)}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <Icon name="menu-line" className="h-5 w-5" />
-            <span className="sr-only">Toggle menu</span>
+            <Icon name={mobileMenuOpen ? "close-line" : "menu-line"} className="h-5 w-5" />
+            <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Toggle menu"}</span>
           </Button>
         </div>
       </div>
@@ -229,7 +215,7 @@ function HeroSection() {
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight">
+              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight">
                 Your Universe. Intelligently Orchestrated.
               </div>
               <BodyLarge className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
@@ -237,8 +223,10 @@ function HeroSection() {
               </BodyLarge>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                Request a Demo
+              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+                <Link href="/wireframes/demo">
+                  Request a Demo
+                </Link>
               </Button>
             </div>
           </div>
@@ -428,6 +416,7 @@ function ProblemIntroductionSection() {
 // Problem We Solve Section
 function ProblemSection() {
   const [activeStep, setActiveStep] = React.useState(0)
+  const [mobileActiveCard, setMobileActiveCard] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
   
   const problems = [
@@ -453,10 +442,40 @@ function ProblemSection() {
     }
   ]
 
-  // Scroll-triggered carousel with standardized behavior
+  // Mobile scroll-based card activation
+  React.useEffect(() => {
+    const handleMobileScroll = () => {
+      if (window.innerWidth >= 1024) return // Only for mobile/tablet
+      
+      const cards = document.querySelectorAll('[data-problem-card]')
+      if (cards.length === 0) return
+      
+      const windowHeight = window.innerHeight
+      const scrollTop = window.scrollY
+      
+      let activeCard = 0
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect()
+        const cardTop = rect.top + scrollTop
+        const cardHeight = rect.height
+        
+        // Card is considered "active" when its top is in the upper third of the viewport
+        if (cardTop <= scrollTop + windowHeight * 0.4 && cardTop + cardHeight > scrollTop + windowHeight * 0.2) {
+          activeCard = index
+        }
+      })
+      
+      setMobileActiveCard(activeCard)
+    }
+
+    window.addEventListener('scroll', handleMobileScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleMobileScroll)
+  }, [])
+
+  // Desktop scroll-triggered carousel with standardized behavior
   React.useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return
+      if (!sectionRef.current || window.innerWidth < 1024) return
       
       const rect = sectionRef.current.getBoundingClientRect()
       // Responsive container height calculation matching actual container heights
@@ -521,18 +540,23 @@ function ProblemSection() {
           <div className="block lg:hidden">
             <div className="space-y-6">
               {problems.map((problem, index) => (
-                <CollapsibleCard
+                <div
                   key={index}
-                  title={problem.title}
-                  icon={problem.icon}
-                  description={problem.description}
-                  defaultOpen={index === 0}
+                  data-problem-card
                 >
-                  {/* Visual Placeholder */}
-                  <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
-                    <BodyLarge className="text-muted-foreground">Visual Placeholder</BodyLarge>
-                  </div>
-                </CollapsibleCard>
+                  <CollapsibleCard
+                    title={problem.title}
+                    icon={problem.icon}
+                    description={problem.description}
+                    defaultOpen={index === mobileActiveCard}
+                    isInViewport={index === mobileActiveCard}
+                  >
+                    {/* Visual Placeholder */}
+                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
+                      <BodyLarge className="text-muted-foreground">Visual Placeholder</BodyLarge>
+                    </div>
+                  </CollapsibleCard>
+                </div>
               ))}
             </div>
           </div>
@@ -755,6 +779,7 @@ function UnifyingStatementSection() {
 // Platform Overview Section
 function PlatformSection() {
   const [activeTab, setActiveTab] = React.useState(0)
+  const [mobileActiveCard, setMobileActiveCard] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
   const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
   
@@ -781,9 +806,39 @@ function PlatformSection() {
     }
   ]
 
-  // Initialize scroll event manager
+  // Mobile scroll-based card activation
   React.useEffect(() => {
-    if (!sectionRef.current) return
+    const handleMobileScroll = () => {
+      if (window.innerWidth >= 1024) return // Only for mobile/tablet
+      
+      const cards = document.querySelectorAll('[data-platform-card]')
+      if (cards.length === 0) return
+      
+      const windowHeight = window.innerHeight
+      const scrollTop = window.scrollY
+      
+      let activeCard = 0
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect()
+        const cardTop = rect.top + scrollTop
+        const cardHeight = rect.height
+        
+        // Card is considered "active" when its top is in the upper third of the viewport
+        if (cardTop <= scrollTop + windowHeight * 0.4 && cardTop + cardHeight > scrollTop + windowHeight * 0.2) {
+          activeCard = index
+        }
+      })
+      
+      setMobileActiveCard(activeCard)
+    }
+
+    window.addEventListener('scroll', handleMobileScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleMobileScroll)
+  }, [])
+
+  // Desktop scroll event manager
+  React.useEffect(() => {
+    if (!sectionRef.current || window.innerWidth < 1024) return
 
     // Create scroll event manager for one-action-one-tab behavior
     scrollManagerRef.current = new ScrollEventManager(features.length, (tabIndex) => {
@@ -850,7 +905,7 @@ function PlatformSection() {
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Mobile Header */}
           <div className="block lg:hidden text-left sm:text-center space-y-4 sm:space-y-6 max-w-3xl sm:mx-auto mb-8">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight">The Elevation AI Platform</H2>
+            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl leading-tight">The Elevation AI Platform</H2>
             <BodyLarge className="text-muted-foreground text-base sm:text-lg">
               A unified, agentic platform to power your entire operation.
             </BodyLarge>
@@ -860,25 +915,30 @@ function PlatformSection() {
           <div className="block lg:hidden">
             <div className="space-y-6">
               {features.map((feature, index) => (
-                <CollapsibleCard
+                <div
                   key={index}
-                  title={feature.title}
-                  icon={feature.icon}
-                  description={feature.description}
-                  defaultOpen={index === 0}
-                  iconClassName="text-blue-600"
-                  iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
+                  data-platform-card
                 >
-                  {/* CTA Button */}
-                  <Button size="lg" className="w-full sm:w-auto">
-                    Explore the Platform
-                  </Button>
-                  
-                  {/* Visual Placeholder */}
-                  <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
-                    <BodyLarge className="text-muted-foreground">Platform Visualization</BodyLarge>
-                  </div>
-                </CollapsibleCard>
+                  <CollapsibleCard
+                    title={feature.title}
+                    icon={feature.icon}
+                    description={feature.description}
+                    defaultOpen={index === mobileActiveCard}
+                    iconClassName="text-blue-600"
+                    iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
+                    isInViewport={index === mobileActiveCard}
+                  >
+                    {/* CTA Button */}
+                    <Button size="lg" className="w-full sm:w-auto">
+                      Explore the Platform
+                    </Button>
+                    
+                    {/* Visual Placeholder */}
+                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
+                      <BodyLarge className="text-muted-foreground">Platform Visualization</BodyLarge>
+                    </div>
+                  </CollapsibleCard>
+                </div>
               ))}
             </div>
           </div>
@@ -921,12 +981,7 @@ function PlatformSection() {
                             </div>
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full w-full">
                               <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
-                                <div className="flex items-center gap-4 lg:gap-6 xl:gap-8">
-                                  <div className="w-16 h-16 lg:w-18 lg:h-18 xl:w-20 xl:h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <Icon name={feature.icon} size="2xl" className="text-blue-600" />
-                                  </div>
-                                  <CardTitle className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">{feature.title}</CardTitle>
-                                </div>
+                                <CardTitle className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">{feature.title}</CardTitle>
                                 <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl leading-relaxed">
                                   {feature.description}
                                 </BodyLarge>
@@ -934,8 +989,10 @@ function PlatformSection() {
                                   Explore the Platform
                                 </Button>
                               </div>
-                              <div className="h-[200px] lg:h-[250px] xl:h-[300px] 2xl:h-[350px] w-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
-                                <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">Platform Visualization</BodyLarge>
+                              <div className="h-[200px] lg:h-[250px] xl:h-[300px] 2xl:h-[350px] w-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
+                                <div className="w-32 h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                  <Icon name={feature.icon} size="2xl" className="text-blue-600 !text-6xl lg:!text-7xl xl:!text-8xl" />
+                                </div>
                               </div>
                             </div>
                           </CardHeader>
@@ -982,7 +1039,7 @@ function HowWeDoItSection() {
         <div className="space-y-12 lg:space-y-16">
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">More Than a Platform. A Partnership.</H2>
+            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">More Than a Platform. A Partnership.</H2>
           </div>
 
           {/* Modern Tech Layout */}
@@ -1068,7 +1125,7 @@ function WhoWeServeSection() {
         <div className="space-y-12 lg:space-y-16">
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">Solutions for Your Unique Universe</H2>
+            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Solutions for Your Unique Universe</H2>
             <BodyLarge className="text-muted-foreground">
               We provide tailored solutions for your specific industry, all powered by our core platform and expert concierge team.
             </BodyLarge>
@@ -1112,11 +1169,13 @@ function ClosingCTASection() {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-              Request a Demo
+            <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+              <Link href="/wireframes/demo">
+                Request a Demo
+              </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-              <Link href="/about">
+              <Link href="/wireframes/about">
                 About Us
               </Link>
             </Button>

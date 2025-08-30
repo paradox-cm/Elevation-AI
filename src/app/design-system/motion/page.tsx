@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import {
@@ -50,16 +50,16 @@ export default function MotionPage() {
           </Section>
           
           <Section paddingY="lg">
-            <Tabs defaultValue="principles" className="space-y-8">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="principles">Principles</TabsTrigger>
-                <TabsTrigger value="timing">Timing</TabsTrigger>
-                <TabsTrigger value="interactions">Interactions</TabsTrigger>
-                <TabsTrigger value="implementation">Implementation</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="principles" className="space-y-8">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="principles">Principles</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="timing">Timing</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="interactions">Interactions</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="implementation">Implementation</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Principles Tab */}
-              <TabsContent value="principles" className="space-y-8">
+              <ResponsiveTabsContent value="principles" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -194,10 +194,10 @@ export default function MotionPage() {
                     </CardContent>
                   </Card>
                 </div>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Timing Tab */}
-              <TabsContent value="timing" className="space-y-8">
+              <ResponsiveTabsContent value="timing" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -328,10 +328,10 @@ export default function MotionPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Interactions Tab */}
-              <TabsContent value="interactions" className="space-y-8">
+              <ResponsiveTabsContent value="interactions" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -473,10 +473,10 @@ export default function MotionPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Implementation Tab */}
-              <TabsContent value="implementation" className="space-y-8">
+              <ResponsiveTabsContent value="implementation" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -607,8 +607,8 @@ export default function MotionPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

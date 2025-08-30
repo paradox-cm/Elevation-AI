@@ -11,7 +11,7 @@ import { H1, H2, H3, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
@@ -247,16 +247,16 @@ export default function UserManagementPage() {
 
           {/* User Management Components Showcase */}
           <Section paddingY="lg">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="profiles">Profiles</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
-                <TabsTrigger value="team">Team</TabsTrigger>
-                <TabsTrigger value="admin">Admin</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="profiles">Profiles</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="settings">Settings</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="team">Team</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="admin">Admin</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* User Profiles Showcase */}
-              <TabsContent value="profiles" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="profiles" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>User Profile Components</CardTitle>
@@ -294,10 +294,10 @@ export default function UserManagementPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Settings Showcase */}
-              <TabsContent value="settings" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="settings" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>User Settings Components</CardTitle>
@@ -319,10 +319,10 @@ export default function UserManagementPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Team Management Showcase */}
-              <TabsContent value="team" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="team" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Team Management Components</CardTitle>
@@ -360,10 +360,10 @@ export default function UserManagementPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Admin Showcase */}
-              <TabsContent value="admin" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="admin" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>User Administration Components</CardTitle>
@@ -481,8 +481,8 @@ export default function UserManagementPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

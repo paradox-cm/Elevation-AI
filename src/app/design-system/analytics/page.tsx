@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, H4, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
@@ -270,16 +270,16 @@ export default function AnalyticsPage() {
 
           {/* Analytics Components Showcase */}
           <Section paddingY="lg">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="metrics">Metrics</TabsTrigger>
-                <TabsTrigger value="charts">Charts</TabsTrigger>
-                <TabsTrigger value="tools">Tools</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="overview">Overview</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="metrics">Metrics</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="charts">Charts</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="tools">Tools</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Analytics Overview */}
-              <TabsContent value="overview" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="overview" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Complete Analytics Dashboard</CardTitle>
@@ -335,10 +335,10 @@ export default function AnalyticsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Metrics Showcase */}
-              <TabsContent value="metrics" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="metrics" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Analytics Metrics Components</CardTitle>
@@ -414,10 +414,10 @@ export default function AnalyticsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Charts Showcase */}
-              <TabsContent value="charts" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="charts" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Chart & Visualization Components</CardTitle>
@@ -498,10 +498,10 @@ export default function AnalyticsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Analytics Tools Showcase */}
-              <TabsContent value="tools" className="space-y-6 mt-6">
+              <ResponsiveTabsContent value="tools" className="space-y-6 mt-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Analytics Tools & Filters</CardTitle>
@@ -581,8 +581,8 @@ export default function AnalyticsPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

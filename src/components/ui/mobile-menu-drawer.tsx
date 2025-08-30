@@ -134,9 +134,11 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Bottom Section - Now part of scrollable content */}
-        <div className="mt-8 space-y-4">
+      {/* Fixed Bottom Section - Buttons */}
+      <div className="flex-shrink-0 p-4 pt-4 border-t border-border bg-background">
+        <div className="space-y-4">
           {/* CTA Button */}
           <Button className="w-full" size="lg">
             Request a Demo

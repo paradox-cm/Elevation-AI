@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 
@@ -139,14 +139,14 @@ export default function ColorsPage() {
             description="Colors used throughout the interface for consistent theming"
             size="md"
           />
-          <Tabs defaultValue="ui" className="mt-8">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="ui">UI Colors</TabsTrigger>
-              <TabsTrigger value="utility">Utility Colors</TabsTrigger>
-              <TabsTrigger value="system">System Colors</TabsTrigger>
-            </TabsList>
+          <ResponsiveTabs defaultValue="ui" className="mt-8">
+            <ResponsiveTabsList className="grid w-full grid-cols-3">
+              <ResponsiveTabsTrigger value="ui">UI Colors</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="utility">Utility Colors</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="system">System Colors</ResponsiveTabsTrigger>
+            </ResponsiveTabsList>
             
-            <TabsContent value="ui" className="mt-6">
+            <ResponsiveTabsContent value="ui" className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
@@ -186,9 +186,9 @@ export default function ColorsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </ResponsiveTabsContent>
 
-            <TabsContent value="utility" className="mt-6">
+            <ResponsiveTabsContent value="utility" className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
@@ -228,17 +228,17 @@ export default function ColorsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </ResponsiveTabsContent>
 
-            <TabsContent value="system" className="mt-6">
+            <ResponsiveTabsContent value="system" className="mt-6">
               <Alert>
                 <AlertDescription>
                   System colors automatically adapt to the user's system preferences and accessibility settings.
                   They provide the foundation for our semantic color system and ensure compatibility across different platforms.
                 </AlertDescription>
               </Alert>
-            </TabsContent>
-          </Tabs>
+            </ResponsiveTabsContent>
+          </ResponsiveTabs>
         </Section>
 
         {/* Custom Color Palette */}
@@ -454,15 +454,15 @@ export default function ColorsPage() {
             description="How to use our color palette in different contexts"
             size="md"
           />
-          <Tabs defaultValue="interactive" className="mt-8">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="interactive">Interactive</TabsTrigger>
-              <TabsTrigger value="surfaces">Surfaces</TabsTrigger>
-              <TabsTrigger value="typography">Typography</TabsTrigger>
-              <TabsTrigger value="data">Data & Charts</TabsTrigger>
-            </TabsList>
+          <ResponsiveTabs defaultValue="interactive" className="mt-8">
+            <ResponsiveTabsList className="grid w-full grid-cols-4">
+              <ResponsiveTabsTrigger value="interactive">Interactive</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="surfaces">Surfaces</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="typography">Typography</ResponsiveTabsTrigger>
+              <ResponsiveTabsTrigger value="data">Data & Charts</ResponsiveTabsTrigger>
+            </ResponsiveTabsList>
             
-            <TabsContent value="interactive" className="mt-6">
+            <ResponsiveTabsContent value="interactive" className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
@@ -543,9 +543,9 @@ export default function ColorsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </ResponsiveTabsContent>
 
-            <TabsContent value="surfaces" className="mt-6">
+            <ResponsiveTabsContent value="surfaces" className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
@@ -630,9 +630,9 @@ export default function ColorsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </ResponsiveTabsContent>
 
-            <TabsContent value="typography" className="mt-6">
+            <ResponsiveTabsContent value="typography" className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
@@ -682,9 +682,9 @@ export default function ColorsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+            </ResponsiveTabsContent>
 
-            <TabsContent value="data" className="mt-6">
+            <ResponsiveTabsContent value="data" className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
@@ -738,8 +738,8 @@ export default function ColorsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
-          </Tabs>
+            </ResponsiveTabsContent>
+          </ResponsiveTabs>
         </Section>
 
 

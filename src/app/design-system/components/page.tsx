@@ -49,7 +49,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Skeleton } from "@/components/ui/skeleton"
 
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -345,24 +345,24 @@ export default function ComponentsPage() {
                 <CardTitle className="text-base sm:text-lg">Tabs</CardTitle>
               </CardHeader>
               <CardContent>
-                <Tabs defaultValue="account" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="account" className="text-xs sm:text-sm">Account</TabsTrigger>
-                    <TabsTrigger value="password" className="text-xs sm:text-sm">Password</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="account" className="mt-4">
+                <ResponsiveTabs defaultValue="account" className="w-full">
+                  <ResponsiveTabsList className="grid w-full grid-cols-2">
+                    <ResponsiveTabsTrigger value="account" className="text-xs sm:text-sm">Account</ResponsiveTabsTrigger>
+                    <ResponsiveTabsTrigger value="password" className="text-xs sm:text-sm">Password</ResponsiveTabsTrigger>
+                  </ResponsiveTabsList>
+                  <ResponsiveTabsContent value="account" className="mt-4">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-sm">Name</Label>
                       <Input id="name" placeholder="Enter your name" />
                     </div>
-                  </TabsContent>
-                  <TabsContent value="password" className="mt-4">
+                  </ResponsiveTabsContent>
+                  <ResponsiveTabsContent value="password" className="mt-4">
                     <div className="space-y-2">
                       <Label htmlFor="current" className="text-sm">Current password</Label>
                       <Input id="current" type="password" />
                     </div>
-                  </TabsContent>
-                </Tabs>
+                  </ResponsiveTabsContent>
+                </ResponsiveTabs>
               </CardContent>
             </Card>
           </Grid>

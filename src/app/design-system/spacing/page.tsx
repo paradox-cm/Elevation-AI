@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H4, BodySmall, Caption } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -95,16 +95,16 @@ export default function SpacingPage() {
 
           {/* Interactive Spacing Documentation */}
           <Section paddingY="lg">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="scale">Spacing Scale</TabsTrigger>
-                <TabsTrigger value="usage">Usage Examples</TabsTrigger>
-                <TabsTrigger value="guidelines">Guidelines</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="overview">Overview</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="scale">Spacing Scale</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="usage">Usage Examples</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="guidelines">Guidelines</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Overview Tab */}
-              <TabsContent value="overview" className="space-y-6">
+              <ResponsiveTabsContent value="overview" className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Spacing Scale Foundation</CardTitle>
@@ -169,10 +169,10 @@ export default function SpacingPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Spacing Scale Tab */}
-              <TabsContent value="scale" className="space-y-6">
+              <ResponsiveTabsContent value="scale" className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Complete Spacing Scale</CardTitle>
@@ -272,10 +272,10 @@ export default function SpacingPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Usage Examples Tab */}
-              <TabsContent value="usage" className="space-y-6">
+              <ResponsiveTabsContent value="usage" className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Spacing Usage Examples</CardTitle>
@@ -371,10 +371,10 @@ export default function SpacingPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Guidelines Tab */}
-              <TabsContent value="guidelines" className="space-y-6">
+              <ResponsiveTabsContent value="guidelines" className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Spacing Guidelines & Best Practices</CardTitle>
@@ -483,8 +483,8 @@ export default function SpacingPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

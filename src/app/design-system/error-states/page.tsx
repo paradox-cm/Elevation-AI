@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -200,16 +200,16 @@ export default function ErrorStatesPage() {
           </Section>
 
           <Section paddingY="lg">
-            <Tabs defaultValue="overview" className="space-y-8">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="patterns">Patterns</TabsTrigger>
-                <TabsTrigger value="examples">Examples</TabsTrigger>
-                <TabsTrigger value="implementation">Implementation</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs defaultValue="overview" className="space-y-8">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="overview">Overview</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="patterns">Patterns</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="examples">Examples</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="implementation">Implementation</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
               {/* Overview Tab */}
-              <TabsContent value="overview" className="space-y-8">
+              <ResponsiveTabsContent value="overview" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -332,10 +332,10 @@ export default function ErrorStatesPage() {
                     </CardContent>
                   </Card>
                 </div>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Patterns Tab */}
-              <TabsContent value="patterns" className="space-y-8">
+              <ResponsiveTabsContent value="patterns" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -465,10 +465,10 @@ export default function ErrorStatesPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Examples Tab */}
-              <TabsContent value="examples" className="space-y-8">
+              <ResponsiveTabsContent value="examples" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -671,10 +671,10 @@ export default function ErrorStatesPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
               {/* Implementation Tab */}
-              <TabsContent value="implementation" className="space-y-8">
+              <ResponsiveTabsContent value="implementation" className="space-y-8">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
@@ -850,8 +850,8 @@ export default function ErrorStatesPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
         </Container>
       </AppShell>

@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, P } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
@@ -169,15 +169,15 @@ export default function GridPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="content" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="content">Content</TabsTrigger>
-                  <TabsTrigger value="cards">Cards</TabsTrigger>
-                  <TabsTrigger value="form">Form</TabsTrigger>
-                  <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-                </TabsList>
+              <ResponsiveTabs defaultValue="content" className="w-full">
+                <ResponsiveTabsList className="grid w-full grid-cols-4">
+                  <ResponsiveTabsTrigger value="content">Content</ResponsiveTabsTrigger>
+                  <ResponsiveTabsTrigger value="cards">Cards</ResponsiveTabsTrigger>
+                  <ResponsiveTabsTrigger value="form">Form</ResponsiveTabsTrigger>
+                  <ResponsiveTabsTrigger value="dashboard">Dashboard</ResponsiveTabsTrigger>
+                </ResponsiveTabsList>
                 
-                <TabsContent value="content" className="space-y-4">
+                <ResponsiveTabsContent value="content" className="space-y-4">
                   <div className="space-y-2">
                     <H3>{gridLayouts[0].name}</H3>
                     <P className="text-sm text-muted-foreground">
@@ -199,9 +199,9 @@ export default function GridPage() {
                       <span className="text-sm font-medium">Main Content</span>
                     </div>
                   </div>
-                </TabsContent>
+                </ResponsiveTabsContent>
 
-                <TabsContent value="cards" className="space-y-4">
+                <ResponsiveTabsContent value="cards" className="space-y-4">
                   <div className="space-y-2">
                     <H3>{gridLayouts[1].name}</H3>
                     <P className="text-sm text-muted-foreground">
@@ -222,9 +222,9 @@ export default function GridPage() {
                       </div>
                     ))}
                   </div>
-                </TabsContent>
+                </ResponsiveTabsContent>
 
-                <TabsContent value="form" className="space-y-4">
+                <ResponsiveTabsContent value="form" className="space-y-4">
                   <div className="space-y-2">
                     <H3>{gridLayouts[2].name}</H3>
                     <P className="text-sm text-muted-foreground">
@@ -250,9 +250,9 @@ export default function GridPage() {
                       </div>
                     ))}
                   </div>
-                </TabsContent>
+                </ResponsiveTabsContent>
 
-                <TabsContent value="dashboard" className="space-y-4">
+                <ResponsiveTabsContent value="dashboard" className="space-y-4">
                   <div className="space-y-2">
                     <H3>{gridLayouts[3].name}</H3>
                     <P className="text-sm text-muted-foreground">
@@ -280,8 +280,8 @@ export default function GridPage() {
                       <span className="text-sm font-medium">Widget</span>
                     </div>
                   </div>
-                </TabsContent>
-              </Tabs>
+                </ResponsiveTabsContent>
+              </ResponsiveTabs>
             </CardContent>
           </Card>
         </Section>

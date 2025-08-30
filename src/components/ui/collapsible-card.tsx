@@ -26,15 +26,23 @@ export function CollapsibleCard({
   className,
   defaultOpen = false,
   iconClassName = "text-primary",
-  iconContainerClassName = "bg-primary/10"
-}: CollapsibleCardProps) {
+  iconContainerClassName = "bg-primary/10",
+  isInViewport = false
+}: CollapsibleCardProps & { isInViewport?: boolean }) {
   const [isOpen, setIsOpen] = React.useState(defaultOpen)
+
+  // Auto-expand/collapse based on viewport visibility
+  React.useEffect(() => {
+    if (isInViewport !== undefined) {
+      setIsOpen(isInViewport)
+    }
+  }, [isInViewport])
 
   return (
     <Card className={cn("border-border/50", className)}>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CardHeader className="pb-6">
-          <div className="space-y-6">
+        <CardHeader className={cn("pb-6", !isOpen && "pb-3")}>
+          <div className={cn("space-y-6", !isOpen && "space-y-0")}>
             {/* Icon and Title with Collapse Button */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -60,7 +68,7 @@ export function CollapsibleCard({
             </div>
             
             {/* Description - Only visible when expanded */}
-            <CollapsibleContent className="space-y-6">
+            <CollapsibleContent className={cn("space-y-6", !isOpen && "space-y-0")}>
               <p className="text-muted-foreground leading-relaxed text-base">
                 {description}
               </p>

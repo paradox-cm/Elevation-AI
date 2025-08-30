@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -188,17 +188,17 @@ export default function TransparencyPage() {
                 Our glass morphism system provides four distinct variants, each optimized for different use cases and visual impact levels.
               </BodyLarge>
 
-              <Tabs value={activeGlass} onValueChange={setActiveGlass} className="space-y-8">
-                <TabsList className="grid w-full grid-cols-4">
+              <ResponsiveTabs value={activeGlass} onValueChange={setActiveGlass} className="space-y-8">
+                <ResponsiveTabsList className="grid w-full grid-cols-4">
                   {glassVariants.map((variant) => (
-                    <TabsTrigger key={variant.name} value={variant.name.toLowerCase()}>
+                    <ResponsiveTabsTrigger key={variant.name} value={variant.name.toLowerCase()}>
                       {variant.name}
-                    </TabsTrigger>
+                    </ResponsiveTabsTrigger>
                   ))}
-                </TabsList>
+                </ResponsiveTabsList>
 
                 {glassVariants.map((variant) => (
-                  <TabsContent key={variant.name} value={variant.name.toLowerCase()} className="space-y-6">
+                  <ResponsiveTabsContent key={variant.name} value={variant.name.toLowerCase()} className="space-y-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       {/* Preview */}
                       <div className="space-y-4">
@@ -258,9 +258,9 @@ export default function TransparencyPage() {
                         </div>
                       </div>
                     </div>
-                  </TabsContent>
+                  </ResponsiveTabsContent>
                 ))}
-              </Tabs>
+              </ResponsiveTabs>
             </div>
           </Section>
 

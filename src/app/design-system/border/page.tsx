@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H3, P } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
@@ -134,15 +134,15 @@ export default function BorderPage() {
 
           {/* Border Specifications */}
           <Section paddingY="lg">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="widths">Widths</TabsTrigger>
-                <TabsTrigger value="styles">Styles</TabsTrigger>
-                <TabsTrigger value="colors">Colors</TabsTrigger>
-                <TabsTrigger value="radius">Radius</TabsTrigger>
-              </TabsList>
+            <ResponsiveTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <ResponsiveTabsList className="grid w-full grid-cols-4">
+                <ResponsiveTabsTrigger value="widths">Widths</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="styles">Styles</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="colors">Colors</ResponsiveTabsTrigger>
+                <ResponsiveTabsTrigger value="radius">Radius</ResponsiveTabsTrigger>
+              </ResponsiveTabsList>
 
-              <TabsContent value="widths" className="space-y-4">
+              <ResponsiveTabsContent value="widths" className="space-y-4">
                 <Card>
                   <CardHeader>
                     <CardTitle>Border Widths</CardTitle>
@@ -177,9 +177,9 @@ export default function BorderPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
-              <TabsContent value="styles" className="space-y-4">
+              <ResponsiveTabsContent value="styles" className="space-y-4">
                 <Card>
                   <CardHeader>
                     <CardTitle>Border Styles</CardTitle>
@@ -215,9 +215,9 @@ export default function BorderPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
-              <TabsContent value="colors" className="space-y-4">
+              <ResponsiveTabsContent value="colors" className="space-y-4">
                 <Card>
                   <CardHeader>
                     <CardTitle>Border Colors</CardTitle>
@@ -252,9 +252,9 @@ export default function BorderPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
+              </ResponsiveTabsContent>
 
-              <TabsContent value="radius" className="space-y-4">
+              <ResponsiveTabsContent value="radius" className="space-y-4">
                 <Card>
                   <CardHeader>
                     <CardTitle>Border Radius</CardTitle>
@@ -290,8 +290,8 @@ export default function BorderPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </TabsContent>
-            </Tabs>
+              </ResponsiveTabsContent>
+            </ResponsiveTabs>
           </Section>
 
           {/* Usage Examples */}
