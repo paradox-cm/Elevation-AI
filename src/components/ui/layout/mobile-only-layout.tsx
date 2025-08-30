@@ -58,7 +58,7 @@ export function MobileOnlyLayout({
           {/* Mobile menu overlay */}
           {mobileMenu && mobileMenuOpen && (
             <div 
-              className="fixed inset-0 z-35 bg-black/20 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-35 bg-black/10 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
           )}
