@@ -512,7 +512,6 @@ function ProblemIntroductionSection() {
 // Problem We Solve Section
 function ProblemSection() {
   const [activeStep, setActiveStep] = React.useState(0)
-  const [mobileActiveCard, setMobileActiveCard] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
   
   const problems = [
@@ -538,40 +537,8 @@ function ProblemSection() {
     }
   ]
 
-  // Mobile scroll-based card activation
-  React.useEffect(() => {
-    const handleMobileScroll = () => {
-      if (window.innerWidth >= 1024) return // Only for mobile/tablet
-      
-      const cards = document.querySelectorAll('[data-problem-card]')
-      if (cards.length === 0) return
-      
-      const windowHeight = window.innerHeight
-      const scrollTop = window.scrollY
-      
-      let activeCard = 0
-      
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect()
-        const cardTop = rect.top + scrollTop
-        const cardHeight = rect.height
-        
-        // Much earlier trigger for scroll down - expand when card is approaching the viewport
-        // Use 80% of viewport height for earlier expansion on scroll down
-        if (cardTop <= scrollTop + windowHeight * 0.8 && cardTop + cardHeight > scrollTop + windowHeight * 0.1) {
-          activeCard = index
-        }
-      })
-      
-      // Only update if the active card has changed
-      if (activeCard !== mobileActiveCard) {
-        setMobileActiveCard(activeCard)
-      }
-    }
-
-    window.addEventListener('scroll', handleMobileScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleMobileScroll)
-  }, [mobileActiveCard])
+  // Mobile scroll-based card activation - REMOVED for normal scrolling
+  // Cards now expand/collapse normally without scroll interference
 
   // Desktop scroll-triggered carousel with standardized behavior
   React.useEffect(() => {
@@ -649,8 +616,6 @@ function ProblemSection() {
                     title={problem.title}
                     icon={problem.icon}
                     description={problem.description}
-                    defaultOpen={index === mobileActiveCard}
-                    isInViewport={index === mobileActiveCard}
                   >
                     {/* Visual Placeholder */}
                     <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
@@ -960,7 +925,6 @@ function UnifyingStatementSection() {
 // Platform Overview Section
 function PlatformSection() {
   const [activeTab, setActiveTab] = React.useState(0)
-  const [mobileActiveCard, setMobileActiveCard] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
   const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
   
@@ -987,56 +951,8 @@ function PlatformSection() {
     }
   ]
 
-  // Mobile scroll-based card activation
-  React.useEffect(() => {
-    const handleMobileScroll = () => {
-      if (window.innerWidth >= 1024) return // Only for mobile/tablet
-      
-      const cards = document.querySelectorAll('[data-platform-card]')
-      if (cards.length === 0) return
-      
-      const windowHeight = window.innerHeight
-      const scrollTop = window.scrollY
-      
-      let activeCard = 0
-      let sectionInView = false
-      
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect()
-        const cardTop = rect.top + scrollTop
-        const cardHeight = rect.height
-        
-        // Much earlier trigger for scroll down - expand when card is approaching the viewport
-        // Use 80% of viewport height for earlier expansion on scroll down
-        if (cardTop <= scrollTop + windowHeight * 0.8 && cardTop + cardHeight > scrollTop + windowHeight * 0.1) {
-          activeCard = index
-          sectionInView = true
-        }
-      })
-      
-      // If section is not in view and we're scrolling down past it, keep the last card expanded
-      if (!sectionInView) {
-        const lastCard = cards[cards.length - 1]
-        if (lastCard) {
-          const lastCardRect = lastCard.getBoundingClientRect()
-          const lastCardTop = lastCardRect.top + scrollTop
-          
-          // If we've scrolled past the last card, keep it expanded
-          if (lastCardTop < scrollTop) {
-            activeCard = cards.length - 1
-          }
-        }
-      }
-      
-      // Only update if the active card has changed
-      if (activeCard !== mobileActiveCard) {
-        setMobileActiveCard(activeCard)
-      }
-    }
-
-    window.addEventListener('scroll', handleMobileScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleMobileScroll)
-  }, [mobileActiveCard])
+  // Mobile scroll-based card activation - REMOVED for normal scrolling
+  // Cards now expand/collapse normally without scroll interference
 
   // Desktop scroll event manager
   React.useEffect(() => {
@@ -1117,10 +1033,8 @@ function PlatformSection() {
                     title={feature.title}
                     icon={feature.icon}
                     description={feature.description}
-                    defaultOpen={index === mobileActiveCard}
                     iconClassName="text-blue-600"
                     iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
-                    isInViewport={index === mobileActiveCard}
                   >
                     {/* Visual Placeholder */}
                     <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
