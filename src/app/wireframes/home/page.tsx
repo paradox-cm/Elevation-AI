@@ -1300,6 +1300,45 @@ function ClosingCTASection() {
   )
 }
 
+// Floating Back to Top Component
+function FloatingBackToTop() {
+  const [isVisible, setIsVisible] = React.useState(false)
+
+  React.useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true)
+      } else {
+        setIsVisible(false)
+      }
+    }
+
+    window.addEventListener('scroll', toggleVisibility)
+    return () => window.removeEventListener('scroll', toggleVisibility)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  if (!isVisible) return null
+
+  return (
+    <Button
+      variant="secondary"
+      size="icon"
+      onClick={scrollToTop}
+      className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 bg-background/80 backdrop-blur-sm border border-border/50"
+      aria-label="Back to top"
+    >
+      <Icon name="arrow-up-s-line" className="h-5 w-5" />
+    </Button>
+  )
+}
+
 // Footer Component
 function Footer() {
   return (
@@ -1408,9 +1447,22 @@ function Footer() {
             <BodySmall className="text-muted-foreground text-left">
               © 2025 Elevation AI. All rights reserved.
             </BodySmall>
-            <div className="flex gap-6">
-              <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
+            <div className="flex items-center gap-6">
+              <div className="flex gap-6">
+                <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
+                <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
+              </div>
+              
+              {/* Back to Top Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+              >
+                <Icon name="arrow-up-s-line" className="h-4 w-4" />
+                <span className="hidden sm:inline">Back to Top</span>
+              </Button>
             </div>
           </div>
         </div>
@@ -1438,6 +1490,9 @@ export default function WireframesHomePage() {
             <WhoWeServeSection />
             <ClosingCTASection />
           </main>
+          
+          {/* Floating Back to Top Button */}
+          <FloatingBackToTop />
         </div>
       </MobileOnlyLayout>
     </PageWrapper>
