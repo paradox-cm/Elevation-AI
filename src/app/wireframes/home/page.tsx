@@ -1447,18 +1447,18 @@ function Footer() {
             <BodySmall className="text-muted-foreground text-left">
               © 2025 Elevation AI. All rights reserved.
             </BodySmall>
-            <div className="flex items-center gap-6">
-              <div className="flex gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full md:w-auto">
+              <div className="flex gap-6 order-2 sm:order-1">
                 <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
                 <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
               </div>
               
-              {/* Back to Top Button */}
+              {/* Back to Top Button - Right justified on mobile */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 self-end sm:self-auto order-1 sm:order-2"
               >
                 <Icon name="arrow-up-s-line" className="h-4 w-4" />
                 <span className="hidden sm:inline">Back to Top</span>
