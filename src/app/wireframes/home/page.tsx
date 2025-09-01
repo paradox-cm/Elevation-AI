@@ -616,6 +616,7 @@ function ProblemSection() {
                     title={problem.title}
                     icon={problem.icon}
                     description={problem.description}
+                    defaultOpen={index === 0}
                   >
                     {/* Visual Placeholder */}
                     <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
@@ -1035,6 +1036,7 @@ function PlatformSection() {
                     description={feature.description}
                     iconClassName="text-blue-600"
                     iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
+                    defaultOpen={index === 0}
                   >
                     {/* Visual Placeholder */}
                     <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
