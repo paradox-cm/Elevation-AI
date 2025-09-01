@@ -87,8 +87,11 @@ export const spacingExamples: SpacingExample[] = [
     description: "Spacing within individual components",
     examples: [
       { label: "Button padding", spacing: "2", class: "p-2", context: "Standard button padding" },
-      { label: "Card padding", spacing: "4", class: "p-4", context: "Card content padding" },
-      { label: "Form field spacing", spacing: "3", class: "space-y-3", context: "Form field vertical spacing" },
+      { label: "Card padding", spacing: "4", class: "pt-4 pb-4", context: "Card top and bottom padding" },
+      { label: "Form field spacing", spacing: "2", class: "space-y-2", context: "Form field vertical spacing (label to input) - use FormItem component" },
+      { label: "Form container spacing", spacing: "6", class: "space-y-6", context: "Spacing between form fields - use Form component" },
+      { label: "Form section spacing", spacing: "5", class: "space-y-5", context: "Spacing between form sections" },
+      { label: "Section bottom margin", spacing: "6", class: "mb-6", context: "Default bottom margin for sections without paddingY" },
       { label: "Icon button", spacing: "2", class: "p-2", context: "Icon button padding" }
     ]
   },
@@ -157,6 +160,13 @@ export const spacingRules: SpacingRule[] = [
     icon: "close-line",
     examples: ["Don't over-space related elements", "Avoid too much white space", "Don't break content flow"],
     category: "dont"
+  },
+  {
+    title: "Form Implementation",
+    description: "Always use design system Form components for consistent spacing",
+    icon: "form-line",
+    examples: ["Use FormItem for 8px label-to-input spacing", "Use Form component with space-y-6 for field spacing", "Don't create custom form spacing patterns"],
+    category: "do"
   }
 ]
 

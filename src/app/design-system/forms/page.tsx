@@ -905,31 +905,43 @@ export default function FormsPage() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <H3>Input States</H3>
-                    <div className="space-y-3">
-                      <div>
-                        <Label>Default Input</Label>
-                        <Input placeholder="Default state" />
+                    <Form>
+                      <div className="space-y-3">
+                        <FormItem>
+                          <FormLabel>Default Input</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Default state" />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Success Input</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Success state" className="border-green-500 focus:border-green-500" />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Error Input</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Error state" className="border-red-500 focus:border-red-500" />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Warning Input</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Warning state" className="border-yellow-500 focus:border-yellow-500" />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Input with Icon</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input placeholder="With icon" className="pl-10" />
+                              <Icon name="search-line" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                            </div>
+                          </FormControl>
+                        </FormItem>
                       </div>
-                      <div>
-                        <Label>Success Input</Label>
-                        <Input placeholder="Success state" className="border-green-500 focus:border-green-500" />
-                      </div>
-                      <div>
-                        <Label>Error Input</Label>
-                        <Input placeholder="Error state" className="border-red-500 focus:border-red-500" />
-                      </div>
-                      <div>
-                        <Label>Warning Input</Label>
-                        <Input placeholder="Warning state" className="border-yellow-500 focus:border-yellow-500" />
-                      </div>
-                      <div>
-                        <Label>Input with Icon</Label>
-                        <div className="relative">
-                          <Input placeholder="With icon" className="pl-10" />
-                          <Icon name="search-line" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                        </div>
-                      </div>
-                    </div>
+                    </Form>
                   </div>
 
                   <div className="space-y-4">

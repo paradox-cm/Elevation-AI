@@ -601,32 +601,43 @@ function ProblemSection() {
   }, [problems.length])
 
     return (
-    <Section paddingY="xl" className="bg-muted/30">
+    <Section paddingY="lg" className="bg-muted/30">
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
+        <div className="space-y-8 sm:space-y-12 lg:space-y-12">
           {/* Mobile Layout */}
-          <div className="block lg:hidden">
-            <div className="space-y-6">
-              {problems.map((problem, index) => (
-                <div
-                  key={index}
-                  data-problem-card
-                >
-                  <CollapsibleCard
-                    title={problem.title}
-                    icon={problem.icon}
-                    description={problem.description}
-                    defaultOpen={index === 0}
+          <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+            <div className="overflow-x-auto pb-1">
+              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
+                {problems.map((problem, index) => (
+                  <div
+                    key={index}
+                    data-problem-card
+                    className="w-[300px] sm:w-[350px] flex-shrink-0"
                   >
-                    {/* Visual Placeholder */}
-                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50 relative">
-                      <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon name={problem.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
-                      </div>
-                    </div>
-                  </CollapsibleCard>
-                </div>
-              ))}
+                    <Card className="h-full border-border/50 transition-colors duration-300 flex flex-col">
+                      <CardHeader className="pt-3 pb-3 flex-shrink-0">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon name={problem.icon} size="lg" className="text-primary" />
+                          </div>
+                          <CardTitle className="text-lg font-semibold">{problem.title}</CardTitle>
+                        </div>
+                        <BodyLarge className="text-muted-foreground text-sm leading-relaxed">
+                          {problem.description}
+                        </BodyLarge>
+                      </CardHeader>
+                      <CardContent className="flex-1 flex flex-col justify-end pb-4">
+                        {/* Visual Placeholder */}
+                        <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50 relative">
+                          <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon name={problem.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -1026,39 +1037,43 @@ function PlatformSection() {
   }
 
   return (
-    <Section paddingY="xl">
+    <Section paddingY="lg">
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
+        <div className="space-y-8 sm:space-y-12 lg:space-y-12">
           {/* Mobile Layout */}
-          <div className="block lg:hidden">
-            <div className="space-y-6">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  data-platform-card
-                >
-                  <CollapsibleCard
-                    title={feature.title}
-                    icon={feature.icon}
-                    description={feature.description}
-                    iconClassName="text-blue-600"
-                    iconContainerClassName="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl"
-                    defaultOpen={index === 0}
+          <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+            <div className="overflow-x-auto pb-1">
+              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
+                {features.map((feature, index) => (
+                  <div
+                    key={index}
+                    data-platform-card
+                    className="w-[300px] sm:w-[350px] flex-shrink-0"
                   >
-                    {/* Visual Placeholder */}
-                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
-                      <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon name={feature.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
-                      </div>
-                    </div>
-                    
-                    {/* CTA Button */}
-                    <Button size="lg" className="w-full sm:w-auto">
-                      Explore the Platform
-                    </Button>
-                  </CollapsibleCard>
-                </div>
-              ))}
+                    <Card className="h-full border-border/50 transition-colors duration-300 flex flex-col">
+                      <CardHeader className="pt-3 pb-3 flex-shrink-0">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon name={feature.icon} className="text-blue-600" />
+                          </div>
+                          <CardTitle className="text-lg font-semibold">{feature.title}</CardTitle>
+                        </div>
+                        <BodyLarge className="text-muted-foreground text-sm leading-relaxed">
+                          {feature.description}
+                        </BodyLarge>
+                      </CardHeader>
+                      <CardContent className="flex-1 flex flex-col justify-end space-y-4 pb-4">
+                        {/* Visual Placeholder */}
+                        <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
+                          <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <Icon name={feature.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -1104,9 +1119,6 @@ function PlatformSection() {
                                 <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl leading-relaxed">
                                   {feature.description}
                                 </BodyLarge>
-                                <Button size="lg" className="text-base lg:text-lg px-6 lg:px-7 xl:px-8 py-3 lg:py-3.5 xl:py-4">
-                                  Explore the Platform
-                                </Button>
                               </div>
                               <div className="h-[200px] lg:h-[250px] xl:h-[300px] 2xl:h-[350px] w-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
                                 <div className="w-32 h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -1137,38 +1149,38 @@ function HowWeDoItSection() {
   const approaches = [
     {
       title: "The Elevation AI Platform",
-      description: "The central, agentic backbone that unifies your universe, provides intelligent workspaces, and securely connects you to the world of AI.",
+      description: "The secure, agentic backbone of your business—unifying data, powering intelligent workspaces, and connecting you safely to the world of AI.",
       icon: "elevation-ai-logo"
     },
     {
       title: "Your Agentic Concierge Team",
-      description: "Technology alone isn't enough. For clients who need a deep, hands-on partnership, our dedicated team of expert engineers and strategists acts as your team to design, build, and implement the specific solutions that solve your biggest challenges.",
+      description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
       icon: "team-line"
     },
     {
       title: "Our Expert & Partner Network",
-      description: "We extend your capabilities with a network of specialized consulting firms and individual experts who natively use our platform. This allows them to seamlessly embed themselves into your organization, collaborating directly within your workspaces to solve specific challenges and extend your team's capacity to execute.",
+      description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
       icon: "global-line"
     }
   ]
 
   return (
-    <Section paddingY="xl" className="bg-muted/30">
+    <Section paddingY="lg" className="bg-muted/30">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-12 lg:space-y-16">
+        <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
             <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">More Than a Platform. A Partnership.</H2>
           </div>
 
           {/* Modern Tech Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {approaches.map((approach, index) => (
               <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden">
                 {/* Background Pattern */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                <CardHeader className="pt-2 px-4 pb-4 lg:pt-3 lg:px-6 lg:pb-6 xl:pt-4 xl:px-8 xl:pb-8 2xl:pt-5 2xl:px-10 2xl:pb-10 relative z-10">
+                <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6 relative z-10">
                   <div className="space-y-4 lg:space-y-5 xl:space-y-6">
                     {/* Icon and Title Row */}
                     <div className="flex items-center gap-3 lg:gap-4">
@@ -1239,9 +1251,9 @@ function WhoWeServeSection() {
   ]
 
   return (
-    <Section paddingY="xl">
+    <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-12 lg:space-y-16">
+        <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
             <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Solutions for Your Unique Universe</H2>
@@ -1254,7 +1266,7 @@ function WhoWeServeSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {solutions.map((solution, index) => (
               <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300">
-                <CardHeader className="pt-2 px-4 pb-4 lg:pt-3 lg:px-6 lg:pb-6 xl:pt-4 xl:px-8 xl:pb-8 2xl:pt-5 2xl:px-10 2xl:pb-10">
+                <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6">
                   <div className="flex items-start gap-4 lg:gap-5">
                     <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Icon name={solution.icon} size="2xl" className="text-primary" />
@@ -1277,7 +1289,7 @@ function WhoWeServeSection() {
 // Closing CTA Section
 function ClosingCTASection() {
   return (
-    <Section paddingY="xl" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
+    <Section paddingY="lg" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="text-center space-y-8 lg:space-y-12 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
           <div className="space-y-4 lg:space-y-6">

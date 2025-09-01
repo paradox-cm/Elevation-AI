@@ -1,0 +1,313 @@
+I'll examine the codebase to find the animated auto-playing carousel and indicators being used on this site. Let me search for carousel-related components and implementations.
+
+
+[1 tool called]
+
+Now let me examine the carousel UI component to see the complete implementation:
+
+
+[1 tool called]
+
+Perfect! Now I have a complete understanding of the animated auto-playing carousel and indicators used on this site. Let me describe the complete implementation for you:
+
+## 🎠 **Animated Auto-Playing Carousel & Indicators Implementation**
+
+### **1. Core Dependencies**
+```bash
+npm install embla-carousel-react lucide-react
+# or
+pnpm add embla-carousel-react lucide-react
+```
+
+### **2. Carousel UI Component (`components/ui/carousel.tsx`)**
+This is built on top of **Embla Carousel** with custom React components:
+
+```tsx
+"use client"
+
+import * as React from "react"
+import useEmblaCarousel, {
+  type UseEmblaCarouselType,
+} from "embla-carousel-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+
+type CarouselApi = UseEmblaCarouselType[1]
+
+// Main Carousel Component
+const Carousel = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    opts?: Parameters<typeof useEmblaCarousel>[0]
+    plugins?: Parameters<typeof useEmblaCarousel>[1]
+    orientation?: "horizontal" | "vertical"
+    setApi?: (api: CarouselApi) => void
+  }
+>(({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }, ref) => {
+  const [carouselRef, api] = useEmblaCarousel(
+    {
+      ...opts,
+      axis: orientation === "horizontal" ? "x" : "y",
+    },
+    plugins
+  )
+  
+  // ... state management and event handlers
+  
+  return (
+    <div ref={ref} className={cn("relative", className)} {...props}>
+      {children}
+    </div>
+  )
+})
+
+// CarouselContent - Wrapper for slides
+const CarouselContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => {
+    const { carouselRef } = useCarousel()
+    return (
+      <div ref={carouselRef} className="overflow-hidden">
+        <div ref={ref} className={cn("flex", className)} {...props} />
+      </div>
+    )
+  }
+)
+
+// CarouselItem - Individual slide
+const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn("min-w-0 shrink-0 grow-0 basis-full pl-4", className)}
+      {...props}
+    />
+  )
+)
+
+// Navigation Buttons
+const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
+  ({ className, ...props }, ref) => {
+    const { scrollPrev, canScrollPrev } = useCarousel()
+    return (
+      <Button
+        ref={ref}
+        variant="outline"
+        size="icon"
+        className={cn("absolute -left-12 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full", className)}
+        disabled={!canScrollPrev}
+        onClick={scrollPrev}
+        {...props}
+      >
+        <ArrowLeft className="h-4 w-4" />
+        <span className="sr-only">Previous slide</span>
+      </Button>
+    )
+  }
+)
+
+const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
+  ({ className, ...props }, ref) => {
+    const { scrollNext, canScrollNext } = useCarousel()
+    return (
+      <Button
+        ref={ref}
+        variant="outline"
+        size="icon"
+        className={cn("absolute -right-12 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full", className)}
+        disabled={!canScrollNext}
+        onClick={scrollNext}
+        {...props}
+      >
+        <ArrowRight className="h-4 w-4" />
+        <span className="sr-only">Next slide</span>
+      </Button>
+    )
+  }
+)
+```
+
+### **3. Animated Progress Dots Component**
+This is the key innovation - animated progress indicators that show real-time progress:
+
+```tsx
+function AnimatedProgressDots({ 
+  totalSlides, 
+  currentSlide, 
+  autoPlayInterval = 5000,
+  onSlideChange 
+}: { 
+  totalSlides: number
+  currentSlide: number
+  autoPlayInterval?: number
+  onSlideChange: (index: number) => void
+}) {
+  const [progress, setProgress] = useState(0)
+  const animationRef = useRef<number>()
+
+  // Animate progress bar for current slide
+  const animateProgress = useCallback(() => {
+    const startTime = Date.now()
+    const animate = () => {
+      const elapsed = Date.now() - startTime
+      const newProgress = Math.min((elapsed / autoPlayInterval) * 100, 100)
+      
+      setProgress(newProgress)
+      
+      if (newProgress < 100) {
+        animationRef.current = requestAnimationFrame(animate)
+      }
+    }
+    
+    animationRef.current = requestAnimationFrame(animate)
+  }, [autoPlayInterval])
+
+  // Reset and start animation when slide changes
+  useEffect(() => {
+    setProgress(0)
+    animateProgress()
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [currentSlide, animateProgress])
+
+  return (
+    <div className="flex items-center justify-center gap-1 sm:gap-2 mt-4">
+      {Array.from({ length: totalSlides }).map((_, index) => (
+        <button
+          key={index}
+          onClick={() => onSlideChange(index)}
+          className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+          aria-label={`Go to slide ${index + 1}`}
+        >
+          <div className="relative">
+            {index === currentSlide ? (
+              // Active slide: Animated progress bar
+              <div className="w-6 h-2.5 bg-primary/30 rounded-[0.625rem] overflow-hidden">
+                <div 
+                  className="h-full bg-primary transition-all duration-75 ease-linear"
+                  style={{ 
+                    width: `${Math.max(10, Math.min(24, progress * 0.24))}px` 
+                  }}
+                />
+              </div>
+            ) : (
+              // Inactive slide: Simple dot
+              <div className="w-2.5 h-2.5 bg-primary/30 rounded-full" />
+            )}
+          </div>
+        </button>
+      ))}
+    </div>
+  )
+}
+```
+
+### **4. Complete Implementation Example**
+Here's how to use it in your component:
+
+```tsx
+import { useState, useEffect, useRef, useCallback } from "react"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel"
+
+export default function YourCarouselComponent() {
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+
+  // Set up carousel API
+  useEffect(() => {
+    if (!api) return
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!api) return
+
+    const interval = setInterval(() => {
+      api.scrollNext()
+    }, 5000) // 5 second interval
+
+    return () => clearInterval(interval)
+  }, [api])
+
+  const scrollTo = useCallback((index: number) => {
+    api?.scrollTo(index)
+  }, [api])
+
+  return (
+    <div className="w-full max-w-4xl mx-auto">
+      <Carousel
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-full"
+      >
+        <CarouselContent>
+          <CarouselItem>
+            <div className="h-64 lg:h-96 rounded-lg overflow-hidden">
+              <img
+                src="/your-image-1.jpg"
+                alt="Description"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </CarouselItem>
+          {/* Add more CarouselItem components */}
+        </CarouselContent>
+        
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+      
+      <AnimatedProgressDots
+        totalSlides={count}
+        currentSlide={current - 1}
+        autoPlayInterval={5000}
+        onSlideChange={scrollTo}
+      />
+    </div>
+  )
+}
+```
+
+### **5. Key Features**
+
+✅ **Auto-play**: Automatically advances every 5 seconds  
+✅ **Loop**: Infinite scrolling  
+✅ **Navigation**: Previous/Next arrow buttons  
+✅ **Progress Indicators**: Animated dots showing real-time progress  
+✅ **Clickable Dots**: Users can click to jump to specific slides  
+✅ **Keyboard Navigation**: Arrow key support  
+✅ **Accessibility**: Proper ARIA labels and roles  
+✅ **Responsive**: Works on all screen sizes  
+✅ **Smooth Transitions**: CSS transitions for smooth animations  
+
+### **6. Styling Classes**
+The carousel uses Tailwind CSS classes:
+- `overflow-hidden` for hiding overflow
+- `flex` for horizontal layout
+- `min-w-0 shrink-0 grow-0 basis-full` for slide sizing
+- `pl-4` for slide spacing
+- `absolute` positioning for navigation buttons
+
+This implementation provides a professional, accessible, and visually appealing carousel that's perfect for showcasing images, content, or any sequential information with smooth auto-play functionality and intuitive user controls.

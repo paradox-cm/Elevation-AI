@@ -52,6 +52,8 @@ export function Section({
         padding && paddingSizes[padding],
         paddingY && paddingYSizes[paddingY],
         paddingX && paddingXSizes[paddingX],
+        // Add default bottom margin for sections to ensure proper spacing
+        !paddingY && "mb-6",
         className
       )}
     >
