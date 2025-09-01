@@ -1174,7 +1174,7 @@ function HowWeDoItSection() {
                           <Icon name={approach.icon} size="2xl" className="text-primary" />
                         )}
                       </div>
-                                                      <CardTitle className="text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl">{approach.title}</CardTitle>
+                                                      <CardTitle className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{approach.title}</CardTitle>
                     </div>
                     
                     {/* Description */}
@@ -1251,7 +1251,7 @@ function WhoWeServeSection() {
                                               <Icon name={solution.icon} size="2xl" className="text-primary" />
                     </div>
                     <div className="space-y-2">
-                                                      <CardTitle className="text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl">{solution.title}</CardTitle>
+                                                      <CardTitle className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
                       <BodyLarge className="text-muted-foreground">{solution.description}</BodyLarge>
                     </div>
                   </div>
