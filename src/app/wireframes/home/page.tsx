@@ -619,8 +619,10 @@ function ProblemSection() {
                     defaultOpen={index === 0}
                   >
                     {/* Visual Placeholder */}
-                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
-                      <BodyLarge className="text-muted-foreground">Visual Placeholder</BodyLarge>
+                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50 relative">
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Icon name={problem.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
+                      </div>
                     </div>
                   </CollapsibleCard>
                 </div>
@@ -631,11 +633,11 @@ function ProblemSection() {
           {/* Desktop Layout - Scroll-triggered Carousel */}
           <div className="hidden lg:block relative" ref={sectionRef}>
             {/* Carousel Container */}
-            <div className="sticky top-20 h-[calc(100vh-8rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
-              <div className="w-full h-[calc(100vh-12rem)] lg:h-[calc(100vh-11rem)] xl:h-[calc(100vh-10rem)] 2xl:h-[calc(100vh-9rem)] relative flex items-center">
+            <div className="sticky top-20 h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
+              <div className="w-full h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-6rem)] 2xl:h-[calc(100vh-5rem)] relative flex items-center">
                 <div className="w-full flex flex-col items-center justify-center min-h-0">
                   {/* Carousel Container */}
-                  <div className="relative w-full h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]">
+                  <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]">
                   {problems.map((problem, index) => (
                     <div
                       key={index}
@@ -656,7 +658,7 @@ function ProblemSection() {
                               stepIndex === activeStep
                                 ? 'bg-primary border-primary text-white shadow-lg'
                                 : stepIndex < activeStep
-                                ? 'bg-primary/20 border-0 text-primary'
+                                ? 'bg-primary/20 border-primary/30 text-primary'
                                 : 'bg-background border-muted text-muted-foreground hover:border-primary/50'
                             } ${
                               stepIndex === 0 ? 'rounded-tl-lg' : ''
@@ -716,15 +718,15 @@ function UnifyingStatementSection() {
   
   const texts = [
     {
-      text: "Unify your systems, transform chaos into your most powerful competitive advantage.",
+      text: "The Elevation AI Platform unifies your systems—turning complexity and chaos into your greatest advantage.",
       key: "first-text"
     },
     {
-      text: "Turn scattered knowledge into precision, collaboration, and clarity you can act on—at enterprise scale.",
+      text: "It transforms scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.",
       key: "second-text"
     },
     {
-      text: "So your organization moves faster, thinks smarter, and always stays one step ahead.",
+      text: "With a unified, agentic platform powering your entire operation, your business moves faster, thinks smarter, and stays ahead.",
       key: "third-text"
     }
   ]
@@ -946,9 +948,14 @@ function PlatformSection() {
       icon: "cpu-line"
     },
     {
-      title: "Your Personal Co-pilot",
+      title: "Personal Co-pilot",
       description: "A conversational interface to your entire universe—delivering context-aware answers, insights, and actions from your Knowledge Graph.",
       icon: "message-3-line"
+    },
+    {
+      title: "Enterprise Security",
+      description: "Enterprise-grade encryption, every action in the platform is auditable, compliant, and secure, ensuring you unlock the full power of AI without ever compromising control.",
+      icon: "shield-keyhole-line"
     }
   ]
 
@@ -1039,8 +1046,10 @@ function PlatformSection() {
                     defaultOpen={index === 0}
                   >
                     {/* Visual Placeholder */}
-                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center">
-                      <BodyLarge className="text-muted-foreground">Platform Visualization</BodyLarge>
+                    <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Icon name={feature.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
+                      </div>
                     </div>
                     
                     {/* CTA Button */}
@@ -1056,12 +1065,12 @@ function PlatformSection() {
           {/* Desktop Layout - Scroll-triggered Tabbed Interface */}
           <div className="hidden lg:block relative" ref={sectionRef}>
             {/* Sticky Tab Container */}
-            <div className="sticky top-20 h-[calc(100vh-8rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
-              <div className="w-full h-[calc(100vh-12rem)] lg:h-[calc(100vh-11rem)] xl:h-[calc(100vh-10rem)] 2xl:h-[calc(100vh-9rem)] relative flex items-center">
+            <div className="sticky top-20 h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
+              <div className="w-full h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-6rem)] 2xl:h-[calc(100vh-5rem)] relative flex items-center">
                                   <div className="w-full flex flex-col items-center justify-center min-h-0">
 
                   {/* Tab Content Container */}
-                  <div className="relative w-full h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]">
+                  <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]">
                     {features.map((feature, index) => (
                       <div
                         key={index}
@@ -1115,7 +1124,7 @@ function PlatformSection() {
             </div>
             
             {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 950 + 200}px` }}></div>
+            <div style={{ height: `${850 + 850 + 950 + 950 + 950 + 200}px` }}></div>
           </div>
         </div>
       </Container>
@@ -1159,26 +1168,26 @@ function HowWeDoItSection() {
                 {/* Background Pattern */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                <CardHeader className="pb-6 relative z-10">
-                  <div className="space-y-4">
+                <CardHeader className="pt-2 px-4 pb-4 lg:pt-3 lg:px-6 lg:pb-6 xl:pt-4 xl:px-8 xl:pb-8 2xl:pt-5 2xl:px-10 2xl:pb-10 relative z-10">
+                  <div className="space-y-4 lg:space-y-5 xl:space-y-6">
                     {/* Icon and Title Row */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                    <div className="flex items-center gap-3 lg:gap-4">
+                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
                         {approach.icon === "elevation-ai-logo" ? (
                           <img 
                             src="/images/Favicon-Stroke.png" 
                             alt="Elevation AI" 
-                            className="w-6 h-6"
+                            className="w-6 h-6 lg:w-7 lg:h-7"
                           />
                         ) : (
                           <Icon name={approach.icon} size="2xl" className="text-primary" />
                         )}
                       </div>
-                                                      <CardTitle className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{approach.title}</CardTitle>
+                      <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{approach.title}</CardTitle>
                     </div>
                     
                     {/* Description */}
-                    <BodyLarge className="text-muted-foreground leading-relaxed">
+                    <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
                       {approach.description}
                     </BodyLarge>
                     
@@ -1236,7 +1245,7 @@ function WhoWeServeSection() {
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
             <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Solutions for Your Unique Universe</H2>
-            <BodyLarge className="text-muted-foreground">
+            <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
               We provide tailored solutions for your specific industry, all powered by our core platform and expert concierge team.
             </BodyLarge>
           </div>
@@ -1245,14 +1254,14 @@ function WhoWeServeSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {solutions.map((solution, index) => (
               <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300">
-                <CardHeader className="pb-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                              <Icon name={solution.icon} size="2xl" className="text-primary" />
+                <CardHeader className="pt-2 px-4 pb-4 lg:pt-3 lg:px-6 lg:pb-6 xl:pt-4 xl:px-8 xl:pb-8 2xl:pt-5 2xl:px-10 2xl:pb-10">
+                  <div className="flex items-start gap-4 lg:gap-5">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon name={solution.icon} size="2xl" className="text-primary" />
                     </div>
-                    <div className="space-y-2">
-                                                      <CardTitle className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
-                      <BodyLarge className="text-muted-foreground">{solution.description}</BodyLarge>
+                    <div className="space-y-3 lg:space-y-4">
+                      <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{solution.title}</CardTitle>
+                      <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">{solution.description}</BodyLarge>
                     </div>
                   </div>
                 </CardHeader>
@@ -1273,7 +1282,7 @@ function ClosingCTASection() {
         <div className="text-center space-y-8 lg:space-y-12 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
           <div className="space-y-4 lg:space-y-6">
             <H2 className="text-3xl sm:text-4xl lg:text-5xl">Elevate Your Organization</H2>
-            <BodyLarge className="text-muted-foreground">
+            <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
               From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
             </BodyLarge>
           </div>
@@ -1449,8 +1458,7 @@ function Footer() {
             </BodySmall>
             <div className="flex gap-6">
               <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
-            </div>
+              <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link></div>
           </div>
         </div>
       </Container>

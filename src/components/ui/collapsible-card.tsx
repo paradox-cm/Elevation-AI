@@ -43,17 +43,17 @@ export function CollapsibleCard({
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CardHeader className={cn("pb-6 transition-all duration-300 ease-in-out", !isOpen && "pb-3")}>
           <div className={cn("space-y-6 transition-all duration-300 ease-in-out", !isOpen && "space-y-0")}>
-            {/* Icon and Title with Collapse Button */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", iconContainerClassName)}>
-                  <Icon name={icon} size="2xl" className={iconClassName} />
+            {/* Icon and Title with Collapse Button - Entire header is clickable */}
+            <CollapsibleTrigger asChild>
+              <div className="flex items-center justify-between cursor-pointer hover:bg-muted/20 rounded-lg p-2 -m-2 transition-colors duration-200">
+                <div className="flex items-center gap-3">
+                  <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", iconContainerClassName)}>
+                    <Icon name={icon} size="2xl" className={iconClassName} />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-semibold">{title}</h3>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-semibold">{title}</h3>
-              </div>
-              
-              {/* Collapse/Expand Button */}
-              <CollapsibleTrigger asChild>
+                
+                {/* Collapse/Expand Button */}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -64,8 +64,8 @@ export function CollapsibleCard({
                     className="h-4 w-4 transition-transform duration-200" 
                   />
                 </Button>
-              </CollapsibleTrigger>
-            </div>
+              </div>
+            </CollapsibleTrigger>
             
             {/* Description - Only visible when expanded */}
             <CollapsibleContent className={cn("space-y-6 transition-all duration-300 ease-in-out", !isOpen && "space-y-0")}>
