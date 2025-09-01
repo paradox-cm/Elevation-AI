@@ -1,5 +1,6 @@
 "use client"
 
+import React from 'react'
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 
@@ -55,17 +56,26 @@ export function CircleIcon({ className, width = 40, height = 40, priority = fals
   )
 }
 
-export function CompactLogo({ className, width = 60, height = 21, priority = false }: BrandIconProps) {
+export const CompactLogo = React.memo(function CompactLogo({ 
+  className, 
+  width = 60, 
+  height = 21, 
+  priority = true 
+}: BrandIconProps) {
+  // Memoize the image source to prevent unnecessary re-renders
+  const imageSrc = React.useMemo(() => "/images/branding/E-AI-Compact.svg", [])
+  
   return (
     <div className={cn("relative", className)}>
       <Image
-        src="/images/branding/E-AI-Compact.svg"
+        src={imageSrc}
         alt="Elevation AI Compact Logo"
         width={width}
         height={height}
         priority={priority}
+        unoptimized={false}
         className="dark:invert"
       />
     </div>
   )
-}
+})

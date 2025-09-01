@@ -39,7 +39,7 @@ export function Navigation({
   ]
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
       <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-16 items-center justify-between">
         {/* Logo - Mobile Optimized */}
         <div className="flex items-center">

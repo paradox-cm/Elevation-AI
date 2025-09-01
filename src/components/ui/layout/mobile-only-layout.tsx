@@ -48,7 +48,7 @@ export function MobileOnlyLayout({
         {header && (
           <header className={cn(
             "fixed top-0 left-0 right-0 z-50 transition-colors duration-150",
-            (mobileMenuOpen || mobileMenu) && "!bg-background"
+            (mobileMenuOpen || mobileMenu) && "!bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20"
           )}>
             {header}
           </header>

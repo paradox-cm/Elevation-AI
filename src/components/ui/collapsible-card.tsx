@@ -41,8 +41,8 @@ export function CollapsibleCard({
   return (
     <Card className={cn("border-border/50", className)}>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CardHeader className={cn("pb-6", !isOpen && "pb-3")}>
-          <div className={cn("space-y-6", !isOpen && "space-y-0")}>
+        <CardHeader className={cn("pb-6 transition-all duration-300 ease-in-out", !isOpen && "pb-3")}>
+          <div className={cn("space-y-6 transition-all duration-300 ease-in-out", !isOpen && "space-y-0")}>
             {/* Icon and Title with Collapse Button */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -68,7 +68,7 @@ export function CollapsibleCard({
             </div>
             
             {/* Description - Only visible when expanded */}
-            <CollapsibleContent className={cn("space-y-6", !isOpen && "space-y-0")}>
+            <CollapsibleContent className={cn("space-y-6 transition-all duration-300 ease-in-out", !isOpen && "space-y-0")}>
               <p className="text-muted-foreground leading-relaxed text-base">
                 {description}
               </p>
