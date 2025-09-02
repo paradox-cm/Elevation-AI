@@ -9,12 +9,11 @@ import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H3, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -22,7 +21,6 @@ import { useFormsConfig } from "@/hooks/use-forms-config"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormInput,
   FormItem,
@@ -35,6 +33,7 @@ import {
   FormStatus,
   FormActions,
   FormProgress,
+  FormDescription,
 } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -84,21 +83,18 @@ type WizardFormData = z.infer<typeof wizardFormSchema>
 
 export default function FormsPage() {
   const {
-    config,
-    formLayoutConfig,
-    formValidationConfig,
-    formInputConfig,
-    formSelectConfig,
-    formCheckboxConfig,
-    formRadioConfig,
-    formSwitchConfig,
-    formTextareaConfig,
-    formWizardConfig,
     formStatusConfig
   } = useFormsConfig()
 
   const [wizardStep, setWizardStep] = useState(1)
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error" | "loading">("idle")
+
+  // Create a simple form for the showcase section
+  const showcaseForm = useForm({
+    defaultValues: {
+      showcaseInput: "",
+    },
+  })
 
   // Basic Form
   const basicForm = useForm<BasicFormData>({
@@ -905,7 +901,7 @@ export default function FormsPage() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <H3>Input States</H3>
-                    <Form>
+                    <Form {...showcaseForm}>
                       <div className="space-y-3">
                         <FormItem>
                           <FormLabel>Default Input</FormLabel>
