@@ -1,0 +1,30 @@
+{
+  "name": "Elevation AI - Business Orchestration Platform",
+  "short_name": "Elevation AI",
+  "description": "Transform operations with agentic AI and expert resources",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/Favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/Favicon-Stroke.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/branding/E-AI-Squircle.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "technology"],
+  "lang": "en-US"
+}
