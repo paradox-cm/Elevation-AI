@@ -37,6 +37,49 @@ import {
 } from "lucide-react"
 import Icon from "@/components/ui/icon"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormFieldGroup } from "@/components/ui/form"
+import { AnimatedFavicon } from "@/components/ui/animated-favicon"
+
+// Typewriter Text Component
+function TypewriterText({ text, speed = 200, delay = 0 }: { text: string; speed?: number; delay?: number }) {
+  const [displayText, setDisplayText] = React.useState("")
+  const [currentWordIndex, setCurrentWordIndex] = React.useState(0)
+
+  React.useEffect(() => {
+    // Reset on mount
+    setDisplayText("")
+    setCurrentWordIndex(0)
+    
+    // Split text into words
+    const words = text.split(" ")
+    
+    // Start typing after delay
+    const startTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setCurrentWordIndex(prev => {
+          if (prev >= words.length) {
+            clearInterval(interval)
+            return prev
+          }
+          setDisplayText(words.slice(0, prev + 1).join(" "))
+          return prev + 1
+        })
+      }, speed)
+      
+      return () => clearInterval(interval)
+    }, delay)
+
+    return () => clearTimeout(startTimer)
+  }, [text, speed, delay])
+
+  return (
+    <span className="inline-block min-h-[1.2em] leading-tight">
+      {displayText}
+      {currentWordIndex < text.split(" ").length && (
+        <span className="animate-pulse">|</span>
+      )}
+    </span>
+  )
+}
 
 // Form validation schemas
 const demoFormSchema = z.object({
@@ -371,7 +414,18 @@ function DemoRequestForm() {
 
   return (
     <Card className="w-full">
-      <CardHeader className="text-center space-y-4">
+      <CardHeader className="text-center space-y-4 pt-6 sm:pt-8">
+        {/* Perlin SVG Animation Logo */}
+        <div className="flex justify-center mb-4">
+          <div className="relative h-10 w-28 sm:h-12 sm:w-32">
+            <AnimatedFavicon 
+              width={128} 
+              height={48} 
+              className="w-full h-full"
+            />
+          </div>
+        </div>
+        
         <CardTitle>
           <h2 className="text-xl font-semibold text-foreground sm:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">Request a Demo</h2>
         </CardTitle>
@@ -441,6 +495,7 @@ function DemoRequestForm() {
 function BenefitsSection() {
   const [currentSlide, setCurrentSlide] = React.useState(0)
   const [progress, setProgress] = React.useState(0)
+  const [showGradient, setShowGradient] = React.useState(true)
   const carouselRef = React.useRef<HTMLDivElement>(null)
   const autoPlayInterval = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
   
@@ -491,6 +546,18 @@ function BenefitsSection() {
     }
   }, [currentSlide])
 
+  // Add scroll event listener to check position
+  React.useEffect(() => {
+    const carousel = carouselRef.current
+    if (carousel) {
+      carousel.addEventListener('scroll', checkScrollPosition)
+      // Check initial position
+      checkScrollPosition()
+      
+      return () => carousel.removeEventListener('scroll', checkScrollPosition)
+    }
+  }, [])
+
   // Progress animation
   React.useEffect(() => {
     setProgress(0)
@@ -505,6 +572,15 @@ function BenefitsSection() {
 
     return () => clearInterval(progressInterval)
   }, [currentSlide])
+
+  // Check if we're at the end of the carousel
+  const checkScrollPosition = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1 // -1 for rounding errors
+      setShowGradient(!isAtEnd)
+    }
+  }
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
@@ -524,7 +600,7 @@ function BenefitsSection() {
     <div className="space-y-6">
       <div>
         <H2 className="mb-3">
-          Transform your organization.
+          <TypewriterText text="Transform your organization." speed={150} delay={500} />
         </H2>
         <BodyLarge className="text-muted-foreground">
           A unified, agentic platform built to power your entire operation—securely and at scale.
@@ -534,7 +610,14 @@ function BenefitsSection() {
       <div className="relative">
         <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide" ref={carouselRef}>
           {benefits.map((benefit, index) => (
-            <div key={index} className="flex items-start gap-3 min-w-[260px] max-w-[260px] flex-shrink-0 p-3 border border-border rounded-lg bg-card">
+            <div 
+              key={index} 
+              className={`flex items-start gap-3 min-w-[260px] max-w-[260px] flex-shrink-0 p-3 border rounded-lg transition-colors duration-200 ${
+                index === currentSlide 
+                  ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                  : 'border-border bg-card'
+              }`}
+            >
               <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <benefit.icon className="h-4 w-4 text-primary" />
               </div>
@@ -545,6 +628,16 @@ function BenefitsSection() {
             </div>
           ))}
         </div>
+        
+        {/* Left-side gradient fade - appears on 3rd and 4th slides */}
+        {currentSlide >= 2 && (
+          <div className="absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" />
+        )}
+        
+        {/* Right-side gradient fade - Light and Dark mode adapted */}
+        {showGradient && (
+          <div className="absolute right-0 top-0 bottom-4 w-16 bg-gradient-to-l from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" />
+        )}
         
         {/* Animated Progress Indicators */}
         <div className="flex justify-center mt-4">
@@ -636,7 +729,7 @@ export default function DemoPage() {
           <Section paddingY="xl">
             <Container>
               <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                   {/* Left Column - Benefits */}
                   <div className="order-2 lg:order-1">
                     <BenefitsSection />

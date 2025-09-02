@@ -38,6 +38,7 @@ export default function DesignSystemPage() {
       description: "Reusable UI components and patterns",
       items: [
         { name: "Components", href: "/design-system/components", icon: "apps-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Carousels", href: "/design-system/carousels", icon: "slideshow-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Content Components", href: "/design-system/content-components", icon: "article-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Dashboard", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Analytics", href: "/design-system/analytics", icon: "bar-chart-box-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
@@ -277,8 +278,8 @@ export default function DesignSystemPage() {
                         className="absolute inset-0 sm:hidden"
                         style={{
                           backgroundImage: `
-                        linear-gradient(to right, rgba(229, 231, 235, 0.015) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(229, 231, 235, 0.015) 1px, transparent 1px)
+                        linear-gradient(to right, rgba(229, 231, 235, 0.008) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(229, 231, 235, 0.008) 1px, transparent 1px)
                           `,
                           backgroundSize: '16px 16px',
                           backgroundPosition: '0 0'
@@ -290,8 +291,8 @@ export default function DesignSystemPage() {
                         className="absolute inset-0 hidden sm:block"
                         style={{
                           backgroundImage: `
-                        linear-gradient(to right, rgba(229, 231, 235, 0.03) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(229, 231, 235, 0.03) 1px, transparent 1px)
+                        linear-gradient(to right, rgba(229, 231, 235, 0.015) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(229, 231, 235, 0.015) 1px, transparent 1px)
                           `,
                           backgroundSize: '32px 32px',
                           backgroundPosition: '0 0'

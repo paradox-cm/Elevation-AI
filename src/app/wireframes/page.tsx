@@ -40,16 +40,25 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Login',
     description: 'User authentication and sign-in page',
     pageNumber: 2,
-    status: 'completed',
+    status: 'wip',
     icon: LogIn,
     href: '/wireframes/login'
+  },
+  {
+    id: 'sign-up',
+    title: 'Create Account',
+    description: 'User registration and account creation page',
+    pageNumber: 3,
+    status: 'wip',
+    icon: Users,
+    href: '/wireframes/sign-up'
   },
   {
     id: 'demo',
     title: 'Request Demo',
     description: 'Demo request form for potential customers',
-    pageNumber: 3,
-    status: 'completed',
+    pageNumber: 4,
+    status: 'wip',
     icon: MessageSquare,
     href: '/wireframes/demo'
   },
@@ -57,7 +66,7 @@ const siteStructure: SiteStructureItem[] = [
     id: 'platform',
     title: 'Platform',
     description: 'Core platform features and capabilities',
-    pageNumber: 4,
+    pageNumber: 5,
     status: 'pending',
     icon: Building2,
     href: '/platform'
@@ -80,7 +89,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'private-markets',
             title: 'Private Market Organizations',
             description: 'Solutions for private equity and venture capital',
-            pageNumber: 5,
+            pageNumber: 6,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/private-markets'
@@ -89,7 +98,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'public-markets',
             title: 'Public Market Organizations',
             description: 'Solutions for public market participants',
-            pageNumber: 6,
+            pageNumber: 7,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/public-markets'
@@ -98,7 +107,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'banks',
             title: 'Banks',
             description: 'Banking and financial institution solutions',
-            pageNumber: 7,
+            pageNumber: 8,
             status: 'pending',
             icon: Building2,
             href: '/solutions/banks'
@@ -107,7 +116,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'enterprise',
             title: 'Enterprise',
             description: 'Large enterprise organization solutions',
-            pageNumber: 8,
+            pageNumber: 9,
             status: 'pending',
             icon: Building2,
             href: '/solutions/enterprise'
@@ -116,7 +125,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'government',
             title: 'Government',
             description: 'Government and public sector solutions',
-            pageNumber: 9,
+            pageNumber: 10,
             status: 'pending',
             icon: Building2,
             href: '/solutions/government'
@@ -134,7 +143,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'creating-growing',
             title: 'Creating & Growing a New Venture',
             description: 'Solutions for startups and new ventures',
-            pageNumber: 10,
+            pageNumber: 11,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/creating-growing'
@@ -143,7 +152,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'scaling',
             title: 'Scaling a Venture',
             description: 'Solutions for growth-stage companies',
-            pageNumber: 11,
+            pageNumber: 12,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/scaling'
@@ -152,7 +161,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'exiting',
             title: 'Exiting a Venture',
             description: 'Solutions for exit strategies and transitions',
-            pageNumber: 12,
+            pageNumber: 13,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/exiting'
@@ -161,7 +170,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'post-ipo',
             title: 'Post-IPO Growth',
             description: 'Solutions for post-IPO companies',
-            pageNumber: 13,
+            pageNumber: 14,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/post-ipo'
@@ -170,7 +179,7 @@ const siteStructure: SiteStructureItem[] = [
             id: 'family-office',
             title: 'Post-Exit Family Office Creation',
             description: 'Solutions for family office establishment',
-            pageNumber: 14,
+            pageNumber: 15,
             status: 'pending',
             icon: TrendingUp,
             href: '/solutions/family-office'
@@ -183,7 +192,7 @@ const siteStructure: SiteStructureItem[] = [
     id: 'pricing',
     title: 'Pricing',
     description: 'Pricing plans and packages',
-    pageNumber: 15,
+    pageNumber: 16,
     status: 'pending',
     icon: CreditCard,
     href: '/pricing'
@@ -207,7 +216,7 @@ const siteStructure: SiteStructureItem[] = [
         id: 'careers',
         title: 'Careers',
         description: 'Career opportunities and job listings',
-        pageNumber: 16,
+        pageNumber: 17,
         status: 'pending',
         icon: Briefcase,
         href: '/resources/careers'
@@ -216,7 +225,7 @@ const siteStructure: SiteStructureItem[] = [
         id: 'partners',
         title: 'Partners',
         description: 'Partnership opportunities and programs',
-        pageNumber: 17,
+        pageNumber: 18,
         status: 'pending',
         icon: Handshake,
         href: '/resources/partners'
@@ -225,7 +234,7 @@ const siteStructure: SiteStructureItem[] = [
         id: 'investors',
         title: 'Investors',
         description: 'Information for investors and stakeholders',
-        pageNumber: 18,
+        pageNumber: 19,
         status: 'pending',
         icon: TrendingUp,
         href: '/resources/investors'
@@ -234,7 +243,7 @@ const siteStructure: SiteStructureItem[] = [
         id: 'developers',
         title: 'For Developers & Platforms',
         description: 'Developer resources and platform integrations',
-        pageNumber: 19,
+        pageNumber: 20,
         status: 'pending',
         icon: Code,
         href: '/resources/developers'
@@ -296,7 +305,8 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
       'developers': '/wireframes/resources/developers-platforms',
       'blog-news': '/wireframes/resources/blog-news',
       'login': '/wireframes/login',
-      'request-demo': '/wireframes/request-demo'
+      'demo': '/wireframes/demo',
+      'sign-up': '/wireframes/sign-up'
     }
 
     const wireframeRoute = wireframeRoutes[item.id]
@@ -400,7 +410,7 @@ export default function WireframesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold">19</div>
+                  <div className="text-2xl sm:text-3xl font-bold">20</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Main content pages</p>
                 </CardContent>
               </Card>

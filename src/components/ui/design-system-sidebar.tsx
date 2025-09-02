@@ -33,6 +33,7 @@ export function DesignSystemSidebar() {
       title: "Components",
       items: [
         { name: "Components", href: "/design-system/components", icon: "apps-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Carousels", href: "/design-system/carousels", icon: "slideshow-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Content Components", href: "/design-system/content-components", icon: "article-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Dashboard", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Analytics", href: "/design-system/analytics", icon: "bar-chart-box-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
