@@ -246,6 +246,11 @@ function HeroSection() {
                   Request a Demo
                 </Link>
               </Button>
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+                <Link href="/wireframes/sign-up">
+                  Get Started
+                </Link>
+              </Button>
             </div>
           </div>
 
@@ -429,7 +434,7 @@ function ProblemIntroductionSection() {
                       }`}
                     >
                       <div className="h-full flex items-center">
-                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary">
+                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
                           {textItem.text}
                         </div>
                       </div>
@@ -475,7 +480,7 @@ function ProblemIntroductionSection() {
                       }`}
                     >
                       <div className="h-full flex items-center">
-                        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
+                        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
                           {textItem.text}
                         </div>
                       </div>
@@ -856,7 +861,7 @@ function UnifyingStatementSection() {
                       }`}
                     >
                       <div className="h-full flex items-center">
-                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary">
+                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
                           {textItem.text}
                         </div>
                       </div>
@@ -902,7 +907,7 @@ function UnifyingStatementSection() {
                        }`}
                      >
                        <div className="h-full flex items-center">
-                         <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary">
+                         <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
                            {textItem.text}
                          </div>
                        </div>
@@ -1146,23 +1151,23 @@ function PlatformSection() {
 
 // How We Do It Section
 function HowWeDoItSection() {
-  const approaches = [
-    {
-      title: "The Elevation AI Platform",
-      description: "The secure, agentic backbone of your business—unifying data, powering intelligent workspaces, and connecting you safely to the world of AI.",
-      icon: "elevation-ai-logo"
-    },
-    {
-      title: "Your Agentic Concierge Team",
-      description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
-      icon: "team-line"
-    },
-    {
-      title: "Our Expert & Partner Network",
-      description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
-      icon: "global-line"
-    }
-  ]
+          const approaches = [
+      {
+        title: "Your Strategic AI Advisory",
+        description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
+        icon: "elevation-ai-logo"
+      },
+      {
+        title: "Your Agentic Concierge Team",
+        description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
+        icon: "team-line"
+      },
+      {
+        title: "Your Expert & Partner Network",
+        description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
+        icon: "global-line"
+      }
+    ]
 
   return (
     <Section paddingY="lg" className="bg-muted/30">
@@ -1170,49 +1175,77 @@ function HowWeDoItSection() {
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">More Than a Platform. A Partnership.</H2>
+            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">More Than a Platform.</H2>
+            <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
+              A Partnership to Power Every Stage.
+            </BodyLarge>
           </div>
 
           {/* Modern Tech Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {approaches.map((approach, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden">
-                {/* Background Pattern */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6 relative z-10">
-                  <div className="space-y-4 lg:space-y-5 xl:space-y-6">
-                    {/* Icon and Title Row */}
-                    <div className="flex items-center gap-3 lg:gap-4">
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
-                        {approach.icon === "elevation-ai-logo" ? (
-                          <img 
-                            src="/images/Favicon-Stroke.png" 
-                            alt="Elevation AI" 
-                            className="w-6 h-6 lg:w-7 lg:h-7"
-                          />
-                        ) : (
-                          <Icon name={approach.icon} size="2xl" className="text-primary" />
-                        )}
+              <Link key={index} href="#" className="block">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden cursor-pointer h-full">
+                  {/* Background Pattern */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6 relative z-10">
+                    <div className="space-y-4 lg:space-y-5 xl:space-y-6">
+                      {/* Icon and Title Row */}
+                      <div className="flex items-center gap-3 lg:gap-4">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                          {approach.icon === "elevation-ai-logo" ? (
+                            <img 
+                              src="/images/Favicon-Stroke.png" 
+                              alt="Elevation AI" 
+                              className="w-6 h-6 lg:w-7 lg:h-7"
+                            />
+                          ) : (
+                            <Icon name={approach.icon} size="2xl" className="text-primary" />
+                          )}
+                        </div>
+                        <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{approach.title}</CardTitle>
                       </div>
-                      <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{approach.title}</CardTitle>
+                      
+                      {/* Description */}
+                      <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
+                        {approach.description}
+                      </BodyLarge>
+                      
+                      {/* Learn More Link */}
+                      <div className="pt-2">
+                        <span className="inline-flex items-center text-primary group">
+                          <span className="group-hover:translate-x-1 transition-transform duration-200">Learn more →</span>
+                        </span>
+                      </div>
                     </div>
-                    
-                    {/* Description */}
-                    <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
-                      {approach.description}
-                    </BodyLarge>
-                    
-                    {/* Learn More Link */}
-                    <div className="pt-2">
-                      <Button variant="ghost" size="sm" className="p-0 h-auto text-primary hover:text-primary/80 hover:bg-transparent">
-                        Learn more →
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
+                  </CardHeader>
+                </Card>
+              </Link>
             ))}
+          </div>
+
+          {/* Venture Lifecycle Cards */}
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+              {[
+                "Creating & Growing a Venture",
+                "Scaling a Venture", 
+                "Exiting a Venture",
+                "Post-IPO Growth",
+                "Post-Exit Family Office Creation"
+              ].map((stage, index) => (
+                <Card key={index} className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer">
+                  <CardHeader className="p-3 lg:p-4 h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <CardTitle className="text-sm lg:text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                        {stage} →
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </Container>
@@ -1235,7 +1268,7 @@ function WhoWeServeSection() {
     },
     {
       title: "Banks",
-      description: "A secure platform to automate compliance, enhance risk management, and improve customer service.",
+      description: "Automate compliance, enhance risk management, and improve customer service.",
       icon: "bank-line"
     },
     {
@@ -1258,26 +1291,35 @@ function WhoWeServeSection() {
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
             <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Solutions for Your Unique Universe</H2>
             <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
-              We provide tailored solutions for your specific industry, all powered by our core platform and expert concierge team.
+              Built on our platform and guided by experts.
             </BodyLarge>
           </div>
 
           {/* Cards Grid - Better Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {solutions.map((solution, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300">
-                <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6">
-                  <div className="flex items-start gap-4 lg:gap-5">
-                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon name={solution.icon} size="2xl" className="text-primary" />
+              <Link key={index} href={`/solutions/${solution.title.toLowerCase().replace(/\s+/g, '-').replace(/organizations?/g, '')}`} className="block">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300 bg-transparent h-full">
+                  <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6">
+                    <div className="flex items-start gap-4 lg:gap-5">
+                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name={solution.icon} size="2xl" className="text-primary" />
+                      </div>
+                      <div className="space-y-3 lg:space-y-4 flex-1">
+                        <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{solution.title}</CardTitle>
+                        <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">{solution.description}</BodyLarge>
+                        
+                        {/* Learn More Link */}
+                        <div className="pt-2">
+                          <span className="inline-flex items-center text-primary group">
+                            <span className="group-hover:translate-x-1 transition-transform duration-200">Learn more →</span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="space-y-3 lg:space-y-4">
-                      <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{solution.title}</CardTitle>
-                      <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">{solution.description}</BodyLarge>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
+                  </CardHeader>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -1291,7 +1333,7 @@ function ClosingCTASection() {
   return (
     <Section paddingY="lg" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="text-center space-y-8 lg:space-y-12 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+        <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
           <div className="space-y-4 lg:space-y-6">
             <H2 className="text-3xl sm:text-4xl lg:text-5xl">Elevate Your Organization</H2>
             <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
@@ -1306,15 +1348,11 @@ function ClosingCTASection() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-              <Link href="/wireframes/about">
-                About Us
+              <Link href="/wireframes/sign-up">
+                Get Started
               </Link>
             </Button>
           </div>
-          
-          <BodySmall className="text-muted-foreground">
-            Private by design · Built for complex organizations
-          </BodySmall>
         </div>
       </Container>
     </Section>
@@ -1487,16 +1525,16 @@ export default function WireframesHomePage() {
         mobileMenu={<MobileMenuDrawer currentPage="homepage" />}
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
-          <main>
-            <HeroSection />
-            <ProblemIntroductionSection />
-            <ProblemSection />
-            <UnifyingStatementSection />
-            <PlatformSection />
-            <HowWeDoItSection />
-            <WhoWeServeSection />
-            <ClosingCTASection />
-          </main>
+                      <main>
+              <HeroSection />
+              <ProblemIntroductionSection />
+              <ProblemSection />
+              <UnifyingStatementSection />
+              <PlatformSection />
+              <WhoWeServeSection />
+              <HowWeDoItSection />
+              <ClosingCTASection />
+            </main>
           
           {/* Floating Back to Top Button */}
           <FloatingBackToTop />

@@ -72,13 +72,15 @@ function SignUpForm() {
     <Card className="w-full h-fit">
       <CardHeader className="text-center pt-6 sm:pt-8 pb-4 sm:pb-6">
         <div className="flex justify-center mb-4 sm:mb-6">
-          <div className="relative h-10 w-28 sm:h-12 sm:w-32">
-            <AnimatedFavicon 
-              width={128} 
-              height={48} 
-              className="w-full h-full"
-            />
-          </div>
+          <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
+            <div className="relative h-10 w-28 sm:h-12 sm:w-32">
+              <AnimatedFavicon 
+                width={128} 
+                height={48} 
+                className="w-full h-full"
+              />
+            </div>
+          </Link>
         </div>
         <CardTitle>
           <H2 className="text-xl sm:text-2xl lg:text-3xl">Create your account</H2>

@@ -160,9 +160,16 @@ export function Carousel({
           ))}
         </div>
         
-        {/* Left-side gradient fade - appears on 3rd and 4th slides */}
-        {showGradients && currentSlide >= 2 && (
-          <div className="absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" />
+        {/* Left-side gradient fade - appears on 3rd and 4th slides on desktop, only 4th slide on mobile */}
+        {showGradients && (
+          <>
+            {/* Desktop: 3rd and 4th slides */}
+            <div className="hidden md:block absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" 
+                 style={{ opacity: currentSlide >= 2 ? 1 : 0 }} />
+            {/* Mobile: only 4th slide */}
+            <div className="md:hidden absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" 
+                 style={{ opacity: currentSlide >= 3 ? 1 : 0 }} />
+          </>
         )}
         
         {/* Right-side gradient fade - Light and Dark mode adapted */}

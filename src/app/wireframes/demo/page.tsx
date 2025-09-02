@@ -416,14 +416,16 @@ function DemoRequestForm() {
     <Card className="w-full">
       <CardHeader className="text-center space-y-4 pt-6 sm:pt-8">
         {/* Perlin SVG Animation Logo */}
-        <div className="flex justify-center mb-4">
-          <div className="relative h-10 w-28 sm:h-12 sm:w-32">
-            <AnimatedFavicon 
-              width={128} 
-              height={48} 
-              className="w-full h-full"
-            />
-          </div>
+                <div className="flex justify-center mb-4">
+          <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
+            <div className="relative h-10 w-28 sm:h-12 sm:w-32">
+              <AnimatedFavicon
+                width={128}
+                height={48}
+                className="w-full h-full"
+              />
+            </div>
+          </Link>
         </div>
         
         <CardTitle>
@@ -629,10 +631,15 @@ function BenefitsSection() {
           ))}
         </div>
         
-        {/* Left-side gradient fade - appears on 3rd and 4th slides */}
-        {currentSlide >= 2 && (
-          <div className="absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" />
-        )}
+        {/* Left-side gradient fade - appears on 3rd and 4th slides on desktop, only 4th slide on mobile */}
+        <>
+          {/* Desktop: 3rd and 4th slides */}
+          <div className="hidden md:block absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" 
+               style={{ opacity: currentSlide >= 2 ? 1 : 0 }} />
+          {/* Mobile: only 4th slide */}
+          <div className="md:hidden absolute left-0 top-0 bottom-4 w-16 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none transition-opacity duration-300" 
+               style={{ opacity: currentSlide >= 3 ? 1 : 0 }} />
+        </>
         
         {/* Right-side gradient fade - Light and Dark mode adapted */}
         {showGradient && (
@@ -707,7 +714,7 @@ export default function DemoPage() {
           <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
             {/* Logo */}
             <div className="flex items-center">
-              <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
                 <Logo width={110} height={20} />
               </Link>
             </div>
