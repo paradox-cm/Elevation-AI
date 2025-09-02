@@ -58,7 +58,7 @@ export function MobileOnlyLayout({
           {/* Mobile menu overlay */}
           {mobileMenu && mobileMenuOpen && (
             <div 
-              className="fixed inset-0 z-35 bg-black/10 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-[45] bg-black/10 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
           )}
@@ -67,7 +67,7 @@ export function MobileOnlyLayout({
           {mobileMenu && (
             <aside className={cn(
               "flex-shrink-0 bg-background border-b border-border",
-              "fixed top-0 left-0 right-0 z-45 h-[80vh] transform transition-transform duration-150 ease-out lg:hidden",
+              "fixed top-0 left-0 right-0 z-[50] h-[80vh] transform transition-transform duration-150 ease-out lg:hidden",
               mobileMenuOpen ? "translate-y-14 sm:translate-y-16" : "-translate-y-full"
             )}>
               <div className="h-full overflow-y-auto">

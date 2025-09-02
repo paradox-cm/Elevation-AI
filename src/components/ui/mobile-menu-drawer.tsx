@@ -13,7 +13,7 @@ interface MobileMenuDrawerProps {
 }
 
 export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps) {
-  const [expandedPlatform, setExpandedPlatform] = React.useState(true) // Platform expanded by default
+  const [expandedPlatform, setExpandedPlatform] = React.useState(false) // Platform closed by default
   const [expandedResources, setExpandedResources] = React.useState(false)
   const [expandedQuickLinks, setExpandedQuickLinks] = React.useState(false)
 
@@ -140,17 +140,27 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
       <div className="flex-shrink-0 p-4 pt-4 border-t border-border bg-background">
         <div className="space-y-4">
           {/* CTA Button */}
-          <Button className="w-full" size="lg">
-            Request a Demo
-          </Button>
-          
-          {/* Login Button */}
-          <Button variant="outline" className="w-full" size="lg" asChild>
-            <Link href="/wireframes/login">
-              <Icon name="login-box-line" className="h-4 w-4 mr-2" />
-              Login
+          <Button className="w-full" size="lg" asChild>
+            <Link href="/wireframes/demo">
+              Request a Demo
             </Link>
           </Button>
+          
+          {/* Get Started Button */}
+          <Button variant="outline" className="w-full" size="lg" asChild>
+            <Link href="/wireframes/sign-up">
+              Get Started
+            </Link>
+          </Button>
+          
+          {/* Login Button - Text Button */}
+          <Link 
+            href="/wireframes/login"
+            className="flex items-center justify-center w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+          >
+            <Icon name="login-box-line" className="h-4 w-4 mr-2" />
+            Login
+          </Link>
 
           {/* Quick Links Dropdown */}
           <div className="bg-zinc-100 dark:bg-zinc-800 rounded-md p-3">
