@@ -1151,23 +1151,46 @@ function PlatformSection() {
 
 // How We Do It Section
 function HowWeDoItSection() {
-          const approaches = [
-      {
-        title: "Your Strategic AI Advisory",
-        description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
-        icon: "elevation-ai-logo"
-      },
-      {
-        title: "Your Agentic Concierge Team",
-        description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
-        icon: "team-line"
-      },
-      {
-        title: "Your Expert & Partner Network",
-        description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
-        icon: "global-line"
-      }
-    ]
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [currentCard, setCurrentCard] = React.useState(0)
+  
+  const approaches = [
+    {
+      title: "Your Strategic AI Advisory",
+      description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
+      icon: "elevation-ai-logo"
+    },
+    {
+      title: "Your Agentic Concierge Team",
+      description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
+      icon: "team-line"
+    },
+    {
+      title: "Your Expert & Partner Network",
+      description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
+      icon: "global-line"
+    }
+  ]
+
+  const ventureStages = [
+    "Creating a Venture",
+    "Scaling a Venture", 
+    "Exiting a Venture",
+    "Post-IPO Growth",
+    "Post-Exit Family Office Creation"
+  ]
+
+  const nextCard = () => {
+    setCurrentCard((prev) => (prev + 1) % ventureStages.length)
+  }
+
+  const prevCard = () => {
+    setCurrentCard((prev) => (prev - 1 + ventureStages.length) % ventureStages.length)
+  }
+
+  const goToCard = (index: number) => {
+    setCurrentCard(index)
+  }
 
   return (
     <Section paddingY="lg" className="bg-muted/30">
@@ -1208,7 +1231,7 @@ function HowWeDoItSection() {
                       </div>
                       
                       {/* Description */}
-                      <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
+                      <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg xl:text-xl">
                         {approach.description}
                       </BodyLarge>
                       
@@ -1227,24 +1250,84 @@ function HowWeDoItSection() {
 
           {/* Venture Lifecycle Cards */}
           <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
-              {[
-                "Creating & Growing a Venture",
-                "Scaling a Venture", 
-                "Exiting a Venture",
-                "Post-IPO Growth",
-                "Post-Exit Family Office Creation"
-              ].map((stage, index) => (
-                <Card key={index} className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer">
-                  <CardHeader className="p-3 lg:p-4 h-full flex items-center justify-center">
-                    <div className="text-center">
-                      <CardTitle className="text-sm lg:text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                        {stage} →
-                      </CardTitle>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
+            {/* Mobile Carousel */}
+            <div className="lg:hidden">
+              <div className="relative">
+                {/* Carousel Container */}
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex transition-transform duration-300 ease-in-out"
+                    style={{ transform: `translateX(-${currentCard * 100}%)` }}
+                  >
+                    {ventureStages.map((stage, index) => (
+                      <div key={index} className="w-full flex-shrink-0">
+                        <Card className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer w-full">
+                          <CardHeader className="p-4 flex items-center justify-center min-h-[80px]">
+                            <div className="text-center">
+                              <CardTitle className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                                {stage} →
+                              </CardTitle>
+                            </div>
+                          </CardHeader>
+                        </Card>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Arrows */}
+                {currentCard > 0 && (
+                  <button
+                    onClick={prevCard}
+                    className="absolute left-2 top-[40px] w-8 h-8 border border-border rounded-full flex items-center justify-center hover:bg-background/20 transition-colors z-10"
+                    aria-label="Previous card"
+                  >
+                    <Icon name="arrow-left-line" className="w-4 h-4" />
+                  </button>
+                )}
+                {currentCard < ventureStages.length - 1 && (
+                  <button
+                    onClick={nextCard}
+                    className="absolute right-2 top-[40px] w-8 h-8 border border-border rounded-full flex items-center justify-center hover:bg-background/20 transition-colors z-10"
+                    aria-label="Next card"
+                  >
+                    <Icon name="arrow-right-line" className="w-4 h-4" />
+                  </button>
+                )}
+
+                {/* Carousel Indicators */}
+                <div className="flex justify-center mt-4 space-x-2">
+                  {ventureStages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToCard(index)}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentCard 
+                          ? 'bg-primary' 
+                          : 'bg-border hover:bg-muted-foreground'
+                      }`}
+                      aria-label={`Go to card ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Grid Layout */}
+            <div className="hidden lg:block">
+              <div className="grid grid-cols-5 gap-4">
+                {ventureStages.map((stage, index) => (
+                  <Card key={index} className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer">
+                    <CardHeader className="p-4 h-full flex items-center justify-center">
+                      <div className="text-center">
+                        <CardTitle className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                          {stage} →
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1477,7 +1560,7 @@ function Footer() {
           </div>
           
           {/* Newsletter Signup */}
-          <Separator className="my-4 lg:my-6" />
+          <Separator className="mt-20 lg:mt-24 mb-4 lg:mb-6 bg-border/60" />
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Content Column */}
             <div className="flex-1 text-left space-y-2">
@@ -1500,7 +1583,7 @@ function Footer() {
             </div>
           </div>
           
-          <Separator className="my-4 lg:my-6" />
+          <Separator className="my-4 lg:my-6 bg-border/60" />
           
           <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-4">
             <BodySmall className="text-muted-foreground text-left">
