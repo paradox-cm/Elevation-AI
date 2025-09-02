@@ -28,6 +28,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
+  colorScheme: "light dark",
+};
+
 export const metadata: Metadata = {
   title: "Elevation AI - Business Orchestration Platform",
   description: "Transform operations with agentic AI and expert resources. AI agents and human expertise for business growth.",
@@ -71,14 +81,11 @@ export const metadata: Metadata = {
       {
         rel: "mask-icon",
         url: "/images/branding/E-AI-Squircle.svg",
-        color: "#3b82f6",
+        color: "#3b82fd",
       },
     ],
   },
   manifest: "/site.webmanifest",
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#3b82f6",
-  colorScheme: "light dark",
 };
 
 export default function RootLayout({
