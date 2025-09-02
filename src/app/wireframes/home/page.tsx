@@ -1192,6 +1192,15 @@ function HowWeDoItSection() {
     setCurrentCard(index)
   }
 
+  // Auto-play functionality for the carousel
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCard((prev) => (prev + 1) % ventureStages.length)
+    }, 3000) // 3 second interval
+
+    return () => clearInterval(interval)
+  }, [ventureStages.length])
+
   return (
     <Section paddingY="lg" className="bg-muted/30">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
