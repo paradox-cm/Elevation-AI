@@ -43,9 +43,13 @@ export function FutureReadyMobile({
   const createArrows = (canvas: HTMLCanvasElement) => {
     const arrows: Arrow[] = []
     
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
     // Mobile-first positioning and sizing (50% smaller than desktop)
-    const centerX = canvas.width * 0.25 // Start from left side for mobile (moved left for better positioning)
-    const centerY = canvas.height * 0.5 // Center vertically
+    const centerX = logicalWidth * 0.25 // Start from left side for mobile (moved left for better positioning)
+    const centerY = logicalHeight * 0.5 // Center vertically
     const arrowSpacing = 18 // Larger spacing for better visibility in larger container
     const verticalOffset = 18 // Equal to horizontal offset for perfect diagonal
     

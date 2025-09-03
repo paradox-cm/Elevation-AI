@@ -80,12 +80,16 @@ export function UnifiedKnowledge({
     })
 
     // Performance optimization: Pre-calculate constants
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    const centerX = logicalWidth / 2
+    const centerY = logicalHeight / 2
     const columnWidth = 80
     const columnSpacing = 20
-    const topY = height * 0.27 // Adjusted to center the animation vertically
-    const bottomY = height * 0.73 // Adjusted to center the animation vertically
+    const topY = logicalHeight * 0.27 // Adjusted to center the animation vertically
+    const bottomY = logicalHeight * 0.73 // Adjusted to center the animation vertically
     const TWO_PI = Math.PI * 2 // Pre-calculate constant
 
     let dataParticles: Array<DataParticle> = [];
@@ -144,7 +148,7 @@ export function UnifiedKnowledge({
       if (!ctx) return
       
       // Draw four source squares at the top (centered horizontally)
-      const sourcePositions = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const sourcePositions = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]
       const squareSize = 30 * mobileScale
       const halfSize = squareSize / 2
       
@@ -162,7 +166,7 @@ export function UnifiedKnowledge({
       if (!ctx) return
       
       // Draw four destination circles at the bottom (centered horizontally)
-      const destPositions = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const destPositions = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]
       const circleRadius = 15 * mobileScale
       
       destPositions.forEach(x => {
@@ -182,8 +186,8 @@ export function UnifiedKnowledge({
       ctx.lineWidth = 1
       
       // Connect each source to multiple destinations with diagonal lines (centered horizontally)
-      const sources = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
-      const destinations = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const sources = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]
+      const destinations = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]
       
       sources.forEach(sourceX => {
         destinations.forEach(destX => {
@@ -198,8 +202,8 @@ export function UnifiedKnowledge({
 
     function generateDataParticles() {
       // Generate new data particles with smooth startup sequence
-      const sources = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
-      const destinations = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const sources = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]
+      const destinations = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]
       
       // Phase 0: Wait for startup delay
       if (startupPhaseRef.current === 0) {

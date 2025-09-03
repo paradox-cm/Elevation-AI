@@ -43,10 +43,14 @@ export function FutureReady({
   const createArrows = (canvas: HTMLCanvasElement) => {
     const arrows: Arrow[] = []
     
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
     // Responsive positioning and sizing
-    const isMobile = canvas.width <= 400 // Mobile breakpoint
-    const centerX = isMobile ? canvas.width * 0.25 : canvas.width * 0.3 // Adjust for mobile
-    const centerY = canvas.height * 0.5 // Center vertically
+    const isMobile = logicalWidth <= 400 // Mobile breakpoint
+    const centerX = isMobile ? logicalWidth * 0.25 : logicalWidth * 0.3 // Adjust for mobile
+    const centerY = logicalHeight * 0.5 // Center vertically
     const arrowSpacing = isMobile ? 20 : 25 // Smaller spacing on mobile
     const verticalOffset = isMobile ? 20 : 25 // Smaller vertical offset on mobile
     
