@@ -44,7 +44,7 @@ export function FutureReadyMobile({
     const arrows: Arrow[] = []
     
     // Mobile-first positioning and sizing (50% smaller than desktop)
-    const centerX = canvas.width * 0.35 // Start from left side for mobile (adjusted for larger container)
+    const centerX = canvas.width * 0.25 // Start from left side for mobile (moved left for better positioning)
     const centerY = canvas.height * 0.5 // Center vertically
     const arrowSpacing = 18 // Larger spacing for better visibility in larger container
     const verticalOffset = 18 // Equal to horizontal offset for perfect diagonal
