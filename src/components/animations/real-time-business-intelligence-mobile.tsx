@@ -2,19 +2,19 @@
 
 import { useEffect, useRef } from "react"
 
-interface RealTimeBusinessIntelligenceProps {
+interface RealTimeBusinessIntelligenceMobileProps {
   width?: number
   height?: number
   className?: string
   showBorder?: boolean
 }
 
-export function RealTimeBusinessIntelligence({ 
-  width = 600, 
-  height = 400, 
+export function RealTimeBusinessIntelligenceMobile({ 
+  width = 480, // 20% smaller than 600
+  height = 320, // 20% smaller than 400
   className = "",
   showBorder = true 
-}: RealTimeBusinessIntelligenceProps) {
+}: RealTimeBusinessIntelligenceMobileProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
 
@@ -100,117 +100,96 @@ export function RealTimeBusinessIntelligence({
       ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, dashboard.height, radius)
       ctx.fill()
       
-      // Reset shadow for inner elements
+      // Reset shadow for other elements
       ctx.shadowColor = 'transparent'
       ctx.shadowBlur = 0
       ctx.shadowOffsetX = 0
       ctx.shadowOffsetY = 0
       
-      // Draw subtle inner border for glass effect
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.roundRect(dashboard.x + 1, dashboard.y + 1, dashboard.width - 2, dashboard.height - 2, radius)
-      ctx.stroke()
-      
-      // Draw title bar with glass effect
+      // Draw title bar
       ctx.fillStyle = titleBarColor
       ctx.beginPath()
-      ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, 25, [radius, radius, 0, 0])
+      ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, 30, radius, radius, 0, 0)
       ctx.fill()
       
-      // Draw subtle title bar border
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)'
-      ctx.lineWidth = 1
+      // Draw title text
+      ctx.fillStyle = metricColor
+      ctx.font = 'bold 12px system-ui'
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('Real-Time Business Intelligence', dashboard.x + 10, dashboard.y + 15)
+      
+      // Draw close button
+      ctx.fillStyle = metricColor
       ctx.beginPath()
-      ctx.roundRect(dashboard.x + 1, dashboard.y + 1, dashboard.width - 2, 23, [radius, radius, 0, 0])
-      ctx.stroke()
+      ctx.arc(dashboard.x + dashboard.width - 15, dashboard.y + 15, 6, 0, Math.PI * 2)
+      ctx.fill()
       
-      // Draw dashboard grid structure and skeleton UI
-      drawDashboardGrid()
+      // Draw minimize button
+      ctx.fillStyle = metricColor
+      ctx.beginPath()
+      ctx.arc(dashboard.x + dashboard.width - 35, dashboard.y + 15, 6, 0, Math.PI * 2)
+      ctx.fill()
       
-      // Draw all dashboard elements within the single window
-      drawLineChart()
-      drawPieChart()
-      drawBarChart()
-      drawMetrics()
-      drawGauge()
+      // Draw maximize button
+      ctx.fillStyle = metricColor
+      ctx.beginPath()
+      ctx.arc(dashboard.x + dashboard.width - 55, dashboard.y + 15, 6, 0, Math.PI * 2)
+      ctx.fill()
     }
 
-    function drawDashboardGrid() {
+    function drawGridElements() {
       if (!ctx) return
       
-      // Define grid system - properly contained within dashboard
-      const gridPadding = logicalWidth * 0.034 // 15px for 440px canvas, scaled proportionally
-      const gridSpacing = logicalWidth * 0.045 // 20px for 440px canvas, scaled proportionally
-      const sectionHeight = Math.min(logicalWidth * 0.182, (dashboard.height - 60) / 2) // Ensure fit within dashboard
+      // Grid elements in the main dashboard area
+      const gridX = dashboard.x + 10
+      const gridY = dashboard.y + 40
+      const gridWidth = dashboard.width - 20
+      const gridHeight = dashboard.height - 50
       
-      // Top section (charts row) - start after title bar
-      const topSectionY = dashboard.y + 35
-      const topSectionHeight = sectionHeight
+      // Create a responsive grid
+      const cols = 4
+      const rows = 3
+      const elementWidth = gridWidth / cols
+      const elementHeight = gridHeight / rows
       
-      // Bottom section (metrics row) - ensure it fits within dashboard bottom
-      const bottomSectionY = Math.min(dashboard.y + 130, dashboard.y + dashboard.height - sectionHeight - 10)
-      const bottomSectionHeight = sectionHeight
-      
-      // Left column (charts)
-      const leftColumnX = dashboard.x + gridPadding
-      const leftColumnWidth = logicalWidth * 0.318 // 140px for 440px canvas, scaled proportionally
-      
-      // Right column (metrics and gauge)
-      const rightColumnX = dashboard.x + dashboard.width - gridPadding - (logicalWidth * 0.273) // 120px for 440px canvas, scaled proportionally
-      const rightColumnWidth = logicalWidth * 0.273 // 120px for 440px canvas, scaled proportionally
-      
-      // Draw skeleton UI elements
-      drawSkeletonElements(leftColumnX, topSectionY, leftColumnWidth, topSectionHeight, 'charts')
-      drawSkeletonElements(rightColumnX, topSectionY, rightColumnWidth, topSectionHeight, 'metrics')
-      drawSkeletonElements(leftColumnX, bottomSectionY, leftColumnWidth, bottomSectionHeight, 'analytics')
-      drawSkeletonElements(rightColumnX, bottomSectionY, rightColumnWidth, bottomSectionHeight, 'status')
-    }
-
-    function drawSkeletonElements(x: number, y: number, width: number, height: number, type: string) {
-      if (!ctx) return
-      
-      const elementSpacing = 8
-      const elementHeight = 4
-      
-      // Draw section heading (small rectangle)
-      ctx.fillStyle = connectionColor + '40'
-      ctx.fillRect(x, y, width * 0.6, elementHeight)
-      
-      // Draw description line (smaller rectangle)
       ctx.fillStyle = connectionColor + '30'
-      ctx.fillRect(x, y + elementHeight + 4, width * 0.4, elementHeight)
       
-      // Draw additional skeleton elements based on type
-      if (type === 'charts') {
-        // Chart labels
-        ctx.fillRect(x, y + height - 15, width * 0.3, elementHeight)
-        ctx.fillRect(x + width * 0.35, y + height - 15, width * 0.3, elementHeight)
-      } else if (type === 'metrics') {
-        // Metric labels
-        ctx.fillRect(x, y + height - 15, width * 0.25, elementHeight)
-        ctx.fillRect(x + width * 0.3, y + height - 15, width * 0.25, elementHeight)
-      } else if (type === 'analytics') {
-        // Analytics labels
-        ctx.fillRect(x, y + height - 15, width * 0.4, elementHeight)
-        ctx.fillRect(x + width * 0.45, y + height - 15, width * 0.4, elementHeight)
-      } else if (type === 'status') {
-        // Status indicators
-        ctx.fillRect(x, y + height - 15, width * 0.2, elementHeight)
-        ctx.fillRect(x + width * 0.25, y + height - 15, width * 0.2, elementHeight)
-        ctx.fillRect(x + width * 0.5, y + height - 15, width * 0.2, elementHeight)
+      // Draw grid elements with subtle animation
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const x = gridX + (col * elementWidth)
+          const y = gridY + (row * elementHeight)
+          const width = elementWidth - 5
+          const height = elementHeight - 5
+          
+          // Animate opacity based on position and time
+          const progress = (animationTime * 0.02 + (row * 0.5) + (col * 0.3)) % (Math.PI * 2)
+          const opacity = 0.1 + 0.2 * Math.sin(progress)
+          
+          ctx.globalAlpha = opacity
+          ctx.fillRect(x, y, width, height)
+          
+          // Draw some internal elements
+          ctx.fillStyle = dataColor
+          ctx.fillRect(x + 5, y + height - 15, width * 0.2, elementHeight)
+          ctx.fillRect(x + width * 0.25, y + height - 15, width * 0.2, elementHeight)
+          ctx.fillRect(x + width * 0.5, y + height - 15, width * 0.2, elementHeight)
+        }
       }
+      
+      // Reset global alpha
+      ctx.globalAlpha = 1
     }
 
     function drawLineChart() {
       if (!ctx) return
       
       // Line chart in top-left section - properly contained within dashboard
-      const chartX = dashboard.x + (width * 0.034) // 15px for 440px canvas, scaled proportionally
+      const chartX = dashboard.x + (logicalWidth * 0.034) // 15px for 440px canvas, scaled proportionally
       const chartY = dashboard.y + 50 // Start after title bar
-      const chartWidth = width * 0.227 // 100px for 440px canvas, scaled proportionally
-      const chartHeight = Math.min(height * 0.113, dashboard.height - 120) // Ensure fit within dashboard
+      const chartWidth = logicalWidth * 0.227 // 100px for 440px canvas, scaled proportionally
+      const chartHeight = Math.min(logicalHeight * 0.113, dashboard.height - 120) // Ensure fit within dashboard
       
       // Chart background
       ctx.fillStyle = connectionColor + '20'
@@ -257,9 +236,9 @@ export function RealTimeBusinessIntelligence({
       if (!ctx) return
       
       // Pie chart in top-right section - properly contained within dashboard
-      const centerX = dashboard.x + dashboard.width - (width * 0.136) // 60px for 440px canvas, scaled proportionally
+      const centerX = dashboard.x + dashboard.width - (logicalWidth * 0.136) // 60px for 440px canvas, scaled proportionally
       const centerY = dashboard.y + 75 // Position after title bar
-      const radius = Math.min(width * 0.057, 25) // Limit radius to prevent overflow
+      const radius = Math.min(logicalWidth * 0.057, 25) // Limit radius to prevent overflow
       
       // Animated pie slices
       const slices = [
@@ -287,9 +266,9 @@ export function RealTimeBusinessIntelligence({
       if (!ctx) return
       
       // Bar chart in bottom-left section - properly contained within dashboard
-      const chartX = dashboard.x + (width * 0.034) // 15px for 440px canvas, scaled proportionally
+      const chartX = dashboard.x + (logicalWidth * 0.034) // 15px for 440px canvas, scaled proportionally
       const chartY = dashboard.y + dashboard.height - 60 // Position from bottom of dashboard
-      const chartWidth = width * 0.273 // 120px for 440px canvas, scaled proportionally
+      const chartWidth = logicalWidth * 0.273 // 120px for 440px canvas, scaled proportionally
       const chartHeight = Math.min(50, dashboard.height - 80) // Ensure fit within dashboard height
       
       // Chart background
@@ -302,7 +281,7 @@ export function RealTimeBusinessIntelligence({
       ctx.strokeRect(chartX, chartY, chartWidth, chartHeight)
       
       // Animated bars - ensure they don't exceed chart boundaries
-      const barWidth = width * 0.027 // 12px for 440px canvas, scaled proportionally
+      const barWidth = logicalWidth * 0.027 // 12px for 440px canvas, scaled proportionally
       const maxBarHeight = chartHeight - 4 // Leave 2px padding top and bottom
       
       for (let i = 0; i < 6; i++) {
@@ -319,7 +298,7 @@ export function RealTimeBusinessIntelligence({
       if (!ctx) return
       
       // Metrics in bottom-right section - properly contained within dashboard
-      const startX = dashboard.x + dashboard.width - (width * 0.273) // 120px for 440px canvas, scaled proportionally
+      const startX = dashboard.x + dashboard.width - (logicalWidth * 0.273) // 120px for 440px canvas, scaled proportionally
       const startY = dashboard.y + dashboard.height - 60 // Position from bottom of dashboard
       
       // Three animated metric circles
@@ -343,9 +322,9 @@ export function RealTimeBusinessIntelligence({
       if (!ctx) return
       
       // Gauge in middle-right section - properly contained within dashboard
-      const centerX = dashboard.x + dashboard.width - (width * 0.136) // 60px for 440px canvas, scaled proportionally
+      const centerX = dashboard.x + dashboard.width - (logicalWidth * 0.136) // 60px for 440px canvas, scaled proportionally
       const centerY = dashboard.y + dashboard.height - 45 // Position from bottom of dashboard
-      const radius = Math.min(width * 0.045, 20) // Limit radius to prevent overflow
+      const radius = Math.min(logicalWidth * 0.045, 20) // Limit radius to prevent overflow
       
       // Gauge background
       ctx.strokeStyle = connectionColor
@@ -379,9 +358,9 @@ export function RealTimeBusinessIntelligence({
       if (!ctx) return
       
       // Position the data matrix behind the dashboard, justified to the right
-      const matrixX = dashboard.x + dashboard.width - (width * 0.318) // Behind and to the right of dashboard, scaled proportionally
+      const matrixX = dashboard.x + dashboard.width - (logicalWidth * 0.318) // Behind and to the right of dashboard, scaled proportionally
       const matrixY = dashboard.y - 30 // Slightly above dashboard
-      const matrixWidth = width * 0.364 // 160px for 440px canvas, scaled proportionally
+      const matrixWidth = logicalWidth * 0.364 // 160px for 440px canvas, scaled proportionally
       const matrixHeight = dashboard.height + 60
       
       // Create a grid of changing data values
@@ -437,6 +416,12 @@ export function RealTimeBusinessIntelligence({
       
       // Draw single dashboard with all elements
       drawDashboard()
+      drawGridElements()
+      drawLineChart()
+      drawPieChart()
+      drawBarChart()
+      drawMetrics()
+      drawGauge()
       
       animationTime++
       animationRef.current = requestAnimationFrame(animate)
