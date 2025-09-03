@@ -17,8 +17,8 @@ interface FutureReadyMobileProps {
 }
 
 export function FutureReadyMobile({ 
-  width = 140, 
-  height = 90, 
+  width = 200, 
+  height = 150, 
   className = "",
   showBorder = true 
 }: FutureReadyMobileProps) {
@@ -44,10 +44,10 @@ export function FutureReadyMobile({
     const arrows: Arrow[] = []
     
     // Mobile-first positioning and sizing (50% smaller than desktop)
-    const centerX = canvas.width * 0.25 // Start from left side for mobile
+    const centerX = canvas.width * 0.3 // Start from left side for mobile (adjusted for larger container)
     const centerY = canvas.height * 0.5 // Center vertically
-    const arrowSpacing = 12.5 // 50% of desktop 25px spacing
-    const verticalOffset = 12.5 // 50% of desktop 25px vertical offset
+    const arrowSpacing = 15 // Slightly larger spacing for better visibility in larger container
+    const verticalOffset = 15 // Equal to horizontal offset for perfect diagonal
     
     // Create 5 arrows that repeat up and to the right
     for (let i = 0; i < 5; i++) {
