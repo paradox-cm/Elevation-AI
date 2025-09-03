@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
-import { useAnalyticsConfig } from "@/hooks/use-analytics-config"
+
 import {
   AnalyticsMetric,
   ChartContainer,
@@ -29,16 +29,6 @@ import {
 } from "@/components/ui/analytics"
 
 export default function AnalyticsPage() {
-  const {
-    config,
-    metricConfig,
-    chartConfig,
-    dataVisualizationConfig,
-    analyticsFilterConfig,
-    analyticsDashboardConfig,
-    analyticsReportConfig,
-    analyticsTrackingConfig
-  } = useAnalyticsConfig()
 
   const [activeTab, setActiveTab] = useState("overview")
   const [period, setPeriod] = useState("30d")

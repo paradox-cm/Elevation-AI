@@ -8,29 +8,17 @@ import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { H2, H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { Logo } from "@/components/ui/logo"
 import { Favicon, AppIcon, CircleIcon, CompactLogo } from "@/components/ui/brand-icons"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
-import { useBrandingConfig } from "@/hooks/use-branding-config"
+
 import { PlasmaBackground } from "@/components/ui/plasma-background"
 
 export default function BrandingPage() {
-  const {
-    config,
-    logoConfig,
-    brandColorConfig,
-    typographyConfig,
-    brandVoiceConfig,
-    brandGuidelineConfig,
-    brandAssetConfig,
-    brandApplicationConfig
-  } = useBrandingConfig()
 
   return (
     <PageWrapper>

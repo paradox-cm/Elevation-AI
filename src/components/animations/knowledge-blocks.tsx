@@ -40,7 +40,7 @@ export function KnowledgeBlocks({
   showBorder = true 
 }: KnowledgeBlocksProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const blocksRef = useRef<KnowledgeBlock[]>([])
   const connectionsRef = useRef<Connection[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
@@ -235,7 +235,7 @@ export function KnowledgeBlocks({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying])
+  }, [width, height, isPlaying, animateKnowledgeNetwork, initializeKnowledgeNetwork])
 
   return (
     <div className={`flex justify-center ${className}`}>

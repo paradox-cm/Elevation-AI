@@ -23,7 +23,7 @@ export function IntelligentProcessAutomation({
   showBorder = true 
 }: IntelligentProcessAutomationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const trafficRef = useRef<TradeLine[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
 
@@ -68,8 +68,6 @@ export function IntelligentProcessAutomation({
     
     // Cache values for performance
     const gridSize = 32
-    const canvasWidth = canvas.width
-    const canvasHeight = canvas.height
     
     // Draw dots at grid intersections
     ctx.fillStyle = gridColorRef.current
@@ -164,7 +162,7 @@ export function IntelligentProcessAutomation({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying])
+  }, [width, height, isPlaying, animate, createTraffic])
 
   return (
     <div className={`flex justify-center ${className}`}>

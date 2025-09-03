@@ -59,10 +59,10 @@ export function PersonalCopilot({
     const rotationSpeed2 = 0.005
 
     // Performance optimization: Object pooling
-    let exchanges1: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
-    let exchanges2: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
-    let connections1: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
-    let connections2: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
+    const exchanges1: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
+    const exchanges2: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
+    const connections1: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
+    const connections2: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
     let angle1 = 0
     let angle2 = 0
 
@@ -110,15 +110,16 @@ export function PersonalCopilot({
     }
 
     class Connection {
-      start: any
-      end: any
+      start: { x: number; y: number }
+      end: { x: number; y: number }
 
-      constructor(start: any, end: any) {
+      constructor(start: { x: number; y: number }, end: { x: number; y: number }) {
         this.start = start
         this.end = end
       }
 
       draw() {
+        if (!ctx) return
         ctx.beginPath()
         ctx.moveTo(this.start.x, this.start.y)
         ctx.lineTo(this.end.x, this.end.y)
@@ -126,14 +127,14 @@ export function PersonalCopilot({
       }
     }
 
-    function generateExchanges(exchangesArray: any[], offsetAngle: number) {
+    function generateExchanges(exchangesArray: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }>) {
       for (let i = 0; i < numExchanges; i++) {
         const basePos = basePositions[i]
         exchangesArray.push(new Exchange(basePos.x, basePos.y))
       }
     }
 
-    function createConnections(exchangesArray: any[], connectionsArray: any[]) {
+    function createConnections(exchangesArray: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }>, connectionsArray: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }>) {
       // Performance optimization: Create connections more efficiently
       for (let i = 0; i < exchangesArray.length; i++) {
         for (let j = i + 1; j < exchangesArray.length; j++) {
@@ -142,7 +143,7 @@ export function PersonalCopilot({
       }
     }
 
-    function updatePositions(exchangesArray: any[], angleOffset: number) {
+    function updatePositions(exchangesArray: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }>, angleOffset: number) {
       // Performance optimization: Use pre-calculated trigonometric values
       const cosOffset = Math.cos(angleOffset)
       const sinOffset = Math.sin(angleOffset)
@@ -183,8 +184,8 @@ export function PersonalCopilot({
       animationRef.current = requestAnimationFrame(animate)
     }
 
-    generateExchanges(exchanges1, 0)
-    generateExchanges(exchanges2, Math.PI / 6)
+    generateExchanges(exchanges1)
+    generateExchanges(exchanges2)
     createConnections(exchanges1, connections1)
     createConnections(exchanges2, connections2)
     animate()

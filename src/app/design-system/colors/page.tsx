@@ -14,12 +14,11 @@ import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Separator } from "@/components/ui/separator"
+
 
 import {
   semanticColors,
   colorPalettes,
-  colorUsage,
   colorPrinciples
 } from "@/lib/colors-config"
 
@@ -233,7 +232,7 @@ export default function ColorsPage() {
             <ResponsiveTabsContent value="system" className="mt-6">
               <Alert>
                 <AlertDescription>
-                  System colors automatically adapt to the user's system preferences and accessibility settings.
+                  System colors automatically adapt to the user&apos;s system preferences and accessibility settings.
                   They provide the foundation for our semantic color system and ensure compatibility across different platforms.
                 </AlertDescription>
               </Alert>

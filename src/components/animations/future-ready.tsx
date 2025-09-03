@@ -38,7 +38,7 @@ export function FutureReady({
   showBorder = true 
 }: FutureReadyProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const ringsRef = useRef<GrowthRing[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
 
@@ -206,7 +206,7 @@ export function FutureReady({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying])
+  }, [width, height, isPlaying, animateGrowthRings])
 
   return (
     <div className={`flex justify-center ${className}`}>

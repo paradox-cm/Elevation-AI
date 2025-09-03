@@ -13,21 +13,9 @@ import { Input } from "@/components/ui/input"
 import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import Icon from "@/components/ui/icon"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
-import { useAccessibilityConfig } from "@/hooks/use-accessibility-config"
+
 
 export default function AccessibilityPage() {
-  const {
-    config,
-    wcagLevelConfig,
-    accessibilityPrincipleConfig,
-    colorContrastConfig,
-    keyboardNavigationConfig,
-    screenReaderConfig,
-    focusManagementConfig,
-    testingToolConfig,
-    accessibilityAuditConfig,
-    complianceConfig
-  } = useAccessibilityConfig()
 
   const wcagLevels = [
     {

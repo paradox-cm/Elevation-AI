@@ -23,7 +23,7 @@ export function EnterpriseSecurity({
   showBorder = true 
 }: EnterpriseSecurityProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const layersRef = useRef<SecurityLayer[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
 

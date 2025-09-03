@@ -7,7 +7,7 @@ import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
-import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H4, BodySmall } from "@/components/ui/typography"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
@@ -31,7 +31,7 @@ export default function CarouselsPage() {
     {
       id: 3,
       title: "Context-Aware Intelligence",
-      description: "Work with AI that understands your organization's full history and context.",
+      description: "Work with AI that understands your organization&apos;s full history and context.",
       icon: Zap
     },
     {
@@ -613,7 +613,7 @@ export default function CarouselsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>✅ Do's</CardTitle>
+                  <CardTitle>✅ Do&apos;s</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <BodySmall>• Keep carousel items concise and focused</BodySmall>
@@ -626,14 +626,14 @@ export default function CarouselsPage() {
               
               <Card>
                 <CardHeader>
-                  <CardTitle>❌ Don'ts</CardTitle>
+                  <CardTitle>❌ Don&apos;ts</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <BodySmall>• Don't overload cards with too much information</BodySmall>
-                  <BodySmall>• Avoid extremely fast auto-play that's hard to read</BodySmall>
-                  <BodySmall>• Don't disable gradients without considering scroll context</BodySmall>
+                  <BodySmall>• Don&apos;t overload cards with too much information</BodySmall>
+                  <BodySmall>• Avoid extremely fast auto-play that&apos;s hard to read</BodySmall>
+                  <BodySmall>• Don&apos;t disable gradients without considering scroll context</BodySmall>
                   <BodySmall>• Avoid inconsistent card heights that create visual noise</BodySmall>
-                  <BodySmall>• Don't forget to handle edge cases in mobile layouts</BodySmall>
+                  <BodySmall>• Don&apos;t forget to handle edge cases in mobile layouts</BodySmall>
                 </CardContent>
               </Card>
             </div>

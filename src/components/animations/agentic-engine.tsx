@@ -16,7 +16,7 @@ export function AgenticEngine({
   showBorder = true 
 }: AgenticEngineProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -57,8 +57,8 @@ export function AgenticEngine({
       attributeFilter: ['class']
     })
 
-    const nodes: Array<{ x: number; y: number; vx: number; vy: number; opacity: number; radius: number }> = []
-    const lines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; opacity: number }> = []
+    const nodes: Array<{ x: number; y: number; vx: number; vy: number; opacity: number; radius: number; draw: () => void; update: () => void }> = []
+    const lines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; opacity: number; draw: () => void; update: () => void }> = []
 
     class Node {
       x: number
@@ -78,6 +78,7 @@ export function AgenticEngine({
       }
 
       draw() {
+        if (!ctx) return
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
         ctx.fillStyle = `${nodeColor}${this.opacity})`
@@ -169,17 +170,10 @@ export function AgenticEngine({
       }
     }
 
-    function addLine() {
-      if (nodes.length < 2) return
-      const node1 = nodes[Math.floor(Math.random() * nodes.length)]
-      const node2 = nodes[Math.floor(Math.random() * nodes.length)]
-      if (node1 && node2 && node1 !== node2) {
-        const line = new Line({ x: node1.x, y: node1.y }, { x: node2.x, y: node2.y })
-        lines.push(line)
-      }
-    }
+
 
     function animate() {
+      if (!ctx || !canvas) return
       // Clear completely each frame
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
