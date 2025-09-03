@@ -644,37 +644,37 @@ function ProblemSection() {
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col justify-end pb-4">
                         {/* Animation Container */}
-                        <div className="h-[300px] sm:h-[350px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
+                        <div className="h-[280px] sm:h-[320px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
                           {index === 0 && (
                             <UnifiedKnowledge 
-                              width={300} 
-                              height={300} 
+                              width={280} 
+                              height={280} 
                               showBorder={false}
-                              className=""
+                              className="scale-90 sm:scale-100"
                             />
                           )}
                           {index === 1 && (
                             <IntelligentProcessAutomation 
-                              width={300} 
-                              height={200} 
+                              width={280} 
+                              height={180} 
                               showBorder={false}
-                              className=""
+                              className="scale-90 sm:scale-100"
                             />
                           )}
                           {index === 2 && (
                             <RealTimeBusinessIntelligence 
-                              width={300} 
-                              height={300} 
+                              width={280} 
+                              height={280} 
                               showBorder={false}
-                              className=""
+                              className="scale-90 sm:scale-100"
                             />
                           )}
                           {index === 3 && (
                             <FutureReady 
-                              width={300} 
-                              height={200} 
+                              width={280} 
+                              height={180} 
                               showBorder={false}
-                              className=""
+                              className="scale-100"
                             />
                           )}
                         </div>
