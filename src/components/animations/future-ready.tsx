@@ -144,9 +144,20 @@ export function FutureReady({
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Set canvas size
-    canvas.width = width
-    canvas.height = height
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
 
     // Theme-aware colors
     const updateColors = () => {
