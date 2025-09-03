@@ -62,7 +62,7 @@ export function FutureReady({
         radius: (20 + i * 40) * 0.8, // Start small and grow outward (reduced by 20%)
         opacity: 0.3 + (i * 0.15), // Newer technologies more visible
         maxRadius: (20 + i * 40) * 0.8, // Reduced by 20%
-        growthSpeed: 0.5 + (i * 0.2), // Outer rings grow faster
+        growthSpeed: 0.2 + (i * 0.1), // Outer rings grow faster
         technology: technologies[i],
         connections: []
       }
@@ -84,7 +84,7 @@ export function FutureReady({
             connection.flowParticles.push({
               angle: Math.random() * Math.PI * 2,
               progress: Math.random(),
-              speed: 0.005 + Math.random() * 0.01
+              speed: 0.002 + Math.random() * 0.005
             })
           }
           

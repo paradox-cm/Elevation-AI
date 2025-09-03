@@ -172,7 +172,7 @@ export function UnifiedKnowledge({
 
     function generateDataParticles() {
       // Generate new data particles periodically
-      if (animationTime % 20 === 0) { // Increased frequency to every 20 frames
+      if (animationTime % 40 === 0) { // Slower frequency - every 40 frames
         const sources = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
         const destinations = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
         

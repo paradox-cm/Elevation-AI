@@ -103,7 +103,7 @@ export function KnowledgeBlocks({
           x: block.x,
           y: block.y,
           progress: Math.random(),
-          speed: 0.001 + Math.random() * 0.002, // Further reduced speed
+          speed: 0.0005 + Math.random() * 0.001, // Slower speed for better visibility
           active: true
         })
         

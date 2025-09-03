@@ -88,7 +88,7 @@ export function WorkspacesCanvases({
         this.targetX = endX
         this.targetY = endY
         this.progress = 0
-        this.speed = Math.random() * 0.015 + 0.01
+        this.speed = (Math.random() * 0.015 + 0.01) * 0.7 // Reduced by 30% for slower movement
         this.size = 4
         this.sourceId = sourceId
         this.targetId = targetId

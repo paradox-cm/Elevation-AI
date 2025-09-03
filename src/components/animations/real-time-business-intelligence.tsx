@@ -384,7 +384,7 @@ export function RealTimeBusinessIntelligence({
           
           // Generate different types of data based on position and time (slowed down)
           let dataValue = ''
-          const timeSeed = Math.floor(animationTime * 0.1) + (row * 15) + (col * 8) // Slowed down by factor of 10
+          const timeSeed = Math.floor(animationTime * 0.05) + (row * 15) + (col * 8) // Slowed down by factor of 20
           
           if (col % 3 === 0) {
             // Binary data (0s and 1s)
