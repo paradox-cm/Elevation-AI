@@ -45,22 +45,22 @@ export function KnowledgeBlocks({
   const connectionsRef = useRef<Connection[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
   
-  // Performance optimized: Original desktop grid with 6x4 blocks and full connections - DESKTOP VERSION
+  // Performance optimized: Reduced from 168 to 45 total animated objects
 
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
-  const blockColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black, no transparency
-  const connectionColorRef = useRef('rgba(0, 0, 0, 0.8)'); // Slightly transparent for connections
-  const particleColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black particles
+  const blockColorRef = useRef('rgba(0, 0, 0, 0.8)');
+  const connectionColorRef = useRef('rgba(0, 0, 0, 0.6)');
+  const particleColorRef = useRef('rgba(0, 0, 0, 0.9)');
   const observerRef = useRef<MutationObserver | null>(null);
 
   const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {
     const blocks: KnowledgeBlock[] = []
     const connections: Connection[] = []
     
-    // Create knowledge blocks in a grid pattern (original desktop size)
-    const cols = 6 // Original desktop grid size
-    const rows = 4 // Original desktop grid size
+    // Create knowledge blocks in a grid pattern (reduced for performance)
+    const cols = 5 // Reduced from 6 to 5
+    const rows = 3 // Reduced from 4 to 3
     
     // Get the logical dimensions (CSS size) for positioning calculations
     const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
@@ -74,9 +74,9 @@ export function KnowledgeBlocks({
         const block: KnowledgeBlock = {
           x: spacingX * (x + 1),
           y: spacingY * (y + 1),
-          size: 20, // Original desktop block size
+          size: 15,
           connections: [],
-          opacity: 1, // Solid, no transparency
+          opacity: 0.8 + Math.random() * 0.2,
           pulsePhase: 0
         }
         blocks.push(block)
@@ -101,18 +101,18 @@ export function KnowledgeBlocks({
         adjacentConnections.push(index + cols)
       }
       
-      // Connect to diagonal bottom-right (if exists) - reduced frequency
-      if (col < cols - 1 && row < rows - 1 && index % 2 === 0) {
+      // Connect to diagonal bottom-right (if exists) - 80% reduced frequency
+      if (col < cols - 1 && row < rows - 1 && index % 10 === 0) {
         adjacentConnections.push(index + cols + 1)
       }
       
-      // Connect to diagonal bottom-left (if exists) - reduced frequency
-      if (col > 0 && row < rows - 1 && index % 2 === 0) {
+      // Connect to diagonal bottom-left (if exists) - 80% reduced frequency
+      if (col > 0 && row < rows - 1 && index % 10 === 0) {
         adjacentConnections.push(index + cols - 1)
       }
       
-      // Add some cross-connections for network effect (but not random) - reduced frequency
-      if (index % 4 === 0 && index + 2 < blocks.length) {
+      // Add some cross-connections for network effect (but not random) - 80% reduced frequency
+      if (index % 20 === 0 && index + 2 < blocks.length) {
         adjacentConnections.push(index + 2)
       }
       
