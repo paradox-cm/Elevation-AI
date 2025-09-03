@@ -26,6 +26,7 @@ import {
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
   RealTimeBusinessIntelligence, 
+  RealTimeBusinessIntelligenceMobile,
   FutureReady,
   FutureReadyMobile,
   KnowledgeBlocks,
@@ -664,9 +665,9 @@ function ProblemSection() {
                             />
                           )}
                           {index === 2 && (
-                            <RealTimeBusinessIntelligence 
-                              width={300} 
-                              height={300} 
+                            <RealTimeBusinessIntelligenceMobile 
+                              width={240} 
+                              height={240} 
                               showBorder={false}
                               className=""
                             />

@@ -464,3 +464,287 @@ export function RealTimeBusinessIntelligence({
     </div>
   )
 }
+
+// Mobile-specific version with 20% smaller dashboard and elements
+export function RealTimeBusinessIntelligenceMobile({ 
+  width = 480, 
+  height = 352, 
+  className = "",
+  showBorder = true 
+}: RealTimeBusinessIntelligenceProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animationRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+
+    // Theme-aware colors - proper light/dark mode distinction
+    let isDark = document.documentElement.classList.contains('dark')
+    let backgroundColor = 'transparent' // No background in either mode
+    let panelColor = isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(240, 240, 240, 0.8)' // Dark panel for dark mode, light gray panel for light mode
+    let titleBarColor = isDark ? 'rgba(82, 82, 91, 0.8)' : 'rgba(156, 163, 175, 0.8)' // Dark title bar for dark mode, light gray for light mode
+    let dataColor = isDark ? 'rgba(37, 99, 235, 0.8)' : 'rgba(37, 99, 235, 0.8)' // Same blue for both modes
+    let connectionColor = isDark ? 'rgba(82, 82, 91, 0.4)' : 'rgba(156, 163, 175, 0.4)' // Dark zinc for dark mode, light gray for light mode
+    let metricColor = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)' // White for dark mode, black for light mode
+
+    // Theme change observer - dark mode matches light mode
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          isDark = document.documentElement.classList.contains('dark')
+          backgroundColor = 'transparent' // No background in either mode
+          panelColor = isDark ? 'rgba(0, 0, 0, 0.7)' : 'rgba(240, 240, 240, 0.8)' // Dark panel for dark mode, light gray panel for light mode
+          titleBarColor = isDark ? 'rgba(82, 82, 91, 0.8)' : 'rgba(156, 163, 175, 0.8)' // Dark title bar for dark mode, light gray for light mode
+          dataColor = isDark ? 'rgba(37, 99, 235, 0.8)' : 'rgba(37, 99, 235, 0.8)' // Same blue for both modes
+          connectionColor = isDark ? 'rgba(82, 82, 91, 0.4)' : 'rgba(156, 163, 175, 0.4)' // Dark zinc for dark mode, light gray for light mode
+          metricColor = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)' // White for dark mode, black for light mode
+        }
+      })
+    })
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+
+    // Define single dashboard window with 16:9 aspect ratio - 20% smaller for mobile
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    const dashboard = {
+      x: logicalWidth * 0.091, // 40px for 440px canvas, scaled proportionally
+      y: (logicalHeight - (logicalWidth * 0.46)) / 2, // Vertically center the dashboard
+      width: logicalWidth * 0.818, // 360px for 440px canvas, scaled proportionally
+      height: logicalWidth * 0.46 // 16:9 aspect ratio (360 * 9/16), scaled proportionally
+    }
+
+    let animationTime = 0
+
+    function drawDashboard() {
+      if (!ctx) return
+      
+      const radius = Math.max(4, logicalWidth * 0.018) // Corner radius for rounded corners, scaled proportionally
+      
+      // Draw glass effect background (subtle outer glow)
+      ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'
+      ctx.shadowBlur = 15
+      ctx.shadowOffsetX = 0
+      ctx.shadowOffsetY = 4
+      
+      // Draw main dashboard window with glass effect
+      ctx.fillStyle = panelColor
+      ctx.beginPath()
+      ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, dashboard.height, radius)
+      ctx.fill()
+      
+      // Reset shadow for other elements
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+      ctx.shadowOffsetX = 0
+      ctx.shadowOffsetY = 0
+      
+      // Draw title bar
+      const titleBarHeight = Math.max(20, logicalWidth * 0.045) // 20px for 440px canvas, scaled proportionally
+      ctx.fillStyle = titleBarColor
+      ctx.beginPath()
+      ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, titleBarHeight, radius)
+      ctx.fill()
+      
+      // Draw title text
+      ctx.fillStyle = metricColor
+      ctx.font = `bold ${Math.max(10, logicalWidth * 0.023)}px system-ui` // 10px for 440px canvas, scaled proportionally
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('Real-Time Dashboard', dashboard.x + 12, dashboard.y + (titleBarHeight / 2))
+      
+      // Draw content area
+      const contentY = dashboard.y + titleBarHeight
+      const contentHeight = dashboard.height - titleBarHeight
+      
+      // Draw left column (metrics)
+      const leftColumnWidth = dashboard.width * 0.4
+      const leftColumnX = dashboard.x + 20
+      const leftColumnY = contentY + 20
+      
+      // Draw metric boxes
+      const metricBoxHeight = Math.max(30, logicalWidth * 0.068) // 30px for 440px canvas, scaled proportionally
+      const metricSpacing = Math.max(15, logicalWidth * 0.034) // 15px for 440px canvas, scaled proportionally
+      
+      // Metric 1: Response Time
+      ctx.fillStyle = dataColor
+      ctx.beginPath()
+      ctx.roundRect(leftColumnX, leftColumnY, leftColumnWidth - 20, metricBoxHeight, 4)
+      ctx.fill()
+      
+      ctx.fillStyle = metricColor
+      ctx.font = `${Math.max(8, logicalWidth * 0.018)}px system-ui` // 8px for 440px canvas, scaled proportionally
+      ctx.textAlign = 'left'
+      ctx.fillText('Response Time', leftColumnX + 8, leftColumnY + 8)
+      ctx.font = `bold ${Math.max(12, logicalWidth * 0.027)}px system-ui` // 12px for 440px canvas, scaled proportionally
+      ctx.fillText('2.3ms', leftColumnX + 8, leftColumnY + 20)
+      
+      // Metric 2: Throughput
+      ctx.fillStyle = dataColor
+      ctx.beginPath()
+      ctx.roundRect(leftColumnX, leftColumnY + metricBoxHeight + metricSpacing, leftColumnWidth - 20, metricBoxHeight, 4)
+      ctx.fill()
+      
+      ctx.fillStyle = metricColor
+      ctx.font = `${Math.max(8, logicalWidth * 0.018)}px system-ui` // 8px for 440px canvas, scaled proportionally
+      ctx.textAlign = 'left'
+      ctx.fillText('Throughput', leftColumnX + 8, leftColumnY + metricBoxHeight + metricSpacing + 8)
+      ctx.font = `bold ${Math.max(12, logicalWidth * 0.027)}px system-ui` // 12px for 440px canvas, scaled proportionally
+      ctx.fillText('1.2M/s', leftColumnX + 8, leftColumnY + metricBoxHeight + metricSpacing + 20)
+      
+      // Draw right column (visualization)
+      const rightColumnX = dashboard.x + leftColumnWidth + 40
+      const rightColumnWidth = dashboard.width - leftColumnWidth - 60
+      const rightColumnY = contentY + 20
+      
+      // Draw chart area
+      ctx.fillStyle = dataColor
+      ctx.beginPath()
+      ctx.roundRect(rightColumnX, rightColumnY, rightColumnWidth, contentHeight - 40, 4)
+      ctx.fill()
+      
+      // Draw chart lines
+      ctx.strokeStyle = metricColor
+      ctx.lineWidth = 2
+      ctx.beginPath()
+      
+      const chartWidth = rightColumnWidth - 20
+      const chartHeight = contentHeight - 60
+      const chartX = rightColumnX + 10
+      const chartY = rightColumnY + 10
+      
+      // Draw animated line chart
+      const points = 8
+      for (let i = 0; i < points; i++) {
+        const x = chartX + (i * chartWidth / (points - 1))
+        const progress = (animationTime + i * 10) % 100 / 100
+        const y = chartY + chartHeight - (progress * chartHeight)
+        
+        if (i === 0) {
+          ctx.moveTo(x, y)
+        } else {
+          ctx.lineTo(x, y)
+        }
+      }
+      ctx.stroke()
+      
+      // Center dot
+      ctx.fillStyle = metricColor
+      ctx.beginPath()
+      ctx.arc(chartX + chartWidth / 2, chartY + chartHeight / 2, 2, 0, Math.PI * 2)
+      ctx.fill()
+    }
+
+    function drawAnimatedDataMatrix() {
+      if (!ctx) return
+      
+      // Position the data matrix behind the dashboard, justified to the right - 20% smaller for mobile
+      const matrixX = dashboard.x + dashboard.width - (width * 0.318) // Behind and to the right of dashboard, scaled proportionally
+      const matrixY = dashboard.y - 30 // Slightly above dashboard
+      const matrixWidth = width * 0.364 // 160px for 440px canvas, scaled proportionally
+      const matrixHeight = dashboard.height + 60
+      
+      // Create a grid of changing data values
+      const gridSize = 16
+      const cols = Math.floor(matrixWidth / gridSize)
+      const rows = Math.floor(matrixHeight / gridSize)
+      
+      // Theme-aware color for the data matrix (fixed opacity)
+      const dataMatrixColor = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'
+      ctx.fillStyle = dataMatrixColor
+      ctx.font = '9px monospace'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      
+      // Generate and display changing data values
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const x = matrixX + (col * gridSize) + (gridSize / 2)
+          const y = matrixY + (row * gridSize) + (gridSize / 2)
+          
+          // Generate different types of data based on position and time (slowed down by 30%)
+          let dataValue = ''
+          const timeSeed = Math.floor(animationTime * 0.28) + (row * 15) + (col * 8) // Slowed down by 30% (was 0.4, now 0.28)
+          
+          if (col % 3 === 0) {
+            // Binary data (0s and 1s)
+            dataValue = (timeSeed % 2).toString()
+          } else if (col % 3 === 1) {
+            // Hexadecimal data
+            dataValue = (timeSeed % 16).toString(16).toUpperCase()
+          } else {
+            // Decimal numbers
+            dataValue = (timeSeed % 10).toString()
+          }
+          
+          // Draw the data value with consistent opacity
+          ctx.fillText(dataValue, x, y)
+        }
+      }
+    }
+
+    function animate() {
+      if (!ctx || !canvas) return
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      
+      // Draw background
+      ctx.fillStyle = backgroundColor
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      
+      // Draw animated data matrix behind the dashboard
+      drawAnimatedDataMatrix()
+      
+      // Draw single dashboard with all elements
+      drawDashboard()
+      
+      animationTime++
+      animationRef.current = requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+      observer.disconnect()
+    }
+  }, [width, height])
+
+  return (
+    <div className={`flex justify-center ${className}`}>
+      <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
+        <canvas 
+          ref={canvasRef}
+          className="rounded-lg"
+          style={{ width: `${width}px`, height: `${height}px` }}
+        />
+      </div>
+    </div>
+  )
+}

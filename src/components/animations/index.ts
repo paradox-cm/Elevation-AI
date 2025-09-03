@@ -6,7 +6,7 @@ export { FutureReadyMobile } from './future-ready-mobile'
 export { IntelligentProcessAutomation, IntelligentProcessAutomationMobile } from './intelligent-process-automation'
 export { KnowledgeBlocks, KnowledgeBlocksMobile } from './knowledge-blocks'
 export { PersonalCopilot } from './personal-copilot'
-export { RealTimeBusinessIntelligence } from './real-time-business-intelligence'
+export { RealTimeBusinessIntelligence, RealTimeBusinessIntelligenceMobile } from './real-time-business-intelligence'
 export { UnifiedKnowledge } from './unified-knowledge'
 export { WorkspacesCanvases } from './workspaces-canvases'
 
