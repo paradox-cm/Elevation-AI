@@ -311,11 +311,16 @@ export function KnowledgeBlocksMobile({
     const blocks: KnowledgeBlock[] = []
     const connections: Connection[] = []
     
-    // Create knowledge blocks in a grid pattern (reduced for performance)
+    // Create knowledge blocks in a grid pattern (reduced for performance) - MOBILE VERSION
     const cols = 5 // Reduced from 6 to 5
     const rows = 3 // Reduced from 4 to 3
-    const spacingX = canvas.width / (cols + 1)
-    const spacingY = canvas.height / (rows + 1)
+    
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    const spacingX = logicalWidth / (cols + 1)
+    const spacingY = logicalHeight / (rows + 1)
     
     for (let x = 0; x < cols; x++) {
       for (let y = 0; y < rows; y++) {
