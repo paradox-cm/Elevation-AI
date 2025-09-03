@@ -17,8 +17,8 @@ interface FutureReadyMobileProps {
 }
 
 export function FutureReadyMobile({ 
-  width = 200, 
-  height = 150, 
+  width = 250, 
+  height = 200, 
   className = "",
   showBorder = true 
 }: FutureReadyMobileProps) {
@@ -44,10 +44,10 @@ export function FutureReadyMobile({
     const arrows: Arrow[] = []
     
     // Mobile-first positioning and sizing (50% smaller than desktop)
-    const centerX = canvas.width * 0.3 // Start from left side for mobile (adjusted for larger container)
+    const centerX = canvas.width * 0.35 // Start from left side for mobile (adjusted for larger container)
     const centerY = canvas.height * 0.5 // Center vertically
-    const arrowSpacing = 15 // Slightly larger spacing for better visibility in larger container
-    const verticalOffset = 15 // Equal to horizontal offset for perfect diagonal
+    const arrowSpacing = 18 // Larger spacing for better visibility in larger container
+    const verticalOffset = 18 // Equal to horizontal offset for perfect diagonal
     
     // Create 5 arrows that repeat up and to the right
     for (let i = 0; i < 5; i++) {
@@ -74,7 +74,7 @@ export function FutureReadyMobile({
     
     // Set stroke color and opacity
     ctx.strokeStyle = arrowColorRef.current
-    ctx.lineWidth = 1 // Thinner line for mobile
+    ctx.lineWidth = 2 // Thicker line for better visibility on mobile
     ctx.globalAlpha = arrow.opacity
     
     // Draw the arrow path as stroke only

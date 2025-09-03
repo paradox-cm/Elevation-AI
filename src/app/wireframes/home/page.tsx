@@ -673,8 +673,8 @@ function ProblemSection() {
                           )}
                           {index === 3 && (
                             <FutureReadyMobile 
-                              width={200} 
-                              height={150} 
+                              width={250} 
+                              height={200} 
                               showBorder={false}
                               className=""
                             />
