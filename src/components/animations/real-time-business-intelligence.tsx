@@ -70,11 +70,15 @@ export function RealTimeBusinessIntelligence({
     })
 
     // Define single dashboard window with 16:9 aspect ratio
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
     const dashboard = {
-      x: width * 0.091, // 40px for 440px canvas, scaled proportionally
-      y: (canvas.height - (canvas.width * 0.46)) / 2, // Vertically center the dashboard
-      width: width * 0.818, // 360px for 440px canvas, scaled proportionally
-      height: canvas.width * 0.46 // 16:9 aspect ratio (360 * 9/16), scaled proportionally
+      x: logicalWidth * 0.091, // 40px for 440px canvas, scaled proportionally
+      y: (logicalHeight - (logicalWidth * 0.46)) / 2, // Vertically center the dashboard
+      width: logicalWidth * 0.818, // 360px for 440px canvas, scaled proportionally
+      height: logicalWidth * 0.46 // 16:9 aspect ratio (360 * 9/16), scaled proportionally
     }
 
     let animationTime = 0
@@ -82,7 +86,7 @@ export function RealTimeBusinessIntelligence({
     function drawDashboard() {
       if (!ctx) return
       
-      const radius = Math.max(4, width * 0.018) // Corner radius for rounded corners, scaled proportionally
+      const radius = Math.max(4, logicalWidth * 0.018) // Corner radius for rounded corners, scaled proportionally
       
       // Draw glass effect background (subtle outer glow)
       ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'
@@ -137,9 +141,9 @@ export function RealTimeBusinessIntelligence({
       if (!ctx) return
       
       // Define grid system - properly contained within dashboard
-      const gridPadding = width * 0.034 // 15px for 440px canvas, scaled proportionally
-      const gridSpacing = width * 0.045 // 20px for 440px canvas, scaled proportionally
-      const sectionHeight = Math.min(width * 0.182, (dashboard.height - 60) / 2) // Ensure fit within dashboard
+      const gridPadding = logicalWidth * 0.034 // 15px for 440px canvas, scaled proportionally
+      const gridSpacing = logicalWidth * 0.045 // 20px for 440px canvas, scaled proportionally
+      const sectionHeight = Math.min(logicalWidth * 0.182, (dashboard.height - 60) / 2) // Ensure fit within dashboard
       
       // Top section (charts row) - start after title bar
       const topSectionY = dashboard.y + 35
@@ -151,11 +155,11 @@ export function RealTimeBusinessIntelligence({
       
       // Left column (charts)
       const leftColumnX = dashboard.x + gridPadding
-      const leftColumnWidth = width * 0.318 // 140px for 440px canvas, scaled proportionally
+      const leftColumnWidth = logicalWidth * 0.318 // 140px for 440px canvas, scaled proportionally
       
       // Right column (metrics and gauge)
-      const rightColumnX = dashboard.x + dashboard.width - gridPadding - (width * 0.273) // 120px for 440px canvas, scaled proportionally
-      const rightColumnWidth = width * 0.273 // 120px for 440px canvas, scaled proportionally
+      const rightColumnX = dashboard.x + dashboard.width - gridPadding - (logicalWidth * 0.273) // 120px for 440px canvas, scaled proportionally
+      const rightColumnWidth = logicalWidth * 0.273 // 120px for 440px canvas, scaled proportionally
       
       // Draw skeleton UI elements
       drawSkeletonElements(leftColumnX, topSectionY, leftColumnWidth, topSectionHeight, 'charts')

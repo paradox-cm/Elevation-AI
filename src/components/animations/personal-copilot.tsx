@@ -62,10 +62,14 @@ export function PersonalCopilot({
     })
 
     // Performance optimization: Pre-calculate constants
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    const centerX = logicalWidth / 2
+    const centerY = logicalHeight / 2
     const numExchanges = 6
-    const radius = Math.min(width, height) * 0.364 // 160 for 440x440, scaled proportionally
+    const radius = Math.min(logicalWidth, logicalHeight) * 0.364 // 160 for 440x440, scaled proportionally
     const angleStep = (Math.PI * 2) / numExchanges
     const rotationSpeed1 = 0.005
     const rotationSpeed2 = 0.005
