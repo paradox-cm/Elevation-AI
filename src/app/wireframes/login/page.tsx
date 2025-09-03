@@ -13,13 +13,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
-import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
+import { GlobalHeader } from "@/components/ui/global-header"
 
 // Form validation schema
 const loginFormSchema = z.object({
@@ -210,17 +209,16 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <PageWrapper>
-      <MobileOnlyLayout
-        mobileMenu={<MobileMenuDrawer />}
-      >
-        <div className="bg-background transition-colors duration-300 min-h-screen">
-          <main className="flex items-center justify-center min-h-screen px-4 py-8 sm:px-6 lg:px-8">
-            <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
-              <LoginForm />
-            </div>
-          </main>
-        </div>
-      </MobileOnlyLayout>
+      <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col">
+        {/* Global Header */}
+        <GlobalHeader showLogin={false} showDemo={false} />
+
+        <main className="flex-1 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+          <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
+            <LoginForm />
+          </div>
+        </main>
+      </div>
     </PageWrapper>
   )
 }

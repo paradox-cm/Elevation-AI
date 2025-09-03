@@ -18,7 +18,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { calculateActiveSlide, getScrollSpacerHeight, ScrollEventManager } from "@/lib/scroll-standards"
+import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standards"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
@@ -242,7 +242,10 @@ function Header() {
 // Hero Section
 function HeroSection() {
   return (
-    <Section paddingY="xl" className="min-h-[70vh] sm:min-h-[80vh] flex items-center">
+    <Section 
+      paddingY="xl" 
+      className="flex items-center min-h-[70vh] sm:min-h-[80vh] h-screen"
+    >
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           {/* Content */}
@@ -270,7 +273,7 @@ function HeroSection() {
           </div>
 
           {/* Visual */}
-          <div className="relative h-[250px] sm:h-[400px] lg:h-[500px] rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center border border-border/50 overflow-hidden">
+          <div className="relative h-[250px] sm:h-[350px] lg:h-[500px] rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center border border-border/50 overflow-hidden">
             {/* Static Grid of Dots Background */}
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm">
               {/* Light mode dots */}
@@ -535,11 +538,11 @@ function ProblemSection() {
   const sectionRef = React.useRef<HTMLDivElement>(null)
   
   const problems = [
-    {
-      title: "The Unified Knowledge Platform",
-      description: "Work from a single source of truth. We break down the walls between your departments and tools, creating a unified platform where no more hunting for that one file you know you saw in an email three weeks ago.",
-      icon: "database-2-line"
-    },
+      {
+        title: "The Business Orchestration Platform",
+        description: "Work from a single source of truth. We break down the walls between your departments and tools, creating a unified platform where no more hunting for that one file you know you saw in an email three weeks ago.",
+        icon: "database-2-line"
+      },
     {
       title: "Intelligent Process Automation",
       description: "Eliminate operational bottlenecks with smart automation. We identify and automate the manual, repetitive processes that slow down your growth, freeing your best people from manual data entry to focus on what they were hired to do.",
@@ -626,6 +629,13 @@ function ProblemSection() {
         <div className="space-y-8 sm:space-y-12 lg:space-y-12">
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+            {/* Section Headline */}
+            <div className="text-center space-y-4 lg:space-y-6 mb-8">
+              <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">Unify your systems</H2>
+              <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+                Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+              </BodyLarge>
+            </div>
             <div className="overflow-x-auto pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
                 {problems.map((problem, index) => (
@@ -696,9 +706,16 @@ function ProblemSection() {
             <div className="sticky top-20 h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
               <div className="w-full h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-6rem)] 2xl:h-[calc(100vh-5rem)] relative flex items-center">
                 <div className="w-full flex flex-col items-center justify-center min-h-0">
+                  {/* Section Headline */}
+                  <div className="text-center space-y-4 lg:space-y-6 mb-8">
+                    <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">Unify your systems</H2>
+                    <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+                      Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+                    </BodyLarge>
+                  </div>
                   {/* Carousel Container */}
                   <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]">
-                  {problems.map((problem, index) => (
+                    {problems.map((problem, index) => (
                     <div
                       key={index}
                       className={`transition-opacity duration-75 absolute inset-0 ${
@@ -707,37 +724,33 @@ function ProblemSection() {
                           : 'opacity-0 pointer-events-none'
                       }`}
                     >
-                    <div className="flex h-full">
-                      {/* Step Indicators */}
-                      <div className="flex flex-col w-20">
-                        {problems.map((_, stepIndex) => (
-                          <button
-                            key={stepIndex}
-                            onClick={() => setActiveStep(stepIndex)}
-                            className={`flex-1 border flex items-center justify-center text-lg font-medium transition-all duration-300 ${
-                              stepIndex === activeStep
-                                ? 'bg-primary border-primary text-white shadow-lg'
-                                : stepIndex < activeStep
-                                ? 'bg-primary/20 border-primary/30 text-primary'
-                                : 'bg-background border-muted text-muted-foreground hover:border-primary/50'
-                            } ${
-                              stepIndex === 0 ? 'rounded-tl-lg' : ''
-                            } ${
-                              stepIndex === problems.length - 1 ? 'rounded-bl-lg' : ''
-                            }`}
-                          >
-                            {stepIndex + 1}
-                          </button>
-                        ))}
-                      </div>
-                      
                       {/* Card Content */}
-                      <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 transition-colors duration-300 flex-1 rounded-l-none h-full">
-                        <CardHeader className="h-full flex flex-col justify-center p-6 lg:p-8 xl:p-10 2xl:p-12">
+                      <Card className="group transition-all duration-300 border-border/50 transition-colors duration-300 h-full rounded-lg relative overflow-hidden">
+                        {/* Step Indicators - Positioned inside card on the left */}
+                        <div className="absolute left-0 top-0 bottom-0 flex flex-col w-20 z-10">
+                          {problems.map((_, stepIndex) => (
+                            <button
+                              key={stepIndex}
+                              onClick={() => setActiveStep(stepIndex)}
+                              className={`flex-1 border-r border-border/50 flex items-center justify-center text-lg font-medium transition-all duration-300 ${
+                                stepIndex === activeStep
+                                  ? 'bg-primary border-primary text-white shadow-lg border-b border-primary'
+                                  : stepIndex < activeStep
+                                  ? 'bg-primary/20 border-primary/30 text-primary border-b border-primary/30'
+                                  : stepIndex < 3
+                                  ? 'bg-background/80 border-border/50 text-muted-foreground hover:bg-background/60 border-b border-border/50'
+                                  : 'bg-background/80 border-border/50 text-muted-foreground hover:bg-background/60'
+                              }`}
+                            >
+                              {stepIndex + 1}
+                            </button>
+                          ))}
+                        </div>
+                        <CardHeader className="h-full flex flex-col justify-center pl-24 pr-6 lg:pl-28 lg:pr-8 xl:pl-32 xl:pr-10 2xl:pl-36 2xl:pr-12">
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full w-full">
                             {/* Content */}
                             <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
-                              <H3 className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">{problem.title}</H3>
+                              <H3 className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">{problem.title}</H3>
                               <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
                                 {problem.description}
                               </BodyLarge>
@@ -778,7 +791,6 @@ function ProblemSection() {
                         </CardHeader>
                       </Card>
                     </div>
-                  </div>
                 ))}
                   </div>
                 </div>
@@ -786,7 +798,7 @@ function ProblemSection() {
             </div>
             
             {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 950 + 200}px` }}></div>
+            <div style={{ height: `${850 + 850 + 950 + 950 + 950 + 200}px` }}></div>
           </div>
         </div>
       </Container>
@@ -794,227 +806,12 @@ function ProblemSection() {
   )
 }
 
-// Unifying Statement Section
-function UnifyingStatementSection() {
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [mobileActiveStep, setMobileActiveStep] = React.useState(0)
-  const sectionRef = React.useRef<HTMLDivElement>(null)
-  const mobileSectionRef = React.useRef<HTMLDivElement>(null)
-  
-  const texts = [
-    {
-      text: "The Elevation AI Platform unifies your systems—turning complexity and chaos into your greatest advantage.",
-      key: "first-text"
-    },
-    {
-      text: "It transforms scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.",
-      key: "second-text"
-    },
-    {
-      text: "With a unified, agentic platform powering your entire operation, your business moves faster, thinks smarter, and stays ahead.",
-      key: "third-text"
-    }
-  ]
 
-  // Desktop scroll-triggered carousel with standardized behavior
-  React.useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current || window.innerWidth < 1024) return
-      
-      const rect = sectionRef.current.getBoundingClientRect()
-      const containerHeight = 400 // Height of the carousel container
-      
-      // Calculate which step should be active based on scroll position
-      if (rect.top <= 0 && rect.bottom >= containerHeight) {
-        // Section is in viewport, use custom calculation for UnifyingStatementSection
-        const scrollProgress = Math.abs(rect.top) / containerHeight
-        
-        // Custom logic: All slides get 400px more scroll space, third slide gets additional 100px (500px total)
-        const baseSlideHeight = 450 // Standard slide height
-        const firstSlideHeight = baseSlideHeight + 400 // 400px extra for first slide
-        const secondSlideHeight = baseSlideHeight + 400 // 400px extra for second slide
-        const thirdSlideHeight = baseSlideHeight + 500 // 500px extra for third slide (400px + 100px additional)
-        
-        let activeStep = 0
-        if (scrollProgress < (firstSlideHeight / containerHeight)) {
-          // First slide
-          activeStep = 0
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight) / containerHeight)) {
-          // Second slide
-          activeStep = 1
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight) / containerHeight)) {
-          // Third slide with extra scroll space
-          activeStep = 2
-        } else {
-          // Section complete, stay on last slide
-          activeStep = 2
-        }
-        
-        setActiveStep(activeStep)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setActiveStep(0)
-      } else {
-        // Section is below viewport
-        setActiveStep(texts.length - 1)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [texts.length])
-
-  // Mobile scroll-triggered carousel
-  React.useEffect(() => {
-    const handleMobileScroll = () => {
-      if (!mobileSectionRef.current || window.innerWidth >= 1024) return
-      
-      const rect = mobileSectionRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      
-      // Calculate which step should be active based on scroll position for mobile
-      if (rect.top <= 0 && rect.bottom >= windowHeight * 0.5) {
-        // Section is in viewport, calculate progress based on mobile-appropriate scroll height
-        const mobileScrollHeight = windowHeight * 2 // 2x viewport height for comfortable scrolling
-        const scrollProgress = Math.abs(rect.top) / mobileScrollHeight
-        
-        // Equal distribution for all slides
-        const slideThreshold = 1 / 3
-        
-        let mobileActiveStep = 0
-        if (scrollProgress < slideThreshold) {
-          // First slide - 33.33% of scroll space
-          mobileActiveStep = 0
-        } else if (scrollProgress < slideThreshold * 2) {
-          // Second slide - 33.33% of scroll space
-          mobileActiveStep = 1
-        } else {
-          // Third slide - 33.33% of scroll space
-          mobileActiveStep = 2
-        }
-        
-        setMobileActiveStep(mobileActiveStep)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setMobileActiveStep(0)
-      } else {
-        // Section is below viewport
-        setMobileActiveStep(texts.length - 1)
-      }
-    }
-
-    window.addEventListener('scroll', handleMobileScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleMobileScroll)
-  }, [texts.length])
-
-  return (
-    <Section paddingY="xl" className="relative">
-      {/* Blue Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-600/15 to-blue-500/10"></div>
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
-          {/* Mobile Layout */}
-          <div className="block lg:hidden relative" ref={mobileSectionRef}>
-            {/* Carousel Container */}
-            <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
-              <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
-                {/* Text Container */}
-                <div className="relative h-96">
-                  {texts.map((textItem, index) => (
-                    <div
-                      key={index}
-                      className={`transition-opacity duration-75 absolute inset-0 ${
-                        index === mobileActiveStep
-                          ? 'opacity-100'
-                          : 'opacity-0 pointer-events-none'
-                      }`}
-                    >
-                      <div className="h-full flex items-center">
-                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-                          {textItem.text}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Slide Indicators */}
-                <div className="absolute bottom-0 left-0 flex gap-2">
-                  {texts.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setMobileActiveStep(index)}
-                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
-                        index === mobileActiveStep
-                          ? 'bg-blue-600 dark:bg-blue-400' 
-                          : 'bg-gray-300 dark:bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
-          </div>
-
-          {/* Desktop Layout - Scroll-triggered Carousel */}
-          <div className="hidden lg:block relative" ref={sectionRef}>
-                         {/* Carousel Container */}
-             <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
-               <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
-                 {/* Text Container */}
-                 <div className="relative h-96">
-                   {texts.map((textItem, index) => (
-                     <div
-                       key={index}
-                       className={`transition-opacity duration-75 absolute inset-0 ${
-                         index === activeStep
-                           ? 'opacity-100'
-                           : 'opacity-0 pointer-events-none'
-                       }`}
-                     >
-                       <div className="h-full flex items-center">
-                         <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-                           {textItem.text}
-                         </div>
-                       </div>
-                     </div>
-                   ))}
-                 </div>
-                 
-                                   {/* Slide Indicators */}
-                  <div className="absolute bottom-0 left-0 flex gap-2">
-                  {texts.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveStep(index)}
-                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
-                        index === activeStep
-                          ? 'bg-blue-600 dark:bg-blue-400' 
-                          : 'bg-gray-300 dark:bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
-          </div>
-        </div>
-      </Container>
-    </Section>
-  )
-}
 
 // Platform Overview Section
 function PlatformSection() {
   const [activeTab, setActiveTab] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
-  const scrollManagerRef = React.useRef<ScrollEventManager | null>(null)
   
   const features = [
     {
@@ -1047,67 +844,73 @@ function PlatformSection() {
   // Mobile scroll-based card activation - REMOVED for normal scrolling
   // Cards now expand/collapse normally without scroll interference
 
-  // Desktop scroll event manager
+  // Desktop scroll-triggered tab interface with standardized behavior (matching ProblemSection)
   React.useEffect(() => {
-    if (!sectionRef.current || window.innerWidth < 1024) return
-
-    // Create scroll event manager for one-action-one-tab behavior
-    scrollManagerRef.current = new ScrollEventManager(features.length, (tabIndex) => {
-      console.log(`Tab changed to: ${tabIndex}`)
-      setActiveTab(tabIndex)
-    })
-
-    // Handle wheel events (primary method)
-    const handleWheel = (event: WheelEvent) => {
-      if (!scrollManagerRef.current || !sectionRef.current) return
-      
-      const rect = sectionRef.current.getBoundingClientRect()
-      
-      // Handle wheel event
-      const changed = scrollManagerRef.current.handleWheel(event.deltaY, rect)
-      if (changed) {
-        console.log(`Wheel event triggered tab change to: ${scrollManagerRef.current.getCurrentSlide()}`)
-        // Prevent default scroll behavior when we handle the wheel event
-        event.preventDefault()
-      }
-    }
-
-    // Handle scroll events (fallback for non-wheel devices)
     const handleScroll = () => {
-      if (!scrollManagerRef.current || !sectionRef.current) return
+      if (!sectionRef.current || window.innerWidth < 1024) return
       
-      const scrollY = window.scrollY
       const rect = sectionRef.current.getBoundingClientRect()
+      // Responsive container height calculation matching actual container heights
+      let containerHeight
+      if (window.innerWidth >= 1536) { // 2XL
+        containerHeight = 600 // matches h-[600px] for PlatformSection
+      } else if (window.innerWidth >= 1400) { // XL
+        containerHeight = 600 // matches h-[600px] for PlatformSection
+      } else { // LG
+        containerHeight = 600 // matches h-[600px] for PlatformSection
+      }
       
-      // Handle scroll event
-      const changed = scrollManagerRef.current.handleScroll(scrollY, rect)
-      if (changed) {
-        console.log(`Scroll event triggered tab change to: ${scrollManagerRef.current.getCurrentSlide()}`)
+      // Calculate which tab should be active based on scroll position
+      if (rect.top <= 0 && rect.bottom >= containerHeight) {
+        // Section is in viewport, use custom calculation for PlatformSection
+        const scrollProgress = Math.abs(rect.top) / containerHeight
+        
+        // Custom logic: All tabs get 400px more scroll space, fifth tab gets additional 100px (500px total)
+        const baseTabHeight = containerHeight
+        const firstTabHeight = baseTabHeight + 400 // 400px extra for first tab
+        const secondTabHeight = baseTabHeight + 400 // 400px extra for second tab
+        const thirdTabHeight = baseTabHeight + 400 // 400px extra for third tab
+        const fourthTabHeight = baseTabHeight + 400 // 400px extra for fourth tab
+        const fifthTabHeight = baseTabHeight + 500 // 500px extra for fifth tab (400px + 100px additional)
+        
+        let activeTab = 0
+        if (scrollProgress < (firstTabHeight / containerHeight)) {
+          // First tab
+          activeTab = 0
+        } else if (scrollProgress < ((firstTabHeight + secondTabHeight) / containerHeight)) {
+          // Second tab
+          activeTab = 1
+        } else if (scrollProgress < ((firstTabHeight + secondTabHeight + thirdTabHeight) / containerHeight)) {
+          // Third tab
+          activeTab = 2
+        } else if (scrollProgress < ((firstTabHeight + secondTabHeight + thirdTabHeight + fourthTabHeight) / containerHeight)) {
+          // Fourth tab
+          activeTab = 3
+        } else if (scrollProgress < ((firstTabHeight + secondTabHeight + thirdTabHeight + fourthTabHeight + fifthTabHeight) / containerHeight)) {
+          // Fifth tab
+          activeTab = 4
+        } else {
+          // Section complete, stay on last tab
+          activeTab = features.length - 1
+        }
+        
+        setActiveTab(activeTab)
+      } else if (rect.top > 0) {
+        // Section is above viewport
+        setActiveTab(0)
+      } else {
+        // Section is below viewport
+        setActiveTab(features.length - 1)
       }
     }
 
-    // Add event listeners
-    // Use wheel events as primary method
-    window.addEventListener('wheel', handleWheel, { passive: false })
-    // Use scroll events as fallback
     window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('scroll', handleScroll)
-      if (scrollManagerRef.current) {
-        scrollManagerRef.current.destroy()
-      }
-    }
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [features.length])
 
   // Handle manual tab clicks
   const handleTabClick = (tabIndex: number) => {
     setActiveTab(tabIndex)
-    // Update the scroll manager to know about the manual change
-    if (scrollManagerRef.current) {
-      scrollManagerRef.current.setCurrentSlide(tabIndex)
-    }
   }
 
   return (
@@ -1116,6 +919,13 @@ function PlatformSection() {
         <div className="space-y-8 sm:space-y-12 lg:space-y-12">
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+            {/* Section Headline */}
+            <div className="text-center space-y-4 lg:space-y-6 mb-8">
+              <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">The agentic platform</H2>
+              <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+                So your business moves faster, thinks smarter, and stays ahead.
+              </BodyLarge>
+            </div>
             <div className="overflow-x-auto pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
                 {features.map((feature, index) => (
@@ -1189,7 +999,13 @@ function PlatformSection() {
             <div className="sticky top-20 h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
               <div className="w-full h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-6rem)] 2xl:h-[calc(100vh-5rem)] relative flex items-center">
                                   <div className="w-full flex flex-col items-center justify-center min-h-0">
-
+                  {/* Section Headline */}
+                  <div className="text-center space-y-4 lg:space-y-6 mb-8">
+                    <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">The agentic platform</H2>
+                    <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+                      So your business moves faster, thinks smarter, and stays ahead.
+                    </BodyLarge>
+                  </div>
                   {/* Tab Content Container */}
                   <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]">
                     {features.map((feature, index) => (
@@ -1513,7 +1329,7 @@ function HowWeDoItSection() {
                     {ventureStages.map((stage, index) => (
                       <div key={index} className="w-full flex-shrink-0">
                         <Card className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer w-full">
-                          <CardHeader className="p-4 flex items-center justify-center min-h-[80px]">
+                          <CardHeader className="p-4 sm:p-6 flex items-center justify-center min-h-[80px] sm:min-h-[100px]">
                             <div className="text-center">
                               <CardTitle className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
                                 {stage} →
@@ -1634,14 +1450,42 @@ function WhoWeServeSection() {
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Solutions for Your Unique Universe</H2>
-            <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
-              Built on our platform and guided by experts.
-            </BodyLarge>
+                            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Intelligent Solutions for Every Domain</H2>
+                          <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
+                Powered by Elevation AI and guided by experts.
+              </BodyLarge>
           </div>
 
-          {/* Cards Grid - Better Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Mobile Layout - Single Column */}
+          <div className="block lg:hidden space-y-4">
+            {solutions.map((solution, index) => (
+              <Link key={index} href={`/solutions/${solution.title.toLowerCase().replace(/\s+/g, '-').replace(/organizations?/g, '')}`} className="block">
+                <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300 bg-transparent">
+                  <CardHeader className="pt-4 px-4 pb-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name={solution.icon} size="xl" className="text-primary" />
+                      </div>
+                      <div className="space-y-3 flex-1">
+                        <CardTitle className="text-lg font-semibold">{solution.title}</CardTitle>
+                        <BodyLarge className="text-muted-foreground text-sm leading-relaxed">{solution.description}</BodyLarge>
+                        
+                        {/* Learn More Link */}
+                        <div className="pt-2">
+                          <span className="inline-flex items-center text-primary group">
+                            <span className="group-hover:translate-x-1 transition-transform duration-200">Learn more →</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop Layout - Grid */}
+          <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {solutions.map((solution, index) => (
               <Link key={index} href={`/solutions/${solution.title.toLowerCase().replace(/\s+/g, '-').replace(/organizations?/g, '')}`} className="block">
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300 bg-transparent h-full">
@@ -1776,8 +1620,8 @@ function Footer() {
   return (
     <footer className="border-t bg-muted/30 transition-colors duration-300">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="py-12 lg:py-16">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+        <div className="py-8 sm:py-12 lg:py-16">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
             {/* Brand */}
             <div className="space-y-4">
               <Logo width={120} height={21} />
@@ -1915,9 +1759,8 @@ export default function WireframesHomePage() {
                       <main>
               <HeroSection />
               <ProblemIntroductionSection />
-              <ProblemSection />
-              <UnifyingStatementSection />
-              <PlatformSection />
+                      <ProblemSection />
+        <PlatformSection />
               <WhoWeServeSection />
               <HowWeDoItSection />
               <ClosingCTASection />

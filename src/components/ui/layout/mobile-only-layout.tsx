@@ -66,7 +66,7 @@ export function MobileOnlyLayout({
           {/* Mobile Menu Drawer - Only visible on mobile/tablet */}
           {mobileMenu && (
             <aside className={cn(
-              "flex-shrink-0 bg-background border-b border-border",
+              "flex-shrink-0 bg-background border-t border-b border-border dark:border-muted",
               "fixed top-0 left-0 right-0 z-[50] h-[80vh] transform transition-transform duration-150 ease-out lg:hidden",
               mobileMenuOpen ? "translate-y-14 sm:translate-y-16" : "-translate-y-full"
             )}>

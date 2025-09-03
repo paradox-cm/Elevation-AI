@@ -711,17 +711,17 @@ export default function DemoPage() {
         {/* Global Header */}
         <GlobalHeader showLogin={true} showDemo={false} />
 
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <main className="flex-1 flex flex-col lg:items-center justify-center px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8">
           <Container>
             <div className="max-w-7xl mx-auto w-full">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 lg:items-center">
                 {/* Left Column - Benefits */}
-                <div className="order-2 lg:order-1">
+                <div className="order-2 lg:order-1 space-y-6 sm:space-y-8">
                   <BenefitsSection />
                 </div>
                 
                 {/* Right Column - Form */}
-                <div className="order-1 lg:order-2">
+                <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
                   <DemoRequestForm />
                 </div>
               </div>

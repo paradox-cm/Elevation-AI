@@ -78,7 +78,7 @@
   
   /* Your custom colors for specific use cases */
   --destructive: #df3523; /* red-500 */
-  --border: #e4e4e7; /* zinc-200 */
+  --border: #d1d5db; /* zinc-300 - restored darker border for better visibility */
   --input: #ffffff;
   --ring: #0e62fd; /* elevation-500 */
   
@@ -96,7 +96,7 @@
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f4f4f5; /* zinc-100 */
   --sidebar-accent-foreground: #18181b; /* zinc-900 */
-  --sidebar-border: #e4e4e7; /* zinc-200 */
+  --sidebar-border: #d1d5db; /* zinc-300 - matches main border for consistency */
   --sidebar-ring: #0e62fd; /* elevation-500 */
 }
 

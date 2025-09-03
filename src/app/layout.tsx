@@ -4,6 +4,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { AnimationProvider } from "@/contexts/animation-context";
+import { AnimationPreloader } from "@/components/ui/animation-preloader";
 
 // Helvetica Now Variable Fonts
 const helveticaNowVar = localFont({
@@ -108,8 +110,11 @@ export default function RootLayout({
           disableTransitionOnChange
           enableColorScheme={false}
         >
-          <ScrollToTop />
-          {children}
+          <AnimationProvider>
+            <AnimationPreloader />
+            <ScrollToTop />
+            {children}
+          </AnimationProvider>
         </ThemeProvider>
       </body>
     </html>

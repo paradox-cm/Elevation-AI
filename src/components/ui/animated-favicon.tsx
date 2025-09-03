@@ -1,7 +1,19 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import { cn } from "@/lib/utils"
+import { useAnimationContext } from '@/contexts/animation-context'
+
+/**
+ * AnimatedFavicon Component
+ * 
+ * This component displays the Perlin plasma animation used across multiple pages.
+ * It uses a global animation context to share the Perlin noise state and avoid
+ * reloading the animation when navigating between pages.
+ * 
+ * The animation is preloaded once in the AnimationProvider and then reused
+ * across all instances of this component.
+ */
 
 interface AnimatedFaviconProps {
   className?: string
@@ -10,32 +22,15 @@ interface AnimatedFaviconProps {
 }
 
 export function AnimatedFavicon({ className, width = 100, height = 100 }: AnimatedFaviconProps) {
+  const { isAnimationInitialized, animationState } = useAnimationContext()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
   const lastTimeRef = useRef<number>(0)
   const isVisibleRef = useRef<boolean>(true)
 
-  // Pre-calculate color values for better performance
-  const brandColors = [
-    { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } },
-    { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } },
-    { name: 'Green', hex: '#12c55d', rgb: { r: 18, g: 197, b: 93 } },
-    { name: 'Red', hex: '#df3523', rgb: { r: 223, g: 53, b: 35 } },
-    { name: 'Gold', hex: '#ebbc48', rgb: { r: 235, g: 188, b: 72 } },
-    { name: 'Magenta', hex: '#e433c3', rgb: { r: 228, g: 51, b: 195 } },
-    { name: 'Cyan', hex: '#5bc8f7', rgb: { r: 91, g: 200, b: 247 } }
-  ]
 
-  // Convert hex to RGB (cached version)
-  const hexToRgb = useCallback((hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : { r: 0, g: 0, b: 0 }
-  }, [])
+
 
   // Visibility change handler for performance optimization
   useEffect(() => {
@@ -54,10 +49,120 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    // If animation is initialized, use the shared state
+    if (isAnimationInitialized && animationState) {
+      // Set canvas size
+      canvas.width = width
+      canvas.height = height
+      
+      // Use shared animation state
+      const { perlin: p, colorIndex: initialColorIndex, brandColors: sharedBrandColors } = animationState
+      
+      // Performance optimization: Pre-calculate constants
+      const rmin = -1, rmax = 1
+      const scaleX = 0.005
+      const scaleY = 0.005
+      const speed = 0.0002
+      const colorTransitionSpeed = 0.005
+      const waveMultiplier = 3072
+      const threshold = 0.15
+
+      // Local animation state that syncs with global state
+      let colorIndex = initialColorIndex
+      let colorTransition = 0
+      let currentR = sharedBrandColors[0].rgb.r
+      let currentG = sharedBrandColors[0].rgb.g
+      let currentB = sharedBrandColors[0].rgb.b
+      
+      const animate = (currentTime: number) => {
+        // Throttle animation when tab is not visible
+        if (!isVisibleRef.current) {
+          animationRef.current = requestAnimationFrame(animate)
+          return
+        }
+
+        // Throttle to ~60fps for better performance
+        if (currentTime - lastTimeRef.current < 16) { // ~60fps
+          animationRef.current = requestAnimationFrame(animate)
+          return
+        }
+        lastTimeRef.current = currentTime
+
+                 // Update color transition
+         colorTransition += colorTransitionSpeed
+         if (colorTransition >= 1) {
+           colorTransition = 0
+           colorIndex = (colorIndex + 1) % sharedBrandColors.length
+         }
+
+         // Clear canvas and add solid black background
+         ctx.fillStyle = 'rgba(0, 0, 0, 1)'
+         ctx.fillRect(0, 0, width, height)
+         
+         const time = Date.now()
+         const z = time * speed
+         
+         // Get current and next colors for smooth transition
+         const currentColor = sharedBrandColors[colorIndex].rgb
+         const nextColor = sharedBrandColors[(colorIndex + 1) % sharedBrandColors.length].rgb
+        
+        // Interpolate between colors
+        currentR = Math.round(currentColor.r + (nextColor.r - currentColor.r) * colorTransition)
+        currentG = Math.round(currentColor.g + (nextColor.g - currentColor.g) * colorTransition)
+        currentB = Math.round(currentColor.b + (nextColor.b - currentColor.b) * colorTransition)
+
+        // Create image data for pixel manipulation
+        const imageData = ctx.getImageData(0, 0, width, height)
+        const data = imageData.data
+
+        // Performance optimization: Use more efficient loop
+        const dataLength = data.length
+        for(let i = 0; i < dataLength; i += 4) {
+          const x = (i / 4) % width
+          const y = Math.floor((i / 4) / width)
+          
+          // Scale coordinates for noise
+          const xx = x * scaleX
+          const yy = y * scaleY
+          
+          // Get noise value using shared Perlin instance
+          const n = p.simplex3d(xx, yy, z)
+          const nn = ((n - rmin) / (rmax - rmin))
+          
+          // Create wave effect
+          const wave = Math.abs(nn - 0.5)
+          const f = ((255 - Math.min(Math.max(wave * waveMultiplier, 0), 255))) / 255
+          
+          if(f > threshold) {
+            data[i] = f * currentR     // Red
+            data[i + 1] = f * currentG // Green
+            data[i + 2] = f * currentB // Blue
+            data[i + 3] = 255          // Alpha
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0)
+        animationRef.current = requestAnimationFrame(animate)
+      }
+      
+      // Start animation with a small delay to ensure smooth initial animation
+      setTimeout(() => {
+        animationRef.current = requestAnimationFrame(animate)
+      }, 100)
+      
+      return () => {
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current)
+        }
+      }
+    }
+
+    // Fallback to original animation if not initialized yet
     // Set canvas size
     canvas.width = width
     canvas.height = height
 
+    // Original Perlin noise implementation (fallback)
     // Vector3D class for Perlin noise
     class Vector3D {
       x: number = 0
@@ -235,6 +340,17 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
     const p = new Perlin()
     p.init(() => rctx.random(0, 255))
 
+    // Fallback brand colors (same as shared ones)
+    const fallbackBrandColors = [
+      { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } },
+      { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } },
+      { name: 'Green', hex: '#12c55d', rgb: { r: 18, g: 197, b: 93 } },
+      { name: 'Red', hex: '#df3523', rgb: { r: 223, g: 53, b: 35 } },
+      { name: 'Gold', hex: '#ebbc48', rgb: { r: 235, g: 188, b: 72 } },
+      { name: 'Magenta', hex: '#e433c3', rgb: { r: 228, g: 51, b: 195 } },
+      { name: 'Cyan', hex: '#5bc8f7', rgb: { r: 91, g: 200, b: 247 } }
+    ]
+
     // Performance optimization: Pre-calculate constants
     const rmin = -1, rmax = 1
     const scaleX = 0.005
@@ -243,14 +359,13 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
     const colorTransitionSpeed = 0.005
     const waveMultiplier = 3072
     const threshold = 0.15
-    const fadeAlpha = 0.3
 
     // Performance optimization: Cache color calculations
     let colorIndex = 0
     let colorTransition = 0
-    let currentR = brandColors[0].rgb.r
-    let currentG = brandColors[0].rgb.g
-    let currentB = brandColors[0].rgb.b
+    let currentR = fallbackBrandColors[0].rgb.r
+    let currentG = fallbackBrandColors[0].rgb.g
+    let currentB = fallbackBrandColors[0].rgb.b
 
     // Performance optimization: Throttled animation function
     const animate = (currentTime: number) => {
@@ -278,7 +393,7 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
       colorTransition += colorTransitionSpeed
       if (colorTransition >= 1) {
         colorTransition = 0
-        colorIndex = (colorIndex + 1) % brandColors.length
+        colorIndex = (colorIndex + 1) % fallbackBrandColors.length
       }
 
       // Clear canvas and add solid black background
@@ -289,8 +404,8 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
       const z = time * speed
       
       // Get current and next colors for smooth transition
-      const currentColor = brandColors[colorIndex].rgb
-      const nextColor = brandColors[(colorIndex + 1) % brandColors.length].rgb
+      const currentColor = fallbackBrandColors[colorIndex].rgb
+      const nextColor = fallbackBrandColors[(colorIndex + 1) % fallbackBrandColors.length].rgb
       
       // Interpolate between colors
       currentR = Math.round(currentColor.r + (nextColor.r - currentColor.r) * colorTransition)
@@ -342,10 +457,17 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [width, height, hexToRgb])
+  }, [width, height, isAnimationInitialized, animationState])
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
+      {/* Loading state while animation is being initialized */}
+      {!isAnimationInitialized && (
+        <div className="absolute inset-0 z-10 w-full h-full flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
+      
       {/* Animated Canvas - Only visible element */}
       <canvas
         ref={canvasRef}

@@ -83,8 +83,8 @@ export function AgenticEngine({
       constructor(x: number, y: number) {
         this.x = x
         this.y = y
-        this.vx = (Math.random() - 0.5) * 1.5
-        this.vy = (Math.random() - 0.5) * 1.5
+        this.vx = (Math.random() - 0.5) * 2.0
+        this.vy = (Math.random() - 0.5) * 2.0
         this.opacity = 1
         this.radius = 5
       }
@@ -118,7 +118,7 @@ export function AgenticEngine({
           this.vy = -Math.abs(this.vy) // Bounce back
         }
         
-        this.opacity -= 0.015 // Increased from 0.008 for faster fade-out
+        this.opacity -= 0.020 // Increased for faster fade-out
       }
     }
 
@@ -145,7 +145,7 @@ export function AgenticEngine({
 
       update() {
         // Lines fade out much faster now
-        this.opacity -= 0.025 // Increased from 0.012 for much faster fade-out
+        this.opacity -= 0.030 // Increased for faster fade-out
       }
     }
 
@@ -170,7 +170,7 @@ export function AgenticEngine({
         update() {
           this.x += this.vx
           this.y += this.vy
-          this.opacity -= 0.015
+          this.opacity -= 0.020
         }
       }
       nodes.push(newNode)
@@ -204,7 +204,7 @@ export function AgenticEngine({
       animationRef.current = requestAnimationFrame(animate)
     }
 
-    const nodeInterval = setInterval(addNode, 500) // Increased from 300ms to 500ms for slower generation
+    const nodeInterval = setInterval(addNode, 300) // Faster generation for more active animation
     animate()
 
     return () => {
