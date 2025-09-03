@@ -27,6 +27,7 @@ import {
   IntelligentProcessAutomation, 
   RealTimeBusinessIntelligence, 
   FutureReady,
+  FutureReadyMobile,
   KnowledgeBlocks,
   KnowledgeBlocksMobile,
   WorkspacesCanvases,
@@ -671,9 +672,9 @@ function ProblemSection() {
                             />
                           )}
                           {index === 3 && (
-                            <FutureReady 
-                              width={280} 
-                              height={180} 
+                            <FutureReadyMobile 
+                              width={140} 
+                              height={90} 
                               showBorder={false}
                               className=""
                             />
