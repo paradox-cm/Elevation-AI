@@ -44,9 +44,9 @@ export function FutureReady({
 
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
-  const ringColorRef = useRef('#3b82f6');
-  const connectionColorRef = useRef('#60a5fa');
-  const particleColorRef = useRef('#f59e0b');
+  const ringColorRef = useRef('rgba(255, 255, 255, 0.8)');
+  const connectionColorRef = useRef('rgba(255, 255, 255, 0.6)');
+  const particleColorRef = useRef('rgba(255, 255, 255, 0.9)');
   const observerRef = useRef<MutationObserver | null>(null);
 
   const createGrowthRings = (canvas: HTMLCanvasElement) => {
@@ -173,9 +173,9 @@ export function FutureReady({
     const updateColors = () => {
       const isDark = document.documentElement.classList.contains('dark');
       isDarkRef.current = isDark;
-      ringColorRef.current = isDark ? '#60a5fa' : '#3b82f6';
-      connectionColorRef.current = isDark ? '#93c5fd' : '#60a5fa';
-      particleColorRef.current = isDark ? '#fbbf24' : '#f59e0b';
+      ringColorRef.current = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)';
+      connectionColorRef.current = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
+      particleColorRef.current = isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)';
     };
 
     // Initial color update

@@ -57,8 +57,8 @@ export function AgenticEngine({
       attributeFilter: ['class']
     })
 
-    let nodes: Array<{ x: number; y: number; vx: number; vy: number; opacity: number; radius: number }> = []
-    let lines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; opacity: number }> = []
+    const nodes: Array<{ x: number; y: number; vx: number; vy: number; opacity: number; radius: number }> = []
+    const lines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; opacity: number }> = []
 
     class Node {
       x: number
@@ -110,17 +110,18 @@ export function AgenticEngine({
     }
 
     class Line {
-      start: any
-      end: any
+      start: { x: number; y: number }
+      end: { x: number; y: number }
       opacity: number
 
-      constructor(start: any, end: any) {
+      constructor(start: { x: number; y: number }, end: { x: number; y: number }) {
         this.start = start
         this.end = end
         this.opacity = 1.0
       }
 
       draw() {
+        if (!ctx) return
         ctx.beginPath()
         ctx.moveTo(this.start.x, this.start.y)
         ctx.lineTo(this.end.x, this.end.y)
@@ -137,15 +138,44 @@ export function AgenticEngine({
 
     function addNode() {
       // Generate nodes only within the smaller boundary area
-      let x = nodeBoundary.x + Math.random() * nodeBoundary.width
-      let y = nodeBoundary.y + Math.random() * nodeBoundary.height
-      let newNode = new Node(x, y)
+      const x = nodeBoundary.x + Math.random() * nodeBoundary.width
+      const y = nodeBoundary.y + Math.random() * nodeBoundary.height
+      const newNode = { 
+        x, 
+        y, 
+        vx: 0, 
+        vy: 0, 
+        opacity: 1.0, 
+        radius: Math.random() * 3 + 1,
+        draw() {
+          if (!ctx) return
+          ctx.beginPath()
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+          ctx.fillStyle = `${nodeColor}${this.opacity})`
+          ctx.fill()
+        },
+        update() {
+          this.x += this.vx
+          this.y += this.vy
+          this.opacity -= 0.015
+        }
+      }
       nodes.push(newNode)
       
       for (let i = 0; i < 3; i++) { // Reduced from 6 to 3 connections per node
         if (nodes.length > i + 1) {
-          lines.push(new Line(newNode, nodes[nodes.length - (i + 2)]))
+          lines.push(new Line({ x: newNode.x, y: newNode.y }, { x: nodes[nodes.length - (i + 2)].x, y: nodes[nodes.length - (i + 2)].y }))
         }
+      }
+    }
+
+    function addLine() {
+      if (nodes.length < 2) return
+      const node1 = nodes[Math.floor(Math.random() * nodes.length)]
+      const node2 = nodes[Math.floor(Math.random() * nodes.length)]
+      if (node1 && node2 && node1 !== node2) {
+        const line = new Line({ x: node1.x, y: node1.y }, { x: node2.x, y: node2.y })
+        lines.push(line)
       }
     }
 

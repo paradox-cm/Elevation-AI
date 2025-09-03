@@ -98,9 +98,14 @@ export function PersonalCopilot({
       }
 
       draw() {
+        if (!ctx) return
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+        ctx.fillStyle = exchangeColor
         ctx.fill()
+        ctx.strokeStyle = connectionColor
+        ctx.lineWidth = 1
+        ctx.stroke()
       }
     }
 
@@ -148,6 +153,7 @@ export function PersonalCopilot({
     }
 
     function animate() {
+      if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Performance optimization: Update positions first

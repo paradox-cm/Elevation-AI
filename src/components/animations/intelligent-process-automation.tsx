@@ -37,8 +37,8 @@ export function IntelligentProcessAutomation({
 
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
-  const gridColorRef = useRef('#e5e7eb');
-  const lineColorRef = useRef('#3b82f6');
+  const gridColorRef = useRef('rgba(0, 0, 0, 0.3)');
+  const lineColorRef = useRef('rgba(0, 0, 0, 0.8)');
   const observerRef = useRef<MutationObserver | null>(null);
 
   const createTraffic = (canvas: HTMLCanvasElement) => {
@@ -131,8 +131,8 @@ export function IntelligentProcessAutomation({
     const updateColors = () => {
       const isDark = document.documentElement.classList.contains('dark');
       isDarkRef.current = isDark;
-      gridColorRef.current = isDark ? '#374151' : '#e5e7eb';
-      lineColorRef.current = isDark ? '#60a5fa' : '#3b82f6';
+      gridColorRef.current = isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)';
+      lineColorRef.current = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)';
     };
 
     // Initial color update
