@@ -9,30 +9,14 @@ import { DisplaySmall, H3, BodyLarge, BodySmall, P } from "@/components/ui/typog
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
-import { Logo } from "@/components/ui/logo"
+import { GlobalHeader } from "@/components/ui/global-header"
 
 export default function TermsOfServicePage() {
   return (
     <PageWrapper>
       <div className="min-h-screen bg-background transition-colors duration-300">
-        {/* Header */}
-        <header className="border-b border-border bg-background/40 backdrop-blur-2xl">
-          <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
-            <div className="flex items-center">
-              <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
-                <Logo width={110} height={20} />
-              </Link>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-                <Link href="/wireframes/login">
-                  <Icon name="login-box-line" className="h-4 w-4 mr-1" />
-                  Login
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </header>
+        {/* Global Header */}
+        <GlobalHeader showLogin={true} showDemo={false} />
 
         <main className="flex-1">
           <Section paddingY="xl">

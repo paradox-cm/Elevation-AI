@@ -13,6 +13,7 @@ import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { H1, H2, H3, H4, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
+import { GlobalHeader } from "@/components/ui/global-header"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { cn } from "@/lib/utils"
@@ -109,7 +110,7 @@ function Header() {
   const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
 
   return (
-          <header className="sticky top-0 z-50 w-full border-b border-border bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20 transition-colors duration-300" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
+    <header className="sticky top-0 z-50 w-full border-b border-border dark:border-muted bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20 transition-colors duration-300" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -196,9 +197,9 @@ function Header() {
                 <Link href="/security" className="block text-sm hover:text-primary transition-colors">Security</Link>
                 <Link href="/careers" className="block text-sm hover:text-primary transition-colors">Careers</Link>
                 <Link href="/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
-                <Link href="/investors" className="block text-sm hover:text-primary transition-colors">Investors</Link>
-                <Link href="/developers" className="block text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
-                <Link href="/blog" className="block text-sm hover:text-primary transition-colors">Blog + News</Link>
+                <Link href="/investors" className="text-sm hover:text-primary transition-colors">Investors</Link>
+                <Link href="/developers" className="text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
+                <Link href="/blog" className="text-sm hover:text-primary transition-colors">Blog + News</Link>
               </div>
             </div>
           </div>
