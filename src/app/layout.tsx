@@ -72,10 +72,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
       { url: "/images/Favicon.png", sizes: "32x32", type: "image/png" },
       { url: "/images/Favicon-Stroke.png", sizes: "32x32", type: "image/png" },
     ],
-    shortcut: "/images/Favicon.png",
+    shortcut: "/favicon.ico",
     apple: "/images/Favicon.png",
     other: [
       {
@@ -86,6 +87,7 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/site.webmanifest",
+
 };
 
 export default function RootLayout({

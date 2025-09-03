@@ -124,17 +124,17 @@ export function RealTimeBusinessIntelligence({
     function drawDashboardGrid() {
       if (!ctx) return
       
-      // Define grid system
+      // Define grid system - properly contained within dashboard
       const gridPadding = width * 0.034 // 15px for 440px canvas, scaled proportionally
       const gridSpacing = width * 0.045 // 20px for 440px canvas, scaled proportionally
-      const sectionHeight = width * 0.182 // 80px for 440px canvas, scaled proportionally
+      const sectionHeight = Math.min(width * 0.182, (dashboard.height - 60) / 2) // Ensure fit within dashboard
       
-      // Top section (charts row)
+      // Top section (charts row) - start after title bar
       const topSectionY = dashboard.y + 35
       const topSectionHeight = sectionHeight
       
-      // Bottom section (metrics row)
-      const bottomSectionY = dashboard.y + 130
+      // Bottom section (metrics row) - ensure it fits within dashboard bottom
+      const bottomSectionY = Math.min(dashboard.y + 130, dashboard.y + dashboard.height - sectionHeight - 10)
       const bottomSectionHeight = sectionHeight
       
       // Left column (charts)
@@ -190,11 +190,11 @@ export function RealTimeBusinessIntelligence({
     function drawLineChart() {
       if (!ctx) return
       
-      // Line chart in top-left section (aligned with grid)
+      // Line chart in top-left section - properly contained within dashboard
       const chartX = dashboard.x + (width * 0.034) // 15px for 440px canvas, scaled proportionally
-      const chartY = dashboard.y + 50
+      const chartY = dashboard.y + 50 // Start after title bar
       const chartWidth = width * 0.227 // 100px for 440px canvas, scaled proportionally
-      const chartHeight = height * 0.113 // 45px for 400px canvas, scaled proportionally
+      const chartHeight = Math.min(height * 0.113, dashboard.height - 120) // Ensure fit within dashboard
       
       // Chart background
       ctx.fillStyle = connectionColor + '20'
@@ -205,7 +205,7 @@ export function RealTimeBusinessIntelligence({
       ctx.lineWidth = 1
       ctx.strokeRect(chartX, chartY, chartWidth, chartHeight)
       
-      // Animated line chart
+      // Animated line chart - ensure it stays within chart boundaries
       ctx.strokeStyle = dataColor
       ctx.lineWidth = 2
       ctx.beginPath()
@@ -213,7 +213,8 @@ export function RealTimeBusinessIntelligence({
       for (let i = 0; i < chartWidth; i += 2) {
         const x = chartX + i
         const progress = (animationTime * 0.04 + i * 0.2) % (Math.PI * 2)
-        const y = chartY + chartHeight/2 + Math.sin(progress) * 15 + Math.sin(i * 0.3) * 8
+        const maxAmplitude = Math.min(15, chartHeight / 3) // Limit amplitude to chart height
+        const y = chartY + chartHeight/2 + Math.sin(progress) * maxAmplitude + Math.sin(i * 0.3) * (maxAmplitude * 0.5)
         
         if (i === 0) {
           ctx.moveTo(x, y)
@@ -223,12 +224,13 @@ export function RealTimeBusinessIntelligence({
       }
       ctx.stroke()
       
-      // Data points
+      // Data points - ensure they stay within chart boundaries
       ctx.fillStyle = dataColor
       for (let i = 0; i < chartWidth; i += 15) {
         const x = chartX + i
         const progress = (animationTime * 0.04 + i * 0.2) % (Math.PI * 2)
-        const y = chartY + chartHeight/2 + Math.sin(progress) * 15 + Math.sin(i * 0.3) * 8
+        const maxAmplitude = Math.min(15, chartHeight / 3) // Limit amplitude to chart height
+        const y = chartY + chartHeight/2 + Math.sin(progress) * maxAmplitude + Math.sin(i * 0.3) * (maxAmplitude * 0.5)
         ctx.beginPath()
         ctx.arc(x, y, 2, 0, Math.PI * 2)
         ctx.fill()
@@ -238,10 +240,10 @@ export function RealTimeBusinessIntelligence({
     function drawPieChart() {
       if (!ctx) return
       
-      // Pie chart in top-right section (aligned with grid)
+      // Pie chart in top-right section - properly contained within dashboard
       const centerX = dashboard.x + dashboard.width - (width * 0.136) // 60px for 440px canvas, scaled proportionally
-      const centerY = dashboard.y + 75
-      const radius = width * 0.057 // 25px for 440px canvas, scaled proportionally
+      const centerY = dashboard.y + 75 // Position after title bar
+      const radius = Math.min(width * 0.057, 25) // Limit radius to prevent overflow
       
       // Animated pie slices
       const slices = [
@@ -268,11 +270,11 @@ export function RealTimeBusinessIntelligence({
     function drawBarChart() {
       if (!ctx) return
       
-      // Bar chart in bottom-left section (aligned with grid)
+      // Bar chart in bottom-left section - properly contained within dashboard
       const chartX = dashboard.x + (width * 0.034) // 15px for 440px canvas, scaled proportionally
-      const chartY = dashboard.y + 150
+      const chartY = dashboard.y + dashboard.height - 60 // Position from bottom of dashboard
       const chartWidth = width * 0.273 // 120px for 440px canvas, scaled proportionally
-      const chartHeight = height * 0.125 // 50px for 400px canvas, scaled proportionally
+      const chartHeight = Math.min(50, dashboard.height - 80) // Ensure fit within dashboard height
       
       // Chart background
       ctx.fillStyle = connectionColor + '20'
@@ -283,12 +285,14 @@ export function RealTimeBusinessIntelligence({
       ctx.lineWidth = 1
       ctx.strokeRect(chartX, chartY, chartWidth, chartHeight)
       
-      // Animated bars
+      // Animated bars - ensure they don't exceed chart boundaries
       const barWidth = width * 0.027 // 12px for 440px canvas, scaled proportionally
+      const maxBarHeight = chartHeight - 4 // Leave 2px padding top and bottom
+      
       for (let i = 0; i < 6; i++) {
         const x = chartX + 8 + (i * 18)
         const progress = (animationTime * 0.05 + i * 0.7) % (Math.PI * 2)
-        const barHeight = Math.abs(Math.sin(progress) * 20 + Math.sin(i * 0.5) * 12)
+        const barHeight = Math.min(Math.abs(Math.sin(progress) * 20 + Math.sin(i * 0.5) * 12), maxBarHeight)
         
         ctx.fillStyle = dataColor
         ctx.fillRect(x, chartY + chartHeight - barHeight, barWidth, barHeight)
@@ -298,9 +302,9 @@ export function RealTimeBusinessIntelligence({
     function drawMetrics() {
       if (!ctx) return
       
-      // Metrics in bottom-right section (aligned with grid)
+      // Metrics in bottom-right section - properly contained within dashboard
       const startX = dashboard.x + dashboard.width - (width * 0.273) // 120px for 440px canvas, scaled proportionally
-      const startY = dashboard.y + 150
+      const startY = dashboard.y + dashboard.height - 60 // Position from bottom of dashboard
       
       // Three animated metric circles
       for (let i = 0; i < 3; i++) {
@@ -308,7 +312,7 @@ export function RealTimeBusinessIntelligence({
         const y = startY + 25
         const progress = (animationTime * 0.03 + i * 0.5) % (Math.PI * 2)
         const pulse = 0.8 + 0.2 * Math.sin(progress)
-        const size = 10 * pulse
+        const size = Math.min(10 * pulse, 15) // Limit size to prevent overflow
         
         // Outer ring
         ctx.strokeStyle = metricColor
@@ -322,10 +326,10 @@ export function RealTimeBusinessIntelligence({
     function drawGauge() {
       if (!ctx) return
       
-      // Gauge in middle-right section (aligned with grid)
+      // Gauge in middle-right section - properly contained within dashboard
       const centerX = dashboard.x + dashboard.width - (width * 0.136) // 60px for 440px canvas, scaled proportionally
-      const centerY = dashboard.y + 135
-      const radius = width * 0.045 // 20px for 440px canvas, scaled proportionally
+      const centerY = dashboard.y + dashboard.height - 45 // Position from bottom of dashboard
+      const radius = Math.min(width * 0.045, 20) // Limit radius to prevent overflow
       
       // Gauge background
       ctx.strokeStyle = connectionColor
@@ -384,7 +388,7 @@ export function RealTimeBusinessIntelligence({
           
           // Generate different types of data based on position and time (slowed down)
           let dataValue = ''
-          const timeSeed = Math.floor(animationTime * 0.05) + (row * 15) + (col * 8) // Slowed down by factor of 20
+          const timeSeed = Math.floor(animationTime * 0.4) + (row * 15) + (col * 8) // Sped up by factor of 4
           
           if (col % 3 === 0) {
             // Binary data (0s and 1s)

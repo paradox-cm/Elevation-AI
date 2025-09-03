@@ -49,9 +49,9 @@ export function KnowledgeBlocks({
 
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
-  const blockColorRef = useRef('rgba(0, 0, 0, 0.8)');
-  const connectionColorRef = useRef('rgba(0, 0, 0, 0.6)');
-  const particleColorRef = useRef('rgba(0, 0, 0, 0.9)');
+  const blockColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black, no transparency
+  const connectionColorRef = useRef('rgba(0, 0, 0, 0.8)'); // Slightly transparent for connections
+  const particleColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black particles
   const observerRef = useRef<MutationObserver | null>(null);
 
   const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {
@@ -71,45 +71,69 @@ export function KnowledgeBlocks({
           y: spacingY * (y + 1),
           size: 15,
           connections: [],
-          opacity: 0.8 + Math.random() * 0.2,
+          opacity: 1, // Solid, no transparency
           pulsePhase: 0
         }
         blocks.push(block)
       }
     }
     
-    // Create intelligent connections (further reduced for performance)
+    // Create logical network-like connections
     blocks.forEach((block, index) => {
-      const numConnections = Math.floor(Math.random() * 1) + 1 // Reduced to 1 connection per block
-      const connectedIndices = new Set<number>()
+      const row = Math.floor(index / cols)
+      const col = index % cols
       
-      for (let i = 0; i < numConnections; i++) {
-        let targetIndex
-        do {
-          targetIndex = Math.floor(Math.random() * blocks.length)
-        } while (targetIndex === index || connectedIndices.has(targetIndex))
-        
-        connectedIndices.add(targetIndex)
-        
-        const connection: Connection = {
-          start: index,
-          end: targetIndex,
-          opacity: 0.3 + Math.random() * 0.4,
-          flowParticles: []
-        }
-        
-        // Add only 1 flow particle per connection for maximum performance
-        connection.flowParticles.push({
-          x: block.x,
-          y: block.y,
-          progress: Math.random(),
-          speed: 0.0005 + Math.random() * 0.001, // Slower speed for better visibility
-          active: true
-        })
-        
-        connections.push(connection)
-        block.connections.push(connections.length - 1)
+      // Connect to adjacent blocks in a grid pattern
+      const adjacentConnections = []
+      
+      // Connect to right neighbor (if exists)
+      if (col < cols - 1) {
+        adjacentConnections.push(index + 1)
       }
+      
+      // Connect to bottom neighbor (if exists)
+      if (row < rows - 1) {
+        adjacentConnections.push(index + cols)
+      }
+      
+      // Connect to diagonal bottom-right (if exists) - reduced frequency
+      if (col < cols - 1 && row < rows - 1 && index % 2 === 0) {
+        adjacentConnections.push(index + cols + 1)
+      }
+      
+      // Connect to diagonal bottom-left (if exists) - reduced frequency
+      if (col > 0 && row < rows - 1 && index % 2 === 0) {
+        adjacentConnections.push(index + cols - 1)
+      }
+      
+      // Add some cross-connections for network effect (but not random) - reduced frequency
+      if (index % 4 === 0 && index + 2 < blocks.length) {
+        adjacentConnections.push(index + 2)
+      }
+      
+      // Create connections with consistent opacity
+      adjacentConnections.forEach(targetIndex => {
+        if (targetIndex < blocks.length) {
+          const connection: Connection = {
+            start: index,
+            end: targetIndex,
+            opacity: 0.8, // Consistent opacity for all connections
+            flowParticles: []
+          }
+          
+          // Add flow particle
+          connection.flowParticles.push({
+            x: block.x,
+            y: block.y,
+            progress: Math.random(),
+            speed: 0.002 + Math.random() * 0.003, // Consistent speed range
+            active: true
+          })
+          
+          connections.push(connection)
+          block.connections.push(connections.length - 1)
+        }
+      })
     })
     
     return { blocks, connections }
@@ -177,7 +201,7 @@ export function KnowledgeBlocks({
     blocks.forEach(block => {
       const currentSize = block.size
       const halfSize = currentSize
-      ctx.globalAlpha = block.opacity
+      ctx.globalAlpha = 1 // Always solid, no transparency
       ctx.fillRect(block.x - halfSize, block.y - halfSize, currentSize * 2, currentSize * 2)
     })
 
@@ -199,9 +223,251 @@ export function KnowledgeBlocks({
     const updateColors = () => {
       const isDark = document.documentElement.classList.contains('dark');
       isDarkRef.current = isDark;
-      blockColorRef.current = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)';
-      connectionColorRef.current = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
-      particleColorRef.current = isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)';
+      blockColorRef.current = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'; // Solid colors
+      connectionColorRef.current = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'; // Slightly transparent
+      particleColorRef.current = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'; // Solid colors
+    };
+
+    // Initial color update
+    updateColors();
+
+    // Observe theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          updateColors();
+        }
+      });
+    });
+    observerRef.current = observer;
+    observer.observe(document.documentElement, { attributes: true });
+
+    // Create initial knowledge network
+    const { blocks, connections } = initializeKnowledgeNetwork(canvas)
+    blocksRef.current = blocks
+    connectionsRef.current = connections
+    
+    if (isPlaying) {
+      animateKnowledgeNetwork(canvas, ctx)
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [width, height, isPlaying, animateKnowledgeNetwork, initializeKnowledgeNetwork])
+
+  return (
+    <div className={`flex justify-center ${className}`}>
+      <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
+        <canvas 
+          ref={canvasRef}
+          className="rounded-lg"
+          style={{ width: `${width}px`, height: `${height}px` }}
+        />
+      </div>
+    </div>
+  )
+}
+
+// Mobile-specific version with smaller squares and fewer connections
+export function KnowledgeBlocksMobile({ 
+  width = 600, 
+  height = 400, 
+  className = "",
+  showBorder = true 
+}: KnowledgeBlocksProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animationRef = useRef<number | null>(null)
+  const blocksRef = useRef<KnowledgeBlock[]>([])
+  const connectionsRef = useRef<Connection[]>([])
+  const [isPlaying, _setIsPlaying] = useState(true)
+  
+  // Performance optimized: Reduced from 168 to 45 total animated objects
+
+  // Theme-aware colors - will be set in useEffect
+  const isDarkRef = useRef(false);
+  const blockColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black, no transparency
+  const connectionColorRef = useRef('rgba(0, 0, 0, 0.8)'); // Slightly transparent for connections
+  const particleColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black particles
+  const observerRef = useRef<MutationObserver | null>(null);
+
+  const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {
+    const blocks: KnowledgeBlock[] = []
+    const connections: Connection[] = []
+    
+    // Create knowledge blocks in a grid pattern (reduced for performance)
+    const cols = 5 // Reduced from 6 to 5
+    const rows = 3 // Reduced from 4 to 3
+    const spacingX = canvas.width / (cols + 1)
+    const spacingY = canvas.height / (rows + 1)
+    
+    for (let x = 0; x < cols; x++) {
+      for (let y = 0; y < rows; y++) {
+        const block: KnowledgeBlock = {
+          x: spacingX * (x + 1),
+          y: spacingY * (y + 1),
+          size: 10.8, // 28% smaller for mobile (was 15, now 10.8)
+          connections: [],
+          opacity: 1, // Solid, no transparency
+          pulsePhase: 0
+        }
+        blocks.push(block)
+      }
+    }
+    
+    // Create logical network-like connections with fewer lines for mobile
+    blocks.forEach((block, index) => {
+      const row = Math.floor(index / cols)
+      const col = index % cols
+      
+      // Connect to adjacent blocks in a grid pattern
+      const adjacentConnections = []
+      
+      // Connect to right neighbor (if exists)
+      if (col < cols - 1) {
+        adjacentConnections.push(index + 1)
+      }
+      
+      // Connect to bottom neighbor (if exists)
+      if (row < rows - 1) {
+        adjacentConnections.push(index + cols)
+      }
+      
+      // Connect to diagonal bottom-right (if exists) - reduced frequency for mobile (87.5% fewer)
+      if (col < cols - 1 && row < rows - 1 && index % 24 === 0) {
+        adjacentConnections.push(index + cols + 1)
+      }
+      
+      // Connect to diagonal bottom-left (if exists) - reduced frequency for mobile (87.5% fewer)
+      if (col > 0 && row < rows - 1 && index % 24 === 0) {
+        adjacentConnections.push(index + cols - 1)
+      }
+      
+      // Add some cross-connections for network effect (but not random) - reduced frequency for mobile (87.5% fewer)
+      if (index % 40 === 0 && index + 2 < blocks.length) {
+        adjacentConnections.push(index + 2)
+      }
+      
+      // Create connections with consistent opacity
+      adjacentConnections.forEach(targetIndex => {
+        if (targetIndex < blocks.length) {
+          const connection: Connection = {
+            start: index,
+            end: targetIndex,
+            opacity: 0.8, // Consistent opacity for all connections
+            flowParticles: []
+          }
+          
+          // Add flow particle
+          connection.flowParticles.push({
+            x: block.x,
+            y: block.y,
+            progress: Math.random(),
+            speed: 0.002 + Math.random() * 0.003, // Consistent speed range
+            active: true
+          })
+          
+          connections.push(connection)
+          block.connections.push(connections.length - 1)
+        }
+      })
+    })
+    
+    return { blocks, connections }
+  }
+
+  const animateKnowledgeNetwork = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+    if (!isPlaying) return
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    const blocks = blocksRef.current
+    const connections = connectionsRef.current
+    
+    // Draw connections as individual lines (not batched to avoid solid shapes)
+    ctx.strokeStyle = connectionColorRef.current
+    ctx.lineWidth = 2
+    
+    connections.forEach(connection => {
+      const startBlock = blocks[connection.start]
+      const endBlock = blocks[connection.end]
+      
+      if (startBlock && endBlock) {
+        ctx.globalAlpha = connection.opacity
+        ctx.beginPath()
+        ctx.moveTo(startBlock.x, startBlock.y)
+        ctx.lineTo(endBlock.x, endBlock.y)
+        ctx.stroke()
+      }
+    })
+    
+    // Draw particles as individual dots
+    ctx.fillStyle = particleColorRef.current
+    
+    connections.forEach(connection => {
+      const startBlock = blocks[connection.start]
+      const endBlock = blocks[connection.end]
+      
+      if (startBlock && endBlock) {
+        connection.flowParticles.forEach(particle => {
+          if (!particle.active) return
+          
+          particle.progress += particle.speed
+          if (particle.progress > 1) {
+            particle.progress = 0
+          }
+          
+          // Calculate particle position along the connection
+          particle.x = startBlock.x + (endBlock.x - startBlock.x) * particle.progress
+          particle.y = startBlock.y + (endBlock.y - startBlock.y) * particle.progress
+          
+          // Draw individual particle
+          ctx.beginPath()
+          ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2)
+          ctx.fill()
+        })
+      }
+    })
+    
+    // Batch all block drawing operations
+    ctx.fillStyle = blockColorRef.current
+    ctx.globalAlpha = 1 // Always solid, no transparency
+    
+    // Draw all blocks in a single batch
+    blocks.forEach(block => {
+      const currentSize = block.size
+      const halfSize = currentSize
+      ctx.globalAlpha = 1 // Always solid, no transparency
+      ctx.fillRect(block.x - halfSize, block.y - halfSize, currentSize * 2, currentSize * 2)
+    })
+
+    animationRef.current = requestAnimationFrame(() => animateKnowledgeNetwork(canvas, ctx))
+  }
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    // Set canvas size
+    canvas.width = width
+    canvas.height = height
+
+    // Theme-aware colors
+    const updateColors = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      isDarkRef.current = isDark;
+      blockColorRef.current = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'; // Solid colors
+      connectionColorRef.current = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'; // Slightly transparent
+      particleColorRef.current = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'; // Solid colors
     };
 
     // Initial color update

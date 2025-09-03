@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { H2, BodyLarge } from "@/components/ui/typography"
@@ -10,12 +10,25 @@ import { AppShell } from "@/components/ui/layout/app-shell"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
-import { IntelligentProcessAutomation } from "@/components/animations"
+import { IntelligentProcessAutomation, IntelligentProcessAutomationMobile } from "@/components/animations"
 import Icon from "@/components/ui/icon"
 
 import Link from "next/link"
 
 export default function IntelligentProcessAutomationAnimation() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   return (
     <PageWrapper>
       <AppShell
@@ -45,11 +58,19 @@ export default function IntelligentProcessAutomationAnimation() {
               
               {/* Canvas Container */}
               <div className="flex justify-center mb-6">
-                <IntelligentProcessAutomation 
-                  width={600} 
-                  height={400} 
-                  showBorder={true}
-                />
+                {isMobile ? (
+                  <IntelligentProcessAutomationMobile 
+                    width={600} 
+                    height={500} 
+                    showBorder={true}
+                  />
+                ) : (
+                  <IntelligentProcessAutomation 
+                    width={600} 
+                    height={400} 
+                    showBorder={true}
+                  />
+                )}
               </div>
 
               <Button variant="outline" asChild>

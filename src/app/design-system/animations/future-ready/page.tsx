@@ -37,9 +37,9 @@ export default function FutureReadyAnimation() {
           <Section paddingY="lg">
             <Card className="p-8 text-center">
               <div className="mb-6">
-                <H2 className="text-2xl font-bold mb-4">Technology Evolution Rings</H2>
+                <H2 className="text-2xl font-bold mb-4">Agentic Future Arrows</H2>
                 <BodyLarge className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  This animation represents the Future-Ready architecture&apos;s scalable design that evolves with emerging technologies, showing concentric rings of technological advancement and growth.
+                  This animation represents the agentic future with E-AI arrows that grow and multiply up and to the right, symbolizing the exponential advancement and expansion of AI capabilities and technological progress.
                 </BodyLarge>
               </div>
               

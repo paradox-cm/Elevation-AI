@@ -28,6 +28,7 @@ import {
   RealTimeBusinessIntelligence, 
   FutureReady,
   KnowledgeBlocks,
+  KnowledgeBlocksMobile,
   WorkspacesCanvases,
   AgenticEngine,
   PersonalCopilot,
@@ -1136,7 +1137,7 @@ function PlatformSection() {
                         {/* Animation Container */}
                         <div className="h-[300px] sm:h-[350px] rounded-xl flex items-center justify-center relative overflow-hidden">
                           {index === 0 && (
-                            <KnowledgeBlocks 
+                            <KnowledgeBlocksMobile 
                               width={300} 
                               height={200} 
                               showBorder={false}

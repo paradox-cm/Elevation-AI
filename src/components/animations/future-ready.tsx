@@ -2,26 +2,11 @@
 
 import { useEffect, useRef, useState } from "react"
 
-interface FlowParticle {
-  angle: number
-  progress: number
-  speed: number
-}
-
-interface Connection {
-  startAngle: number
-  endAngle: number
+interface Arrow {
+  x: number
+  y: number
   opacity: number
-  flowParticles: FlowParticle[]
-}
-
-interface GrowthRing {
-  radius: number
-  opacity: number
-  maxRadius: number
-  growthSpeed: number
-  technology: string
-  connections: Connection[]
+  delay: number
 }
 
 interface FutureReadyProps {
@@ -39,123 +24,112 @@ export function FutureReady({
 }: FutureReadyProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
-  const ringsRef = useRef<GrowthRing[]>([])
+  const arrowsRef = useRef<Arrow[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
+  
+  // Performance optimization: frame rate limiting and constants
+  const lastFrameTimeRef = useRef(0)
+  const targetFPS = 60
+  const frameInterval = 1000 / targetFPS
 
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
-  const ringColorRef = useRef('rgba(255, 255, 255, 0.8)');
-  const connectionColorRef = useRef('rgba(255, 255, 255, 0.6)');
-  const particleColorRef = useRef('rgba(255, 255, 255, 0.9)');
+  const arrowColorRef = useRef('#000000');
   const observerRef = useRef<MutationObserver | null>(null);
 
-  const createGrowthRings = (canvas: HTMLCanvasElement) => {
-    const rings: GrowthRing[] = []
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
+  // E-AI-Arrow SVG path data
+  const arrowPathData = "M91.7,158.3c-7.2,0-13.1-5.9-13.1-13.1v-40.1c0-11.1-9-20.1-20.1-20.1H13.1c-7.2,0-13.1-5.9-13.1-13.1V13.1C0,5.9,5.9,0,13.1,0h137.5c7.2,0,13.1,5.9,13.1,13.1v132.1c0,7.2-5.9,13.1-13.1,13.1h-58.8Z";
+
+  const createArrows = (canvas: HTMLCanvasElement) => {
+    const arrows: Arrow[] = []
+    const centerX = canvas.width * 0.3 // Start from left side
+    const centerY = canvas.height * 0.5 // Center vertically
     
-    // Create 5 technology evolution rings
-    const technologies = ['AI/ML', 'Cloud', 'Edge', 'Quantum', 'Future']
-    
-    for (let i = 0; i < technologies.length; i++) {
-      const ring: GrowthRing = {
-        radius: (20 + i * 40) * 0.8, // Start small and grow outward (reduced by 20%)
-        opacity: 0.3 + (i * 0.15), // Newer technologies more visible
-        maxRadius: (20 + i * 40) * 0.8, // Reduced by 20%
-        growthSpeed: 0.2 + (i * 0.1), // Outer rings grow faster
-        technology: technologies[i],
-        connections: []
+    // Create 5 arrows that repeat up and to the right
+    for (let i = 0; i < 5; i++) {
+      const arrow: Arrow = {
+        x: centerX + (i * 25), // Move right
+        y: centerY - (i * 25), // Move up from center (equal to horizontal offset for perfect diagonal)
+        opacity: 0.1, // Start very transparent
+        delay: i * 0.3, // Staggered appearance
       }
-      
-      // Add connections between rings
-      if (i > 0) {
-        const numConnections = Math.floor(Math.random() * 3) + 1
-        for (let j = 0; j < numConnections; j++) {
-          const connection: Connection = {
-            startAngle: Math.random() * Math.PI * 2,
-            endAngle: Math.random() * Math.PI * 2,
-            opacity: 0.3 + Math.random() * 0.4,
-            flowParticles: []
-          }
-          
-          // Add flow particles
-          const numParticles = Math.floor(Math.random() * 2) + 1
-          for (let k = 0; k < numParticles; k++) {
-            connection.flowParticles.push({
-              angle: Math.random() * Math.PI * 2,
-              progress: Math.random(),
-              speed: 0.002 + Math.random() * 0.005
-            })
-          }
-          
-          ring.connections.push(connection)
-        }
-      }
-      
-      rings.push(ring)
+      arrows.push(arrow)
     }
     
-    return rings
+    return arrows
   }
 
-  const animateGrowthRings = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+  const drawArrow = (ctx: CanvasRenderingContext2D, arrow: Arrow) => {
+    ctx.save()
+    
+    // Set position and transform
+    ctx.translate(arrow.x, arrow.y)
+    
+    // Set stroke color and opacity
+    ctx.strokeStyle = arrowColorRef.current
+    ctx.lineWidth = 2
+    ctx.globalAlpha = arrow.opacity
+    
+    // Draw the arrow path as stroke only
+    const path = new Path2D(arrowPathData)
+    ctx.stroke(path)
+    
+    ctx.restore()
+  }
+
+  const animateArrows = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     if (!isPlaying) return
+
+    // Frame rate limiting for consistent performance
+    const currentTime = performance.now()
+    if (currentTime - lastFrameTimeRef.current < frameInterval) {
+      animationRef.current = requestAnimationFrame(() => animateArrows(canvas, ctx))
+      return
+    }
+    lastFrameTimeRef.current = currentTime
 
     // Clear canvas completely (transparent background)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const rings = ringsRef.current
+    const arrows = arrowsRef.current
+    const currentTime2 = performance.now() / 1000 // Convert to seconds
     
-    // Draw connections first (behind rings)
-    rings.forEach(ring => {
-      ring.connections.forEach(connection => {
-        ctx.strokeStyle = connectionColorRef.current
-        ctx.lineWidth = 1
-        
-        // Draw connection line
-        ctx.beginPath()
-        ctx.arc(centerX, centerY, ring.radius, connection.startAngle, connection.endAngle)
-        ctx.stroke()
-        
-        // Update and draw flow particles
-        connection.flowParticles.forEach(particle => {
-          particle.progress += particle.speed
-          if (particle.progress > 1) {
-            particle.progress = 0
-          }
-          
-          // Calculate particle position along the arc
-          const angle = connection.startAngle + (connection.endAngle - connection.startAngle) * particle.progress
-          const x = centerX + Math.cos(angle) * ring.radius
-          const y = centerY + Math.sin(angle) * ring.radius
-          
-          // Draw particle
-          ctx.beginPath()
-          ctx.arc(x, y, 3, 0, Math.PI * 2) // Increased from 2 to 3
-          ctx.fillStyle = particleColorRef.current
-          ctx.fill()
-        })
-      })
-    })
+    // Calculate loop timing for seamless restart
+    const totalAppearTime = 5 * 0.3 // Time for all arrows to appear
+    const totalFadeOutTime = 5 * 0.3 // Time for all arrows to fade out (slower fade)
+    const loopDuration = totalAppearTime + totalFadeOutTime // No gap between loops
+    const loopTime = currentTime2 % loopDuration
     
-    // Draw growth rings
-    rings.forEach(ring => {
-      // Update ring growth
-      if (ring.radius < ring.maxRadius) {
-        ring.radius += ring.growthSpeed
-      }
+    // Update and draw arrows
+    arrows.forEach((arrow, index) => {
+      // Check if we're in the fade-out phase
+      const fadeOutStartTime = totalAppearTime + (index * 0.3) // Start fading out from bottom (index 0)
       
-      // Draw ring
-      ctx.strokeStyle = ringColorRef.current
-      ctx.lineWidth = 2
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, ring.radius, 0, Math.PI * 2)
-      ctx.stroke()
+      if (loopTime >= fadeOutStartTime) {
+        // Fade out phase - calculate fade progress
+        const fadeProgress = Math.min(1, (loopTime - fadeOutStartTime) / 0.3)
+        arrow.opacity = 0.9 * (1 - fadeProgress)
+              } else {
+          // Fade in phase - sequential from bottom to top (index 0 to 4)
+          const fadeInStartTime = index * 0.3 // Start fading in from bottom (index 0)
+          
+          if (loopTime >= fadeInStartTime) {
+            // Calculate fade in progress
+            const fadeInProgress = Math.min(1, (loopTime - fadeInStartTime) / 0.3)
+            arrow.opacity = 0.9 * fadeInProgress
+          } else {
+            // Keep opacity at 0 before fade-in starts
+            arrow.opacity = 0
+          }
+        }
+      
+      // Only draw if opacity > 0
+      if (arrow.opacity > 0) {
+        drawArrow(ctx, arrow)
+      }
     })
 
-    animationRef.current = requestAnimationFrame(() => animateGrowthRings(canvas, ctx))
+    animationRef.current = requestAnimationFrame(() => animateArrows(canvas, ctx))
   }
 
   useEffect(() => {
@@ -173,9 +147,7 @@ export function FutureReady({
     const updateColors = () => {
       const isDark = document.documentElement.classList.contains('dark');
       isDarkRef.current = isDark;
-      ringColorRef.current = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)';
-      connectionColorRef.current = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
-      particleColorRef.current = isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)';
+      arrowColorRef.current = isDark ? '#ffffff' : '#000000';
     };
 
     // Initial color update
@@ -192,11 +164,11 @@ export function FutureReady({
     observerRef.current = observer;
     observer.observe(document.documentElement, { attributes: true });
 
-    // Create growth rings
-    ringsRef.current = createGrowthRings(canvas)
+    // Create arrows
+    arrowsRef.current = createArrows(canvas)
 
     // Start animation
-    animateGrowthRings(canvas, ctx)
+    animateArrows(canvas, ctx)
 
     return () => {
       if (animationRef.current) {
@@ -206,7 +178,7 @@ export function FutureReady({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animateGrowthRings])
+  }, [width, height, isPlaying])
 
   return (
     <div className={`flex justify-center ${className}`}>

@@ -17,6 +17,20 @@ export function UnifiedKnowledge({
 }: UnifiedKnowledgeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
+  
+  // Performance optimization: frame rate limiting
+  const lastFrameTimeRef = useRef(0)
+  const targetFPS = 60
+  const frameInterval = 1000 / targetFPS
+  
+  // Smooth startup sequence
+  const startupDelayRef = useRef(0)
+  const isStartingUpRef = useRef(true)
+  const startupPhaseRef = useRef(0) // 0: delay, 1: gradual build, 2: full speed
+  
+  // Responsive sizing for mobile breakpoints
+  const isMobile = width <= 768
+  const mobileScale = isMobile ? 0.85 : 1.0 // 15% smaller on mobile
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -60,6 +74,7 @@ export function UnifiedKnowledge({
     const columnSpacing = 20
     const topY = height * 0.27 // Adjusted to center the animation vertically
     const bottomY = height * 0.73 // Adjusted to center the animation vertically
+    const TWO_PI = Math.PI * 2 // Pre-calculate constant
 
     let dataParticles: Array<DataParticle> = [];
     let animationTime = 0
@@ -79,8 +94,8 @@ export function UnifiedKnowledge({
         this.targetX = endX
         this.targetY = endY
         this.progress = 0
-        this.speed = (Math.random() * 0.015 + 0.01) * 0.7 // Reduced by 30% for slower movement
-        this.size = 4
+        this.speed = 0.015 // Slightly slower for steadier visual flow
+        this.size = 4 * mobileScale // Responsive particle size
       }
 
       update() {
@@ -90,23 +105,19 @@ export function UnifiedKnowledge({
           return false // Remove particle
         }
         
-        // Move along diagonal path
-        this.x = this.x + (this.targetX - this.x) * this.speed
-        this.y = this.y + (this.targetY - this.y) * this.speed
-        
         return true // Keep particle
       }
 
       draw() {
         if (!ctx) return
         
+        // Linear interpolation for consistent movement
         const currentX = this.x + (this.targetX - this.x) * this.progress
         const currentY = this.y + (this.targetY - this.y) * this.progress
         
-        // Clean blue circle with no outline
+        // Clean blue circle with no outline - optimized drawing
         ctx.beginPath()
-        ctx.arc(currentX, currentY, this.size, 0, Math.PI * 2)
-        ctx.fillStyle = dataColor
+        ctx.arc(currentX, currentY, this.size, 0, TWO_PI)
         ctx.fill()
       }
     }
@@ -122,14 +133,16 @@ export function UnifiedKnowledge({
       
       // Draw four source squares at the top (centered horizontally)
       const sourcePositions = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const squareSize = 30 * mobileScale
+      const halfSize = squareSize / 2
       
       sourcePositions.forEach(x => {
-        // Simple square
+        // Simple square with responsive sizing
         ctx.fillStyle = sourceColor
-        ctx.fillRect(x - 15, topY - 15, 30, 30)
+        ctx.fillRect(x - halfSize, topY - halfSize, squareSize, squareSize)
         ctx.strokeStyle = sourceColor
         ctx.lineWidth = 2
-        ctx.strokeRect(x - 15, topY - 15, 30, 30)
+        ctx.strokeRect(x - halfSize, topY - halfSize, squareSize, squareSize)
       })
     }
 
@@ -138,12 +151,13 @@ export function UnifiedKnowledge({
       
       // Draw four destination circles at the bottom (centered horizontally)
       const destPositions = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const circleRadius = 15 * mobileScale
       
       destPositions.forEach(x => {
-        // Theme-aware circle color
+        // Theme-aware circle color with responsive sizing
         ctx.fillStyle = sourceColor
         ctx.beginPath()
-        ctx.arc(x, bottomY, 15, 0, Math.PI * 2)
+        ctx.arc(x, bottomY, circleRadius, 0, TWO_PI)
         ctx.fill()
       })
     }
@@ -171,15 +185,38 @@ export function UnifiedKnowledge({
     }
 
     function generateDataParticles() {
-      // Generate new data particles periodically
-      if (animationTime % 40 === 0) { // Slower frequency - every 40 frames
-        const sources = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
-        const destinations = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
-        
-        // Create 5 particles per cycle (reduced by 30% from 7)
-        for (let i = 0; i < 5; i++) {
+      // Generate new data particles with smooth startup sequence
+      const sources = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      const destinations = [width * 0.16, width * 0.39, width * 0.61, width * 0.84]
+      
+      // Phase 0: Wait for startup delay
+      if (startupPhaseRef.current === 0) {
+        return
+      }
+      
+      // Phase 1: Gradual build-up (fewer particles, slower generation)
+      if (startupPhaseRef.current === 1) {
+        if (animationTime % 20 === 0 && dataParticles.length < 8) { // Slower, fewer particles
+          const particleCount = 1 // Only 1 particle at a time during build-up
+          for (let i = 0; i < particleCount; i++) {
+            const randomSource = sources[Math.floor(Math.random() * sources.length)]
+            const randomDest = destinations[Math.floor(Math.random() * sources.length)]
+            
+            dataParticles.push(new DataParticle(
+              randomSource, topY + 25,
+              randomDest, bottomY - 25
+            ))
+          }
+        }
+        return
+      }
+      
+      // Phase 2: Full speed operation
+      if (animationTime % 8 === 0 && dataParticles.length < 25) {
+        const particleCount = Math.random() > 0.6 ? 1 : 2
+        for (let i = 0; i < particleCount; i++) {
           const randomSource = sources[Math.floor(Math.random() * sources.length)]
-          const randomDest = destinations[Math.floor(Math.random() * destinations.length)]
+          const randomDest = destinations[Math.floor(Math.random() * sources.length)]
           
           dataParticles.push(new DataParticle(
             randomSource, topY + 25,
@@ -191,6 +228,33 @@ export function UnifiedKnowledge({
 
     function animate() {
       if (!ctx || !canvas) return
+      
+      // Frame rate limiting for consistent performance
+      const currentTime = performance.now()
+      if (currentTime - lastFrameTimeRef.current < frameInterval) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastFrameTimeRef.current = currentTime
+      
+      // Handle startup sequence phases
+      if (isStartingUpRef.current) {
+        startupDelayRef.current++
+        
+        // Phase 0: Wait 20 frames (0.33 seconds at 60fps) for smooth startup
+        if (startupDelayRef.current < 20) {
+          startupPhaseRef.current = 0
+        }
+        // Phase 1: Gradual build-up for 60 frames (1 second)
+        else if (startupDelayRef.current < 80) {
+          startupPhaseRef.current = 1
+        }
+        // Phase 2: Full speed operation
+        else {
+          startupPhaseRef.current = 2
+          isStartingUpRef.current = false
+        }
+      }
       
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
@@ -207,9 +271,23 @@ export function UnifiedKnowledge({
       // Generate new data particles
       generateDataParticles()
       
-      // Update and draw data particles
+      // Update and draw data particles - optimized batch drawing
       dataParticles = dataParticles.filter(particle => particle.update())
-      dataParticles.forEach(particle => particle.draw())
+      
+      // Batch particle drawing for better performance with startup fade-in
+      if (dataParticles.length > 0) {
+        dataParticles.forEach(particle => {
+          // Apply fade-in effect during startup
+          if (isStartingUpRef.current && startupPhaseRef.current === 1) {
+            const fadeProgress = Math.min((startupDelayRef.current - 20) / 60, 1)
+            const fadeColor = dataColor.replace(/[\d.]+\)$/, `${fadeProgress * 0.8})`)
+            ctx.fillStyle = fadeColor
+          } else {
+            ctx.fillStyle = dataColor
+          }
+          particle.draw()
+        })
+      }
       
       animationTime++
       animationRef.current = requestAnimationFrame(animate)
