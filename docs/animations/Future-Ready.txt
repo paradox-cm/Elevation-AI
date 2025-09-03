@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Square Flow</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #101032; overflow: hidden; }
+        canvas { display: block; position: absolute; top: 0; left: 0; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let squares = [];
+        const squareCount = 1000; // Adjust density
+        const maxSpeed = .1; // Adjust speed range
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Square {
+            constructor(x, y, size, speed) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.speed = speed;
+                this.direction = Math.random() > 0.5 ? 1 : -1; // Randomly move up or down
+            }
+
+            update() {
+                this.y += this.speed * this.direction;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = "white";
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        function createSquares() {
+            squares = [];
+            for (let i = 0; i < squareCount; i++) {
+                let size = Math.random() < 0.02 ? 8 : Math.random() * 3 + 2; // 2% are 8x8, others between 2-5px
+                let speed = Math.random() * maxSpeed + 0.2;
+                squares.push(new Square(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height,
+                    size,
+                    speed
+                ));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            squares.forEach(square => {
+                square.update();
+                square.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener("resize", () => {
+            resizeCanvas();
+            createSquares();
+        });
+
+        resizeCanvas();
+        createSquares();
+        animate();
+    </script>
+</body>
+</html> 

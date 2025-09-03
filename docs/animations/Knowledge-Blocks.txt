@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaotic Market Lines</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #101032; overflow: hidden; }
+        canvas { display: block; position: absolute; top: 0; left: 0; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const cols = 12;
+        const rows = 48;
+        let spacingX, spacingY, lines = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            spacingX = Math.floor(canvas.width / cols);
+            spacingY = Math.floor(canvas.height / rows);
+            initializeLines();
+        }
+
+        function initializeLines() {
+            lines = [];
+            for (let x = 0; x < cols; x++) {
+                for (let y = 0; y < rows; y++) {
+                    lines.push({
+                        x: x * spacingX + spacingX / 2,
+                        y: y * spacingY + spacingY / 2,
+                        offset: Math.random() * 10 - 5,
+                        direction: Math.random() > 0.5 ? 1 : -1,
+                        speed: Math.random() * 0.5 + 0.5
+                    });
+                }
+            }
+        }
+
+        function animateLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+
+            lines.forEach(line => {
+                line.offset += line.speed * line.direction;
+                if (Math.abs(line.offset) > spacingX / 3) {
+                    line.direction *= -1;
+                }
+
+                ctx.fillRect(line.x + line.offset, line.y, 1, 6);
+            });
+
+            requestAnimationFrame(animateLines);
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+        animateLines();
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulsing Trade Network</title>
+    <style>
+        body {
+            margin: 0;
+            background: #101032;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+            width: 440px;
+            height: 440px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="tradeNetwork" width="440" height="440"></canvas>
+    <script>
+        const canvas = document.getElementById("tradeNetwork");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 440;
+        canvas.height = 440;
+
+        let nodes = [];
+        let lines = [];
+
+        class Node {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.opacity = 1;
+                this.radius = 4;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= 0.06;
+            }
+        }
+
+        class Line {
+            constructor(start, end) {
+                this.start = start;
+                this.end = end;
+                this.opacity = 1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.start.x, this.start.y);
+                ctx.lineTo(this.end.x, this.end.y);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.lineWidth = 0.3;
+                ctx.stroke();
+            }
+            update() {
+                this.opacity -= 0.06;
+            }
+        }
+
+        function addNode() {
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * canvas.height;
+            let newNode = new Node(x, y);
+            nodes.push(newNode);
+            
+            for (let i = 0; i < 30; i++) {  // Increased connections for density
+                if (nodes.length > i + 1) {
+                    lines.push(new Line(newNode, nodes[nodes.length - (i + 2)]));
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            nodes.forEach((node, index) => {
+                node.draw();
+                node.update();
+                if (node.opacity <= 0) nodes.splice(index, 1);
+            });
+            
+            lines.forEach((line, index) => {
+                line.draw();
+                line.update();
+                if (line.opacity <= 0) lines.splice(index, 1);
+            });
+            
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(addNode, 80); // Faster node generation for higher density
+        animate();
+    </script>
+</body>
+</html>

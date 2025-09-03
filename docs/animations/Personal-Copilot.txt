@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Exchange Support</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0D0D0C;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+            width: 600px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="exchangeCanvas" width="600" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById("exchangeCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+
+        let exchanges1 = [];
+        let exchanges2 = [];
+        let connections1 = [];
+        let connections2 = [];
+        let angle1 = 0;
+        let angle2 = 0;
+
+        class Exchange {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 4;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fill();
+            }
+        }
+
+        class Connection {
+            constructor(start, end) {
+                this.start = start;
+                this.end = end;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.start.x, this.start.y);
+                ctx.lineTo(this.end.x, this.end.y);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+
+        function generateExchanges(exchangesArray, offsetAngle) {
+            let centerX = canvas.width / 2;
+            let centerY = canvas.height / 2;
+            let numExchanges = 6;
+            let radius = 200;
+
+            for (let i = 0; i < numExchanges; i++) {
+                let angle = (i / numExchanges) * (Math.PI * 2) + offsetAngle;
+                let x = centerX + Math.cos(angle) * radius;
+                let y = centerY + Math.sin(angle) * radius;
+                exchangesArray.push(new Exchange(x, y));
+            }
+        }
+
+        function createConnections(exchangesArray, connectionsArray) {
+            exchangesArray.forEach((exchange, index) => {
+                for (let i = index + 1; i < exchangesArray.length; i++) {
+                    connectionsArray.push(new Connection(exchange, exchangesArray[i]));
+                }
+            });
+        }
+
+        function updatePositions(exchangesArray, angleOffset) {
+            let centerX = canvas.width / 2;
+            let centerY = canvas.height / 2;
+            let numExchanges = exchangesArray.length;
+            let radius = 200;
+
+            for (let i = 0; i < numExchanges; i++) {
+                let angle = (i / numExchanges) * (Math.PI * 2) + angleOffset;
+                exchangesArray[i].x = centerX + Math.cos(angle) * radius;
+                exchangesArray[i].y = centerY + Math.sin(angle) * radius;
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            updatePositions(exchanges1, angle1);
+            updatePositions(exchanges2, angle2);
+
+            connections1.forEach(connection => connection.draw());
+            connections2.forEach(connection => connection.draw());
+            
+            exchanges1.forEach(exchange => exchange.draw());
+            exchanges2.forEach(exchange => exchange.draw());
+            
+            angle1 -= 0.005;
+            angle2 += 0.005;
+            
+            requestAnimationFrame(animate);
+        }
+
+        generateExchanges(exchanges1, 0);
+        generateExchanges(exchanges2, Math.PI / 6);
+        createConnections(exchanges1, connections1);
+        createConnections(exchanges2, connections2);
+        animate();
+    </script>
+</body>
+</html>

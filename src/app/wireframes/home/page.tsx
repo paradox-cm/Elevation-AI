@@ -22,6 +22,17 @@ import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
+import { 
+  UnifiedKnowledge, 
+  IntelligentProcessAutomation, 
+  RealTimeBusinessIntelligence, 
+  FutureReady,
+  KnowledgeBlocks,
+  WorkspacesCanvases,
+  AgenticEngine,
+  PersonalCopilot,
+  EnterpriseSecurity
+} from "@/components/animations"
 
 // Typewriter Text Component
 function TypewriterText({ text, speed = 200, delay = 0, skipAnimation = false }: { text: string; speed?: number; delay?: number; skipAnimation?: boolean }) {
@@ -617,7 +628,7 @@ function ProblemSection() {
                   <div
                     key={index}
                     data-problem-card
-                    className="w-[300px] sm:w-[350px] flex-shrink-0"
+                    className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
                     <Card className="h-full border-border/50 transition-colors duration-300 flex flex-col">
                       <CardHeader className="pt-3 pb-3 flex-shrink-0">
@@ -632,11 +643,40 @@ function ProblemSection() {
                         </BodyLarge>
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col justify-end pb-4">
-                        {/* Visual Placeholder */}
-                        <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50 relative">
-                          <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Icon name={problem.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
-                          </div>
+                        {/* Animation Container */}
+                        <div className="h-[300px] sm:h-[350px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
+                          {index === 0 && (
+                            <UnifiedKnowledge 
+                              width={300} 
+                              height={300} 
+                              showBorder={false}
+                              className=""
+                            />
+                          )}
+                          {index === 1 && (
+                            <IntelligentProcessAutomation 
+                              width={300} 
+                              height={200} 
+                              showBorder={false}
+                              className=""
+                            />
+                          )}
+                          {index === 2 && (
+                            <RealTimeBusinessIntelligence 
+                              width={300} 
+                              height={300} 
+                              showBorder={false}
+                              className=""
+                            />
+                          )}
+                          {index === 3 && (
+                            <FutureReady 
+                              width={300} 
+                              height={200} 
+                              showBorder={false}
+                              className=""
+                            />
+                          )}
                         </div>
                       </CardContent>
                     </Card>
@@ -699,11 +739,36 @@ function ProblemSection() {
                               </BodyLarge>
                             </div>
                             
-                            {/* Image Placeholder */}
-                            <div className="h-full bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center border border-border/50">
-                              <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-4 lg:p-6 xl:p-8 2xl:p-10">
-                                <Icon name={problem.icon} className="text-blue-600 text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl" />
-                              </div>
+                            {/* Animation Container */}
+                            <div className="h-full rounded-lg flex items-center justify-center border border-border/50 overflow-hidden">
+                              {index === 0 && (
+                                <UnifiedKnowledge 
+                                  width={440} 
+                                  height={440} 
+                                  showBorder={false}
+                                />
+                              )}
+                              {index === 1 && (
+                                <IntelligentProcessAutomation 
+                                  width={600} 
+                                  height={400} 
+                                  showBorder={false}
+                                />
+                              )}
+                              {index === 2 && (
+                                <RealTimeBusinessIntelligence 
+                                  width={440} 
+                                  height={440} 
+                                  showBorder={false}
+                                />
+                              )}
+                              {index === 3 && (
+                                <FutureReady 
+                                  width={600} 
+                                  height={400} 
+                                  showBorder={false}
+                                />
+                              )}
                             </div>
                           </div>
                         </CardHeader>
@@ -1053,7 +1118,7 @@ function PlatformSection() {
                   <div
                     key={index}
                     data-platform-card
-                    className="w-[300px] sm:w-[350px] flex-shrink-0"
+                    className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
                     <Card className="h-full border-border/50 transition-colors duration-300 flex flex-col">
                       <CardHeader className="pt-3 pb-3 flex-shrink-0">
@@ -1068,11 +1133,43 @@ function PlatformSection() {
                         </BodyLarge>
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col justify-end space-y-4 pb-4">
-                        {/* Visual Placeholder */}
-                        <div className="h-[200px] sm:h-[250px] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
-                          <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Icon name={feature.icon} size="2xl" className="text-blue-600 !text-4xl sm:!text-5xl" />
-                          </div>
+                        {/* Animation Container */}
+                        <div className="h-[300px] sm:h-[350px] rounded-xl flex items-center justify-center relative overflow-hidden">
+                          {index === 0 && (
+                            <KnowledgeBlocks 
+                              width={300} 
+                              height={200} 
+                              showBorder={false}
+                            />
+                          )}
+                          {index === 1 && (
+                            <WorkspacesCanvases 
+                              width={300} 
+                              height={300} 
+                              showBorder={false}
+                            />
+                          )}
+                          {index === 2 && (
+                            <AgenticEngine 
+                              width={300} 
+                              height={300} 
+                              showBorder={false}
+                            />
+                          )}
+                          {index === 3 && (
+                            <PersonalCopilot 
+                              width={300} 
+                              height={300} 
+                              showBorder={false}
+                            />
+                          )}
+                          {index === 4 && (
+                            <EnterpriseSecurity 
+                              width={300} 
+                              height={200} 
+                              showBorder={false}
+                            />
+                          )}
                         </div>
                       </CardContent>
                     </Card>
@@ -1125,10 +1222,42 @@ function PlatformSection() {
                                   {feature.description}
                                 </BodyLarge>
                               </div>
-                              <div className="h-[200px] lg:h-[250px] xl:h-[300px] 2xl:h-[350px] w-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl flex items-center justify-center relative">
-                                <div className="w-32 h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                                  <Icon name={feature.icon} size="2xl" className="text-blue-600 !text-6xl lg:!text-7xl xl:!text-8xl" />
-                                </div>
+                              <div className="h-[600px] lg:h-[600px] xl:h-[600px] 2xl:h-[600px] w-full rounded-xl flex items-center justify-center relative overflow-hidden">
+                                {activeTab === 0 && (
+                                  <KnowledgeBlocks 
+                                    width={600} 
+                                    height={400} 
+                                    showBorder={false}
+                                  />
+                                )}
+                                {activeTab === 1 && (
+                                  <WorkspacesCanvases 
+                                    width={440} 
+                                    height={440} 
+                                    showBorder={false}
+                                  />
+                                )}
+                                {activeTab === 2 && (
+                                  <AgenticEngine 
+                                    width={440} 
+                                    height={440} 
+                                    showBorder={false}
+                                  />
+                                )}
+                                {activeTab === 3 && (
+                                  <PersonalCopilot 
+                                    width={440} 
+                                    height={440} 
+                                    showBorder={false}
+                                  />
+                                )}
+                                {activeTab === 4 && (
+                                  <EnterpriseSecurity 
+                                    width={600} 
+                                    height={400} 
+                                    showBorder={false}
+                                  />
+                                )}
                               </div>
                             </div>
                           </CardHeader>

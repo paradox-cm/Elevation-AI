@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade Simulator – crawl speed</title>
+  <style>
+    body{margin:0;background:#101032;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh}
+    canvas{display:block;width:975px;height:560px}
+  </style>
+</head>
+<body>
+<canvas id="tradeCanvas" width="975" height="560"></canvas>
+<script>
+const canvas = document.getElementById("tradeCanvas");
+const ctx    = canvas.getContext("2d");
+
+const gridSize    = 32;
+const speedFactor = 0.15;          // ← 15 % of the original speed
+let   traffic     = [];
+
+function drawGrid(){
+  ctx.strokeStyle = "rgba(255,255,255,.2)";
+  ctx.lineWidth   = 1;
+  for(let x=0;x<=canvas.width;x+=gridSize){
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();
+  }
+  for(let y=0;y<=canvas.height;y+=gridSize){
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();
+  }
+}
+
+class TradeLine{
+  constructor(x,y,dir){
+    this.x=x;this.y=y;this.dir=dir;
+    this.speed = (Math.random()*2+1) * speedFactor; // ← slowed way down
+  }
+  update(){
+    if(this.dir==='horizontal'){
+      this.x += this.speed;
+      if(this.x>canvas.width) this.x = -gridSize;
+    }else{
+      this.y += this.speed;
+      if(this.y>canvas.height) this.y = -gridSize;
+    }
+  }
+  draw(){
+    ctx.beginPath();
+    if(this.dir==='horizontal'){
+      ctx.moveTo(this.x,this.y);
+      ctx.lineTo(this.x+gridSize,this.y);
+    }else{
+      ctx.moveTo(this.x,this.y);
+      ctx.lineTo(this.x,this.y+gridSize);
+    }
+    ctx.strokeStyle="#D5D6D2";
+    ctx.lineWidth=1;
+    ctx.stroke();
+  }
+}
+
+function createTraffic(){
+  for(let x=0;x<canvas.width;x+=gridSize*2){
+    for(let y=0;y<canvas.height;y+=gridSize*2){
+      traffic.push(new TradeLine(x,y,Math.random()>0.5?'horizontal':'vertical'));
+    }
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawGrid();
+  traffic.forEach(t=>{t.update();t.draw();});
+  requestAnimationFrame(animate);
+}
+
+createTraffic();
+animate();
+</script>
+</body>
+</html>
