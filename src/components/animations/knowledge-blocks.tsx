@@ -45,7 +45,7 @@ export function KnowledgeBlocks({
   const connectionsRef = useRef<Connection[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
   
-  // Performance optimized: Reduced from 168 to 45 total animated objects
+  // Performance optimized: Original desktop grid with 6x4 blocks and full connections - DESKTOP VERSION
 
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
@@ -58,18 +58,23 @@ export function KnowledgeBlocks({
     const blocks: KnowledgeBlock[] = []
     const connections: Connection[] = []
     
-    // Create knowledge blocks in a grid pattern (reduced for performance)
-    const cols = 5 // Reduced from 6 to 5
-    const rows = 3 // Reduced from 4 to 3
-    const spacingX = canvas.width / (cols + 1)
-    const spacingY = canvas.height / (rows + 1)
+    // Create knowledge blocks in a grid pattern (original desktop size)
+    const cols = 6 // Original desktop grid size
+    const rows = 4 // Original desktop grid size
+    
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    const spacingX = logicalWidth / (cols + 1)
+    const spacingY = logicalHeight / (rows + 1)
     
     for (let x = 0; x < cols; x++) {
       for (let y = 0; y < rows; y++) {
         const block: KnowledgeBlock = {
           x: spacingX * (x + 1),
           y: spacingY * (y + 1),
-          size: 15,
+          size: 20, // Original desktop block size
           connections: [],
           opacity: 1, // Solid, no transparency
           pulsePhase: 0
@@ -78,7 +83,7 @@ export function KnowledgeBlocks({
       }
     }
     
-    // Create logical network-like connections
+    // Create logical network-like connections (original desktop frequency)
     blocks.forEach((block, index) => {
       const row = Math.floor(index / cols)
       const col = index % cols
@@ -96,18 +101,18 @@ export function KnowledgeBlocks({
         adjacentConnections.push(index + cols)
       }
       
-      // Connect to diagonal bottom-right (if exists) - reduced frequency
-      if (col < cols - 1 && row < rows - 1 && index % 2 === 0) {
+      // Connect to diagonal bottom-right (if exists) - original frequency
+      if (col < cols - 1 && row < rows - 1 && index % 1 === 0) {
         adjacentConnections.push(index + cols + 1)
       }
       
-      // Connect to diagonal bottom-left (if exists) - reduced frequency
-      if (col > 0 && row < rows - 1 && index % 2 === 0) {
+      // Connect to diagonal bottom-left (if exists) - original frequency
+      if (col > 0 && row < rows - 1 && index % 1 === 0) {
         adjacentConnections.push(index + cols - 1)
       }
       
-      // Add some cross-connections for network effect (but not random) - reduced frequency
-      if (index % 4 === 0 && index + 2 < blocks.length) {
+      // Add some cross-connections for network effect (but not random) - original frequency
+      if (index % 2 === 0 && index + 2 < blocks.length) {
         adjacentConnections.push(index + 2)
       }
       
