@@ -1,18 +1,15 @@
 "use client"
 
-import { PageWrapper } from "@/components/page-wrapper"
-import { AppShell } from "@/components/ui/layout/app-shell"
-import { Container } from "@/components/ui/layout/container"
-import { Section } from "@/components/ui/layout/section"
-import { PageHeader } from "@/components/ui/marketing/page-header"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import React, { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { H1, H2, H3, BodyLarge } from "@/components/ui/typography"
+import { Container, Section } from "@/components/ui/layout"
+import { PageHeader } from "@/components/ui/marketing/page-header"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { KnowledgeBlocks } from "@/components/animations"
 import Icon from "@/components/ui/icon"
-import { H2, BodyLarge } from "@/components/ui/typography"
 
 import Link from "next/link"
 

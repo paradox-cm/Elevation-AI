@@ -25,7 +25,7 @@ export function IntelligentProcessAutomation({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
   const trafficRef = useRef<TradeLine[]>([])
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, _setIsPlaying] = useState(true)
 
   // Define wider boundary area for grid and traffic (closer to 16:9 aspect ratio)
   const gridBoundary = {
@@ -36,12 +36,10 @@ export function IntelligentProcessAutomation({
   }
 
   // Theme-aware colors - will be set in useEffect
-  let isDark = false
-  let gridColor = 'rgba(0, 0, 0, 0.2)'
-  let lineColor = '#4B5563'
-
-  // Theme change observer - will be created in useEffect
-  let observer: MutationObserver
+  const isDarkRef = useRef(false);
+  const gridColorRef = useRef('#e5e7eb');
+  const lineColorRef = useRef('#3b82f6');
+  const observerRef = useRef<MutationObserver | null>(null);
 
   const createTraffic = (canvas: HTMLCanvasElement) => {
     const traffic: TradeLine[] = []
@@ -74,7 +72,7 @@ export function IntelligentProcessAutomation({
     const canvasHeight = canvas.height
     
     // Draw dots at grid intersections
-    ctx.fillStyle = gridColor
+    ctx.fillStyle = gridColorRef.current
     const dotSize = 2 // Size of each intersection dot
     
     // Draw dots only within the smaller boundary area
@@ -87,7 +85,7 @@ export function IntelligentProcessAutomation({
     }
     
     // Batch traffic drawing operations
-    ctx.strokeStyle = lineColor
+    ctx.strokeStyle = lineColorRef.current
     ctx.lineWidth = 1
     ctx.beginPath()
     
@@ -129,27 +127,27 @@ export function IntelligentProcessAutomation({
     canvas.width = width
     canvas.height = height
 
-    // Initialize theme-aware colors
-    isDark = document.documentElement.classList.contains('dark')
-    gridColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // Solid white for dark mode, solid black for light mode
-    lineColor = isDark ? '#ffffff' : '#000000' // Solid white for dark mode, solid black for light mode
+    // Theme-aware colors
+    const updateColors = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      isDarkRef.current = isDark;
+      gridColorRef.current = isDark ? '#374151' : '#e5e7eb';
+      lineColorRef.current = isDark ? '#60a5fa' : '#3b82f6';
+    };
 
-    // Create theme change observer
-    observer = new MutationObserver((mutations) => {
+    // Initial color update
+    updateColors();
+
+    // Observe theme changes
+    const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          isDark = document.documentElement.classList.contains('dark')
-          gridColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // Solid white for dark mode, solid black for light mode
-          lineColor = isDark ? '#ffffff' : '#000000' // Solid white for dark mode, solid black for light mode
+          updateColors();
         }
-      })
-    })
-
-    // Start observing theme changes
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
+      });
+    });
+    observerRef.current = observer;
+    observer.observe(document.documentElement, { attributes: true });
 
     // Create initial traffic
     trafficRef.current = createTraffic(canvas)
@@ -162,8 +160,8 @@ export function IntelligentProcessAutomation({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
-      if (observer) {
-        observer.disconnect()
+      if (observerRef.current) {
+        observerRef.current.disconnect()
       }
     }
   }, [width, height, isPlaying])

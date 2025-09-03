@@ -59,10 +59,10 @@ export function PersonalCopilot({
     const rotationSpeed2 = 0.005
 
     // Performance optimization: Object pooling
-    let exchanges1: any[] = []
-    let exchanges2: any[] = []
-    let connections1: any[] = []
-    let connections2: any[] = []
+    let exchanges1: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
+    let exchanges2: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
+    let connections1: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
+    let connections2: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
     let angle1 = 0
     let angle2 = 0
 

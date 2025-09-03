@@ -40,16 +40,14 @@ export function FutureReady({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
   const ringsRef = useRef<GrowthRing[]>([])
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, _setIsPlaying] = useState(true)
 
   // Theme-aware colors - will be set in useEffect
-  let isDark = false
-  let ringColor = 'rgba(0, 0, 0, 1)'
-  let connectionColor = 'rgba(0, 0, 0, 1)'
-  let particleColor = 'rgba(0, 0, 0, 1)'
-
-  // Theme change observer - will be created in useEffect
-  let observer: MutationObserver
+  const isDarkRef = useRef(false);
+  const ringColorRef = useRef('#3b82f6');
+  const connectionColorRef = useRef('#60a5fa');
+  const particleColorRef = useRef('#f59e0b');
+  const observerRef = useRef<MutationObserver | null>(null);
 
   const createGrowthRings = (canvas: HTMLCanvasElement) => {
     const rings: GrowthRing[] = []
@@ -113,7 +111,7 @@ export function FutureReady({
     // Draw connections first (behind rings)
     rings.forEach(ring => {
       ring.connections.forEach(connection => {
-        ctx.strokeStyle = connectionColor
+        ctx.strokeStyle = connectionColorRef.current
         ctx.lineWidth = 1
         
         // Draw connection line
@@ -136,7 +134,7 @@ export function FutureReady({
           // Draw particle
           ctx.beginPath()
           ctx.arc(x, y, 3, 0, Math.PI * 2) // Increased from 2 to 3
-          ctx.fillStyle = particleColor
+          ctx.fillStyle = particleColorRef.current
           ctx.fill()
         })
       })
@@ -150,7 +148,7 @@ export function FutureReady({
       }
       
       // Draw ring
-      ctx.strokeStyle = ringColor
+      ctx.strokeStyle = ringColorRef.current
       ctx.lineWidth = 2
       ctx.beginPath()
       ctx.arc(centerX, centerY, ring.radius, 0, Math.PI * 2)
@@ -171,28 +169,28 @@ export function FutureReady({
     canvas.width = width
     canvas.height = height
 
-    // Initialize theme-aware colors
-    isDark = document.documentElement.classList.contains('dark')
-    ringColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
-    connectionColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
-    particleColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
+    // Theme-aware colors
+    const updateColors = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      isDarkRef.current = isDark;
+      ringColorRef.current = isDark ? '#60a5fa' : '#3b82f6';
+      connectionColorRef.current = isDark ? '#93c5fd' : '#60a5fa';
+      particleColorRef.current = isDark ? '#fbbf24' : '#f59e0b';
+    };
 
-    // Create theme change observer
-    observer = new MutationObserver((mutations) => {
+    // Initial color update
+    updateColors();
+
+    // Observe theme changes
+    const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          isDark = document.documentElement.classList.contains('dark')
-          ringColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
-          connectionColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
-          particleColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
+          updateColors();
         }
-      })
-    })
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
+      });
+    });
+    observerRef.current = observer;
+    observer.observe(document.documentElement, { attributes: true });
 
     // Create growth rings
     ringsRef.current = createGrowthRings(canvas)
@@ -204,8 +202,8 @@ export function FutureReady({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
-      if (observer) {
-        observer.disconnect()
+      if (observerRef.current) {
+        observerRef.current.disconnect()
       }
     }
   }, [width, height, isPlaying])

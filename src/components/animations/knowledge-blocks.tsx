@@ -43,18 +43,16 @@ export function KnowledgeBlocks({
   const animationRef = useRef<number>()
   const blocksRef = useRef<KnowledgeBlock[]>([])
   const connectionsRef = useRef<Connection[]>([])
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, _setIsPlaying] = useState(true)
   
   // Performance optimized: Reduced from 168 to 45 total animated objects
 
   // Theme-aware colors - will be set in useEffect
-  let isDark = false
-  let blockColor = 'rgba(0, 0, 0, 0.8)'
-  let connectionColor = 'rgba(0, 0, 0, 0.4)'
-  let particleColor = 'rgba(0, 0, 0, 0.6)'
-
-  // Theme change observer - will be created in useEffect
-  let observer: MutationObserver
+  const isDarkRef = useRef(false);
+  const blockColorRef = useRef('#3b82f6');
+  const connectionColorRef = useRef('#60a5fa');
+  const particleColorRef = useRef('#f59e0b');
+  const observerRef = useRef<MutationObserver | null>(null);
 
   const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {
     const blocks: KnowledgeBlock[] = []
@@ -127,7 +125,7 @@ export function KnowledgeBlocks({
     const connections = connectionsRef.current
     
     // Draw connections as individual lines (not batched to avoid solid shapes)
-    ctx.strokeStyle = connectionColor
+    ctx.strokeStyle = connectionColorRef.current
     ctx.lineWidth = 2
     
     connections.forEach(connection => {
@@ -144,7 +142,7 @@ export function KnowledgeBlocks({
     })
     
     // Draw particles as individual dots
-    ctx.fillStyle = particleColor
+    ctx.fillStyle = particleColorRef.current
     
     connections.forEach(connection => {
       const startBlock = blocks[connection.start]
@@ -172,7 +170,7 @@ export function KnowledgeBlocks({
     })
     
     // Batch all block drawing operations
-    ctx.fillStyle = blockColor
+    ctx.fillStyle = blockColorRef.current
     ctx.globalAlpha = 1
     
     // Draw all blocks in a single batch
@@ -197,29 +195,28 @@ export function KnowledgeBlocks({
     canvas.width = width
     canvas.height = height
 
-    // Initialize theme-aware colors
-    isDark = document.documentElement.classList.contains('dark')
-    blockColor = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'
-    connectionColor = isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'
-    particleColor = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'
+    // Theme-aware colors
+    const updateColors = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      isDarkRef.current = isDark;
+      blockColorRef.current = isDark ? '#60a5fa' : '#3b82f6';
+      connectionColorRef.current = isDark ? '#93c5fd' : '#60a5fa';
+      particleColorRef.current = isDark ? '#fbbf24' : '#f59e0b';
+    };
 
-    // Create theme change observer
-    observer = new MutationObserver((mutations) => {
+    // Initial color update
+    updateColors();
+
+    // Observe theme changes
+    const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          isDark = document.documentElement.classList.contains('dark')
-          blockColor = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'
-          connectionColor = isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'
-          particleColor = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'
+          updateColors();
         }
-      })
-    })
-
-    // Start observing theme changes
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
+      });
+    });
+    observerRef.current = observer;
+    observer.observe(document.documentElement, { attributes: true });
 
     // Create initial knowledge network
     const { blocks, connections } = initializeKnowledgeNetwork(canvas)
@@ -234,8 +231,8 @@ export function KnowledgeBlocks({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
-      if (observer) {
-        observer.disconnect()
+      if (observerRef.current) {
+        observerRef.current.disconnect()
       }
     }
   }, [width, height, isPlaying])

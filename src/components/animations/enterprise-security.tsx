@@ -25,7 +25,7 @@ export function EnterpriseSecurity({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
   const layersRef = useRef<SecurityLayer[]>([])
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, _setIsPlaying] = useState(true)
 
   // Theme-aware colors - will be set in useEffect
   let isDark = false

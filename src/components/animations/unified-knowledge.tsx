@@ -61,7 +61,7 @@ export function UnifiedKnowledge({
     const topY = height * 0.27 // Adjusted to center the animation vertically
     const bottomY = height * 0.73 // Adjusted to center the animation vertically
 
-    let dataParticles: any[] = []
+    let dataParticles: Array<DataParticle> = [];
     let animationTime = 0
 
     class DataParticle {

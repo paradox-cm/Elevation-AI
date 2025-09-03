@@ -57,8 +57,8 @@ export function AgenticEngine({
       attributeFilter: ['class']
     })
 
-    let nodes: any[] = []
-    let lines: any[] = []
+    let nodes: Array<{ x: number; y: number; vx: number; vy: number; opacity: number; radius: number }> = []
+    let lines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; opacity: number }> = []
 
     class Node {
       x: number
