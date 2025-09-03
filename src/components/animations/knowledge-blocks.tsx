@@ -83,7 +83,7 @@ export function KnowledgeBlocks({
       }
     }
     
-    // Create logical network-like connections (original desktop frequency)
+    // Create logical network-like connections (reduced frequency for performance)
     blocks.forEach((block, index) => {
       const row = Math.floor(index / cols)
       const col = index % cols
@@ -101,18 +101,18 @@ export function KnowledgeBlocks({
         adjacentConnections.push(index + cols)
       }
       
-      // Connect to diagonal bottom-right (if exists) - original frequency
-      if (col < cols - 1 && row < rows - 1 && index % 1 === 0) {
+      // Connect to diagonal bottom-right (if exists) - reduced frequency
+      if (col < cols - 1 && row < rows - 1 && index % 2 === 0) {
         adjacentConnections.push(index + cols + 1)
       }
       
-      // Connect to diagonal bottom-left (if exists) - original frequency
-      if (col > 0 && row < rows - 1 && index % 1 === 0) {
+      // Connect to diagonal bottom-left (if exists) - reduced frequency
+      if (col > 0 && row < rows - 1 && index % 2 === 0) {
         adjacentConnections.push(index + cols - 1)
       }
       
-      // Add some cross-connections for network effect (but not random) - original frequency
-      if (index % 2 === 0 && index + 2 < blocks.length) {
+      // Add some cross-connections for network effect (but not random) - reduced frequency
+      if (index % 4 === 0 && index + 2 < blocks.length) {
         adjacentConnections.push(index + 2)
       }
       
