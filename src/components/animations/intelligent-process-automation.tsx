@@ -7,6 +7,8 @@ interface TradeLine {
   y: number
   dir: 'horizontal' | 'vertical'
   speed: number
+  horizontalDirection?: number
+  verticalDirection?: number
 }
 
 interface IntelligentProcessAutomationProps {
@@ -243,65 +245,132 @@ export function IntelligentProcessAutomationMobile({
     const gridSize = 17 // Reduced grid size by 30% for mobile (was 24, now 17)
     const speedFactor = 1.8 // Keep same speed as desktop
     
-    // Create traffic with more lines for mobile (smaller spacing between lines)
-    for (let x = gridBoundary.x; x < gridBoundary.x + gridBoundary.width; x += gridSize * 1.3) { // Reduced spacing for more lines (was 1.5)
-      for (let y = gridBoundary.y; y < gridBoundary.y + gridBoundary.height; y += gridSize * 1.3) { // Reduced spacing for more lines (was 1.5)
+    // Create traffic with much more density for mobile (smaller spacing between lines)
+    for (let x = gridBoundary.x; x < gridBoundary.x + gridBoundary.width; x += gridSize * 0.15) { // Much denser spacing for the small 5x3 grid
+      for (let y = gridBoundary.y; y < gridBoundary.y + gridBoundary.height; y += gridSize * 0.15) { // Much denser spacing for the small 5x3 grid
         // Add more randomness to starting positions
-        const randomOffsetX = (Math.random() - 0.5) * gridSize * 1.2 // Increased from 0.8
-        const randomOffsetY = (Math.random() - 0.5) * gridSize * 1.2 // Increased from 0.8
+        const randomOffsetX = (Math.random() - 0.5) * gridSize * 0.4
+        const randomOffsetY = (Math.random() - 0.5) * gridSize * 0.4
         
-        // Determine if this is in the center area for more vertical lines
-        const centerX = gridBoundary.x + gridBoundary.width / 2
-        const centerY = gridBoundary.y + gridBoundary.height / 2
-        const distanceFromCenter = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2)
-        const centerRadius = Math.min(gridBoundary.width, gridBoundary.height) * 0.3 // 30% of grid size
-        
-        // In center area: 80% vertical, 20% horizontal
-        // Outside center area: 50% vertical, 50% horizontal
-        const isInCenter = distanceFromCenter < centerRadius
-        const verticalProbability = isInCenter ? 0.8 : 0.5
+        // For the small 5x3 grid, create more balanced distribution
+        // 50% vertical, 50% horizontal across the entire grid
+        const verticalProbability = 0.5
         
         // Add some randomness to the direction probability
-        const finalVerticalProbability = verticalProbability + (Math.random() - 0.5) * 0.2
+        const finalVerticalProbability = verticalProbability + (Math.random() - 0.5) * 0.3
         
-        traffic.push({
+        const line: TradeLine = {
           x: x + randomOffsetX,
           y: y + randomOffsetY,
           dir: Math.random() < finalVerticalProbability ? 'vertical' : 'horizontal',
           speed: (Math.random() * 3 + 0.5) * speedFactor // More speed variation
-        })
+        }
+        
+        // Initialize direction properties
+        if (line.dir === 'horizontal') {
+          line.horizontalDirection = Math.random() > 0.5 ? 1 : -1
+        } else {
+          line.verticalDirection = Math.random() > 0.5 ? 1 : -1
+        }
+        
+        traffic.push(line)
       }
     }
     
-    // Add extra vertical lines specifically in the center for more density
-    const centerX = gridBoundary.x + gridBoundary.width / 2
-    const centerY = gridBoundary.y + gridBoundary.height / 2
-    const centerRadius = Math.min(gridBoundary.width, gridBoundary.height) * 0.25 // 25% of grid size
-    
-    for (let i = 0; i < 18; i++) { // Increased from 15 to 18 (20% more)
-      const randomX = centerX + (Math.random() - 0.5) * centerRadius * 1.5
+    // Add extra traffic lines distributed across the entire 5x3 grid area
+    // Add more vertical lines across the grid
+    for (let i = 0; i < 60; i++) { // 60 vertical lines across the grid (increased from 40)
+      const randomX = gridBoundary.x + Math.random() * gridBoundary.width
       const randomY = gridBoundary.y + Math.random() * gridBoundary.height
       
-      traffic.push({
+      const line: TradeLine = {
         x: randomX,
         y: randomY,
         dir: 'vertical',
         speed: (Math.random() * 2 + 1) * speedFactor
-      })
+      }
+      
+      // Initialize direction properties
+      line.verticalDirection = Math.random() > 0.5 ? 1 : -1
+      
+      traffic.push(line)
+    }
+    
+    // Add more horizontal lines across the grid
+    for (let i = 0; i < 60; i++) { // 60 horizontal lines across the grid (increased from 40)
+      const randomX = gridBoundary.x + Math.random() * gridBoundary.width
+      const randomY = gridBoundary.y + Math.random() * gridBoundary.height
+      
+      const line: TradeLine = {
+        x: randomX,
+        y: randomY,
+        dir: 'horizontal',
+        speed: (Math.random() * 2 + 1) * speedFactor,
+        horizontalDirection: Math.random() > 0.5 ? 1 : -1 // 1 for right, -1 for left
+      }
+      
+      traffic.push(line)
     }
     
     // Add more random traffic lines across the entire grid for better distribution
-    for (let i = 0; i < 12; i++) { // Add 12 additional random lines
+    for (let i = 0; i < 30; i++) { // Increased from 20 to 30 for more density
       const randomX = gridBoundary.x + Math.random() * gridBoundary.width
       const randomY = gridBoundary.y + Math.random() * gridBoundary.height
-      const randomDir = Math.random() > 0.6 ? 'vertical' : 'horizontal'
+      const randomDir = Math.random() > 0.5 ? 'vertical' : 'horizontal' // 50/50 split
       
-      traffic.push({
+      const line: TradeLine = {
         x: randomX,
         y: randomY,
         dir: randomDir,
         speed: (Math.random() * 3 + 0.5) * speedFactor
-      })
+      }
+      
+      // Initialize direction properties
+      if (line.dir === 'horizontal') {
+        line.horizontalDirection = Math.random() > 0.5 ? 1 : -1
+      } else {
+        line.verticalDirection = Math.random() > 0.5 ? 1 : -1
+      }
+      
+      traffic.push(line)
+    }
+    
+    // Add guaranteed middle-area traffic lines to fill the center of the 5x3 grid
+    const middleStartX = gridBoundary.x + gridBoundary.width * 0.2 // Start 20% from left edge
+    const middleEndX = gridBoundary.x + gridBoundary.width * 0.8 // End 80% from left edge
+    const middleStartY = gridBoundary.y + gridBoundary.height * 0.2 // Start 20% from top edge
+    const middleEndY = gridBoundary.y + gridBoundary.height * 0.8 // End 80% from top edge
+    
+    // Add middle-area vertical lines
+    for (let i = 0; i < 25; i++) {
+      const randomX = middleStartX + Math.random() * (middleEndX - middleStartX)
+      const randomY = gridBoundary.y + Math.random() * gridBoundary.height
+      
+      const line: TradeLine = {
+        x: randomX,
+        y: randomY,
+        dir: 'vertical',
+        speed: (Math.random() * 2 + 1) * speedFactor
+      }
+      
+      line.verticalDirection = Math.random() > 0.5 ? 1 : -1
+      traffic.push(line)
+    }
+    
+    // Add middle-area horizontal lines
+    for (let i = 0; i < 25; i++) {
+      const randomX = gridBoundary.x + Math.random() * gridBoundary.width
+      const randomY = middleStartY + Math.random() * (middleEndY - middleStartY)
+      
+      const line: TradeLine = {
+        x: randomX,
+        y: randomY,
+        dir: 'horizontal',
+        speed: (Math.random() * 2 + 1) * speedFactor,
+        horizontalDirection: Math.random() > 0.5 ? 1 : -1
+      }
+      
+      traffic.push(line)
     }
     
     // Add extra vertical lines specifically on the left and right sides
@@ -309,29 +378,55 @@ export function IntelligentProcessAutomationMobile({
     const rightSideX = gridBoundary.x + gridBoundary.width - gridSize * 2 // 2 grid units from right edge
     
     // Left side vertical lines
-    for (let i = 0; i < 8; i++) { // Add 8 vertical lines on left side
+    for (let i = 0; i < 12; i++) { // Increased from 8 to 12
       const randomY = gridBoundary.y + Math.random() * gridBoundary.height
       const randomOffsetX = (Math.random() - 0.5) * gridSize * 0.8 // Slight horizontal variation
       
-      traffic.push({
+      const line: TradeLine = {
         x: leftSideX + randomOffsetX,
         y: randomY,
         dir: 'vertical',
         speed: (Math.random() * 2 + 1) * speedFactor
-      })
+      }
+      
+      // Initialize direction properties
+      line.verticalDirection = Math.random() > 0.5 ? 1 : -1
+      
+      traffic.push(line)
     }
     
     // Right side vertical lines
-    for (let i = 0; i < 8; i++) { // Add 8 vertical lines on right side
+    for (let i = 0; i < 12; i++) { // Increased from 8 to 12
       const randomY = gridBoundary.y + Math.random() * gridBoundary.height
       const randomOffsetX = (Math.random() - 0.5) * gridSize * 0.8 // Slight horizontal variation
       
-      traffic.push({
+      const line: TradeLine = {
         x: rightSideX + randomOffsetX,
         y: randomY,
         dir: 'vertical',
         speed: (Math.random() * 2 + 1) * speedFactor
-      })
+      }
+      
+      // Initialize direction properties
+      line.verticalDirection = Math.random() > 0.5 ? 1 : -1
+      
+      traffic.push(line)
+    }
+    
+    // Add dedicated horizontal lines for left-right movement across the entire grid
+    for (let i = 0; i < 35; i++) { // 35 dedicated horizontal lines across the grid (increased from 20)
+      const randomX = gridBoundary.x + Math.random() * gridBoundary.width
+      const randomY = gridBoundary.y + Math.random() * gridBoundary.height
+      
+      const line: TradeLine = {
+        x: randomX,
+        y: randomY,
+        dir: 'horizontal',
+        speed: (Math.random() * 2 + 1) * speedFactor,
+        horizontalDirection: Math.random() > 0.5 ? 1 : -1 // 1 for right, -1 for left
+      }
+      
+      traffic.push(line)
     }
     
     return traffic
@@ -361,34 +456,39 @@ export function IntelligentProcessAutomationMobile({
     
     // Update and draw traffic with soft edge fade effect
     trafficRef.current.forEach(tradeLine => {
-      // Add more frequent direction changes for better randomness (mobile only)
-      if (Math.random() < 0.002) { // Increased from 0.001 to 0.002 (0.2% chance per frame)
-        tradeLine.dir = Math.random() > 0.5 ? 'horizontal' : 'vertical'
+      // Initialize direction properties if they don't exist
+      if (tradeLine.dir === 'horizontal' && !tradeLine.horizontalDirection) {
+        tradeLine.horizontalDirection = Math.random() > 0.5 ? 1 : -1
+      }
+      if (tradeLine.dir === 'vertical' && !tradeLine.verticalDirection) {
+        tradeLine.verticalDirection = Math.random() > 0.5 ? 1 : -1
       }
       
-      // Add occasional speed variations to break up repetitive patterns
-      if (Math.random() < 0.003) { // 0.3% chance per frame to vary speed
-        tradeLine.speed = (Math.random() * 3 + 0.5) * 1.8 // Use the speedFactor value directly
-      }
-      
-      // Update position with enhanced randomization
+      // Update position with bidirectional movement
       if (tradeLine.dir === 'horizontal') {
-        // Horizontal lines get more varied movement
-        const movementVariation = 0.8 + Math.random() * 0.4 // 0.8 to 1.2 variation
-        tradeLine.x += tradeLine.speed + (Math.random() - 0.5) * movementVariation
-        if (tradeLine.x > gridBoundary.x + gridBoundary.width) tradeLine.x = gridBoundary.x - gridSize
+        // Horizontal lines move left and right
+        tradeLine.x += tradeLine.speed * (tradeLine.horizontalDirection || 1)
+        
+        // Wrap around for bidirectional movement
+        if (tradeLine.x > gridBoundary.x + gridBoundary.width + gridSize) {
+          tradeLine.x = gridBoundary.x - gridSize
+          tradeLine.horizontalDirection = -1 // Change direction to left
+        } else if (tradeLine.x < gridBoundary.x - gridSize) {
+          tradeLine.x = gridBoundary.x + gridBoundary.width + gridSize
+          tradeLine.horizontalDirection = 1 // Change direction to right
+        }
       } else {
-        // Vertical lines get more varied movement for better visual effect
-        const centerX = gridBoundary.x + gridBoundary.width / 2
-        const distanceFromCenter = Math.abs(tradeLine.x - centerX)
-        const centerRadius = Math.min(gridBoundary.width, gridBoundary.height) * 0.25
+        // Vertical lines move up and down
+        tradeLine.y += tradeLine.speed * (tradeLine.verticalDirection || 1)
         
-        // Center vertical lines get more varied movement
-        const movementVariation = distanceFromCenter < centerRadius ? 1.2 : 0.8
-        const randomOffset = (Math.random() - 0.5) * 2 // Increased random movement
-        tradeLine.y += tradeLine.speed + randomOffset * movementVariation
-        
-        if (tradeLine.y > gridBoundary.y + gridBoundary.height) tradeLine.y = gridBoundary.y - gridSize
+        // Wrap around for bidirectional movement
+        if (tradeLine.y > gridBoundary.y + gridBoundary.height + gridSize) {
+          tradeLine.y = gridBoundary.y - gridSize
+          tradeLine.verticalDirection = -1 // Change direction to up
+        } else if (tradeLine.y < gridBoundary.y - gridSize) {
+          tradeLine.y = gridBoundary.y + gridBoundary.height + gridSize
+          tradeLine.verticalDirection = 1 // Change direction to down
+        }
       }
       
       // Calculate fade opacity based on position (softer edges)
@@ -424,13 +524,13 @@ export function IntelligentProcessAutomationMobile({
       
       if (tradeLine.dir === 'horizontal') {
         ctx.moveTo(tradeLine.x, tradeLine.y)
-        ctx.lineTo(tradeLine.x + gridSize * 0.7, tradeLine.y)
+        ctx.lineTo(tradeLine.x + gridSize * 1.2, tradeLine.y)
       } else {
         ctx.moveTo(tradeLine.x, tradeLine.y)
-        ctx.lineTo(tradeLine.x, tradeLine.y + gridSize * 0.7)
+        ctx.lineTo(tradeLine.x, tradeLine.y + gridSize * 1.2)
       }
       
-    ctx.stroke()
+      ctx.stroke()
     })
 
     animationRef.current = requestAnimationFrame(() => animate(canvas, ctx))

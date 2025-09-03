@@ -106,25 +106,11 @@ export function RealTimeBusinessIntelligence({
       ctx.shadowOffsetX = 0
       ctx.shadowOffsetY = 0
       
-      // Draw subtle inner border for glass effect
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.roundRect(dashboard.x + 1, dashboard.y + 1, dashboard.width - 2, dashboard.height - 2, radius)
-      ctx.stroke()
-      
       // Draw title bar with glass effect
       ctx.fillStyle = titleBarColor
       ctx.beginPath()
       ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, 25, [radius, radius, 0, 0])
       ctx.fill()
-      
-      // Draw subtle title bar border
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.roundRect(dashboard.x + 1, dashboard.y + 1, dashboard.width - 2, 23, [radius, radius, 0, 0])
-      ctx.stroke()
       
       // Draw dashboard grid structure and skeleton UI
       drawDashboardGrid()

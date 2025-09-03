@@ -109,7 +109,7 @@ function Header() {
   const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20 transition-colors duration-300" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
+          <header className="sticky top-0 z-50 w-full border-b border-border bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20 transition-colors duration-300" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -1285,6 +1285,11 @@ function PlatformSection() {
 function HowWeDoItSection() {
   const [activeStep, setActiveStep] = React.useState(0)
   const [currentCard, setCurrentCard] = React.useState(0)
+  const [isDragging, setIsDragging] = React.useState(false)
+  const [startX, setStartX] = React.useState(0)
+  const [currentX, setCurrentX] = React.useState(0)
+  const [dragOffset, setDragOffset] = React.useState(0)
+  const carouselRef = React.useRef<HTMLDivElement>(null)
   
   const approaches = [
     {
@@ -1322,6 +1327,99 @@ function HowWeDoItSection() {
 
   const goToCard = (index: number) => {
     setCurrentCard(index)
+  }
+
+  // Touch and drag handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true)
+    setStartX(e.touches[0].clientX)
+    setCurrentX(e.touches[0].clientX)
+    setDragOffset(0)
+    
+    // Pause auto-play while dragging
+    if (carouselRef.current) {
+      carouselRef.current.style.transition = 'none'
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return
+    e.preventDefault()
+    const x = e.touches[0].clientX
+    setCurrentX(x)
+    setDragOffset(x - startX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return
+    setIsDragging(false)
+    
+    // Restore transition
+    if (carouselRef.current) {
+      carouselRef.current.style.transition = 'transform 0.3s ease-in-out'
+    }
+    
+    const threshold = 50 // minimum distance to trigger swipe
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        // Swipe right - go to previous card
+        prevCard()
+        // Haptic feedback for mobile
+        if ('vibrate' in navigator) {
+          navigator.vibrate(50)
+        }
+      } else {
+        // Swipe left - go to next card
+        nextCard()
+        // Haptic feedback for mobile
+        if ('vibrate' in navigator) {
+          navigator.vibrate(50)
+        }
+      }
+    }
+    setDragOffset(0)
+  }
+
+  // Mouse drag handlers for desktop testing
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true)
+    setStartX(e.clientX)
+    setCurrentX(e.clientX)
+    setDragOffset(0)
+    
+    // Pause auto-play while dragging
+    if (carouselRef.current) {
+      carouselRef.current.style.transition = 'none'
+    }
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return
+    const x = e.clientX
+    setCurrentX(x)
+    setDragOffset(x - startX)
+  }
+
+  const handleMouseUp = () => {
+    if (!isDragging) return
+    setIsDragging(false)
+    
+    // Restore transition
+    if (carouselRef.current) {
+      carouselRef.current.style.transition = 'transform 0.3s ease-in-out'
+    }
+    
+    const threshold = 50 // minimum distance to trigger swipe
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        // Drag right - go to previous card
+        prevCard()
+      } else {
+        // Drag left - go to next card
+        nextCard()
+      }
+    }
+    setDragOffset(0)
   }
 
   // Auto-play functionality for the carousel
@@ -1397,8 +1495,19 @@ function HowWeDoItSection() {
                 {/* Carousel Container */}
                 <div className="overflow-hidden">
                   <div 
-                    className="flex transition-transform duration-300 ease-in-out"
-                    style={{ transform: `translateX(-${currentCard * 100}%)` }}
+                    ref={carouselRef}
+                    className={`flex transition-transform duration-300 ease-in-out touch-pan-y select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+                    style={{ 
+                      transform: `translateX(calc(-${currentCard * 100}% + ${dragOffset * 0.8}px))`,
+                      transition: isDragging ? 'none' : 'transform 0.3s ease-in-out'
+                    }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
                   >
                     {ventureStages.map((stage, index) => (
                       <div key={index} className="w-full flex-shrink-0">
@@ -1414,6 +1523,17 @@ function HowWeDoItSection() {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Drag Direction Indicator */}
+                  {isDragging && Math.abs(dragOffset) > 10 && (
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                      <div className={`px-3 py-2 rounded-lg bg-background/90 border border-border text-sm font-medium transition-opacity duration-200 ${
+                        dragOffset > 0 ? 'text-blue-600' : 'text-green-600'
+                      }`}>
+                        {dragOffset > 0 ? '← Previous' : 'Next →'}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Navigation Arrows */}
@@ -1557,25 +1677,53 @@ function ClosingCTASection() {
   return (
     <Section paddingY="lg" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
-          <div className="space-y-4 lg:space-y-6">
-            <H2 className="text-3xl sm:text-4xl lg:text-5xl">Elevate Your Organization</H2>
-            <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
-              From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
-            </BodyLarge>
+        {/* Mobile Layout - Full Viewport Height */}
+        <div className="block lg:hidden min-h-screen flex items-center justify-center py-8">
+          <div className="text-center space-y-8 max-w-3xl mx-auto">
+            <div className="space-y-6">
+              <H2 className="text-3xl sm:text-4xl">Elevate Your Organization</H2>
+              <BodyLarge className="text-muted-foreground text-base sm:text-lg">
+                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
+              </BodyLarge>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+                <Link href="/wireframes/demo">
+                  Request a Demo
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+                <Link href="/wireframes/sign-up">
+                  Get Started
+                </Link>
+              </Button>
+            </div>
           </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-              <Link href="/wireframes/demo">
-                Request a Demo
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-              <Link href="/wireframes/sign-up">
-                Get Started
-              </Link>
-            </Button>
+        </div>
+
+        {/* Desktop Layout - Original Design */}
+        <div className="hidden lg:block">
+          <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
+            <div className="space-y-4 lg:space-y-6">
+              <H2 className="text-3xl sm:text-4xl lg:text-5xl">Elevate Your Organization</H2>
+              <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
+                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
+              </BodyLarge>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+                <Link href="/wireframes/demo">
+                  Request a Demo
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+                <Link href="/wireframes/sign-up">
+                  Get Started
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </Container>

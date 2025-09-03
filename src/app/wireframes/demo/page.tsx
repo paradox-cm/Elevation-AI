@@ -708,9 +708,9 @@ function BenefitsSection() {
 export default function DemoPage() {
   return (
     <PageWrapper>
-      <div className="min-h-screen bg-background transition-colors duration-300">
+      <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col">
         {/* Header with logo, theme toggle, and login */}
-        <header className="border-b border-border/50 bg-background/40 backdrop-blur-2xl">
+        <header className="border-b border-border bg-background/40 backdrop-blur-2xl flex-shrink-0">
           <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
             {/* Logo */}
             <div className="flex items-center">
@@ -732,24 +732,22 @@ export default function DemoPage() {
           </div>
         </header>
 
-        <main className="flex-1">
-          <Section paddingY="xl">
-            <Container>
-              <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                  {/* Left Column - Benefits */}
-                  <div className="order-2 lg:order-1">
-                    <BenefitsSection />
-                  </div>
-                  
-                  {/* Right Column - Form */}
-                  <div className="order-1 lg:order-2">
-                    <DemoRequestForm />
-                  </div>
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <Container>
+            <div className="max-w-7xl mx-auto w-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Left Column - Benefits */}
+                <div className="order-2 lg:order-1">
+                  <BenefitsSection />
+                </div>
+                
+                {/* Right Column - Form */}
+                <div className="order-1 lg:order-2">
+                  <DemoRequestForm />
                 </div>
               </div>
-            </Container>
-          </Section>
+            </div>
+          </Container>
         </main>
       </div>
     </PageWrapper>

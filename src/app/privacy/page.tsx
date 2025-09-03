@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
     <PageWrapper>
       <div className="min-h-screen bg-background transition-colors duration-300">
         {/* Header */}
-        <header className="border-b border-border/50 bg-background/40 backdrop-blur-2xl">
+        <header className="border-b border-border bg-background/40 backdrop-blur-2xl">
           <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
             <div className="flex items-center">
               <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
