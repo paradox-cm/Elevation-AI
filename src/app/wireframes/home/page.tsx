@@ -672,8 +672,8 @@ function ProblemSection() {
                           )}
                           {index === 3 && (
                             <FutureReady 
-                              width={300} 
-                              height={200} 
+                              width={280} 
+                              height={180} 
                               showBorder={false}
                               className=""
                             />

@@ -42,16 +42,21 @@ export function FutureReady({
 
   const createArrows = (canvas: HTMLCanvasElement) => {
     const arrows: Arrow[] = []
-    const centerX = canvas.width * 0.3 // Start from left side
+    
+    // Responsive positioning and sizing
+    const isMobile = canvas.width <= 400 // Mobile breakpoint
+    const centerX = isMobile ? canvas.width * 0.25 : canvas.width * 0.3 // Adjust for mobile
     const centerY = canvas.height * 0.5 // Center vertically
+    const arrowSpacing = isMobile ? 20 : 25 // Smaller spacing on mobile
+    const verticalOffset = isMobile ? 20 : 25 // Smaller vertical offset on mobile
     
     // Create 5 arrows that repeat up and to the right
     for (let i = 0; i < 5; i++) {
       const arrow: Arrow = {
-        x: centerX + (i * 25), // Move right
-        y: centerY - (i * 25), // Move up from center (equal to horizontal offset for perfect diagonal)
+        x: centerX + (i * arrowSpacing), // Move right
+        y: centerY - (i * verticalOffset), // Move up from center (equal to horizontal offset for perfect diagonal)
         opacity: 0.1, // Start very transparent
-        delay: i * 0.3, // Staggered appearance
+        delay: i * 0.36, // Staggered appearance (slowed down by 20%)
       }
       arrows.push(arrow)
     }
@@ -94,28 +99,28 @@ export function FutureReady({
     const arrows = arrowsRef.current
     const currentTime2 = performance.now() / 1000 // Convert to seconds
     
-    // Calculate loop timing for seamless restart
-    const totalAppearTime = 5 * 0.3 // Time for all arrows to appear
-    const totalFadeOutTime = 5 * 0.3 // Time for all arrows to fade out (slower fade)
-    const loopDuration = totalAppearTime + totalFadeOutTime // No gap between loops
+    // Calculate loop timing for seamless restart (slowed down by 20%)
+    const totalAppearTime = 5 * 0.36 // Time for all arrows to appear (0.3s * 1.2)
+    const totalFadeOutTime = 5 * 0.36 // Time for all arrows to fade out (0.3s * 1.2)
+    const loopDuration = totalAppearTime + totalFadeOutTime // Perfect loop timing for smooth transition
     const loopTime = currentTime2 % loopDuration
     
     // Update and draw arrows
     arrows.forEach((arrow, index) => {
-      // Check if we're in the fade-out phase
-      const fadeOutStartTime = totalAppearTime + (index * 0.3) // Start fading out from bottom (index 0)
-      
-      if (loopTime >= fadeOutStartTime) {
-        // Fade out phase - calculate fade progress
-        const fadeProgress = Math.min(1, (loopTime - fadeOutStartTime) / 0.3)
-        arrow.opacity = 0.9 * (1 - fadeProgress)
-              } else {
+              // Check if we're in the fade-out phase
+        const fadeOutStartTime = totalAppearTime + (index * 0.36) // Start fading out from bottom (index 0)
+        
+        if (loopTime >= fadeOutStartTime) {
+          // Fade out phase - calculate fade progress
+          const fadeProgress = Math.min(1, (loopTime - fadeOutStartTime) / 0.36)
+          arrow.opacity = 0.9 * (1 - fadeProgress)
+        } else {
           // Fade in phase - sequential from bottom to top (index 0 to 4)
-          const fadeInStartTime = index * 0.3 // Start fading in from bottom (index 0)
+          const fadeInStartTime = index * 0.36 // Start fading in from bottom (index 0)
           
           if (loopTime >= fadeInStartTime) {
-            // Calculate fade in progress
-            const fadeInProgress = Math.min(1, (loopTime - fadeInStartTime) / 0.3)
+            // Calculate fade in progress - match fade-out timing exactly
+            const fadeInProgress = Math.min(1, (loopTime - fadeInStartTime) / 0.36)
             arrow.opacity = 0.9 * fadeInProgress
           } else {
             // Keep opacity at 0 before fade-in starts
@@ -186,7 +191,12 @@ export function FutureReady({
         <canvas 
           ref={canvasRef}
           className="rounded-lg"
-          style={{ width: `${width}px`, height: `${height}px` }}
+          style={{ 
+            width: `${width}px`, 
+            height: `${height}px`,
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }}
         />
       </div>
     </div>
