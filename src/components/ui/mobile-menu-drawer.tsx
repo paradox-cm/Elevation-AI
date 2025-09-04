@@ -48,9 +48,9 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   return (
-    <div className="flex flex-col min-h-0">
+    <div className="flex flex-col min-h-full bg-background">
       {/* Navigation Content */}
-      <div className="p-4 pb-4">
+      <div className="flex-1 p-4 pb-4 bg-background">
         {/* Main Navigation */}
         <div className="space-y-2">
           {mainNavigationLinks.map((link) => (
@@ -87,7 +87,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                   
                   {/* Platform Dropdown */}
                   {link.label === "Platform" && expandedPlatform && (
-                    <div className="ml-4 space-y-1">
+                    <div className="ml-4 space-y-1 bg-background">
                       {platformSubLinks.map((subLink) => (
                         <Link
                           key={subLink.href}
@@ -103,7 +103,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                   
                   {/* Resources Dropdown */}
                   {link.label === "Resources" && expandedResources && (
-                    <div className="ml-4 space-y-1">
+                    <div className="ml-4 space-y-1 bg-background">
                       {resourcesSubLinks.map((subLink) => (
                         <Link
                           key={subLink.href}
