@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
-import { H1, H2, H3, H4, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
+import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
 import { GlobalHeader } from "@/components/ui/global-header"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
@@ -173,7 +173,7 @@ function Header() {
                     <li><Link href="/solutions/scaling" className="text-sm hover:text-primary transition-colors">Scaling a Venture</Link></li>
                     <li><Link href="/solutions/exiting" className="text-sm hover:text-primary transition-colors">Exiting a Venture</Link></li>
                     <li><Link href="/solutions/post-ipo" className="text-sm hover:text-primary transition-colors">Post-IPO Growth</Link></li>
-                    <li><Link href="/solutions/family-office" className="text-sm hover:text-primary transition-colors">Post-Exit Family Office Creation</Link></li>
+                    <li><Link href="/solutions/family-office" className="text-sm hover:text-primary transition-colors">Post-Exit/Family Office</Link></li>
                   </ul>
                 </div>
               </div>
@@ -205,34 +205,53 @@ function Header() {
           </div>
         </nav>
 
-        {/* Right CTAs */}
-        <div className="hidden lg:flex items-center space-x-3">
-          <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-            <Link href="/wireframes/login">
-              <Icon name="login-box-line" className="h-4 w-4 mr-1" />
-              Login
-            </Link>
-          </Button>
-          <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
-            <Link href="/wireframes/demo">
-              Request a Demo
-            </Link>
-          </Button>
+        {/* Right side - CTAs and Mobile Menu */}
+        <div className="flex items-center space-x-3">
+          {/* Desktop CTAs - Hidden below xl */}
+          <div className="hidden xl:flex items-center space-x-3">
+            <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
+              <Link href="/wireframes/login">
+                <Icon name="login-box-line" className="h-4 w-4 mr-1" />
+                Login
+              </Link>
+            </Button>
+            <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
+              <Link href="/wireframes/demo">
+                Request a Demo
+              </Link>
+            </Button>
+          </div>
+          
+          {/* Mobile/Tablet CTAs - Hidden on small screens, visible on medium+ */}
+          <div className="hidden lg:flex xl:hidden items-center space-x-3">
+            <Button variant="ghost" size="sm" asChild className="text-xs lg:text-sm hover:bg-muted/50">
+              <Link href="/wireframes/login">
+                <Icon name="login-box-line" className="h-4 w-4 mr-1" />
+                Login
+              </Link>
+            </Button>
+            <Button size="sm" asChild className="text-xs lg:text-sm hover:bg-primary/90">
+              <Link href="/wireframes/demo">
+                Request a Demo
+              </Link>
+            </Button>
+          </div>
+          
+          {/* Theme Toggle - Always visible */}
           <ThemeToggle />
-        </div>
-
-        {/* Mobile menu button */}
-        <div className="flex items-center space-x-2 lg:hidden">
-          <ThemeToggle />
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-muted/50"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <Icon name={mobileMenuOpen ? "close-line" : "menu-line"} className="h-5 w-5" />
-            <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Toggle menu"}</span>
-          </Button>
+          
+          {/* Mobile Menu Button - Only visible below xl */}
+          <div className="xl:hidden">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-muted/50"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <Icon name={mobileMenuOpen ? "close-line" : "menu-line"} className="h-5 w-5" />
+              <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Toggle menu"}</span>
+            </Button>
+          </div>
         </div>
       </div>
     </header>
@@ -251,9 +270,9 @@ function HeroSection() {
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight">
-                Your Universe. Intelligently Orchestrated.
-              </div>
+                              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold leading-tight">
+                  Your Universe. Intelligently Orchestrated.
+                </div>
               <BodyLarge className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
                 We are an agentic knowledge and work orchestration platform, helping you adapt to the agentic era through our platform and concierge team.
               </BodyLarge>
@@ -451,11 +470,11 @@ function ProblemIntroductionSection() {
                           : 'opacity-0 pointer-events-none'
                       }`}
                     >
-                      <div className="h-full flex items-center">
-                        <div className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-semibold leading-tight text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-                          {textItem.text}
+                                              <div className="h-full flex items-start lg:items-center">
+                          <div className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold leading-tight text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
+                            {textItem.text}
+                          </div>
                         </div>
-                      </div>
                     </div>
                   ))}
                 </div>
@@ -497,11 +516,11 @@ function ProblemIntroductionSection() {
                           : 'opacity-0 pointer-events-none'
                       }`}
                     >
-                      <div className="h-full flex items-center">
-                        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-                          {textItem.text}
+                                              <div className="h-full flex items-center">
+                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
+                            {textItem.text}
+                          </div>
                         </div>
-                      </div>
                     </div>
                   ))}
                 </div>
@@ -626,13 +645,13 @@ function ProblemSection() {
     return (
     <Section paddingY="lg" className="bg-muted/30">
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-12">
+        <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
-            <div className="text-center space-y-4 lg:space-y-6 mb-8">
-              <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">Unify your systems</H2>
-              <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">Unify your systems</H1>
+              <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </BodyLarge>
             </div>
@@ -644,8 +663,8 @@ function ProblemSection() {
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-full border-border/50 transition-colors duration-300 flex flex-col">
-                      <CardHeader className="pt-3 pb-3 flex-shrink-0">
+                    <Card className="h-[500px] sm:h-[550px] md:h-[600px] border-border/50 transition-colors duration-300 flex flex-col">
+                      <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Icon name={problem.icon} size="lg" className="text-primary" />
@@ -656,37 +675,37 @@ function ProblemSection() {
                           {problem.description}
                         </BodyLarge>
                       </CardHeader>
-                      <CardContent className="flex-1 flex flex-col justify-end pb-4">
+                      <CardContent className="flex-1 flex flex-col justify-end pb-6 px-4">
                         {/* Animation Container */}
-                        <div className="h-[300px] sm:h-[350px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
+                        <div className="h-[240px] sm:h-[280px] md:h-[320px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
                           {index === 0 && (
                             <UnifiedKnowledge 
-                              width={300} 
-                              height={300} 
+                              width={220} 
+                              height={220} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 1 && (
                             <IntelligentProcessAutomation 
-                              width={300} 
-                              height={200} 
+                              width={220} 
+                              height={160} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 2 && (
                             <RealTimeBusinessIntelligenceMobile 
-                              width={240} 
-                              height={240} 
+                              width={200} 
+                              height={200} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 3 && (
                             <FutureReadyMobile 
-                              width={250} 
-                              height={200} 
+                              width={200} 
+                              height={160} 
                               showBorder={false}
                               className=""
                             />
@@ -703,18 +722,18 @@ function ProblemSection() {
           {/* Desktop Layout - Scroll-triggered Carousel */}
           <div className="hidden lg:block relative" ref={sectionRef}>
             {/* Carousel Container */}
-            <div className="sticky top-20 h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
-              <div className="w-full h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-6rem)] 2xl:h-[calc(100vh-5rem)] relative flex items-center">
+            <div className="sticky top-20 h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-7rem)] 2xl:h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
+              <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
                 <div className="w-full flex flex-col items-center justify-center min-h-0">
                   {/* Section Headline */}
-                  <div className="text-center space-y-4 lg:space-y-6 mb-8">
-                    <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">Unify your systems</H2>
-                    <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+                  <div className="text-center space-y-0 lg:space-y-1 mb-4 lg:mb-6 xl:mb-8">
+                    <H1>Unify your systems</H1>
+                    <BodyLarge className="text-muted-foreground max-w-4xl mx-auto">
                       Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
                     </BodyLarge>
                   </div>
                   {/* Carousel Container */}
-                  <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]">
+                  <div className="relative w-full h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]">
                     {problems.map((problem, index) => (
                     <div
                       key={index}
@@ -750,7 +769,7 @@ function ProblemSection() {
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full w-full">
                             {/* Content */}
                             <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
-                              <H3 className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">{problem.title}</H3>
+                              <H1>{problem.title}</H1>
                               <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
                                 {problem.description}
                               </BodyLarge>
@@ -798,7 +817,7 @@ function ProblemSection() {
             </div>
             
             {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 950 + 950 + 200}px` }}></div>
+            <div style={{ height: `${650 + 650 + 750 + 750 + 750 + 200}px` }}></div>
           </div>
         </div>
       </Container>
@@ -916,13 +935,13 @@ function PlatformSection() {
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-12">
+        <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
-            <div className="text-center space-y-4 lg:space-y-6 mb-8">
-              <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">The agentic platform</H2>
-              <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">The agentic platform</H1>
+              <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
               </BodyLarge>
             </div>
@@ -934,8 +953,8 @@ function PlatformSection() {
                     data-platform-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-full border-border/50 transition-colors duration-300 flex flex-col">
-                      <CardHeader className="pt-3 pb-3 flex-shrink-0">
+                    <Card className="h-[500px] sm:h-[550px] md:h-[600px] border-border/50 transition-colors duration-300 flex flex-col">
+                      <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Icon name={feature.icon} className="text-blue-600" />
@@ -946,41 +965,41 @@ function PlatformSection() {
                           {feature.description}
                         </BodyLarge>
                       </CardHeader>
-                      <CardContent className="flex-1 flex flex-col justify-end space-y-4 pb-4">
+                      <CardContent className="flex-1 flex flex-col justify-end space-y-4 pb-6 px-4">
                         {/* Animation Container */}
-                        <div className="h-[300px] sm:h-[350px] rounded-xl flex items-center justify-center relative overflow-hidden">
+                        <div className="h-[240px] sm:h-[280px] md:h-[320px] rounded-xl flex items-center justify-center relative overflow-hidden">
                           {index === 0 && (
                             <KnowledgeBlocksMobile 
-                              width={300} 
-                              height={200} 
+                              width={220} 
+                              height={160} 
                               showBorder={false}
                             />
                           )}
                           {index === 1 && (
                             <WorkspacesCanvases 
-                              width={300} 
-                              height={300} 
+                              width={220} 
+                              height={220} 
                               showBorder={false}
                             />
                           )}
                           {index === 2 && (
                             <AgenticEngine 
-                              width={300} 
-                              height={300} 
+                              width={220} 
+                              height={220} 
                               showBorder={false}
                             />
                           )}
                           {index === 3 && (
                             <PersonalCopilot 
-                              width={300} 
-                              height={300} 
+                              width={220} 
+                              height={220} 
                               showBorder={false}
                             />
                           )}
                           {index === 4 && (
                             <EnterpriseSecurity 
-                              width={300} 
-                              height={200} 
+                              width={220} 
+                              height={160} 
                               showBorder={false}
                             />
                           )}
@@ -996,13 +1015,13 @@ function PlatformSection() {
           {/* Desktop Layout - Scroll-triggered Tabbed Interface */}
           <div className="hidden lg:block relative" ref={sectionRef}>
             {/* Sticky Tab Container */}
-            <div className="sticky top-20 h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
-              <div className="w-full h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-6rem)] 2xl:h-[calc(100vh-5rem)] relative flex items-center">
+            <div className="sticky top-20 h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-7rem)] 2xl:h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
+              <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
                                   <div className="w-full flex flex-col items-center justify-center min-h-0">
                   {/* Section Headline */}
-                  <div className="text-center space-y-4 lg:space-y-6 mb-8">
-                    <H2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">The agentic platform</H2>
-                    <BodyLarge className="text-muted-foreground text-base sm:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto">
+                  <div className="text-center space-y-0 lg:space-y-1 mb-4 lg:mb-6 xl:mb-8">
+                    <H1>The agentic platform</H1>
+                    <BodyLarge className="text-muted-foreground max-w-4xl mx-auto">
                       So your business moves faster, thinks smarter, and stays ahead.
                     </BodyLarge>
                   </div>
@@ -1018,9 +1037,9 @@ function PlatformSection() {
                         }`}
                       >
                         <Card className="border-border/50 transition-colors duration-300 h-full">
-                          <CardHeader className="h-full flex flex-col justify-center p-6 lg:p-8 xl:p-10 2xl:p-12">
-                            {/* Tab Navigation - Positioned at top of card */}
-                            <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-4 lg:mb-6 xl:mb-8">
+                          <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12 min-h-0 overflow-hidden">
+                            {/* Tab Navigation - Positioned at top of card with proper spacing */}
+                            <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-0.5 lg:mb-1 xl:mb-1.5 2xl:mb-2">
                               {features.map((featureTab, tabIndex) => (
                                 <button
                                   key={tabIndex}
@@ -1035,14 +1054,14 @@ function PlatformSection() {
                                 </button>
                               ))}
                             </div>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full w-full">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center justify-center flex-1 w-full min-h-0 overflow-hidden">
                               <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
-                                <CardTitle className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">{feature.title}</CardTitle>
+                                <H1>{feature.title}</H1>
                                 <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl leading-relaxed">
                                   {feature.description}
                                 </BodyLarge>
                               </div>
-                              <div className="h-[600px] lg:h-[600px] xl:h-[600px] 2xl:h-[600px] w-full rounded-xl flex items-center justify-center relative overflow-hidden">
+                              <div className="h-[300px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] w-full rounded-xl flex items-center justify-center relative overflow-hidden">
                                 {activeTab === 0 && (
                                   <KnowledgeBlocks 
                                     width={600} 
@@ -1090,7 +1109,7 @@ function PlatformSection() {
             </div>
             
             {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 950 + 950 + 200}px` }}></div>
+            <div style={{ height: `${650 + 650 + 750 + 750 + 750 + 200}px` }}></div>
           </div>
         </div>
       </Container>
@@ -1131,7 +1150,7 @@ function HowWeDoItSection() {
     "Scaling a Venture", 
     "Exiting a Venture",
     "Post-IPO Growth",
-    "Post-Exit Family Office Creation"
+    "Post-Exit/Family Office"
   ]
 
   const nextCard = () => {
@@ -1253,9 +1272,9 @@ function HowWeDoItSection() {
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
-          <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
-            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">More Than a Platform.</H2>
-            <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
+          <div className="text-left lg:text-center space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+            <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl 2xl:text-4xl">More Than a Platform.</H1>
+            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl mx-auto">
               A Partnership to Power Every Stage.
             </BodyLarge>
           </div>
@@ -1283,13 +1302,13 @@ function HowWeDoItSection() {
                             <Icon name={approach.icon} size="2xl" className="text-primary" />
                           )}
                         </div>
-                        <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{approach.title}</CardTitle>
+                        <CardTitle className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{approach.title}</CardTitle>
                       </div>
                       
                       {/* Description */}
-                      <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg xl:text-xl">
+                      <P className="text-muted-foreground leading-relaxed">
                         {approach.description}
-                      </BodyLarge>
+                      </P>
                       
                       {/* Learn More Link */}
                       <div className="pt-2">
@@ -1449,11 +1468,11 @@ function WhoWeServeSection() {
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
-          <div className="text-left lg:text-center space-y-4 lg:space-y-6 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-auto">
-                            <H2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold">Intelligent Solutions for Every Domain</H2>
-                          <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
-                Powered by Elevation AI and guided by experts.
-              </BodyLarge>
+          <div className="text-left lg:text-center space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+            <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl 2xl:text-4xl">Intelligent Solutions for Every Domain</H1>
+            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl lg:mx-auto">
+              Powered by Elevation AI and guided by experts.
+            </BodyLarge>
           </div>
 
           {/* Mobile Layout - Single Column */}
@@ -1467,8 +1486,8 @@ function WhoWeServeSection() {
                         <Icon name={solution.icon} size="xl" className="text-primary" />
                       </div>
                       <div className="space-y-3 flex-1">
-                        <CardTitle className="text-lg font-semibold">{solution.title}</CardTitle>
-                        <BodyLarge className="text-muted-foreground text-sm leading-relaxed">{solution.description}</BodyLarge>
+                        <CardTitle className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
+                        <P className="text-muted-foreground leading-relaxed">{solution.description}</P>
                         
                         {/* Learn More Link */}
                         <div className="pt-2">
@@ -1495,8 +1514,8 @@ function WhoWeServeSection() {
                         <Icon name={solution.icon} size="2xl" className="text-primary" />
                       </div>
                       <div className="space-y-3 lg:space-y-4 flex-1">
-                        <CardTitle className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl">{solution.title}</CardTitle>
-                        <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">{solution.description}</BodyLarge>
+                        <CardTitle className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
+                        <P className="text-muted-foreground leading-relaxed">{solution.description}</P>
                         
                         {/* Learn More Link */}
                         <div className="pt-2">
@@ -1524,10 +1543,10 @@ function ClosingCTASection() {
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         {/* Mobile Layout - Full Viewport Height */}
         <div className="block lg:hidden min-h-screen flex items-center justify-center py-8">
-          <div className="text-center space-y-8 max-w-3xl mx-auto">
+          <div className="text-left space-y-8 max-w-3xl mx-auto">
             <div className="space-y-6">
-              <H2 className="text-3xl sm:text-4xl">Elevate Your Organization</H2>
-              <BodyLarge className="text-muted-foreground text-base sm:text-lg">
+              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">Elevate Your Organization</H1>
+              <BodyLarge className="text-muted-foreground text-base sm:text-lg md:text-xl">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
               </BodyLarge>
             </div>
@@ -1551,8 +1570,8 @@ function ClosingCTASection() {
         <div className="hidden lg:block">
           <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
             <div className="space-y-4 lg:space-y-6">
-              <H2 className="text-3xl sm:text-4xl lg:text-5xl">Elevate Your Organization</H2>
-              <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl">
+              <H1>Elevate Your Organization</H1>
+              <BodyLarge className="text-muted-foreground max-w-4xl mx-auto">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
               </BodyLarge>
             </div>
