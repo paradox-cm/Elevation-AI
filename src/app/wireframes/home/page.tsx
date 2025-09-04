@@ -167,6 +167,7 @@ function Header() {
                             canvas.width = width;
                             canvas.height = height;
                             
+                            if (!ctx) return;
                             ctx.clearRect(0, 0, width, height);
                             
                             const imageData = ctx.createImageData(width, height);
