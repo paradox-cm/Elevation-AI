@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useCallback } from "react"
-import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useCanvasResize } from "../../hooks/use-canvas-resize"
 
 interface UnifiedKnowledgeProps {
   width?: number
