@@ -48,9 +48,9 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Navigation Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto p-4 pb-4">
+    <div className="flex flex-col min-h-0">
+      {/* Navigation Content */}
+      <div className="p-4 pb-4">
         {/* Main Navigation */}
         <div className="space-y-2">
           {mainNavigationLinks.map((link) => (
