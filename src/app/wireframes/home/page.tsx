@@ -1833,13 +1833,13 @@ function Footer() {
           
           <Separator className="my-4 lg:my-6 bg-border/60" />
           
-          <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-4 pb-3">
             <BodySmall className="text-muted-foreground text-left">
               © 2025 Elevation AI. All rights reserved.
             </BodySmall>
             <div className="flex gap-6">
               <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link></div>
+              <Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link></div>
           </div>
         </div>
       </Container>
