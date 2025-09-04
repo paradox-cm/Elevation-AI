@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useCallback } from "react"
-import { useCanvasResize } from "../../hooks/use-canvas-resize"
 
 interface UnifiedKnowledgeProps {
   width?: number
@@ -84,11 +83,6 @@ export function UnifiedKnowledge({
     // The animation will be started in the useEffect
   }, [initializeCanvas])
 
-  // Use canvas resize hook
-  useCanvasResize(canvasRef, initializeAndStartAnimation, {
-    debounceDelay: 150,
-    preserveAspectRatio: true
-  })
 
   useEffect(() => {
     const canvasData = initializeCanvas()
