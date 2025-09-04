@@ -42,13 +42,34 @@ import {
 } from "@/components/animations"
 
 // Typewriter Text Component
-function TypewriterText({ text, speed = 200, delay = 0, skipAnimation = false }: { text: string; speed?: number; delay?: number; skipAnimation?: boolean }) {
+function TypewriterText({ 
+  text, 
+  speed = 200, 
+  delay = 0, 
+  skipAnimation = false,
+  cyclingWords = [],
+  cyclingSpeed = 300,
+  cyclingDelay = 3000
+}: { 
+  text: string; 
+  speed?: number; 
+  delay?: number; 
+  skipAnimation?: boolean;
+  cyclingWords?: string[];
+  cyclingSpeed?: number;
+  cyclingDelay?: number;
+}) {
   const [displayText, setDisplayText] = React.useState("")
   const [currentWordIndex, setCurrentWordIndex] = React.useState(0)
   const [isTyping, setIsTyping] = React.useState(false)
+  const [isCycling, setIsCycling] = React.useState(false)
+  const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
+  const [isDeleting, setIsDeleting] = React.useState(false)
 
   // Split text into words
   const words = text.split(" ")
+  const baseWords = words // Keep all words as base text
+  const lastWord = "" // No word to replace - we append cycling words
 
   // Reset animation on mount and when text changes
   React.useEffect(() => {
@@ -87,24 +108,102 @@ function TypewriterText({ text, speed = 200, delay = 0, skipAnimation = false }:
     }
   }, [delay, skipAnimation])
 
+  // Show cursor immediately when component mounts (before typing starts)
+  React.useEffect(() => {
+    if (!skipAnimation) {
+      setIsTyping(true)
+    }
+  }, [skipAnimation])
+
+  // Initial typing animation
   React.useEffect(() => {
     if (skipAnimation || !isTyping || currentWordIndex >= words.length) return
 
     const timer = setTimeout(() => {
-      setDisplayText(words.slice(0, currentWordIndex + 1).join(" "))
-      setCurrentWordIndex(currentWordIndex + 1)
-    }, speed)
+      const newWordIndex = currentWordIndex + 1
+      setDisplayText(words.slice(0, newWordIndex).join(" "))
+      setCurrentWordIndex(newWordIndex)
+      
+      // Start cycling after initial text is complete
+      if (newWordIndex >= words.length && cyclingWords.length > 0) {
+        setTimeout(() => {
+          setIsCycling(true)
+        }, cyclingDelay) // Wait before starting to cycle
+      }
+    }, speed) // Consistent 150ms timing for all words
 
     return () => clearTimeout(timer)
-  }, [currentWordIndex, words, speed, isTyping, skipAnimation])
+  }, [currentWordIndex, words, speed, isTyping, skipAnimation, cyclingWords.length, cyclingDelay])
+
+  // Cycling animation
+  React.useEffect(() => {
+    if (!isCycling || cyclingWords.length === 0) return
+
+    const currentCycleWord = cyclingWords[currentCycleIndex]
+    const fullText = baseWords.join(" ") + " " + currentCycleWord
+
+    if (isDeleting) {
+      // Delete only the cycling word, keep base text
+      const timer = setTimeout(() => {
+        setDisplayText(baseWords.join(" "))
+        setIsDeleting(false)
+        setCurrentCycleIndex((prev) => (prev + 1) % cyclingWords.length)
+      }, cyclingSpeed) // Use consistent cycling speed
+
+      return () => clearTimeout(timer)
+    } else {
+      // Type the entire word at once (faster after deletion)
+      const timer = setTimeout(() => {
+        setDisplayText(fullText)
+      }, cyclingSpeed / 2) // Type faster after deletion
+
+      return () => clearTimeout(timer)
+    }
+  }, [isCycling, currentCycleIndex, isDeleting, baseWords, cyclingWords, cyclingSpeed])
+
+  // Handle the 2-second display duration after typing
+  React.useEffect(() => {
+    if (!isCycling || isDeleting) return
+    
+    const timer = setTimeout(() => {
+      setIsDeleting(true)
+    }, 2000) // Show each word for exactly 2 seconds
+
+    return () => clearTimeout(timer)
+  }, [isCycling, isDeleting, currentCycleIndex]) // Only trigger on cycle index change
+
 
   return (
-    <span className="inline-block min-h-[1.2em] leading-tight">
-      {displayText}
-      {isTyping && currentWordIndex < words.length && !skipAnimation && (
-        <span className="animate-pulse">|</span>
-      )}
-    </span>
+    <>
+      {/* Mobile: Two-line layout */}
+      <div className="block sm:hidden">
+        {/* Base text - always visible */}
+        <div className="block">
+          {baseWords.join(" ")}
+        </div>
+        {/* Cycling words - only show when cycling */}
+        {isCycling && (
+          <div className="block">
+            {displayText.replace(baseWords.join(" "), "").trim()}
+            {!skipAnimation && (
+              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+            )}
+          </div>
+        )}
+        {/* Cursor for initial typing */}
+        {!isCycling && currentWordIndex < words.length && (
+          <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+        )}
+      </div>
+      
+      {/* Desktop: Single-line layout */}
+      <span className="hidden sm:inline-block min-h-[1.2em] leading-tight">
+        {displayText}
+        {!skipAnimation && (currentWordIndex < words.length || isCycling) && (
+          <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+        )}
+      </span>
+    </>
   )
 }
 
@@ -358,9 +457,30 @@ function HeroSection() {
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-                              <div className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold leading-tight">
-                  Your Universe. Intelligently Orchestrated.
-                </div>
+                              <div className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold leading-tight h-16 sm:h-20 md:h-auto lg:h-auto xl:h-auto 2xl:h-auto flex items-start">
+                  <TypewriterText 
+                    text="The AI Control Panel for" 
+                    speed={100} 
+                    delay={500}
+                    cyclingSpeed={300}
+                    cyclingDelay={0}
+                    cyclingWords={[
+                      "Business.",
+                      "Ventures.",
+                      "Teams.",
+                      "Enterprise.",
+                      "Startups.",
+                      "Family Offices.",
+                      "Private Capital.",
+                      "Investors.",
+                      "Hedge Funds.",
+                      "Banks.",
+                      "Government.",
+                      "Consultancies.",
+                      "Institutions."
+                    ]}
+                  />
+                              </div>
               <BodyLarge className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
                 We are an agentic knowledge and work orchestration platform, helping you adapt to the agentic era through our platform and concierge team.
               </BodyLarge>
