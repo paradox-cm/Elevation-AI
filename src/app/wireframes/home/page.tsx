@@ -150,11 +150,22 @@ function Header() {
                           const ctx = canvas.getContext('2d');
                           if (!ctx) return;
                           
-                          const width = canvas.width = canvas.offsetWidth;
-                          const height = canvas.height = canvas.offsetHeight;
                           let time = 0;
+                          let animationId: number;
                           
                           function animate() {
+                            const width = canvas.offsetWidth;
+                            const height = canvas.offsetHeight;
+                            
+                            // Only animate if canvas has valid dimensions
+                            if (width <= 0 || height <= 0) {
+                              animationId = requestAnimationFrame(animate);
+                              return;
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            
                             ctx.clearRect(0, 0, width, height);
                             
                             const imageData = ctx.createImageData(width, height);
@@ -195,10 +206,18 @@ function Header() {
                             
                             ctx.putImageData(imageData, 0, 0);
                             time += 0.01;
-                            requestAnimationFrame(animate);
+                            animationId = requestAnimationFrame(animate);
                           }
                           
+                          // Start animation
                           animate();
+                          
+                          // Cleanup function
+                          return () => {
+                            if (animationId) {
+                              cancelAnimationFrame(animationId);
+                            }
+                          };
                         }}
                       />
                     </div>
