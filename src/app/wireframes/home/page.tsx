@@ -655,15 +655,15 @@ function ProblemSection() {
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </BodyLarge>
             </div>
-            <div className="overflow-x-auto pb-1">
-              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
+            <div className="overflow-x-auto overflow-y-hidden pb-1">
+              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
                 {problems.map((problem, index) => (
                   <div
                     key={index}
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-[500px] sm:h-[550px] md:h-[600px] border-border/50 transition-colors duration-300 flex flex-col">
+                    <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-300 flex flex-col">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -675,9 +675,11 @@ function ProblemSection() {
                           {problem.description}
                         </BodyLarge>
                       </CardHeader>
-                      <CardContent className="flex-1 flex flex-col justify-end pb-6 px-4">
+                      <CardContent className="flex-1 flex flex-col pb-6 px-4">
+                        {/* Spacer to push animation to bottom */}
+                        <div className="flex-1"></div>
                         {/* Animation Container */}
-                        <div className="h-[240px] sm:h-[280px] md:h-[320px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
+                        <div className="h-[220px] sm:h-[260px] md:h-[300px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
                           {index === 0 && (
                             <UnifiedKnowledge 
                               width={220} 
