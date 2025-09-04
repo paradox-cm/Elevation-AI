@@ -154,6 +154,7 @@ function Header() {
                           let animationId: number;
                           
                           function animate() {
+                            if (!canvas) return;
                             const width = canvas.offsetWidth;
                             const height = canvas.offsetHeight;
                             
