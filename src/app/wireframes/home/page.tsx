@@ -16,6 +16,7 @@ import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, D
 import { GlobalHeader } from "@/components/ui/global-header"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
+import { PlasmaBackground } from "@/components/ui/plasma-background"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standards"
@@ -139,18 +140,82 @@ function Header() {
               <div className="p-6 grid grid-cols-3 gap-8">
                 {/* Featured Content */}
                 <div className="space-y-4">
-                  <div className="w-full h-32 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <Icon name="lightbulb-line" className="h-6 w-6 text-primary" />
+                  <div className="w-full h-32 rounded-lg flex items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0">
+                      <canvas 
+                        className="w-full h-full"
+                        ref={(canvas) => {
+                          if (!canvas) return;
+                          
+                          const ctx = canvas.getContext('2d');
+                          if (!ctx) return;
+                          
+                          const width = canvas.width = canvas.offsetWidth;
+                          const height = canvas.height = canvas.offsetHeight;
+                          let time = 0;
+                          
+                          function animate() {
+                            ctx.clearRect(0, 0, width, height);
+                            
+                            const imageData = ctx.createImageData(width, height);
+                            const data = imageData.data;
+                            
+                            for (let x = 0; x < width; x++) {
+                              for (let y = 0; y < height; y++) {
+                                const index = (y * width + x) * 4;
+                                
+                                // More intense, smaller-scale plasma for dropdown
+                                const scale = 0.05;
+                                const r1 = 0.3;
+                                const r2 = 0.7;
+                                const r3 = 0.2;
+                                
+                                const col = 
+                                  Math.sin(Math.sqrt((x * r1 + time * 50) ** 2 + (y * r2) ** 2) * scale) +
+                                  Math.sin(Math.sqrt((x * r2) ** 2 + (y * r1 + time * 30) ** 2) * scale) +
+                                  Math.sin(Math.sqrt((x * r3 + time * 40) ** 2 + (y * r3 + time * 20) ** 2) * scale);
+                                
+                                // Use original plasma color palette
+                                const r = Math.floor(128 + 127 * Math.sin(col));
+                                const g = Math.floor(128 + 127 * Math.cos(col));
+                                const b = Math.floor(128 + 127 * (Math.cos(col) - Math.sin(col)));
+                                
+                                // Add the original checkerboard pattern
+                                const checkerboard = Math.floor(x / 2) % 2 === 0 ? 0 : 102;
+                                const finalR = Math.min(255, r + checkerboard);
+                                const finalG = Math.min(255, g + checkerboard);
+                                const finalB = Math.min(255, b + checkerboard);
+                                
+                                data[index] = finalR;
+                                data[index + 1] = finalG;
+                                data[index + 2] = finalB;
+                                data[index + 3] = 255;
+                              }
+                            }
+                            
+                            ctx.putImageData(imageData, 0, 0);
+                            time += 0.01;
+                            requestAnimationFrame(animate);
+                          }
+                          
+                          animate();
+                        }}
+                      />
+                    </div>
+                    <div className="text-center relative z-10">
+                      <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto">
+                        <img 
+                          src="/images/branding/E-AI-Arrow.svg" 
+                          alt="Elevation AI Arrow" 
+                          className="h-6 w-6"
+                        />
                       </div>
-                      <div className="text-xs text-muted-foreground">AI-Powered Solutions</div>
                     </div>
                   </div>
                   <div>
                     <h3 className="font-semibold text-base text-foreground mb-2">Transform Your Business</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Discover tailored solutions that leverage AI to drive growth, efficiency, and innovation across your organization.
+                      Tailored AI solutions driving growth, efficiency, and innovation across your organization.
                     </p>
                   </div>
                 </div>
@@ -264,15 +329,15 @@ function Header() {
 function HeroSection() {
   return (
     <Section 
-      paddingY="xl" 
-      className="flex items-center min-h-[70vh] sm:min-h-[80vh] h-screen"
+      paddingY="lg" 
+      className="flex items-center h-screen"
     >
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
+        <div className="space-y-6 sm:space-y-8 lg:space-y-10">
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-                              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold leading-tight">
+                              <div className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-semibold leading-tight">
                   Your Universe. Intelligently Orchestrated.
                 </div>
               <BodyLarge className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
@@ -294,7 +359,7 @@ function HeroSection() {
           </div>
 
           {/* Visual */}
-          <div className="relative h-[250px] sm:h-[350px] lg:h-[500px] rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center border border-border/50 overflow-hidden">
+          <div className="relative h-[30vh] sm:h-[35vh] lg:h-[40vh] xl:h-[45vh] 2xl:h-[50vh] rounded-lg sm:rounded-xl lg:rounded-2xl flex items-center justify-center border border-border/50 overflow-hidden">
             {/* Static Grid of Dots Background */}
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm">
               {/* Light mode dots */}
@@ -562,22 +627,22 @@ function ProblemSection() {
   const problems = [
       {
         title: "The Business Orchestration Platform",
-        description: "Work from a single source of truth. We break down the walls between your departments and tools, creating a unified platform where no more hunting for that one file you know you saw in an email three weeks ago.",
+        description: "Work from a single source of truth. Break down the walls between departments and tools, work from a unified platform where all your knowledge is connected, accessible, and actionable in one place.",
         icon: "database-2-line"
       },
     {
       title: "Intelligent Process Automation",
-      description: "Eliminate operational bottlenecks with smart automation. We identify and automate the manual, repetitive processes that slow down your growth, freeing your best people from manual data entry to focus on what they were hired to do.",
+      description: "Eliminate bottlenecks with context-aware automation. Elevation AI identifies and automates the repetitive processes that hold you back—freeing your people from busywork so they can focus on high-value work that drives growth.",
       icon: "brain-line"
     },
     {
       title: "Real-Time Business Intelligence",
-      description: "Overcome lack of visibility with comprehensive insights. We provide a unified command center that gives you a real-time, holistic view of your entire business operations.",
+      description: "Convert blind spots to comprehensive insights. A unified command center providing real-time visibility across your business operations—and the confidence to act.",
       icon: "eye-line"
     },
     {
       title: "Future-Ready Strategic Advantage",
-      description: "Mitigate strategic risk and lead the agentic era. We provide the platform and partnership to ensure you are not just keeping up, but leading the way in the new AI-powered business landscape.",
+      description: "Mitigate strategic risk, lead the agentic era. Elevation AI is the platform and partnership which ensures you are not just keeping up, but leading the way in the new AI-powered business landscape.",
       icon: "shield-check-line"
     }
   ]
@@ -1311,7 +1376,7 @@ function HowWeDoItSection() {
                             <Icon name={approach.icon} size="2xl" className="text-primary" />
                           )}
                         </div>
-                        <CardTitle className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{approach.title}</CardTitle>
+                        <CardTitle className="text-lg font-semibold lg:text-xl xl:text-2xl 2xl:text-3xl">{approach.title}</CardTitle>
                       </div>
                       
                       {/* Description */}
@@ -1369,16 +1434,6 @@ function HowWeDoItSection() {
                     ))}
                   </div>
                   
-                  {/* Drag Direction Indicator */}
-                  {isDragging && Math.abs(dragOffset) > 10 && (
-                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                      <div className={`px-3 py-2 rounded-lg bg-background/90 border border-border text-sm font-medium transition-opacity duration-200 ${
-                        dragOffset > 0 ? 'text-blue-600' : 'text-green-600'
-                      }`}>
-                        {dragOffset > 0 ? '← Previous' : 'Next →'}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Navigation Arrows */}
@@ -1401,20 +1456,16 @@ function HowWeDoItSection() {
                   </button>
                 )}
 
-                {/* Carousel Indicators */}
-                <div className="flex justify-center mt-4 space-x-2">
-                  {ventureStages.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => goToCard(index)}
-                      className={`w-2 h-2 rounded-full transition-colors ${
-                        index === currentCard 
-                          ? 'bg-primary' 
-                          : 'bg-border hover:bg-muted-foreground'
-                      }`}
-                      aria-label={`Go to card ${index + 1}`}
+                {/* Progress Bar Indicator */}
+                <div className="mt-4">
+                  <div className="w-full bg-border rounded-full h-1 overflow-hidden">
+                    <div 
+                      className="h-full bg-primary rounded-full transition-all duration-75 ease-linear"
+                      style={{ 
+                        width: `${((currentCard + 1) / ventureStages.length) * 100}%`
+                      }}
                     />
-                  ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1495,7 +1546,7 @@ function WhoWeServeSection() {
                         <Icon name={solution.icon} size="xl" className="text-primary" />
                       </div>
                       <div className="space-y-3 flex-1">
-                        <CardTitle className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
+                        <CardTitle className="text-lg font-semibold lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
                         <P className="text-muted-foreground leading-relaxed">{solution.description}</P>
                         
                         {/* Learn More Link */}
@@ -1523,7 +1574,7 @@ function WhoWeServeSection() {
                         <Icon name={solution.icon} size="2xl" className="text-primary" />
                       </div>
                       <div className="space-y-3 lg:space-y-4 flex-1">
-                        <CardTitle className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
+                        <CardTitle className="text-lg font-semibold lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
                         <P className="text-muted-foreground leading-relaxed">{solution.description}</P>
                         
                         {/* Learn More Link */}
@@ -1646,7 +1697,7 @@ function FloatingBackToTop() {
 // Footer Component
 function Footer() {
   return (
-    <footer className="border-t bg-muted/30 transition-colors duration-300">
+    <footer className="border-t border-muted bg-muted/30 transition-colors duration-300">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="py-8 sm:py-12 lg:py-16">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
