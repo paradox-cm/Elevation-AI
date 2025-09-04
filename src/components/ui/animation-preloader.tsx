@@ -174,6 +174,9 @@ export function AnimationPreloader() {
 
       return (32 * (n0 + n1 + n2 + n3))
     }
+
+    // Index signature to match the interface
+    [key: string]: unknown
   }
 
   // Simple PRNG
