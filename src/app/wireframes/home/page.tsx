@@ -482,7 +482,7 @@ function HeroSection() {
                   />
                               </div>
               <BodyLarge className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
-                We are an agentic knowledge and work orchestration platform, helping you adapt to the agentic era through our platform and concierge team.
+                Elevation AI is the agentic knowledge and work orchestration platform—built for the future of business—powered by a concierge team. Unifying knowledge, orchestrating workflows, securing your use of AI.
               </BodyLarge>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -1747,8 +1747,8 @@ function ClosingCTASection() {
           <div className="text-left space-y-8 max-w-3xl mx-auto">
             <div className="space-y-6">
               <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">Elevate Your Organization</H1>
-              <BodyLarge className="text-muted-foreground text-base sm:text-lg md:text-xl">
-                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
+              <BodyLarge className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
+                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
               </BodyLarge>
             </div>
             
@@ -1772,8 +1772,8 @@ function ClosingCTASection() {
           <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
             <div className="space-y-4 lg:space-y-6">
               <H1>Elevate Your Organization</H1>
-              <BodyLarge className="text-muted-foreground max-w-4xl mx-auto">
-                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to operate with clarity in the agentic era.
+              <BodyLarge className="text-muted-foreground max-w-2xl mx-auto">
+                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
               </BodyLarge>
             </div>
             
