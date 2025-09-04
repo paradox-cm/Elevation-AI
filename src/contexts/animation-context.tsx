@@ -25,6 +25,7 @@ interface AnimationState {
 // Define the types for the animation classes
 interface Perlin {
   init: (randomFn: () => number) => void
+  simplex3d: (x: number, y: number, z: number) => number
   [key: string]: unknown
 }
 
