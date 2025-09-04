@@ -1,6 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface Arrow {
   x: number
@@ -23,9 +25,11 @@ export function FutureReadyMobile({
   showBorder = true 
 }: FutureReadyMobileProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const arrowsRef = useRef<Arrow[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
+  const [animationKey, setAnimationKey] = useState(0)
   
   // Performance optimization: frame rate limiting and constants
   const lastFrameTimeRef = useRef(0)
@@ -36,6 +40,58 @@ export function FutureReadyMobile({
   const isDarkRef = useRef(false);
   const arrowColorRef = useRef('#000000');
   const observerRef = useRef<MutationObserver | null>(null);
+
+  const initializeCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return { canvas: null, ctx: null }
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return { canvas: null, ctx: null }
+
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey((prev: number) => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('FutureReadyMobile visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('FutureReadyMobile: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
+  })
 
   // E-AI-Arrow SVG path data (scaled down for mobile)
   const arrowPathData = "M91.7,158.3c-7.2,0-13.1-5.9-13.1-13.1v-40.1c0-11.1-9-20.1-20.1-20.1H13.1c-7.2,0-13.1-5.9-13.1-13.1V13.1C0,5.9,5.9,0,13.1,0h137.5c7.2,0,13.1,5.9,13.1,13.1v132.1c0,7.2-5.9,13.1-13.1,13.1h-58.8Z";
@@ -200,10 +256,10 @@ export function FutureReadyMobile({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying])
+  }, [width, height, isPlaying, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

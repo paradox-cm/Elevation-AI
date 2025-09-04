@@ -1,6 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from "react"
+import { useEffect, useRef, useCallback, useState } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
+import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
 
 interface UnifiedKnowledgeProps {
   width?: number
@@ -16,7 +19,9 @@ export function UnifiedKnowledge({
   showBorder = true 
 }: UnifiedKnowledgeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
+  const [animationKey, setAnimationKey] = useState(0)
   
   // Performance optimization: frame rate limiting
   const lastFrameTimeRef = useRef(0)
@@ -76,13 +81,37 @@ export function UnifiedKnowledge({
 
   // Initialize canvas and start animation
   const initializeAndStartAnimation = useCallback(() => {
-    const { canvas, ctx } = initializeCanvas()
-    if (!canvas || !ctx) return
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey(prev => prev + 1)
+  }, [])
 
-    // Start the animation by calling the useEffect
-    // The animation will be started in the useEffect
-  }, [initializeCanvas])
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
 
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('UnifiedKnowledge visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('UnifiedKnowledge: Restarting animation due to visibility change')
+      // Component became visible, force animation restart
+      initializeAndStartAnimation()
+    }
+  })
+
+  // Alternative approach: Use breakpoint reset hook
+  useBreakpointReset(containerRef, () => {
+    console.log('UnifiedKnowledge: Breakpoint change detected, restarting animation')
+    initializeAndStartAnimation()
+  })
 
   useEffect(() => {
     const canvasData = initializeCanvas()
@@ -353,10 +382,10 @@ export function UnifiedKnowledge({
       }
       observer.disconnect()
     }
-  }, [width, height, initializeAndStartAnimation])
+  }, [width, height, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

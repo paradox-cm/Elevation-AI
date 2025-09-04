@@ -14,14 +14,14 @@ export function MobileOnlyNavigation({
   showBadge = true,
   badgeText = "Design System"
 }: MobileOnlyNavigationProps) {
-  const { setMobileMenuOpen } = useMobileMenu()
+  const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
 
   return (
     <Navigation
       currentPage={currentPage}
       showBadge={showBadge}
       badgeText={badgeText}
-      onMobileMenuToggle={() => setMobileMenuOpen(true)}
+      onMobileMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
       showMobileMenuButton={true}
     />
   )

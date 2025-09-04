@@ -67,7 +67,8 @@ export function MobileOnlyLayout({
           {mobileMenu && (
             <aside className={cn(
               "flex-shrink-0 bg-background border-t border-b border-border dark:border-muted",
-              "fixed top-0 left-0 right-0 z-[50] h-[80vh] transform transition-transform duration-150 ease-out lg:hidden",
+              "fixed top-0 left-0 right-0 z-[50] transform transition-transform duration-150 ease-out lg:hidden",
+              "h-[calc(80vh-500px)]",
               mobileMenuOpen ? "translate-y-14 sm:translate-y-16" : "-translate-y-full"
             )}>
               <div className="h-full overflow-y-auto">

@@ -1,6 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface KnowledgeBlock {
   x: number
@@ -40,10 +42,12 @@ export function KnowledgeBlocks({
   showBorder = true 
 }: KnowledgeBlocksProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const blocksRef = useRef<KnowledgeBlock[]>([])
   const connectionsRef = useRef<Connection[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
+  const [animationKey, setAnimationKey] = useState(0)
   
   // Performance optimized: Reduced from 168 to 45 total animated objects
 
@@ -53,6 +57,58 @@ export function KnowledgeBlocks({
   const connectionColorRef = useRef('rgba(0, 0, 0, 0.6)');
   const particleColorRef = useRef('rgba(0, 0, 0, 0.9)');
   const observerRef = useRef<MutationObserver | null>(null);
+
+  const initializeCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return { canvas: null, ctx: null }
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return { canvas: null, ctx: null }
+
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey(prev => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('KnowledgeBlocks visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('KnowledgeBlocks: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
+  })
 
   const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {
     const blocks: KnowledgeBlock[] = []
@@ -275,10 +331,10 @@ export function KnowledgeBlocks({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animateKnowledgeNetwork, initializeKnowledgeNetwork])
+  }, [width, height, isPlaying, animateKnowledgeNetwork, initializeKnowledgeNetwork, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
@@ -298,10 +354,12 @@ export function KnowledgeBlocksMobile({
   showBorder = true 
 }: KnowledgeBlocksProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const blocksRef = useRef<KnowledgeBlock[]>([])
   const connectionsRef = useRef<Connection[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
+  const [animationKey, setAnimationKey] = useState(0)
   
   // Performance optimized: Reduced from 168 to 45 total animated objects
 
@@ -311,6 +369,58 @@ export function KnowledgeBlocksMobile({
   const connectionColorRef = useRef('rgba(0, 0, 0, 0.8)'); // Slightly transparent for connections
   const particleColorRef = useRef('rgba(0, 0, 0, 1)'); // Solid black particles
   const observerRef = useRef<MutationObserver | null>(null);
+
+  const initializeCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return { canvas: null, ctx: null }
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return { canvas: null, ctx: null }
+
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey((prev: number) => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('KnowledgeBlocksMobile visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('KnowledgeBlocksMobile: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
+  })
 
   const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {
     const blocks: KnowledgeBlock[] = []
@@ -533,10 +643,10 @@ export function KnowledgeBlocksMobile({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animateKnowledgeNetwork, initializeKnowledgeNetwork])
+  }, [width, height, isPlaying, animateKnowledgeNetwork, initializeKnowledgeNetwork, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

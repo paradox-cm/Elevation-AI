@@ -14,14 +14,14 @@ export function DesignSystemNavigation({
   showBadge = true,
   badgeText = "Design System"
 }: DesignSystemNavigationProps) {
-  const { setSidebarOpen } = useSidebar()
+  const { sidebarOpen, setSidebarOpen } = useSidebar()
 
   return (
     <Navigation
       currentPage={currentPage}
       showBadge={showBadge}
       badgeText={badgeText}
-      onMobileMenuToggle={() => setSidebarOpen(true)}
+      onMobileMenuToggle={() => setSidebarOpen(!sidebarOpen)}
       showMobileMenuButton={true}
     />
   )

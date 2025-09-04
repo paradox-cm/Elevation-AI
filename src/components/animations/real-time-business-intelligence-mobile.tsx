@@ -1,6 +1,8 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback, useState } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface RealTimeBusinessIntelligenceMobileProps {
   width?: number
@@ -16,14 +18,16 @@ export function RealTimeBusinessIntelligenceMobile({
   showBorder = true 
 }: RealTimeBusinessIntelligenceMobileProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
+  const [animationKey, setAnimationKey] = useState(0)
 
-  useEffect(() => {
+  const initializeCanvas = useCallback(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    if (!canvas) return { canvas: null, ctx: null }
 
     const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    if (!ctx) return { canvas: null, ctx: null }
 
     // High-DPI support for mobile devices
     const devicePixelRatio = window.devicePixelRatio || 1
@@ -39,6 +43,41 @@ export function RealTimeBusinessIntelligenceMobile({
     // Set the canvas CSS size to the logical size
     canvas.style.width = rect.width + 'px'
     canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey((prev: number) => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('RealTimeBusinessIntelligenceMobile visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('RealTimeBusinessIntelligenceMobile: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
+  })
+
+  useEffect(() => {
+    const canvasData = initializeCanvas()
+    if (!canvasData || !canvasData.canvas || !canvasData.ctx) return
+    const { canvas, ctx } = canvasData
 
     // Theme-aware colors - proper light/dark mode distinction
     let isDark = document.documentElement.classList.contains('dark')
@@ -438,10 +477,10 @@ export function RealTimeBusinessIntelligenceMobile({
       }
       observer.disconnect()
     }
-  }, [width, height])
+  }, [width, height, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

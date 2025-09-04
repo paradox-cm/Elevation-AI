@@ -1,6 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface TradeLine {
   x: number
@@ -28,6 +30,7 @@ export function IntelligentProcessAutomation({
   const animationRef = useRef<number | null>(null)
   const trafficRef = useRef<TradeLine[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
+  const [animationKey, setAnimationKey] = useState(0)
 
   // Define wider boundary area for grid and traffic (closer to 16:9 aspect ratio)
   const gridBoundary = {
@@ -200,7 +203,7 @@ export function IntelligentProcessAutomation({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animate, createTraffic])
+  }, [width, height, isPlaying, animate, createTraffic, animationKey])
 
   return (
     <div className={`flex justify-center ${className}`}>
@@ -223,9 +226,11 @@ export function IntelligentProcessAutomationMobile({
   showBorder = true 
 }: IntelligentProcessAutomationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const trafficRef = useRef<TradeLine[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
+  const [animationKey, setAnimationKey] = useState(0)
 
   // Define wider boundary area for grid and traffic (closer to 16:9 aspect ratio)
   const gridBoundary = {
@@ -240,6 +245,57 @@ export function IntelligentProcessAutomationMobile({
   const gridColorRef = useRef('rgba(0, 0, 0, 0.3)');
   const lineColorRef = useRef('rgba(0, 0, 0, 0.8)');
   const observerRef = useRef<MutationObserver | null>(null);
+
+  const initializeCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return { canvas: null, ctx: null }
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return { canvas: null, ctx: null }
+
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey((prev: number) => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    if (isVisible) {
+      // Component became visible, force animation restart
+      initializeAndStartAnimation()
+    }
+  })
 
   const createTraffic = (canvas: HTMLCanvasElement) => {
     const traffic: TradeLine[] = []
@@ -399,7 +455,7 @@ export function IntelligentProcessAutomationMobile({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animate, createTraffic])
+  }, [width, height, isPlaying, animate, createTraffic, animationKey])
 
   return (
     <div className={`flex justify-center ${className}`}>

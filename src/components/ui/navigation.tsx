@@ -88,8 +88,8 @@ export function Navigation({
                 }
               }}
             >
-              <Icon name="menu-line" className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
+              <Icon name={mobileMenuOpen ? "close-line" : "menu-line"} className="h-5 w-5" />
+              <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Toggle menu"}</span>
             </Button>
           )}
         </div>

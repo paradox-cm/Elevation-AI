@@ -22,6 +22,7 @@ import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standa
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { 
   UnifiedKnowledge, 
@@ -556,6 +557,7 @@ function ProblemIntroductionSection() {
 function ProblemSection() {
   const [activeStep, setActiveStep] = React.useState(0)
   const sectionRef = React.useRef<HTMLDivElement>(null)
+  const isDesktop = useMediaQuery("(min-width: 1024px)")
   
   const problems = [
       {
@@ -648,10 +650,11 @@ function ProblemSection() {
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
-          <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
-            {/* Section Headline */}
-            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">Unify your systems</H1>
+          {!isDesktop && (
+            <div key="mobile-layout" className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+              {/* Section Headline */}
+              <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+                <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">Unify your systems</H1>
               <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </BodyLarge>
@@ -720,10 +723,12 @@ function ProblemSection() {
                 ))}
               </div>
             </div>
-          </div>
+            </div>
+          )}
 
           {/* Desktop Layout - Scroll-triggered Carousel */}
-          <div className="hidden lg:block relative" ref={sectionRef}>
+          {isDesktop && (
+            <div key="desktop-layout" className="relative" ref={sectionRef}>
             {/* Carousel Container */}
             <div className="sticky top-20 h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-7rem)] 2xl:h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
               <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
@@ -821,7 +826,8 @@ function ProblemSection() {
             
             {/* Scroll Spacer */}
             <div style={{ height: `${650 + 650 + 750 + 750 + 750 + 200}px` }}></div>
-          </div>
+            </div>
+          )}
         </div>
       </Container>
     </Section>
@@ -1770,6 +1776,9 @@ function Footer() {
 }
 
 export default function WireframesHomePage() {
+  // Use media query to determine if we're on desktop or mobile
+  const isDesktop = useMediaQuery("(min-width: 1024px)")
+  
   return (
     <PageWrapper>
       <MobileOnlyLayout

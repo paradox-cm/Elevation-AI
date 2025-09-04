@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback, useState } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
 
 interface AgenticEngineProps {
   width?: number
@@ -17,13 +18,14 @@ export function AgenticEngine({
 }: AgenticEngineProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
+  const [animationKey, setAnimationKey] = useState(0)
 
-  useEffect(() => {
+  const initializeCanvas = useCallback(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    if (!canvas) return { canvas: null, ctx: null }
 
     const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    if (!ctx) return { canvas: null, ctx: null }
 
     // High-DPI support for mobile devices
     const devicePixelRatio = window.devicePixelRatio || 1
@@ -39,6 +41,32 @@ export function AgenticEngine({
     // Set the canvas CSS size to the logical size
     canvas.style.width = rect.width + 'px'
     canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey(prev => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  useEffect(() => {
+    const canvasData = initializeCanvas()
+    if (!canvasData || !canvasData.canvas || !canvasData.ctx) return
+    const { canvas, ctx } = canvasData
 
     // Define wider boundary area for nodes (keeping them contained)
     const nodeBoundary = {
@@ -214,7 +242,7 @@ export function AgenticEngine({
       }
       observer.disconnect()
     }
-  }, [width, height])
+  }, [width, height, animationKey])
 
   return (
     <div className={`flex justify-center ${className}`}>
