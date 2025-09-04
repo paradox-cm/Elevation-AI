@@ -47,7 +47,7 @@ export default function EnterpriseSecurityAnimation() {
               <div className="flex justify-center mb-6">
                 <EnterpriseSecurity 
                   width={600} 
-                  height={400} 
+                  height={440} 
                   showBorder={true}
                 />
               </div>

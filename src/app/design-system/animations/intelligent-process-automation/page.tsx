@@ -61,13 +61,13 @@ export default function IntelligentProcessAutomationAnimation() {
                 {isMobile ? (
                   <IntelligentProcessAutomationMobile 
                     width={600} 
-                    height={500} 
+                    height={440} 
                     showBorder={true}
                   />
                 ) : (
                   <IntelligentProcessAutomation 
                     width={600} 
-                    height={400} 
+                    height={440} 
                     showBorder={true}
                   />
                 )}

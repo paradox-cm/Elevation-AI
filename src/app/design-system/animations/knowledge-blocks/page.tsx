@@ -61,13 +61,13 @@ export default function KnowledgeBlocksAnimation() {
                 {isMobile ? (
                   <KnowledgeBlocksMobile 
                     width={600} 
-                    height={400} 
+                    height={440} 
                     showBorder={true}
                   />
                 ) : (
                   <KnowledgeBlocks 
                     width={600} 
-                    height={400} 
+                    height={440} 
                     showBorder={true}
                   />
                 )}
