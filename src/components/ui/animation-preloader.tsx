@@ -181,7 +181,7 @@ export function AnimationPreloader() {
 
   // Simple PRNG
   class SmallPRNG {
-    private seed: number
+    seed: number
 
     constructor(seed: number) {
       this.seed = seed
