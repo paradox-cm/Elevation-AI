@@ -30,7 +30,7 @@ export function UnifiedKnowledge({
   
   // Responsive sizing for mobile breakpoints
   const isMobile = width <= 768
-  const mobileScale = isMobile ? 0.85 : 1.0 // 15% smaller on mobile
+  const mobileScale = isMobile ? 0.8 : 1.0 // 20% smaller on mobile
 
   const initializeCanvas = useCallback(() => {
     const canvas = canvasRef.current

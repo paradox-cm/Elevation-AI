@@ -48,10 +48,10 @@ export function FutureReadyMobile({
     const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
     
     // Mobile-first positioning and sizing (50% smaller than desktop)
-    const centerX = logicalWidth * 0.25 // Start from left side for mobile (moved left for better positioning)
-    const centerY = logicalHeight * 0.5 // Center vertically
-    const arrowSpacing = 18 // Larger spacing for better visibility in larger container
-    const verticalOffset = 18 // Equal to horizontal offset for perfect diagonal
+    const centerX = logicalWidth * 0.15 // Start further left to ensure all arrows fit
+    const centerY = logicalHeight * 0.4 // Move up to better center the diagonal pattern
+    const arrowSpacing = 12 // Reduced spacing to fit within container
+    const verticalOffset = 12 // Equal to horizontal offset for perfect diagonal
     
     // Create 5 arrows that repeat up and to the right
     for (let i = 0; i < 5; i++) {

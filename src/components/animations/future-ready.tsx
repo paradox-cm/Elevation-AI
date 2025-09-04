@@ -1,12 +1,15 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
+import { useCanvasResize, maintainAspectRatio } from "@/hooks/use-canvas-resize"
 
 interface Arrow {
   x: number
   y: number
   opacity: number
   delay: number
+  originalX: number
+  originalY: number
 }
 
 interface FutureReadyProps {
@@ -32,6 +35,11 @@ export function FutureReady({
   const targetFPS = 60
   const frameInterval = 1000 / targetFPS
 
+  // Animation state for persistence across resizes
+  const animationTimeRef = useRef(0)
+  const isStartingUpRef = useRef(true)
+  const startupDelayRef = useRef(0)
+
   // Theme-aware colors - will be set in useEffect
   const isDarkRef = useRef(false);
   const arrowColorRef = useRef('#000000');
@@ -40,25 +48,48 @@ export function FutureReady({
   // E-AI-Arrow SVG path data
   const arrowPathData = "M91.7,158.3c-7.2,0-13.1-5.9-13.1-13.1v-40.1c0-11.1-9-20.1-20.1-20.1H13.1c-7.2,0-13.1-5.9-13.1-13.1V13.1C0,5.9,5.9,0,13.1,0h137.5c7.2,0,13.1,5.9,13.1,13.1v132.1c0,7.2-5.9,13.1-13.1,13.1h-58.8Z";
 
-  const createArrows = (canvas: HTMLCanvasElement) => {
+  const createArrows = useCallback((canvas: HTMLCanvasElement) => {
     const arrows: Arrow[] = []
     
     // Get the logical dimensions (CSS size) for positioning calculations
     const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
     const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
     
-    // Responsive positioning and sizing
-    const isMobile = logicalWidth <= 400 // Mobile breakpoint
-    const centerX = isMobile ? logicalWidth * 0.25 : logicalWidth * 0.3 // Adjust for mobile
-    const centerY = logicalHeight * 0.5 // Center vertically
-    const arrowSpacing = isMobile ? 20 : 25 // Smaller spacing on mobile
-    const verticalOffset = isMobile ? 20 : 25 // Smaller vertical offset on mobile
+    // Maintain aspect ratio to prevent warping
+    const baseWidth = 600 // Original design width
+    const baseHeight = 400 // Original design height
+    const scaleX = logicalWidth / baseWidth
+    const scaleY = logicalHeight / baseHeight
+    const scale = Math.min(scaleX, scaleY) // Use smaller scale to maintain aspect ratio
+    
+    // Calculate centered positioning
+    const scaledWidth = baseWidth * scale
+    const scaledHeight = baseHeight * scale
+    const offsetX = (logicalWidth - scaledWidth) / 2
+    const offsetY = (logicalHeight - scaledHeight) / 2
+    
+    // Base positioning (from original design)
+    const baseCenterX = baseWidth * 0.3
+    const baseCenterY = baseHeight * 0.5
+    const baseArrowSpacing = 25
+    const baseVerticalOffset = 25
+    
+    // Scale and center the positioning
+    const centerX = offsetX + (baseCenterX * scale)
+    const centerY = offsetY + (baseCenterY * scale)
+    const arrowSpacing = baseArrowSpacing * scale
+    const verticalOffset = baseVerticalOffset * scale
     
     // Create 5 arrows that repeat up and to the right
     for (let i = 0; i < 5; i++) {
+      const x = centerX + (i * arrowSpacing)
+      const y = centerY - (i * verticalOffset)
+      
       const arrow: Arrow = {
-        x: centerX + (i * arrowSpacing), // Move right
-        y: centerY - (i * verticalOffset), // Move up from center (equal to horizontal offset for perfect diagonal)
+        x,
+        y,
+        originalX: x,
+        originalY: y,
         opacity: 0.1, // Start very transparent
         delay: i * 0.36, // Staggered appearance (slowed down by 20%)
       }
@@ -66,17 +97,27 @@ export function FutureReady({
     }
     
     return arrows
-  }
+  }, [])
 
-  const drawArrow = (ctx: CanvasRenderingContext2D, arrow: Arrow) => {
+  const drawArrow = useCallback((ctx: CanvasRenderingContext2D, arrow: Arrow, canvas: HTMLCanvasElement) => {
     ctx.save()
+    
+    // Calculate scale factor to maintain aspect ratio
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    const baseWidth = 600
+    const baseHeight = 400
+    const scaleX = logicalWidth / baseWidth
+    const scaleY = logicalHeight / baseHeight
+    const scale = Math.min(scaleX, scaleY)
     
     // Set position and transform
     ctx.translate(arrow.x, arrow.y)
+    ctx.scale(scale, scale) // Scale the arrow to maintain aspect ratio
     
     // Set stroke color and opacity
     ctx.strokeStyle = arrowColorRef.current
-    ctx.lineWidth = 2
+    ctx.lineWidth = 2 / scale // Adjust line width for scale
     ctx.globalAlpha = arrow.opacity
     
     // Draw the arrow path as stroke only
@@ -84,9 +125,9 @@ export function FutureReady({
     ctx.stroke(path)
     
     ctx.restore()
-  }
+  }, [])
 
-  const animateArrows = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+  const animateArrows = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     if (!isPlaying) return
 
     // Frame rate limiting for consistent performance
@@ -109,39 +150,45 @@ export function FutureReady({
     const loopDuration = totalAppearTime + totalFadeOutTime // Perfect loop timing for smooth transition
     const loopTime = currentTime2 % loopDuration
     
+    // Update animation time for state persistence
+    animationTimeRef.current = currentTime2
+    
     // Update and draw arrows
     arrows.forEach((arrow, index) => {
-              // Check if we're in the fade-out phase
-        const fadeOutStartTime = totalAppearTime + (index * 0.36) // Start fading out from bottom (index 0)
+      // Check if we're in the fade-out phase
+      const fadeOutStartTime = totalAppearTime + (index * 0.36) // Start fading out from bottom (index 0)
+      
+      if (loopTime >= fadeOutStartTime) {
+        // Fade out phase - calculate fade progress
+        const fadeProgress = Math.min(1, (loopTime - fadeOutStartTime) / 0.36)
+        arrow.opacity = 0.9 * (1 - fadeProgress)
+      } else {
+        // Fade in phase - sequential from bottom to top (index 0 to 4)
+        const fadeInStartTime = index * 0.36 // Start fading in from bottom (index 0)
         
-        if (loopTime >= fadeOutStartTime) {
-          // Fade out phase - calculate fade progress
-          const fadeProgress = Math.min(1, (loopTime - fadeOutStartTime) / 0.36)
-          arrow.opacity = 0.9 * (1 - fadeProgress)
+        if (loopTime >= fadeInStartTime) {
+          // Calculate fade in progress - match fade-out timing exactly
+          const fadeInProgress = Math.min(1, (loopTime - fadeInStartTime) / 0.36)
+          arrow.opacity = 0.9 * fadeInProgress
         } else {
-          // Fade in phase - sequential from bottom to top (index 0 to 4)
-          const fadeInStartTime = index * 0.36 // Start fading in from bottom (index 0)
-          
-          if (loopTime >= fadeInStartTime) {
-            // Calculate fade in progress - match fade-out timing exactly
-            const fadeInProgress = Math.min(1, (loopTime - fadeInStartTime) / 0.36)
-            arrow.opacity = 0.9 * fadeInProgress
-          } else {
-            // Keep opacity at 0 before fade-in starts
-            arrow.opacity = 0
-          }
+          // Keep opacity at 0 before fade-in starts
+          arrow.opacity = 0
         }
+      }
       
       // Only draw if opacity > 0
       if (arrow.opacity > 0) {
-        drawArrow(ctx, arrow)
+        drawArrow(ctx, arrow, canvas)
       }
     })
 
     animationRef.current = requestAnimationFrame(() => animateArrows(canvas, ctx))
-  }
+  }, [isPlaying, drawArrow])
 
-  useEffect(() => {
+
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -163,6 +210,20 @@ export function FutureReady({
     canvas.style.width = rect.width + 'px'
     canvas.style.height = rect.height + 'px'
 
+    // Create arrows with new dimensions
+    arrowsRef.current = createArrows(canvas)
+
+    // Start animation
+    animateArrows(canvas, ctx)
+  }, [createArrows, animateArrows])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  useEffect(() => {
     // Theme-aware colors
     const updateColors = () => {
       const isDark = document.documentElement.classList.contains('dark');
@@ -184,11 +245,8 @@ export function FutureReady({
     observerRef.current = observer;
     observer.observe(document.documentElement, { attributes: true });
 
-    // Create arrows
-    arrowsRef.current = createArrows(canvas)
-
-    // Start animation
-    animateArrows(canvas, ctx)
+    // Start initial animation
+    initializeAndStartAnimation()
 
     return () => {
       if (animationRef.current) {
@@ -198,7 +256,7 @@ export function FutureReady({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying])
+  }, [initializeAndStartAnimation])
 
   return (
     <div className={`flex justify-center ${className}`}>

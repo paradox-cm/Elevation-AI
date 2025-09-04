@@ -109,7 +109,7 @@ export function RealTimeBusinessIntelligenceMobile({
       // Draw title bar with glass effect
       ctx.fillStyle = titleBarColor
       ctx.beginPath()
-      ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, 25, [radius, radius, 0, 0])
+      ctx.roundRect(dashboard.x, dashboard.y, dashboard.width, 10, [radius, radius, 0, 0])
       ctx.fill()
       
       // Draw dashboard grid structure and skeleton UI
@@ -129,14 +129,14 @@ export function RealTimeBusinessIntelligenceMobile({
       // Define grid system - properly contained within dashboard
       const gridPadding = logicalWidth * 0.034 // 15px for 440px canvas, scaled proportionally
       const gridSpacing = logicalWidth * 0.045 // 20px for 440px canvas, scaled proportionally
-      const sectionHeight = Math.min(logicalWidth * 0.182, (dashboard.height - 60) / 2) // Proper height distribution
+      const sectionHeight = Math.min(logicalWidth * 0.25, (dashboard.height - 40) / 2) // Increased height distribution
       
       // Top section (charts row) - start after title bar
-      const topSectionY = dashboard.y + 40 // Proper spacing from title bar
+      const topSectionY = dashboard.y + 20 // Reduced spacing from title bar
       const topSectionHeight = sectionHeight
       
       // Bottom section (metrics row) - proper vertical distribution
-      const bottomSectionY = dashboard.y + 40 + sectionHeight + 20 // Proper spacing between sections
+      const bottomSectionY = dashboard.y + 20 + sectionHeight + 15 // Reduced spacing between sections
       const bottomSectionHeight = sectionHeight
       
       // Left column (charts)
@@ -193,9 +193,10 @@ export function RealTimeBusinessIntelligenceMobile({
       
       // Line chart in top-left section - properly contained within dashboard
       const chartX = dashboard.x + (logicalWidth * 0.034) // 15px for 440px canvas, scaled proportionally
-      const chartY = dashboard.y + 45 // Proper spacing from title bar
+      const chartY = dashboard.y + 20 // Start after title bar
       const chartWidth = logicalWidth * 0.227 // 100px for 440px canvas, scaled proportionally
-      const chartHeight = Math.min(logicalHeight * 0.113, dashboard.height - 120) // Proper height utilization
+      const sectionHeight = Math.min(logicalWidth * 0.25, (dashboard.height - 40) / 2) // Match grid system
+      const chartHeight = sectionHeight - 5 // Leave minimal padding within the section
       
       // Chart background
       ctx.fillStyle = connectionColor + '20'
@@ -213,7 +214,7 @@ export function RealTimeBusinessIntelligenceMobile({
       
       for (let i = 0; i < chartWidth; i += 2) {
         const x = chartX + i
-        const progress = (animationTime * 0.04 + i * 0.2) % (Math.PI * 2)
+        const progress = (animationTime * 0.04 / devicePixelRatio + i * 0.2) % (Math.PI * 2)
         const maxAmplitude = Math.min(15, chartHeight / 3) // Limit amplitude to chart height
         const y = chartY + chartHeight/2 + Math.sin(progress) * maxAmplitude + Math.sin(i * 0.3) * (maxAmplitude * 0.5)
         
@@ -229,7 +230,7 @@ export function RealTimeBusinessIntelligenceMobile({
       ctx.fillStyle = dataColor
       for (let i = 0; i < chartWidth; i += 15) {
         const x = chartX + i
-        const progress = (animationTime * 0.04 + i * 0.2) % (Math.PI * 2)
+        const progress = (animationTime * 0.04 / devicePixelRatio + i * 0.2) % (Math.PI * 2)
         const maxAmplitude = Math.min(15, chartHeight / 3) // Limit amplitude to chart height
         const y = chartY + chartHeight/2 + Math.sin(progress) * maxAmplitude + Math.sin(i * 0.3) * (maxAmplitude * 0.5)
         ctx.beginPath()
@@ -255,7 +256,7 @@ export function RealTimeBusinessIntelligenceMobile({
       ]
       
       slices.forEach((slice, index) => {
-        const animationOffset = (animationTime * 0.01 + index * 0.4) % (Math.PI * 2)
+        const animationOffset = (animationTime * 0.01 / devicePixelRatio + index * 0.4) % (Math.PI * 2)
         const startAngle = slice.start + animationOffset
         const endAngle = slice.end + animationOffset
         
@@ -273,9 +274,11 @@ export function RealTimeBusinessIntelligenceMobile({
       
       // Bar chart in bottom-left section - properly contained within dashboard
       const chartX = dashboard.x + (logicalWidth * 0.034) // 15px for 440px canvas, scaled proportionally
-      const chartY = dashboard.y + dashboard.height - 55 // Proper spacing from bottom of dashboard
+      const sectionHeight = Math.min(logicalWidth * 0.25, (dashboard.height - 40) / 2) // Match grid system
+      const bottomSectionY = dashboard.y + 20 + sectionHeight + 15 // Match grid system spacing
+      const chartY = bottomSectionY // Start at the bottom section
       const chartWidth = logicalWidth * 0.273 // 120px for 440px canvas, scaled proportionally
-      const chartHeight = Math.min(50, dashboard.height - 80) // Proper height utilization
+      const chartHeight = sectionHeight - 5 // Leave minimal padding within the section
       
       // Chart background
       ctx.fillStyle = connectionColor + '20'
@@ -292,7 +295,7 @@ export function RealTimeBusinessIntelligenceMobile({
       
       for (let i = 0; i < 6; i++) {
         const x = chartX + 8 + (i * 12) // Reduced spacing from 18 to 12 for closer bars
-        const progress = (animationTime * 0.05 + i * 0.7) % (Math.PI * 2)
+        const progress = (animationTime * 0.05 / devicePixelRatio + i * 0.7) % (Math.PI * 2)
         const barHeight = Math.min(Math.abs(Math.sin(progress) * 20 + Math.sin(i * 0.5) * 12), maxBarHeight)
         
         ctx.fillStyle = dataColor
@@ -311,7 +314,7 @@ export function RealTimeBusinessIntelligenceMobile({
       for (let i = 0; i < 3; i++) {
         const x = startX + (i * 30)
         const y = startY + 25
-        const progress = (animationTime * 0.03 + i * 0.5) % (Math.PI * 2)
+        const progress = (animationTime * 0.03 / devicePixelRatio + i * 0.5) % (Math.PI * 2)
         const pulse = 0.8 + 0.2 * Math.sin(progress)
         const size = Math.min(10 * pulse, 15) // Limit size to prevent overflow
         
@@ -340,7 +343,7 @@ export function RealTimeBusinessIntelligenceMobile({
       ctx.stroke()
       
       // Animated gauge needle
-      const progress = (animationTime * 0.02) % (Math.PI * 2)
+      const progress = (animationTime * 0.02 / devicePixelRatio) % (Math.PI * 2)
       const needleAngle = Math.PI + (Math.sin(progress) * 0.5)
       
       ctx.strokeStyle = metricColor
@@ -387,9 +390,9 @@ export function RealTimeBusinessIntelligenceMobile({
           const x = matrixX + (col * gridSize) + (gridSize / 2)
           const y = matrixY + (row * gridSize) + (gridSize / 2)
           
-          // Generate different types of data based on position and time (slowed down by 30%)
+          // Generate different types of data based on position and time (slowed down by 30% and adjusted for device pixel ratio)
           let dataValue = ''
-          const timeSeed = Math.floor(animationTime * 0.28) + (row * 15) + (col * 8) // Slowed down by 30% (0.4 * 0.7 = 0.28)
+          const timeSeed = Math.floor(animationTime * 0.28 / devicePixelRatio) + (row * 15) + (col * 8) // Slowed down by 30% and adjusted for device pixel ratio
           
           if (col % 3 === 0) {
             // Binary data (0s and 1s)

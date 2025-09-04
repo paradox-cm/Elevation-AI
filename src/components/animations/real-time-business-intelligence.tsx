@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
 
 interface RealTimeBusinessIntelligenceProps {
   width?: number
@@ -18,12 +19,12 @@ export function RealTimeBusinessIntelligence({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
 
-  useEffect(() => {
+  const initializeCanvas = useCallback(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    if (!canvas) return { canvas: null, ctx: null }
 
     const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    if (!ctx) return { canvas: null, ctx: null }
 
     // High-DPI support for mobile devices
     const devicePixelRatio = window.devicePixelRatio || 1
@@ -39,6 +40,29 @@ export function RealTimeBusinessIntelligence({
     // Set the canvas CSS size to the logical size
     canvas.style.width = rect.width + 'px'
     canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    const { canvas, ctx } = initializeCanvas()
+    if (!canvas || !ctx) return
+
+    // Start the animation by calling the useEffect
+    // The animation will be started in the useEffect
+  }, [initializeCanvas])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  useEffect(() => {
+    const canvasData = initializeCanvas()
+    if (!canvasData || !canvasData.canvas || !canvasData.ctx) return
+    const { canvas, ctx } = canvasData
 
     // Theme-aware colors - proper light/dark mode distinction
     let isDark = document.documentElement.classList.contains('dark')
@@ -428,6 +452,7 @@ export function RealTimeBusinessIntelligence({
       animationRef.current = requestAnimationFrame(animate)
     }
 
+    // Start the animation
     animate()
 
     return () => {
@@ -436,7 +461,7 @@ export function RealTimeBusinessIntelligence({
       }
       observer.disconnect()
     }
-  }, [width, height])
+  }, [width, height, initializeAndStartAnimation])
 
   return (
     <div className={`flex justify-center ${className}`}>

@@ -485,10 +485,10 @@ export default function ErrorStatesPage() {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {showSuccess && (
-                      <Alert className="border-green-200 bg-green-50">
+                      <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
                         <Icon name="check-line" className="h-4 w-4 text-green-600 dark:text-green-400" />
                         <AlertTitle className="text-green-800 dark:text-green-200">Success!</AlertTitle>
-                        <AlertDescription className="text-green-700">
+                        <AlertDescription className="text-green-700 dark:text-green-300">
                           Your form has been submitted successfully.
                         </AlertDescription>
                       </Alert>
@@ -602,26 +602,26 @@ export default function ErrorStatesPage() {
                         </AlertDescription>
                       </Alert>
                       
-                      <Alert className="border-yellow-200 bg-yellow-50">
+                      <Alert className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
                                                         <Icon name="alert-line" className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-                        <AlertTitle className="text-yellow-800">Warning</AlertTitle>
-                        <AlertDescription className="text-yellow-700">
+                        <AlertTitle className="text-yellow-800 dark:text-yellow-200">Warning</AlertTitle>
+                        <AlertDescription className="text-yellow-700 dark:text-yellow-300">
                           This is a warning message. Use for cautionary information and potential issues.
                         </AlertDescription>
                       </Alert>
                       
-                      <Alert className="border-red-200 bg-red-50">
+                      <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950">
                                                         <Icon name="error-warning-line" className="h-4 w-4 text-red-600 dark:text-red-400" />
-                        <AlertTitle className="text-red-800">Error</AlertTitle>
-                        <AlertDescription className="text-red-700">
+                        <AlertTitle className="text-red-800 dark:text-red-200">Error</AlertTitle>
+                        <AlertDescription className="text-red-700 dark:text-red-300">
                           This is an error message. Use for critical issues that need immediate attention.
                         </AlertDescription>
                       </Alert>
                       
-                      <Alert className="border-green-200 bg-green-50">
+                      <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
                         <Icon name="check-line" className="h-4 w-4 text-green-600 dark:text-green-400" />
                         <AlertTitle className="text-green-800 dark:text-green-200">Success</AlertTitle>
-                        <AlertDescription className="text-green-700">
+                        <AlertDescription className="text-green-700 dark:text-green-300">
                           This is a success message. Use for positive confirmations and completed actions.
                         </AlertDescription>
                       </Alert>

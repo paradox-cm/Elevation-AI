@@ -14,6 +14,11 @@
       "type": "image/png"
     },
     {
+      "src": "/images/Favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
       "src": "/images/Favicon-Stroke.png",
       "sizes": "32x32",
       "type": "image/png"

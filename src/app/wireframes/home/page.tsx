@@ -26,6 +26,7 @@ import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { 
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
+  IntelligentProcessAutomationMobile,
   RealTimeBusinessIntelligence, 
   RealTimeBusinessIntelligenceMobile,
   FutureReady,
@@ -460,7 +461,7 @@ function ProblemIntroductionSection() {
             <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
               <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
                 {/* Text Container */}
-                <div className="relative h-96">
+                <div className="relative h-64">
                   {texts.map((textItem, index) => (
                     <div
                       key={index}
@@ -480,7 +481,7 @@ function ProblemIntroductionSection() {
                 </div>
                 
                 {/* Slide Indicators */}
-                <div className="absolute bottom-0 left-0 flex gap-2">
+                <div className="mt-6 flex gap-2">
                   {texts.map((_, index) => (
                     <button
                       key={index}
@@ -663,7 +664,7 @@ function ProblemSection() {
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-300 flex flex-col">
+                    <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-300 flex flex-col gap-0">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -675,7 +676,7 @@ function ProblemSection() {
                           {problem.description}
                         </BodyLarge>
                       </CardHeader>
-                      <CardContent className="flex-1 flex flex-col pb-6 px-4">
+                      <CardContent className="flex-1 flex flex-col pb-6 px-4 min-h-0">
                         {/* Spacer to push animation to bottom */}
                         <div className="flex-1"></div>
                         {/* Animation Container */}
@@ -689,8 +690,8 @@ function ProblemSection() {
                             />
                           )}
                           {index === 1 && (
-                            <IntelligentProcessAutomation 
-                              width={220} 
+                            <IntelligentProcessAutomationMobile 
+                              width={280} 
                               height={160} 
                               showBorder={false}
                               className=""
@@ -969,7 +970,7 @@ function PlatformSection() {
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col justify-end space-y-4 pb-6 px-4">
                         {/* Animation Container */}
-                        <div className="h-[240px] sm:h-[280px] md:h-[320px] rounded-xl flex items-center justify-center relative overflow-hidden">
+                        <div className="h-[240px] sm:h-[280px] md:h-[320px] rounded-xl flex items-center justify-center border border-border/50 relative overflow-hidden">
                           {index === 0 && (
                             <KnowledgeBlocksMobile 
                               width={220} 
@@ -1019,7 +1020,7 @@ function PlatformSection() {
             {/* Sticky Tab Container */}
             <div className="sticky top-20 h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-7rem)] 2xl:h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
               <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
-                                  <div className="w-full flex flex-col items-center justify-center min-h-0">
+                                  <div className="w-full flex flex-col items-center justify-center">
                   {/* Section Headline */}
                   <div className="text-center space-y-0 lg:space-y-1 mb-4 lg:mb-6 xl:mb-8">
                     <H1>The agentic platform</H1>
@@ -1028,20 +1029,20 @@ function PlatformSection() {
                     </BodyLarge>
                   </div>
                   {/* Tab Content Container */}
-                  <div className="relative w-full h-[400px] lg:h-[500px] xl:h-[550px] 2xl:h-[600px]">
+                  <div className="relative w-full h-[450px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] pb-2">
                     {features.map((feature, index) => (
                       <div
                         key={index}
-                        className={`transition-opacity duration-75 absolute inset-0 ${
+                        className={`transition-opacity duration-75 absolute inset-0 pb-2 ${
                           activeTab === index
                             ? 'opacity-100'
                             : 'opacity-0 pointer-events-none'
                         }`}
                       >
                         <Card className="border-border/50 transition-colors duration-300 h-full">
-                          <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12 min-h-0 overflow-hidden">
+                          <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12">
                             {/* Tab Navigation - Positioned at top of card with proper spacing */}
-                            <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-0.5 lg:mb-1 xl:mb-1.5 2xl:mb-2">
+                            <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-2 lg:mb-4 xl:mb-6 2xl:mb-8">
                               {features.map((featureTab, tabIndex) => (
                                 <button
                                   key={tabIndex}
@@ -1063,7 +1064,7 @@ function PlatformSection() {
                                   {feature.description}
                                 </BodyLarge>
                               </div>
-                              <div className="h-[300px] lg:h-[350px] xl:h-[400px] 2xl:h-[450px] w-full rounded-xl flex items-center justify-center relative overflow-hidden">
+                              <div className="h-[290px] lg:h-[340px] xl:h-[390px] 2xl:h-[440px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
                                 {activeTab === 0 && (
                                   <KnowledgeBlocks 
                                     width={600} 

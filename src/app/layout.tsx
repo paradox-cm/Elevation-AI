@@ -48,6 +48,7 @@ export const metadata: Metadata = {
   creator: "Elevation AI",
   publisher: "Elevation AI",
   robots: "index, follow",
+  metadataBase: new URL('https://elevationai.com'),
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -74,11 +75,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
       { url: "/images/Favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/Favicon.png", sizes: "64x64", type: "image/png" },
       { url: "/images/Favicon-Stroke.png", sizes: "32x32", type: "image/png" },
     ],
-    shortcut: "/favicon.ico",
+    shortcut: "/images/Favicon.png",
     apple: "/images/Favicon.png",
     other: [
       {

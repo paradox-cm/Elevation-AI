@@ -47,7 +47,7 @@ export default function FutureReadyAnimation() {
               <div className="flex justify-center mb-6">
                 <FutureReady 
                   width={600} 
-                  height={440} 
+                  height={400} 
                   showBorder={true}
                 />
               </div>
