@@ -11,8 +11,8 @@ import React, { createContext, useContext, useRef, useEffect, useState, ReactNod
  */
 
 interface AnimationState {
-  perlin: any
-  prng: any
+  perlin: Perlin
+  prng: SmallPRNG
   colorIndex: number
   colorTransition: number
   currentR: number
@@ -20,6 +20,17 @@ interface AnimationState {
   currentB: number
   startTime: number
   brandColors: Array<{ name: string; hex: string; rgb: { r: number; g: number; b: number } }>
+}
+
+// Define the types for the animation classes
+interface Perlin {
+  init: (randomFn: () => number) => void
+  [key: string]: unknown
+}
+
+interface SmallPRNG {
+  seed: number
+  random: (min: number, max: number) => number
 }
 
 interface AnimationContextType {

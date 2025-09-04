@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useCallback } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
 
 interface UnifiedKnowledgeProps {
   width?: number
@@ -32,12 +33,12 @@ export function UnifiedKnowledge({
   const isMobile = width <= 768
   const mobileScale = isMobile ? 0.85 : 1.0 // 15% smaller on mobile
 
-  useEffect(() => {
+  const initializeCanvas = useCallback(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    if (!canvas) return { canvas: null, ctx: null }
 
     const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    if (!ctx) return { canvas: null, ctx: null }
 
     // High-DPI support for mobile devices
     const devicePixelRatio = window.devicePixelRatio || 1
@@ -53,6 +54,46 @@ export function UnifiedKnowledge({
     // Set the canvas CSS size to the logical size
     canvas.style.width = rect.width + 'px'
     canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Start animation function
+  const startAnimation = useCallback((state?: unknown) => {
+    const { canvas, ctx } = initializeCanvas()
+    if (!canvas || !ctx) return
+
+    // Start the animation by calling the useEffect
+    // The animation will be started in the useEffect
+  }, [initializeCanvas])
+
+  // Stop animation function
+  const stopAnimation = useCallback(() => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    const { canvas, ctx } = initializeCanvas()
+    if (!canvas || !ctx) return
+
+    // Start the animation by calling the useEffect
+    // The animation will be started in the useEffect
+  }, [initializeCanvas])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  useEffect(() => {
+    const canvasData = initializeCanvas()
+    if (!canvasData || !canvasData.canvas || !canvasData.ctx) return
+    const { canvas, ctx } = canvasData
 
     // Theme-aware colors
     let isDark = document.documentElement.classList.contains('dark')
@@ -242,7 +283,7 @@ export function UnifiedKnowledge({
       }
     }
 
-    function animate() {
+    const animate = () => {
       if (!ctx || !canvas) return
       
       // Frame rate limiting for consistent performance
@@ -309,15 +350,16 @@ export function UnifiedKnowledge({
       animationRef.current = requestAnimationFrame(animate)
     }
 
+    // Start the animation
     animate()
 
-    return () => {
+      return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
       observer.disconnect()
     }
-  }, [width, height])
+  }, [width, height, initializeAndStartAnimation])
 
   return (
     <div className={`flex justify-center ${className}`}>
