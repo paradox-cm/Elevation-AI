@@ -872,11 +872,11 @@ function PlatformSection() {
       // Responsive container height calculation matching actual container heights
       let containerHeight
       if (window.innerWidth >= 1536) { // 2XL
-        containerHeight = 600 // matches h-[600px] for PlatformSection
+        containerHeight = 550 // matches h-[550px] for PlatformSection
       } else if (window.innerWidth >= 1400) { // XL
-        containerHeight = 600 // matches h-[600px] for PlatformSection
+        containerHeight = 500 // matches h-[500px] for PlatformSection
       } else { // LG
-        containerHeight = 600 // matches h-[600px] for PlatformSection
+        containerHeight = 450 // matches h-[450px] for PlatformSection
       }
       
       // Calculate which tab should be active based on scroll position
@@ -884,12 +884,12 @@ function PlatformSection() {
         // Section is in viewport, use custom calculation for PlatformSection
         const scrollProgress = Math.abs(rect.top) / containerHeight
         
-        // Custom logic: All tabs get 400px more scroll space, fifth tab gets additional 100px (500px total)
+        // Custom logic: All tabs get 400px more scroll space, fourth and fifth tabs get additional 100px (500px total each)
         const baseTabHeight = containerHeight
         const firstTabHeight = baseTabHeight + 400 // 400px extra for first tab
         const secondTabHeight = baseTabHeight + 400 // 400px extra for second tab
         const thirdTabHeight = baseTabHeight + 400 // 400px extra for third tab
-        const fourthTabHeight = baseTabHeight + 400 // 400px extra for fourth tab
+        const fourthTabHeight = baseTabHeight + 500 // 500px extra for fourth tab (400px + 100px additional)
         const fifthTabHeight = baseTabHeight + 500 // 500px extra for fifth tab (400px + 100px additional)
         
         let activeTab = 0
@@ -910,7 +910,7 @@ function PlatformSection() {
           activeTab = 4
         } else {
           // Section complete, stay on last tab
-          activeTab = features.length - 1
+          activeTab = 4
         }
         
         setActiveTab(activeTab)
@@ -1026,7 +1026,7 @@ function PlatformSection() {
                     </BodyLarge>
                   </div>
                   {/* Tab Content Container */}
-                  <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]">
+                  <div className="relative w-full h-[400px] lg:h-[500px] xl:h-[550px] 2xl:h-[600px]">
                     {features.map((feature, index) => (
                       <div
                         key={index}
@@ -1061,7 +1061,7 @@ function PlatformSection() {
                                   {feature.description}
                                 </BodyLarge>
                               </div>
-                              <div className="h-[300px] lg:h-[400px] xl:h-[500px] 2xl:h-[600px] w-full rounded-xl flex items-center justify-center relative overflow-hidden">
+                              <div className="h-[300px] lg:h-[350px] xl:h-[400px] 2xl:h-[450px] w-full rounded-xl flex items-center justify-center relative overflow-hidden">
                                 {activeTab === 0 && (
                                   <KnowledgeBlocks 
                                     width={600} 
@@ -1109,7 +1109,7 @@ function PlatformSection() {
             </div>
             
             {/* Scroll Spacer */}
-            <div style={{ height: `${650 + 650 + 750 + 750 + 750 + 200}px` }}></div>
+            <div style={{ height: `${850 + 850 + 850 + 950 + 950 + 200}px` }}></div>
           </div>
         </div>
       </Container>
