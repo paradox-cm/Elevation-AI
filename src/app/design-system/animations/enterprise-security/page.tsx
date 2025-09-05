@@ -46,8 +46,8 @@ export default function EnterpriseSecurityAnimation() {
               {/* Canvas Container */}
               <div className="flex justify-center mb-6">
                 <EnterpriseSecurity 
-                  width={600} 
-                  height={400} 
+                  width={480} 
+                  height={320} 
                   showBorder={true}
                 />
               </div>

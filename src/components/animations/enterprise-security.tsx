@@ -17,8 +17,8 @@ interface EnterpriseSecurityProps {
 }
 
 export function EnterpriseSecurity({ 
-  width = 600, 
-  height = 400, 
+  width = 480, 
+  height = 320, 
   className = "",
   showBorder = true 
 }: EnterpriseSecurityProps) {
@@ -40,9 +40,9 @@ export function EnterpriseSecurity({
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
     
-    // Create 3 security layers (outer, middle, inner)
+    // Create 3 security layers (outer, middle, inner) - 10% smaller
     for (let i = 0; i < 3; i++) {
-      const radius = 80 + i * 40
+      const radius = (80 + i * 40) * 0.9 // 10% smaller: 72, 108, 144
       const points: number[][] = []
       
       // Create hexagon points for each layer
@@ -93,7 +93,7 @@ export function EnterpriseSecurity({
       
       // Draw hexagon
       ctx.strokeStyle = lineColor
-      ctx.lineWidth = 2 // Changed from 1 to 2 for consistent thickness
+      ctx.lineWidth = 1 // Match Personal Copilot line thickness
       
       ctx.beginPath()
       ctx.moveTo(rotatedPoints[0][0], rotatedPoints[0][1])
@@ -104,8 +104,8 @@ export function EnterpriseSecurity({
       ctx.stroke()
     })
     
-    // Draw central security core (small hexagon) with 30-degree rotation to face upward
-    const coreRadius = 30
+    // Draw central security core (small hexagon) with 30-degree rotation to face upward - 10% smaller
+    const coreRadius = 30 * 0.9 // 10% smaller: 27
     const coreRotation = Math.PI / 6 // 30 degrees in radians - makes hexagon face upward
     const corePoints: number[][] = []
     for (let i = 0; i < 6; i++) {
@@ -116,7 +116,7 @@ export function EnterpriseSecurity({
     }
     
     ctx.strokeStyle = lineColor
-    ctx.lineWidth = 2 // Same thickness as outer layers
+    ctx.lineWidth = 1 // Match Personal Copilot line thickness
     ctx.beginPath()
     ctx.moveTo(corePoints[0][0], corePoints[0][1])
     for (let i = 1; i < corePoints.length; i++) {

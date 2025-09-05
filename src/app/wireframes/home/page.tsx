@@ -1221,7 +1221,7 @@ function PlatformSection() {
                           {index === 4 && (
                             <EnterpriseSecurity 
                               width={220} 
-                              height={160} 
+                              height={220} 
                               showBorder={false}
                             />
                           )}
@@ -1318,8 +1318,8 @@ function PlatformSection() {
                                 )}
                                 {activeTab === 4 && (
                                   <EnterpriseSecurity 
-                                    width={600} 
-                                    height={400} 
+                                    width={440} 
+                                    height={440} 
                                     showBorder={false}
                                   />
                                 )}
