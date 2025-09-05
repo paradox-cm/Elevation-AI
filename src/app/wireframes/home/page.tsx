@@ -1190,7 +1190,7 @@ function PlatformSection() {
                             <KnowledgeBlocksMobile 
                               key={isDesktop ? "lg" : "sm"}
                               width={220} 
-                              height={160} 
+                              height={220} 
                               showBorder={false}
                             />
                           )}
