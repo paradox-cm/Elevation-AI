@@ -60,8 +60,8 @@ export default function KnowledgeBlocksAnimation() {
               <div className="flex justify-center mb-6">
                 {isMobile ? (
                   <KnowledgeBlocksMobile 
-                    width={600} 
-                    height={400} 
+                    width={480} 
+                    height={320} 
                     showBorder={true}
                   />
                 ) : (

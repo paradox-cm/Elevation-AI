@@ -1287,8 +1287,8 @@ function PlatformSection() {
                                 {activeTab === 0 && (
                                   <KnowledgeBlocks 
                                     key={isDesktop ? "lg" : "sm"}
-                                    width={600} 
-                                    height={400} 
+                                    width={480} 
+                                    height={320} 
                                     showBorder={false}
                                   />
                                 )}
@@ -1311,8 +1311,8 @@ function PlatformSection() {
                                 {activeTab === 3 && (
                                   <PersonalCopilot 
                                     key={isDesktop ? "lg" : "sm"}
-                                    width={440} 
-                                    height={440} 
+                                    width={352} 
+                                    height={352} 
                                     showBorder={false}
                                   />
                                 )}

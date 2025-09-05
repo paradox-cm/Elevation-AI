@@ -46,8 +46,8 @@ export default function PersonalCopilotPage() {
               {/* Canvas Container */}
               <div className="flex justify-center mb-6">
                 <PersonalCopilot 
-                  width={440} 
-                  height={440} 
+                  width={352} 
+                  height={352} 
                   showBorder={true}
                 />
               </div>

@@ -13,8 +13,8 @@ interface PersonalCopilotProps {
 }
 
 export function PersonalCopilot({ 
-  width = 440, 
-  height = 440, 
+  width = 352, 
+  height = 352, 
   className = "",
   showBorder = true 
 }: PersonalCopilotProps) {

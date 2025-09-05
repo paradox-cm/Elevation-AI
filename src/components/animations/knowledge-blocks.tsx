@@ -37,8 +37,8 @@ interface KnowledgeBlocksProps {
 }
 
 export function KnowledgeBlocks({ 
-  width = 600, 
-  height = 400, 
+  width = 480, 
+  height = 320, 
   className = "",
   showBorder = true 
 }: KnowledgeBlocksProps) {
@@ -349,8 +349,8 @@ export function KnowledgeBlocks({
 
 // Mobile-specific version with smaller squares and fewer connections
 export function KnowledgeBlocksMobile({ 
-  width = 600, 
-  height = 400, 
+  width = 480, 
+  height = 320, 
   className = "",
   showBorder = true 
 }: KnowledgeBlocksProps) {

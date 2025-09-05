@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useCallback, useState } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
-import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface AgenticEngineProps {
   width?: number
@@ -18,7 +17,6 @@ export function AgenticEngine({
   showBorder = true 
 }: AgenticEngineProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const [animationKey, setAnimationKey] = useState(0)
 
@@ -63,15 +61,6 @@ export function AgenticEngine({
   useCanvasResize(canvasRef, initializeAndStartAnimation, {
     debounceDelay: 150,
     preserveAspectRatio: true
-  })
-
-  // Use visibility reset hook to detect when component becomes visible again
-  useVisibilityReset(containerRef, (isVisible) => {
-    console.log('AgenticEngine visibility changed:', isVisible)
-    if (isVisible) {
-      console.log('AgenticEngine: Restarting animation due to visibility change')
-      initializeAndStartAnimation()
-    }
   })
 
   useEffect(() => {
@@ -157,7 +146,7 @@ export function AgenticEngine({
           this.vy = -Math.abs(this.vy) // Bounce back
         }
         
-        this.opacity -= 0.020 // Increased for faster fade-out
+        this.opacity -= 0.010 // Reduced for slower fade-out
       }
     }
 
@@ -183,8 +172,8 @@ export function AgenticEngine({
       }
 
       update() {
-        // Lines fade out much faster now
-        this.opacity -= 0.030 // Increased for faster fade-out
+        // Lines fade out slower to stay longer
+        this.opacity -= 0.008 // Reduced for slower fade-out
       }
     }
 
@@ -209,7 +198,7 @@ export function AgenticEngine({
         update() {
           this.x += this.vx
           this.y += this.vy
-          this.opacity -= 0.020
+          this.opacity -= 0.010
         }
       }
       nodes.push(newNode)
@@ -256,7 +245,7 @@ export function AgenticEngine({
   }, [width, height, animationKey])
 
   return (
-    <div ref={containerRef} className={`flex justify-center ${className}`}>
+    <div className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
