@@ -58,16 +58,16 @@ export function MobileOnlyLayout({
           {/* Mobile menu overlay */}
           {mobileMenu && mobileMenuOpen && (
             <div 
-              className="fixed inset-0 z-[45] bg-black/10 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-[45] bg-black/10 backdrop-blur-sm xl:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
           )}
           
-          {/* Mobile Menu Drawer - Only visible on mobile/tablet */}
+          {/* Mobile Menu Drawer - Only visible below xl */}
           {mobileMenu && mobileMenuOpen && (
             <aside className={cn(
               "flex-shrink-0 bg-background border-t border-b border-border dark:border-muted",
-              "fixed top-0 left-0 right-0 z-[50] transform transition-transform duration-150 ease-out lg:hidden",
+              "fixed top-0 left-0 right-0 z-[50] transform transition-transform duration-150 ease-out xl:hidden",
               "h-auto max-h-[calc(100vh-56px)] translate-y-14 sm:translate-y-16"
             )}>
               <div className="overflow-y-auto h-full bg-background">
