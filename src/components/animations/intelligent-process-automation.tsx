@@ -49,7 +49,7 @@ export function IntelligentProcessAutomation({
   const createTraffic = (canvas: HTMLCanvasElement) => {
     const traffic: TradeLine[] = []
     const gridSize = 32
-    const speedFactor = 1.8
+    const speedFactor = 0.3
     
     // Create traffic only within the smaller boundary area
     for (let x = gridBoundary.x; x < gridBoundary.x + gridBoundary.width; x += gridSize * 3) {
