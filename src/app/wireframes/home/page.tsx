@@ -306,7 +306,7 @@ function Header() {
                             }
                             
                             ctx.putImageData(imageData, 0, 0);
-                            time += 0.01;
+                            time += 0.005;
                             animationId = requestAnimationFrame(animate);
                           }
                           
@@ -778,7 +778,7 @@ function ProblemSection() {
     },
     {
       title: "Real-Time Business Intelligence",
-      description: "Convert blind spots to comprehensive insights. A unified command center providing real-time visibility across your business operations—and the confidence to act.",
+              description: "Convert blind spots into detailed, actionable insights with a unified command center—delivering real-time visibility across operations and the confidence to act.",
       icon: "eye-line"
     },
     {

@@ -188,14 +188,14 @@ export function WorkspacesCanvases({
         // Draw rounded title bar
         ctx.fillStyle = windowBorderColor
         ctx.beginPath()
-        ctx.roundRect(workspace.x, workspace.y, workspace.width, 20, [radius, radius, 0, 0])
+        ctx.roundRect(workspace.x, workspace.y, workspace.width, 10, [radius, radius, 0, 0])
         ctx.fill()
         
         // Draw skeleton UI elements properly contained within window bounds
-        const contentStartY = workspace.y + 25
+        const contentStartY = workspace.y + 15
         const padding = 8
         const availableWidth = workspace.width - (padding * 2)
-        const availableHeight = workspace.height - 25 - padding // Subtract title bar height and bottom padding
+        const availableHeight = workspace.height - 15 - padding // Subtract title bar height and bottom padding
         
         ctx.fillStyle = connectionColor
         
@@ -218,13 +218,13 @@ export function WorkspacesCanvases({
         
         // Horizontal line (like a divider or progress bar) - properly contained
         const lineWidth = Math.max(0, availableWidth - 4)
-        const lineY = contentStartY + 15
+        const lineY = contentStartY + 22
         if (lineWidth > 0 && lineY + 2 <= workspace.y + workspace.height - padding) {
           ctx.fillRect(workspace.x + padding, lineY, lineWidth, 2)
         }
         
         // Additional horizontal line beneath the divider (representing text content)
-        const textLineY = contentStartY + 20
+        const textLineY = contentStartY + 27
         if (lineWidth > 0 && textLineY + 2 <= workspace.y + workspace.height - padding) {
           ctx.fillRect(workspace.x + padding, textLineY, lineWidth, 2)
         }

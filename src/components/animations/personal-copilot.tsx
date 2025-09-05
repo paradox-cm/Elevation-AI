@@ -117,8 +117,8 @@ export function PersonalCopilot({
     const numExchanges = 6
     const radius = Math.min(logicalWidth, logicalHeight) * 0.364 // 160 for 440x440, scaled proportionally
     const angleStep = (Math.PI * 2) / numExchanges
-    const rotationSpeed1 = 0.005
-    const rotationSpeed2 = 0.005
+    const rotationSpeed1 = 0.003
+    const rotationSpeed2 = 0.007
 
     // Performance optimization: Object pooling
     const exchanges1: Array<{ x: number; y: number; radius: number; baseX: number; baseY: number; updatePosition: (cosOffset: number, sinOffset: number) => void; draw: () => void }> = []
@@ -127,6 +127,9 @@ export function PersonalCopilot({
     const connections2: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
     let angle1 = 0
     let angle2 = 0
+    let lastTime = 0
+    const targetFPS = 60
+    const frameInterval = 1000 / targetFPS
 
     // Performance optimization: Pre-calculate exchange positions
     const basePositions: { x: number, y: number }[] = []
@@ -215,8 +218,16 @@ export function PersonalCopilot({
       })
     }
 
-    function animate() {
+    function animate(currentTime: number) {
       if (!ctx || !canvas) return
+      
+      // Frame rate limiting for consistent performance
+      if (currentTime - lastTime < frameInterval) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastTime = currentTime
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Performance optimization: Update positions first
@@ -239,9 +250,15 @@ export function PersonalCopilot({
       exchanges1.forEach(exchange => exchange.draw())
       exchanges2.forEach(exchange => exchange.draw())
       
-      // Performance optimization: Use pre-calculated rotation speeds
+      // Performance optimization: Use pre-calculated rotation speeds with consistent timing
       angle1 -= rotationSpeed1
       angle2 += rotationSpeed2
+      
+      // Normalize angles to prevent precision issues
+      if (angle1 > Math.PI * 2) angle1 -= Math.PI * 2
+      if (angle1 < 0) angle1 += Math.PI * 2
+      if (angle2 > Math.PI * 2) angle2 -= Math.PI * 2
+      if (angle2 < 0) angle2 += Math.PI * 2
       
       animationRef.current = requestAnimationFrame(animate)
     }
@@ -250,7 +267,7 @@ export function PersonalCopilot({
     generateExchanges(exchanges2)
     createConnections(exchanges1, connections1)
     createConnections(exchanges2, connections2)
-    animate()
+    animate(performance.now())
 
     return () => {
       if (animationRef.current) {
