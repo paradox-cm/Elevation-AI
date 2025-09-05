@@ -238,7 +238,7 @@ export function RealTimeBusinessIntelligence({
       
       for (let i = 0; i < chartWidth; i += 2) {
         const x = chartX + i
-        const progress = (animationTime * 0.04 + i * 0.2) % (Math.PI * 2)
+        const progress = (animationTime * 0.02 + i * 0.2) % (Math.PI * 2)
         const maxAmplitude = Math.min(15, chartHeight / 3) // Limit amplitude to chart height
         const y = chartY + chartHeight/2 + Math.sin(progress) * maxAmplitude + Math.sin(i * 0.3) * (maxAmplitude * 0.5)
         
@@ -254,7 +254,7 @@ export function RealTimeBusinessIntelligence({
       ctx.fillStyle = dataColor
       for (let i = 0; i < chartWidth; i += 15) {
         const x = chartX + i
-        const progress = (animationTime * 0.04 + i * 0.2) % (Math.PI * 2)
+        const progress = (animationTime * 0.02 + i * 0.2) % (Math.PI * 2)
         const maxAmplitude = Math.min(15, chartHeight / 3) // Limit amplitude to chart height
         const y = chartY + chartHeight/2 + Math.sin(progress) * maxAmplitude + Math.sin(i * 0.3) * (maxAmplitude * 0.5)
         ctx.beginPath()
@@ -280,7 +280,7 @@ export function RealTimeBusinessIntelligence({
       ]
       
       slices.forEach((slice, index) => {
-        const animationOffset = (animationTime * 0.01 + index * 0.4) % (Math.PI * 2)
+        const animationOffset = (animationTime * 0.005 + index * 0.4) % (Math.PI * 2)
         const startAngle = slice.start + animationOffset
         const endAngle = slice.end + animationOffset
         
@@ -317,7 +317,7 @@ export function RealTimeBusinessIntelligence({
       
       for (let i = 0; i < 6; i++) {
         const x = chartX + 8 + (i * 18)
-        const progress = (animationTime * 0.05 + i * 0.7) % (Math.PI * 2)
+        const progress = (animationTime * 0.025 + i * 0.7) % (Math.PI * 2)
         const barHeight = Math.min(Math.abs(Math.sin(progress) * 20 + Math.sin(i * 0.5) * 12), maxBarHeight)
         
         ctx.fillStyle = dataColor
@@ -336,7 +336,7 @@ export function RealTimeBusinessIntelligence({
       for (let i = 0; i < 3; i++) {
         const x = startX + (i * 30)
         const y = startY + 25
-        const progress = (animationTime * 0.03 + i * 0.5) % (Math.PI * 2)
+        const progress = (animationTime * 0.015 + i * 0.5) % (Math.PI * 2)
         const pulse = 0.8 + 0.2 * Math.sin(progress)
         const size = Math.min(10 * pulse, 15) // Limit size to prevent overflow
         
@@ -365,7 +365,7 @@ export function RealTimeBusinessIntelligence({
       ctx.stroke()
       
       // Animated gauge needle
-      const progress = (animationTime * 0.02) % (Math.PI * 2)
+      const progress = (animationTime * 0.01) % (Math.PI * 2)
       const needleAngle = Math.PI + (Math.sin(progress) * 0.5)
       
       ctx.strokeStyle = metricColor
@@ -412,9 +412,9 @@ export function RealTimeBusinessIntelligence({
           const x = matrixX + (col * gridSize) + (gridSize / 2)
           const y = matrixY + (row * gridSize) + (gridSize / 2)
           
-          // Generate different types of data based on position and time (slowed down by 30%)
+          // Generate different types of data based on position and time (slowed down by 80%)
           let dataValue = ''
-          const timeSeed = Math.floor(animationTime * 0.28) + (row * 15) + (col * 8) // Slowed down by 30% (0.4 * 0.7 = 0.28)
+          const timeSeed = Math.floor(animationTime * 0.05) + (row * 15) + (col * 8) // Slowed down by 80% for very smooth updates
           
           if (col % 3 === 0) {
             // Binary data (0s and 1s)
