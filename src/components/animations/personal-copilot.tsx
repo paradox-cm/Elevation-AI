@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useCallback, useState } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
+import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
 
 interface PersonalCopilotProps {
   width?: number
@@ -17,6 +19,7 @@ export function PersonalCopilot({
   showBorder = true 
 }: PersonalCopilotProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const [animationKey, setAnimationKey] = useState(0)
 
@@ -61,6 +64,21 @@ export function PersonalCopilot({
   useCanvasResize(canvasRef, initializeAndStartAnimation, {
     debounceDelay: 150,
     preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('PersonalCopilot visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('PersonalCopilot: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
+  })
+
+  // Alternative approach: Use breakpoint reset hook
+  useBreakpointReset(containerRef, () => {
+    console.log('PersonalCopilot: Breakpoint change detected, restarting animation')
+    initializeAndStartAnimation()
   })
 
   useEffect(() => {
@@ -243,7 +261,7 @@ export function PersonalCopilot({
   }, [width, height, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

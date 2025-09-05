@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
 import { useVisibilityReset } from "@/hooks/use-visibility-reset"
+import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
 
 interface KnowledgeBlock {
   x: number
@@ -420,6 +421,12 @@ export function KnowledgeBlocksMobile({
       console.log('KnowledgeBlocksMobile: Restarting animation due to visibility change')
       initializeAndStartAnimation()
     }
+  })
+
+  // Alternative approach: Use breakpoint reset hook
+  useBreakpointReset(containerRef, () => {
+    console.log('KnowledgeBlocksMobile: Breakpoint change detected, restarting animation')
+    initializeAndStartAnimation()
   })
 
   const initializeKnowledgeNetwork = (canvas: HTMLCanvasElement) => {

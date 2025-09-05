@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface WorkspacesCanvasesProps {
   width?: number
@@ -17,6 +18,7 @@ export function WorkspacesCanvases({
   showBorder = true 
 }: WorkspacesCanvasesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const [animationKey, setAnimationKey] = useState(0)
 
@@ -61,6 +63,15 @@ export function WorkspacesCanvases({
   useCanvasResize(canvasRef, initializeAndStartAnimation, {
     debounceDelay: 150,
     preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('WorkspacesCanvases visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('WorkspacesCanvases: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
   })
 
   useEffect(() => {
@@ -309,7 +320,7 @@ export function WorkspacesCanvases({
   }, [width, height, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

@@ -66,8 +66,8 @@ export default function KnowledgeBlocksAnimation() {
                   />
                 ) : (
                   <KnowledgeBlocks 
-                    width={600} 
-                    height={400} 
+                    width={480} 
+                    height={320} 
                     showBorder={true}
                   />
                 )}

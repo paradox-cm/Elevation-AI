@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 
 interface AgenticEngineProps {
   width?: number
@@ -17,6 +18,7 @@ export function AgenticEngine({
   showBorder = true 
 }: AgenticEngineProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const [animationKey, setAnimationKey] = useState(0)
 
@@ -61,6 +63,15 @@ export function AgenticEngine({
   useCanvasResize(canvasRef, initializeAndStartAnimation, {
     debounceDelay: 150,
     preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('AgenticEngine visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('AgenticEngine: Restarting animation due to visibility change')
+      initializeAndStartAnimation()
+    }
   })
 
   useEffect(() => {
@@ -245,7 +256,7 @@ export function AgenticEngine({
   }, [width, height, animationKey])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
