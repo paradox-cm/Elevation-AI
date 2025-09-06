@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
+import { Carousel, CarouselItem } from "@/components/ui/carousel"
 import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
 import { MainHeader } from "@/components/ui/main-header"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -69,11 +70,11 @@ function TypewriterText({
 
   // Split text into words to find where to insert cycling word
   const words = text.split(" ")
-  const cyclingWordIndex = words.findIndex(word => word === "business") // Find "business" position
+  const cyclingWordIndex = words.findIndex(word => word === "into") // Find "into" position to insert before it
   
   // Create base text without the cycling word
   const beforeCyclingWord = words.slice(0, cyclingWordIndex).join(" ")
-  const afterCyclingWord = words.slice(cyclingWordIndex + 1).join(" ")
+  const afterCyclingWord = words.slice(cyclingWordIndex).join(" ")
 
   // Reset animation on mount and when text changes
   React.useEffect(() => {
@@ -81,14 +82,14 @@ function TypewriterText({
       // If skipping animation, show full text immediately
       const firstCycleWord = cyclingWords.length > 0 ? cyclingWords[0] : "business"
       setDisplayText(beforeCyclingWord + " " + firstCycleWord + " " + afterCyclingWord)
-      setCurrentWordIndex(words.length)
+      setCurrentWordIndex(999) // Set high to indicate complete
       setIsTyping(false)
     } else {
       setDisplayText("")
       setCurrentWordIndex(0)
       setIsTyping(false)
     }
-  }, [text, words.length, cyclingWords, beforeCyclingWord, afterCyclingWord])
+  }, [text, cyclingWords, beforeCyclingWord, afterCyclingWord])
 
   // Handle skipAnimation changes
   React.useEffect(() => {
@@ -96,10 +97,10 @@ function TypewriterText({
       // If skipping animation, show full text immediately
       const firstCycleWord = cyclingWords.length > 0 ? cyclingWords[0] : "business"
       setDisplayText(beforeCyclingWord + " " + firstCycleWord + " " + afterCyclingWord)
-      setCurrentWordIndex(words.length)
+      setCurrentWordIndex(999) // Set high to indicate complete
       setIsTyping(false)
     }
-  }, [skipAnimation, text, words.length, cyclingWords, beforeCyclingWord, afterCyclingWord])
+  }, [skipAnimation, text, cyclingWords, beforeCyclingWord, afterCyclingWord])
 
   React.useEffect(() => {
     if (skipAnimation) return // Don't start typing if skipping animation
@@ -114,20 +115,20 @@ function TypewriterText({
     }
   }, [delay, skipAnimation])
 
-  // Show cursor immediately when component mounts (before typing starts)
-  React.useEffect(() => {
-    if (!skipAnimation) {
-      setIsTyping(true)
-    }
-  }, [skipAnimation])
-
-  // Initial typing animation - types out the complete text with first cycling word
+  // Initial typing animation - types out the complete text with first cycling word word by word
   React.useEffect(() => {
     if (skipAnimation || !isTyping) return
 
     const firstCycleWord = cyclingWords.length > 0 ? cyclingWords[0] : "business"
     const fullText = beforeCyclingWord + " " + firstCycleWord + " " + afterCyclingWord
     const fullWords = fullText.split(" ")
+
+    // Show first word immediately when typing starts
+    if (currentWordIndex === 0) {
+      setDisplayText(fullWords[0])
+      setCurrentWordIndex(1)
+      return
+    }
 
     if (currentWordIndex < fullWords.length) {
       const timer = setTimeout(() => {
@@ -152,7 +153,7 @@ function TypewriterText({
   React.useEffect(() => {
     if (!isScrolling || cyclingWords.length <= 1) return
 
-    const timer = setTimeout(() => {
+      const timer = setTimeout(() => {
       // Start transition
       setIsTransitioning(true)
       setPreviousWord(cyclingWords[currentCycleIndex])
@@ -164,7 +165,7 @@ function TypewriterText({
       }, 300) // Half of the transition duration
     }, cyclingDelay) // Wait before switching to next word
 
-    return () => clearTimeout(timer)
+      return () => clearTimeout(timer)
   }, [isScrolling, currentCycleIndex, cyclingWords.length, cyclingDelay, cyclingWords])
 
   // Update display text when cycling word changes
@@ -178,50 +179,56 @@ function TypewriterText({
 
   return (
     <span className="inline-block leading-tight">
-      {beforeCyclingWord}
-      {beforeCyclingWord && " "}
-      <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
-        {/* Top gradient mask for fade effect - positioned above container to catch sliding words - hidden on mobile and small */}
-        {isScrolling && (
-          <div className="hidden md:block absolute left-0 right-0 pointer-events-none z-10 bg-gradient-to-b from-background via-background/80 via-background/40 to-transparent" style={{ top: '-32px', height: '32px' }}></div>
-        )}
-        {/* Cycling word with sliding animation - no overflow control */}
-        {isScrolling && cyclingWords.length > 0 ? (
-          <>
-            {/* Current word sliding up */}
-            <span 
-              className={`inline-block transition-transform duration-600 ease-in-out ${
-                isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
-              }`}
-              style={{ 
-                lineHeight: 'inherit',
-                clipPath: isTransitioning ? 'inset(0 0 100% 0)' : 'inset(0 0 0 0)'
-              }}
-            >
-              {cyclingWords[currentCycleIndex]}
-            </span>
-            {/* Next word sliding in from bottom */}
-            {isTransitioning && (
-              <span 
-                className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
-                style={{
-                  lineHeight: 'inherit',
-                  transform: 'translateY(12px)',
-                  clipPath: 'inset(100% 0 0 0)'
-                }}
-              >
-                {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
-              </span>
+      {!isScrolling ? (
+        // Show the typing animation text
+        <>
+          {displayText}
+          {!skipAnimation && currentWordIndex < (beforeCyclingWord + " " + (cyclingWords[0] || "business") + " " + afterCyclingWord).split(" ").length && (
+            <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+          )}
+        </>
+      ) : (
+        // Show the cycling words animation
+        <>
+          {beforeCyclingWord}
+          {beforeCyclingWord && " "}
+          <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
+            {/* Top gradient mask for fade effect - positioned above container to catch sliding words - hidden on mobile and small */}
+            <div className="hidden md:block absolute left-0 right-0 pointer-events-none z-10 bg-gradient-to-b from-background via-background/80 via-background/40 to-transparent" style={{ top: '-32px', height: '32px' }}></div>
+            {/* Cycling word with sliding animation - no overflow control */}
+            {cyclingWords.length > 0 && (
+              <>
+                {/* Current word sliding up */}
+                <span 
+                  className={`inline-block transition-transform duration-600 ease-in-out ${
+                    isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
+                  }`}
+                  style={{ 
+                    lineHeight: 'inherit',
+                    clipPath: isTransitioning ? 'inset(0 0 100% 0)' : 'inset(0 0 0 0)'
+                  }}
+                >
+                  {cyclingWords[currentCycleIndex]}
+                </span>
+                {/* Next word sliding in from bottom */}
+                {isTransitioning && (
+                  <span 
+                    className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
+                    style={{
+                      lineHeight: 'inherit',
+                      transform: 'translateY(12px)',
+                      clipPath: 'inset(100% 0 0 0)'
+                    }}
+                  >
+                    {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
+                  </span>
+                )}
+              </>
             )}
-          </>
-        ) : (
-          <span style={{ lineHeight: 'inherit' }}>{cyclingWords[0] || "business"}</span>
-        )}
-      </span>
-      {afterCyclingWord && " "}
-      {afterCyclingWord}
-      {!skipAnimation && !isScrolling && currentWordIndex < (beforeCyclingWord + " " + (cyclingWords[0] || "business") + " " + afterCyclingWord).split(" ").length && (
-        <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+          </span>
+          {afterCyclingWord && " "}
+          {afterCyclingWord}
+        </>
       )}
     </span>
   )
@@ -242,7 +249,7 @@ function HeroSection() {
             <div className="space-y-4 sm:space-y-6">
                               <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
                   <TypewriterText 
-                    text="The platform bringing business into the agentic era." 
+                    text="Bringing into the agentic era." 
                     speed={100} 
                     delay={500}
                     cyclingSpeed={300}
@@ -312,11 +319,11 @@ function HeroSection() {
             </div>
 
             {/* Perlin Icon */}
-            <div className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-64 2xl:h-64 flex items-center justify-center relative z-10 mx-auto">
+            <div className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-52 2xl:h-52 flex items-center justify-center relative z-10 mx-auto">
               <AnimatedFavicon 
                 width={256}
                 height={256}
-                className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-64 2xl:h-64"
+                className="w-29 h-29 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-48 xl:h-48 2xl:w-52 2xl:h-52"
               />
             </div>
           </div>
@@ -1128,13 +1135,6 @@ function PlatformSection() {
 
 // How We Do It Section
 function HowWeDoItSection() {
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [currentCard, setCurrentCard] = React.useState(0)
-  const [isDragging, setIsDragging] = React.useState(false)
-  const [startX, setStartX] = React.useState(0)
-  const [currentX, setCurrentX] = React.useState(0)
-  const [dragOffset, setDragOffset] = React.useState(0)
-  const carouselRef = React.useRef<HTMLDivElement>(null)
   
   const approaches = [
     {
@@ -1154,136 +1154,16 @@ function HowWeDoItSection() {
     }
   ]
 
-  const ventureStages = [
-    "Creating a Venture",
-    "Scaling a Venture", 
-    "Exiting a Venture",
-    "Post-IPO Growth",
-    "Post-Exit/Family Office"
-  ]
 
-  const nextCard = () => {
-    setCurrentCard((prev) => (prev + 1) % ventureStages.length)
-  }
-
-  const prevCard = () => {
-    setCurrentCard((prev) => (prev - 1 + ventureStages.length) % ventureStages.length)
-  }
-
-  const goToCard = (index: number) => {
-    setCurrentCard(index)
-  }
-
-  // Touch and drag handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true)
-    setStartX(e.touches[0].clientX)
-    setCurrentX(e.touches[0].clientX)
-    setDragOffset(0)
-    
-    // Pause auto-play while dragging
-    if (carouselRef.current) {
-      carouselRef.current.style.transition = 'none'
-    }
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return
-    e.preventDefault()
-    const x = e.touches[0].clientX
-    setCurrentX(x)
-    setDragOffset(x - startX)
-  }
-
-  const handleTouchEnd = () => {
-    if (!isDragging) return
-    setIsDragging(false)
-    
-    // Restore transition
-    if (carouselRef.current) {
-      carouselRef.current.style.transition = 'transform 0.3s ease-in-out'
-    }
-    
-    const threshold = 50 // minimum distance to trigger swipe
-    if (Math.abs(dragOffset) > threshold) {
-      if (dragOffset > 0) {
-        // Swipe right - go to previous card
-        prevCard()
-        // Haptic feedback for mobile
-        if ('vibrate' in navigator) {
-          navigator.vibrate(50)
-        }
-      } else {
-        // Swipe left - go to next card
-        nextCard()
-        // Haptic feedback for mobile
-        if ('vibrate' in navigator) {
-          navigator.vibrate(50)
-        }
-      }
-    }
-    setDragOffset(0)
-  }
-
-  // Mouse drag handlers for desktop testing
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true)
-    setStartX(e.clientX)
-    setCurrentX(e.clientX)
-    setDragOffset(0)
-    
-    // Pause auto-play while dragging
-    if (carouselRef.current) {
-      carouselRef.current.style.transition = 'none'
-    }
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return
-    const x = e.clientX
-    setCurrentX(x)
-    setDragOffset(x - startX)
-  }
-
-  const handleMouseUp = () => {
-    if (!isDragging) return
-    setIsDragging(false)
-    
-    // Restore transition
-    if (carouselRef.current) {
-      carouselRef.current.style.transition = 'transform 0.3s ease-in-out'
-    }
-    
-    const threshold = 50 // minimum distance to trigger swipe
-    if (Math.abs(dragOffset) > threshold) {
-      if (dragOffset > 0) {
-        // Drag right - go to previous card
-        prevCard()
-      } else {
-        // Drag left - go to next card
-        nextCard()
-      }
-    }
-    setDragOffset(0)
-  }
-
-  // Auto-play functionality for the carousel
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentCard((prev) => (prev + 1) % ventureStages.length)
-    }, 3000) // 3 second interval
-
-    return () => clearInterval(interval)
-  }, [ventureStages.length])
 
   return (
     <Section paddingY="lg" className="bg-muted/30">
-      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
-          <div className="text-left lg:text-center space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+          <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl 2xl:text-4xl">More Than a Platform.</H1>
-            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl mx-auto">
+            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
               A Partnership to Power Every Stage.
             </BodyLarge>
           </div>
@@ -1311,7 +1191,7 @@ function HowWeDoItSection() {
                             <Icon name={approach.icon} size="2xl" className="text-primary" />
                           )}
                         </div>
-                        <CardTitle className="text-lg font-semibold lg:text-xl xl:text-2xl 2xl:text-3xl">{approach.title}</CardTitle>
+                        <CardTitle className="text-lg font-semibold">{approach.title}</CardTitle>
                       </div>
                       
                       {/* Description */}
@@ -1332,96 +1212,6 @@ function HowWeDoItSection() {
             ))}
           </div>
 
-          {/* Venture Lifecycle Cards */}
-          <div className="space-y-4">
-            {/* Mobile Carousel */}
-            <div className="lg:hidden">
-              <div className="relative">
-                {/* Carousel Container */}
-                <div className="overflow-hidden">
-                  <div 
-                    ref={carouselRef}
-                    className={`flex transition-transform duration-300 ease-in-out touch-pan-y select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-                    style={{ 
-                      transform: `translateX(calc(-${currentCard * 100}% + ${dragOffset * 0.8}px))`,
-                      transition: isDragging ? 'none' : 'transform 0.3s ease-in-out'
-                    }}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                  >
-                    {ventureStages.map((stage, index) => (
-                      <div key={index} className="w-full flex-shrink-0">
-                        <Card className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer w-full">
-                          <CardHeader className="p-4 sm:p-6 flex items-center justify-center min-h-[80px] sm:min-h-[100px]">
-                            <div className="text-center">
-                              <CardTitle className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                                {stage} →
-                              </CardTitle>
-                            </div>
-                          </CardHeader>
-                        </Card>
-                      </div>
-                    ))}
-                  </div>
-                  
-                </div>
-
-                {/* Navigation Arrows */}
-                {currentCard > 0 && (
-                  <button
-                    onClick={prevCard}
-                    className="absolute left-2 top-[40px] w-8 h-8 border border-border rounded-full flex items-center justify-center hover:bg-background/20 transition-colors z-10"
-                    aria-label="Previous card"
-                  >
-                    <Icon name="arrow-left-line" className="w-4 h-4" />
-                  </button>
-                )}
-                {currentCard < ventureStages.length - 1 && (
-                  <button
-                    onClick={nextCard}
-                    className="absolute right-2 top-[40px] w-8 h-8 border border-border rounded-full flex items-center justify-center hover:bg-background/20 transition-colors z-10"
-                    aria-label="Next card"
-                  >
-                    <Icon name="arrow-right-line" className="w-4 h-4" />
-                  </button>
-                )}
-
-                {/* Progress Bar Indicator */}
-                <div className="mt-4">
-                  <div className="w-full bg-border rounded-full h-1 overflow-hidden">
-                    <div 
-                      className="h-full bg-primary rounded-full transition-all duration-75 ease-linear"
-                      style={{ 
-                        width: `${((currentCard + 1) / ventureStages.length) * 100}%`
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop Grid Layout */}
-            <div className="hidden lg:block">
-              <div className="grid grid-cols-5 gap-4">
-                {ventureStages.map((stage, index) => (
-                  <Card key={index} className="group hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-border/50 transition-colors duration-300 bg-transparent cursor-pointer">
-                    <CardHeader className="p-4 h-full flex items-center justify-center">
-                      <div className="text-center">
-                        <CardTitle className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                          {stage} →
-                        </CardTitle>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </Container>
     </Section>
@@ -1430,103 +1220,146 @@ function HowWeDoItSection() {
 
 // Who We Serve Section
 function WhoWeServeSection() {
-  const solutions = [
+
+  const solutions: CarouselItem[] = [
     {
+      id: "private-markets",
       title: "Private Market Organizations",
       description: "The agentic backbone for the entire private capital lifecycle.",
-      icon: "building-2-line"
+      icon: ({ className }) => <Icon name="building-2-line" className={className} />
     },
     {
+      id: "public-markets",
       title: "Public Market Organizations",
       description: "A unified intelligence platform for modern investment management.",
-      icon: "store-line"
+      icon: ({ className }) => <Icon name="store-line" className={className} />
     },
     {
+      id: "banks",
       title: "Banks",
       description: "Automate compliance, enhance risk management, and improve customer service.",
-      icon: "bank-line"
+      icon: ({ className }) => <Icon name="bank-line" className={className} />
     },
     {
+      id: "enterprise",
       title: "Enterprise",
       description: "The secure control plane for growing and established organizations.",
-      icon: "briefcase-line"
+      icon: ({ className }) => <Icon name="briefcase-line" className={className} />
     },
     {
+      id: "government",
       title: "Government",
       description: "A secure, compliant, and auditable platform for the public sector.",
-      icon: "government-line"
+      icon: ({ className }) => <Icon name="government-line" className={className} />
     }
   ]
 
+  const smallCards = [
+    "Creating a Venture",
+    "Scaling a Venture", 
+    "Exiting a Venture",
+    "Post-IPO Growth",
+    "Post-Exit/Family Office"
+  ]
+
+  // Convert smallCards to CarouselItem format
+  const smallCardsCarouselItems = smallCards.map((card, index) => ({
+    id: index,
+    title: card,
+    description: "",
+    content: (
+      <div className="text-left">
+        <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+          →
+        </h4>
+      </div>
+    )
+  }))
+
+
+
+
   return (
     <Section paddingY="lg">
-      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
-          <div className="text-left lg:text-center space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+          <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl 2xl:text-4xl">Intelligent Solutions for Every Domain</H1>
-            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl lg:mx-auto">
+            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
               Powered by Elevation AI and guided by experts.
             </BodyLarge>
           </div>
-
-          {/* Mobile Layout - Single Column */}
-          <div className="block lg:hidden space-y-4">
-            {solutions.map((solution, index) => (
-              <Link key={index} href={`/solutions/${solution.title.toLowerCase().replace(/\s+/g, '-').replace(/organizations?/g, '')}`} className="block">
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300 bg-transparent">
-                  <CardHeader className="pt-4 px-4 pb-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name={solution.icon} size="xl" className="text-primary" />
-                      </div>
-                      <div className="space-y-3 flex-1">
-                        <CardTitle className="text-lg font-semibold lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
-                        <P className="text-muted-foreground leading-relaxed">{solution.description}</P>
-                        
-                        {/* Learn More Link */}
-                        <div className="pt-2">
-                          <span className="inline-flex items-center text-primary group">
-                            <span className="group-hover:translate-x-1 transition-transform duration-200">Learn more →</span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </Link>
-            ))}
-          </div>
-
-          {/* Desktop Layout - Grid */}
-          <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {solutions.map((solution, index) => (
-              <Link key={index} href={`/solutions/${solution.title.toLowerCase().replace(/\s+/g, '-').replace(/organizations?/g, '')}`} className="block">
-                <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-border/50 transition-colors duration-300 bg-transparent h-full">
-                  <CardHeader className="pt-3 px-4 pb-3 lg:pt-4 lg:px-6 lg:pb-4 xl:pt-5 lg:px-6 xl:pb-5 2xl:pt-6 2xl:px-8 2xl:pb-6">
-                    <div className="flex items-start gap-4 lg:gap-5">
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name={solution.icon} size="2xl" className="text-primary" />
-                      </div>
-                      <div className="space-y-3 lg:space-y-4 flex-1">
-                        <CardTitle className="text-lg font-semibold lg:text-xl xl:text-2xl 2xl:text-3xl">{solution.title}</CardTitle>
-                        <P className="text-muted-foreground leading-relaxed">{solution.description}</P>
-                        
-                        {/* Learn More Link */}
-                        <div className="pt-2">
-                          <span className="inline-flex items-center text-primary group">
-                            <span className="group-hover:translate-x-1 transition-transform duration-200">Learn more →</span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </Link>
-            ))}
-          </div>
         </div>
       </Container>
+
+      {/* Carousel Layout - Outside container for full width */}
+      <div className="w-full mt-8 lg:mt-12">
+            <Carousel 
+              items={solutions}
+              autoPlay={true}
+              autoPlayInterval={5000}
+              showProgressIndicators={true}
+          showGradients={false}
+              cardWidth={400}
+              cardGap={32}
+              className="w-full"
+              responsive={{
+                sm: { cardWidth: 288, cardGap: 12 },
+                md: { cardWidth: 336, cardGap: 16 },
+                lg: { cardWidth: 320, cardGap: 24 }
+              }}
+            />
+                      </div>
+
+      {/* Small Cards - Carousel for Small Breakpoints / Grid for Large */}
+      <div className="w-full mt-8 lg:mt-12">
+        {/* Carousel for Small Breakpoints */}
+            <div className="lg:hidden">
+          <Carousel 
+            items={smallCardsCarouselItems}
+            autoPlay={false}
+            showProgressIndicators={false}
+            showGradients={false}
+            cardWidth={200}
+            cardGap={16}
+            className="w-full"
+            highlightActiveCard={false}
+            cardStyle="outline"
+            responsive={{
+              sm: { cardWidth: 200, cardGap: 12 },
+              md: { cardWidth: 220, cardGap: 14 }
+            }}
+          />
+                      </div>
+
+        {/* Grid Layout for Large Breakpoints */}
+        <div className="hidden lg:block">
+          <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+            <div className="grid grid-cols-5 gap-4">
+              {smallCards.map((card, index) => (
+                <div
+                  key={index}
+                  className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent min-h-[320px] flex flex-col"
+                >
+                  <div className="flex flex-col flex-1">
+                    <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
+                      {card}
+                    </h3>
+                    <div className="flex-1 flex items-end">
+                      <div className="text-left">
+                        <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                          →
+                        </h4>
+                        </div>
+                      </div>
+              </div>
+            </div>
+            ))}
+            </div>
+          </Container>
+          </div>
+        </div>
     </Section>
   )
 }
@@ -1538,9 +1371,9 @@ function ClosingCTASection() {
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         {/* Mobile Layout - Full Viewport Height */}
         <div className="block lg:hidden min-h-screen flex items-center justify-center py-8">
-          <div className="text-left space-y-8 max-w-3xl mx-auto">
+          <div className="text-left sm:text-center space-y-8 max-w-3xl mx-auto">
             <div className="space-y-6">
-              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">Elevate Your Organization</H1>
+              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">Orchestrate Your Universe</H1>
               <BodyLarge className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
               </BodyLarge>
@@ -1565,7 +1398,7 @@ function ClosingCTASection() {
         <div className="hidden lg:block">
           <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
             <div className="space-y-4 lg:space-y-6">
-              <H1>Elevate Your Organization</H1>
+              <H1>Orchestrate Your Universe</H1>
               <BodyLarge className="text-muted-foreground max-w-2xl mx-auto">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
               </BodyLarge>
@@ -1633,7 +1466,7 @@ function FloatingBackToTop() {
 function Footer() {
   return (
     <footer className="border-t border-muted bg-muted/30 transition-colors duration-300">
-      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="py-8 sm:py-12 lg:py-16">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
             {/* Brand */}
@@ -1658,14 +1491,27 @@ function Footer() {
               </div>
             </div>
             
+            {/* Platform & People */}
+            <div className="space-y-6">
             {/* Platform */}
             <div className="space-y-4">
               <H3 className="text-base font-semibold">Platform</H3>
               <ul className="space-y-2">
+                <li><Link href="/platform" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Overview</Link></li>
                 <li><Link href="/platform/features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
                 <li><Link href="/platform/security" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Security</Link></li>
                 <li><Link href="/platform/integrations" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Integrations</Link></li>
               </ul>
+              </div>
+              
+              {/* People */}
+              <div className="space-y-4">
+                <H3 className="text-base font-semibold">People</H3>
+                <ul className="space-y-2">
+                  <li><Link href="/wireframes/people/concierge-team" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
+                  <li><Link href="/wireframes/people/expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
+                </ul>
+              </div>
             </div>
             
             {/* Solutions */}
@@ -1713,7 +1559,6 @@ function Footer() {
               <H3 className="text-base font-semibold">Company</H3>
               <ul className="space-y-2">
                 <li><Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link></li>
-                <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</Link></li>
                 <li><Link href="/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
                 <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
               </ul>
@@ -1722,16 +1567,16 @@ function Footer() {
           
           {/* Newsletter Signup */}
           <Separator className="mt-20 lg:mt-24 mb-4 lg:mb-6 bg-border/60" />
-          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
-            {/* Content Column */}
-            <div className="flex-1 text-left space-y-2">
+          
+          {/* Newsletter Content */}
+          <div className="text-left space-y-4 mb-6">
               <H3 className="text-xs font-medium uppercase tracking-wider text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs 2xl:text-xs">Stay Updated</H3>
               <BodySmall className="text-muted-foreground">
                 Get the latest insights on agentic AI, platform updates, and industry trends delivered to your inbox.
               </BodySmall>
             </div>
             
-            {/* Form Column */}
+          {/* Newsletter Form */}
             <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                                 <input
                     type="email"
@@ -1741,7 +1586,6 @@ function Footer() {
               <Button variant="secondary" className="px-6 h-10">
                 Subscribe
               </Button>
-            </div>
           </div>
           
           <Separator className="my-4 lg:my-6 bg-border/60" />

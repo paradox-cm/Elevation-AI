@@ -39,10 +39,30 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
 
         {/* Center Navigation */}
         <nav className="hidden xl:flex items-center space-x-4">
-          {/* Platform */}
-          <Link href="/platform" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
-            Platform
-          </Link>
+          {/* Platform Dropdown */}
+          <div className="relative group">
+            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+              Platform
+              <Icon name="arrow-down-s-line" className="h-4 w-4" />
+            </button>
+            {/* Dropdown menu for Platform */}
+            <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="p-2 space-y-1">
+                <Link href="/platform" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Overview
+                </Link>
+                <Link href="/platform/features" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Features
+                </Link>
+                <Link href="/platform/security" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Security
+                </Link>
+                <Link href="/platform/integrations" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Integrations
+                </Link>
+              </div>
+            </div>
+          </div>
           
           {/* People Dropdown */}
           <div className="relative group">

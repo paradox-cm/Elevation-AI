@@ -19,15 +19,43 @@ interface AnimatedFaviconProps {
   className?: string
   width?: number
   height?: number
+  preset?: 'high-detail' | 'balanced' | 'dramatic'
 }
 
-export function AnimatedFavicon({ className, width = 100, height = 100 }: AnimatedFaviconProps) {
+export function AnimatedFavicon({ className, width = 100, height = 100, preset = 'dramatic' }: AnimatedFaviconProps) {
   const { isAnimationInitialized, animationState } = useAnimationContext()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
   const lastTimeRef = useRef<number>(0)
   const isVisibleRef = useRef<boolean>(true)
+
+  // Preset configurations
+  const presets = {
+    'high-detail': {
+      scaleX: 0.005,
+      scaleY: 0.005,
+      waveMultiplier: 3072,
+      threshold: 0.15,
+      description: "High detail settings with smaller, more detailed filaments"
+    },
+    'balanced': {
+      scaleX: 0.0015,
+      scaleY: 0.0015,
+      waveMultiplier: 1536,
+      threshold: 0.08,
+      description: "Balanced settings with larger, more prominent filaments"
+    },
+    'dramatic': {
+      scaleX: 0.0008,
+      scaleY: 0.0008,
+      waveMultiplier: 1024,
+      threshold: 0.04,
+      description: "Dramatic settings with the largest, most dramatic filaments"
+    }
+  }
+
+  const currentPreset = presets[preset]
 
 
 
@@ -49,6 +77,11 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+    }
+
     // If animation is initialized, use the shared state
     if (isAnimationInitialized && animationState) {
       // Set canvas size
@@ -60,12 +93,12 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
       
       // Performance optimization: Pre-calculate constants
       const rmin = -1, rmax = 1
-      const scaleX = 0.005
-      const scaleY = 0.005
+      const scaleX = currentPreset.scaleX
+      const scaleY = currentPreset.scaleY
       const speed = 0.0002
       const colorTransitionSpeed = 0.005
-      const waveMultiplier = 3072
-      const threshold = 0.15
+      const waveMultiplier = currentPreset.waveMultiplier
+      const threshold = currentPreset.threshold
 
       // Local animation state that syncs with global state
       let colorIndex = initialColorIndex
@@ -353,12 +386,12 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
 
     // Performance optimization: Pre-calculate constants
     const rmin = -1, rmax = 1
-    const scaleX = 0.005
-    const scaleY = 0.005
+    const scaleX = currentPreset.scaleX
+    const scaleY = currentPreset.scaleY
     const speed = 0.0002
     const colorTransitionSpeed = 0.005
-    const waveMultiplier = 3072
-    const threshold = 0.15
+    const waveMultiplier = currentPreset.waveMultiplier
+    const threshold = currentPreset.threshold
 
     // Performance optimization: Cache color calculations
     let colorIndex = 0
@@ -457,7 +490,7 @@ export function AnimatedFavicon({ className, width = 100, height = 100 }: Animat
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [width, height, isAnimationInitialized, animationState])
+  }, [width, height, isAnimationInitialized, animationState, preset])
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>

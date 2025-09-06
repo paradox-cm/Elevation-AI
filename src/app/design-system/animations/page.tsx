@@ -17,6 +17,14 @@ import Link from "next/link"
 export default function AnimationsPage() {
   const animations = [
     {
+      name: "Perlin Logo Animation",
+      description: "Dynamic plasma animation using Perlin noise within the Elevation AI logo shape",
+      href: "/design-system/animations/perlin-logo",
+      icon: "magic-line",
+      color: "text-primary",
+      bgColor: "bg-primary/10"
+    },
+    {
       name: "Agentic-Engine",
       description: "AI-powered automation engine that learns and adapts to your business processes",
       href: "/design-system/animations/agentic-engine",

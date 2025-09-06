@@ -22,12 +22,13 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
     { href: "/", label: "Home", active: currentPage === "home" },
     { href: "/platform", label: "Platform", active: currentPage === "platform", hasDropdown: true },
     { href: "/people", label: "People", active: currentPage === "people", hasDropdown: true },
+    { href: "/solutions", label: "Solutions", active: currentPage === "solutions" },
     { href: "/pricing", label: "Pricing", active: currentPage === "pricing" },
-    { href: "/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true },
-    { href: "/solutions", label: "Solutions", active: currentPage === "solutions" }
+    { href: "/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true }
   ]
 
   const platformSubLinks = [
+    { href: "/platform", label: "Overview" },
     { href: "/platform/features", label: "Features" },
     { href: "/platform/security", label: "Security" },
     { href: "/platform/integrations", label: "Integrations" }
@@ -166,17 +167,17 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
       {/* Fixed Bottom Section - Buttons */}
       <div className="flex-shrink-0 p-4 pt-4 border-t border-border bg-background">
         <div className="space-y-4">
-          {/* CTA Button */}
+          {/* Get Started Button */}
           <Button className="w-full" size="lg" asChild>
-            <Link href="/wireframes/demo">
-              Request a Demo
+            <Link href="/wireframes/sign-up">
+              Get Started
             </Link>
           </Button>
           
-          {/* Get Started Button */}
+          {/* Request a Demo Button */}
           <Button variant="outline" className="w-full" size="lg" asChild>
-            <Link href="/wireframes/sign-up">
-              Get Started
+            <Link href="/wireframes/demo">
+              Request a Demo
             </Link>
           </Button>
           
