@@ -14,12 +14,14 @@ interface MobileMenuDrawerProps {
 
 export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps) {
   const [expandedPlatform, setExpandedPlatform] = React.useState(false) // Platform closed by default
+  const [expandedPeople, setExpandedPeople] = React.useState(false)
   const [expandedResources, setExpandedResources] = React.useState(false)
   const [expandedQuickLinks, setExpandedQuickLinks] = React.useState(false)
 
   const mainNavigationLinks = [
     { href: "/", label: "Home", active: currentPage === "home" },
     { href: "/platform", label: "Platform", active: currentPage === "platform", hasDropdown: true },
+    { href: "/people", label: "People", active: currentPage === "people", hasDropdown: true },
     { href: "/pricing", label: "Pricing", active: currentPage === "pricing" },
     { href: "/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true },
     { href: "/solutions", label: "Solutions", active: currentPage === "solutions" }
@@ -29,6 +31,11 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
     { href: "/platform/features", label: "Features" },
     { href: "/platform/security", label: "Security" },
     { href: "/platform/integrations", label: "Integrations" }
+  ]
+
+  const peopleSubLinks = [
+    { href: "/wireframes/people/concierge-team", label: "Concierge Team" },
+    { href: "/wireframes/people/expert-network", label: "Expert Network" }
   ]
 
   const resourcesSubLinks = [
@@ -68,6 +75,8 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                     onClick={() => {
                       if (link.label === "Platform") {
                         setExpandedPlatform(!expandedPlatform)
+                      } else if (link.label === "People") {
+                        setExpandedPeople(!expandedPeople)
                       } else if (link.label === "Resources") {
                         setExpandedResources(!expandedResources)
                       }
@@ -79,6 +88,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                       className={cn(
                         "h-4 w-4 transition-transform",
                         ((link.label === "Platform" && expandedPlatform) || 
+                         (link.label === "People" && expandedPeople) ||
                          (link.label === "Resources" && expandedResources)) 
                           ? "rotate-180" 
                           : ""
@@ -90,6 +100,22 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                   {link.label === "Platform" && expandedPlatform && (
                     <div className="ml-4 space-y-1 bg-background">
                       {platformSubLinks.map((subLink) => (
+                        <Link
+                          key={subLink.href}
+                          href={subLink.href}
+                          className="flex items-center px-3 py-2 text-sm rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                          onClick={onClose}
+                        >
+                          {subLink.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* People Dropdown */}
+                  {link.label === "People" && expandedPeople && (
+                    <div className="ml-4 space-y-1 bg-background">
+                      {peopleSubLinks.map((subLink) => (
                         <Link
                           key={subLink.href}
                           href={subLink.href}

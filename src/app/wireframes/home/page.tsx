@@ -242,7 +242,7 @@ function HeroSection() {
             <div className="space-y-4 sm:space-y-6">
                               <div className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
                   <TypewriterText 
-                    text="The platform & team bringing business into the agentic era." 
+                    text="The platform bringing business into the agentic era." 
                     speed={100} 
                     delay={500}
                     cyclingSpeed={300}
@@ -265,7 +265,7 @@ function HeroSection() {
                   />
                               </div>
               <BodyLarge className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-lg leading-relaxed">
-                Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team. Unifying knowledge, orchestrating workflows, securing your use of AI.
+                Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, orchestrating workflows and securing your use of AI.
               </BodyLarge>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
