@@ -93,19 +93,19 @@ export function Carousel({
 
   const { cardWidth: responsiveCardWidth, cardGap: responsiveCardGap } = getResponsiveSettings()
 
-  // Calculate responsive padding to align with standard content margins
+  // Calculate responsive padding to match Container padding exactly
   const getResponsivePadding = () => {
     switch (screenSize) {
       case 'sm':
-        return { paddingLeft: '1rem', paddingRight: '1rem' } // standard content margins
+        return { paddingLeft: '1.5rem', paddingRight: '1.5rem' } // sm:px-6 = 1.5rem
       case 'md':
-        return { paddingLeft: '1.5rem', paddingRight: '1.5rem' } // standard content margins
+        return { paddingLeft: '1.5rem', paddingRight: '1.5rem' } // sm:px-6 = 1.5rem
       case 'lg':
-        return { paddingLeft: '2rem', paddingRight: '2rem' } // standard content margins
+        return { paddingLeft: '2rem', paddingRight: '2rem' } // lg:px-8 = 2rem
       case 'xl':
-        return { paddingLeft: '2rem', paddingRight: '2rem' } // standard content margins
+        return { paddingLeft: '2rem', paddingRight: '2rem' } // lg:px-8 = 2rem
       default:
-        return { paddingLeft: '2rem', paddingRight: '2rem' } // standard content margins
+        return { paddingLeft: '1rem', paddingRight: '1rem' } // px-4 = 1rem
     }
   }
 
@@ -249,9 +249,7 @@ export function Carousel({
           className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide" 
           ref={carouselRef}
           style={{ 
-            gap: `${responsiveCardGap}px`,
-            paddingLeft: responsivePadding.paddingLeft,
-            paddingRight: responsivePadding.paddingRight
+            gap: `${responsiveCardGap}px`
           }}
         >
           {items.map((item, index) => (
@@ -272,13 +270,15 @@ export function Carousel({
                 minWidth: `${responsiveCardWidth}px`, 
                 maxWidth: `${responsiveCardWidth}px`,
                 height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
-                minHeight: '320px'
+                minHeight: '320px',
+                marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
+                marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
               }}
             >
               <div className="flex flex-col h-full p-6">
                 {item.icon && (
-                  <div className="w-24 h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
-                    <item.icon className="text-6xl text-primary" />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                    <item.icon className="text-4xl sm:text-5xl md:text-6xl text-primary" />
                   </div>
                 )}
                 <div className="flex flex-col flex-1">

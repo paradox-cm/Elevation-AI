@@ -13,11 +13,13 @@ import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
 import { MainHeader } from "@/components/ui/main-header"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { PlasmaBackground } from "@/components/ui/plasma-background"
+import { CookiesBanner } from "@/components/ui/cookies-banner"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standards"
@@ -240,7 +242,7 @@ function HeroSection() {
   return (
     <Section 
       paddingY="lg" 
-      className="flex items-center h-screen"
+      className="flex items-center h-screen pt-8 sm:pt-0"
     >
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-6 sm:space-y-8 lg:space-y-10">
@@ -333,215 +335,55 @@ function HeroSection() {
   )
 }
 
-// Problem Introduction Section
-function ProblemIntroductionSection() {
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [mobileActiveStep, setMobileActiveStep] = React.useState(0)
-  const sectionRef = React.useRef<HTMLDivElement>(null)
-  const mobileSectionRef = React.useRef<HTMLDivElement>(null)
-  
-  const texts = [
+// Introduction Section
+function IntroductionSection() {
+  const accordionItems = [
     {
-      text: "Your business's greatest asset—its collective data and knowledge—is trapped, locked away and underused.",
-      key: "problem-first-text"
+      title: "Welcome to the Future of Business",
+      content: "Your business's greatest asset—its collective data and knowledge—unlocked and ready to power every decision.",
+      value: "greatest-asset"
     },
     {
-      text: "Scattered across apps, trapped in conversations, and buried in documents, it slows decisions and generates blind spots.",
-      key: "problem-second-text"
+      title: "Seamless Collaboration, Shared Context", 
+      content: "Instead of being siloed across apps, conversations, and documents, your knowledge lives in one intelligent network—accessible, contextual, and aligned for action.",
+      value: "scattered-to-connected"
     },
     {
-      text: "Elevation AI unlocks it all, transforming fragmentation into focus, delivering clarity, precision and control.",
-      key: "problem-third-text"
+      title: "Clarity That Drives Action",
+      content: "Elevation AI transforms complexity into focus—delivering clarity, precision, and control so your organization can move faster and stay ahead.",
+      value: "clarity-drives-action"
     }
   ]
-
-  // Desktop scroll-triggered carousel with standardized behavior
-  React.useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current || window.innerWidth < 1024) return
-      
-      const rect = sectionRef.current.getBoundingClientRect()
-      const containerHeight = 400 // Height of the carousel container
-      
-      // Calculate which step should be active based on scroll position
-      if (rect.top <= 0 && rect.bottom >= containerHeight) {
-        // Section is in viewport, use custom calculation for ProblemIntroductionSection
-        const scrollProgress = Math.abs(rect.top) / containerHeight
-        
-        // Custom logic: All slides get 400px more scroll space, third slide gets additional 100px (500px total)
-        const baseSlideHeight = 450 // Standard slide height
-        const firstSlideHeight = baseSlideHeight + 400 // 400px extra for first slide
-        const secondSlideHeight = baseSlideHeight + 400 // 400px extra for second slide
-        const thirdSlideHeight = baseSlideHeight + 500 // 500px extra for third slide (400px + 100px additional)
-        
-        let activeStep = 0
-        if (scrollProgress < (firstSlideHeight / containerHeight)) {
-          // First slide
-          activeStep = 0
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight) / containerHeight)) {
-          // Second slide
-          activeStep = 1
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight) / containerHeight)) {
-          // Third slide with extra scroll space
-          activeStep = 2
-        } else {
-          // Section complete, stay on last slide
-          activeStep = 2
-        }
-        
-        setActiveStep(activeStep)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setActiveStep(0)
-      } else {
-        // Section is below viewport
-        setActiveStep(texts.length - 1)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [texts.length])
-
-  // Mobile scroll-triggered carousel
-  React.useEffect(() => {
-    const handleMobileScroll = () => {
-      if (!mobileSectionRef.current || window.innerWidth >= 1024) return
-      
-      const rect = mobileSectionRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      
-      // Calculate which step should be active based on scroll position for mobile
-      if (rect.top <= 0 && rect.bottom >= windowHeight * 0.5) {
-        // Section is in viewport, calculate progress based on mobile-appropriate scroll height
-        const mobileScrollHeight = windowHeight * 2 // 2x viewport height for comfortable scrolling
-        const scrollProgress = Math.abs(rect.top) / mobileScrollHeight
-        
-        // Equal distribution for all slides
-        const slideThreshold = 1 / 3
-        
-        let mobileActiveStep = 0
-        if (scrollProgress < slideThreshold) {
-          // First slide - 33.33% of scroll space
-          mobileActiveStep = 0
-        } else if (scrollProgress < slideThreshold * 2) {
-          // Second slide - 33.33% of scroll space
-          mobileActiveStep = 1
-        } else {
-          // Third slide - 33.33% of scroll space
-          mobileActiveStep = 2
-        }
-        
-        setMobileActiveStep(mobileActiveStep)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setMobileActiveStep(0)
-      } else {
-        // Section is below viewport
-        setMobileActiveStep(texts.length - 1)
-      }
-    }
-
-    window.addEventListener('scroll', handleMobileScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleMobileScroll)
-  }, [texts.length])
 
   return (
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-600/15 to-blue-500/10"></div>
       <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
-        <div className="space-y-8 sm:space-y-12 lg:space-y-16">
-          {/* Mobile Layout */}
-          <div className="block lg:hidden relative" ref={mobileSectionRef}>
-            {/* Carousel Container */}
-            <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
-              <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
-                {/* Text Container */}
-                <div className="relative h-64">
-                  {texts.map((textItem, index) => (
-                    <div
-                      key={index}
-                      className={`transition-opacity duration-75 absolute inset-0 ${
-                        index === mobileActiveStep
-                          ? 'opacity-100'
-                          : 'opacity-0 pointer-events-none'
-                      }`}
-                    >
-                                              <div className="h-full flex items-start lg:items-center">
-                          <div className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-                            {textItem.text}
-                          </div>
-                        </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Slide Indicators */}
-                <div className="mt-6 flex gap-2">
-                  {texts.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setMobileActiveStep(index)}
-                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
-                        index === mobileActiveStep
-                          ? 'bg-blue-600 dark:bg-blue-400' 
-                          : 'bg-gray-300 dark:bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
+        <div className="grid grid-cols-12 gap-4 lg:gap-8 items-start">
+          {/* Left Column - Heading */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            <H3>
+              From Fragmentation to Focus
+            </H3>
           </div>
 
-          {/* Desktop Layout - Scroll-triggered Carousel */}
-          <div className="hidden lg:block relative" ref={sectionRef}>
-            {/* Carousel Container */}
-            <div className="sticky top-20 h-[calc(100vh-5rem)] flex items-center py-4">
-              <div className="w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-full relative">
-                {/* Text Container */}
-                <div className="relative h-96">
-                  {texts.map((textItem, index) => (
-                    <div
-                      key={index}
-                      className={`transition-opacity duration-75 absolute inset-0 ${
-                        index === activeStep
-                          ? 'opacity-100'
-                          : 'opacity-0 pointer-events-none'
-                      }`}
-                    >
-                                              <div className="h-full flex items-center">
-                          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold text-primary max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-                            {textItem.text}
-                          </div>
-                        </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Slide Indicators */}
-                <div className="absolute bottom-0 left-0 flex gap-2">
-                  {texts.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveStep(index)}
-                      className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
-                        index === activeStep
-                          ? 'bg-blue-600 dark:bg-blue-400' 
-                          : 'bg-gray-300 dark:bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 950 + 200}px` }}></div>
+          {/* Right Column - Accordion */}
+          <div className="col-span-12 lg:col-span-8 space-y-4 pb-6">
+            <Accordion type="single" collapsible className="w-full" defaultValue="greatest-asset">
+              {accordionItems.map((item, index) => (
+                <AccordionItem key={item.value} value={item.value} className="border-b border-border/50 px-0 sm:px-0 md:px-0 lg:px-6">
+                  <AccordionTrigger className="text-left sm:text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-primary hover:no-underline py-6 w-full">
+                    {item.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6">
+                    <DisplaySmall className="text-primary">
+                      {item.content}
+                    </DisplaySmall>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </div>
       </Container>
@@ -650,7 +492,7 @@ function ProblemSection() {
             <div key="mobile-layout" className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
               {/* Section Headline */}
               <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-                <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">Unify your systems</H1>
+                <H1>Unify your systems</H1>
               <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </BodyLarge>
@@ -946,7 +788,7 @@ function PlatformSection() {
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
             <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">The agentic platform</H1>
+              <H1>The agentic platform</H1>
               <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
               </BodyLarge>
@@ -1038,11 +880,11 @@ function PlatformSection() {
                     </BodyLarge>
                   </div>
                   {/* Tab Content Container */}
-                  <div className="relative w-full h-[450px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] pb-2">
+                  <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px] pb-6">
                     {features.map((feature, index) => (
                       <div
                         key={index}
-                        className={`transition-opacity duration-75 absolute inset-0 pb-2 ${
+                        className={`transition-opacity duration-75 absolute inset-0 pb-6 ${
                           activeTab === index
                             ? 'opacity-100'
                             : 'opacity-0 pointer-events-none'
@@ -1073,7 +915,7 @@ function PlatformSection() {
                                   {feature.description}
                                 </BodyLarge>
                               </div>
-                              <div className="h-[290px] lg:h-[340px] xl:h-[390px] 2xl:h-[440px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
+                              <div className="h-[320px] lg:h-[370px] xl:h-[420px] 2xl:h-[470px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
                                 {activeTab === 0 && (
                                   <KnowledgeBlocks 
                                     key={isDesktop ? "lg" : "sm"}
@@ -1162,7 +1004,7 @@ function HowWeDoItSection() {
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
-            <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl 2xl:text-4xl">More Than a Platform.</H1>
+            <H1>More Than a Platform.</H1>
             <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
               A Partnership to Power Every Stage.
             </BodyLarge>
@@ -1285,22 +1127,19 @@ function WhoWeServeSection() {
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
-            <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl 2xl:text-4xl">Intelligent Solutions for Every Domain</H1>
+            <H1>Intelligent Solutions for Every Domain</H1>
             <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
               Powered by Elevation AI and guided by experts.
             </BodyLarge>
           </div>
-        </div>
-      </Container>
-
-      {/* Carousel Layout - Outside container for full width */}
-      <div className="w-full mt-8 lg:mt-12">
+          {/* Carousel Layout */}
+          <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
             <Carousel 
               items={solutions}
               autoPlay={true}
               autoPlayInterval={5000}
               showProgressIndicators={true}
-          showGradients={false}
+              showGradients={false}
               cardWidth={400}
               cardGap={32}
               className="w-full"
@@ -1310,7 +1149,9 @@ function WhoWeServeSection() {
                 lg: { cardWidth: 320, cardGap: 24 }
               }}
             />
-                      </div>
+          </div>
+        </div>
+      </Container>
 
       {/* Small Cards - Carousel for Small Breakpoints / Grid for Large */}
       <div className="w-full mt-8 lg:mt-12">
@@ -1568,24 +1409,27 @@ function Footer() {
           {/* Newsletter Signup */}
           <Separator className="mt-20 lg:mt-24 mb-4 lg:mb-6 bg-border/60" />
           
-          {/* Newsletter Content */}
-          <div className="text-left space-y-4 mb-6">
+          {/* Newsletter Section */}
+          <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
+            {/* Newsletter Content */}
+            <div className="text-left space-y-4 flex-1">
               <H3 className="text-xs font-medium uppercase tracking-wider text-xs sm:text-xs md:text-xs lg:text-xs xl:text-xs 2xl:text-xs">Stay Updated</H3>
               <BodySmall className="text-muted-foreground">
                 Get the latest insights on agentic AI, platform updates, and industry trends delivered to your inbox.
               </BodySmall>
             </div>
             
-          {/* Newsletter Form */}
-            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                                <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-4 py-2 h-10 border border-border rounded-md bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                  />
+            {/* Newsletter Form */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto lg:flex-shrink-0">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-2 h-10 border border-border rounded-md bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              />
               <Button variant="secondary" className="px-6 h-10">
                 Subscribe
               </Button>
+            </div>
           </div>
           
           <Separator className="my-4 lg:my-6 bg-border/60" />
@@ -1618,7 +1462,7 @@ export default function WireframesHomePage() {
         <div className="min-h-screen bg-background transition-colors duration-300">
                       <main>
               <HeroSection />
-              <ProblemIntroductionSection />
+              <IntroductionSection />
                       <ProblemSection />
         <PlatformSection />
               <WhoWeServeSection />
@@ -1630,6 +1474,9 @@ export default function WireframesHomePage() {
           <FloatingBackToTop />
         </div>
       </MobileOnlyLayout>
+      
+      {/* Cookies Banner */}
+      <CookiesBanner />
     </PageWrapper>
   )
 }
