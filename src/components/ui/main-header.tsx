@@ -239,9 +239,9 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
                 <Link href="/security" className="block text-sm hover:text-primary transition-colors">Security</Link>
                 <Link href="/careers" className="block text-sm hover:text-primary transition-colors">Careers</Link>
                 <Link href="/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
-                <Link href="/investors" className="text-sm hover:text-primary transition-colors">Investors</Link>
-                <Link href="/developers" className="text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
-                <Link href="/blog" className="text-sm hover:text-primary transition-colors">Blog + News</Link>
+                <Link href="/investors" className="block text-sm hover:text-primary transition-colors">Investors</Link>
+                <Link href="/developers" className="block text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
+                <Link href="/blog" className="block text-sm hover:text-primary transition-colors">Blog + News</Link>
               </div>
             </div>
           </div>
