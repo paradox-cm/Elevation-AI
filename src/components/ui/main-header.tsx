@@ -75,10 +75,10 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
             {/* Dropdown menu for People */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-2 space-y-1">
-                <Link href="/wireframes/people/concierge-team" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/people/concierge-team" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Concierge Team
                 </Link>
-                <Link href="/wireframes/people/expert-network" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/people/expert-network" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Expert Network
                 </Link>
               </div>
@@ -255,7 +255,7 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           <div className="hidden xl:flex items-center space-x-3">
             {showLogin && (
               <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-                <Link href="/wireframes/login">
+                <Link href="/website/login">
                   <Icon name="login-box-line" className="h-4 w-4 mr-1" />
                   Login
                 </Link>
@@ -263,7 +263,7 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
             )}
             {showDemo && (
                           <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
-              <Link href="/wireframes/sign-up">
+              <Link href="/website/sign-up">
                 Get Started
               </Link>
             </Button>
@@ -274,7 +274,7 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           <div className="hidden lg:flex xl:hidden items-center space-x-3">
             {showLogin && (
               <Button variant="ghost" size="sm" asChild className="text-xs lg:text-sm hover:bg-muted/50">
-                <Link href="/wireframes/login">
+                <Link href="/website/login">
                   <Icon name="login-box-line" className="h-4 w-4 mr-1" />
                   Login
                 </Link>
@@ -282,7 +282,7 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
             )}
             {showDemo && (
                           <Button size="sm" asChild className="text-xs lg:text-sm hover:bg-primary/90">
-              <Link href="/wireframes/sign-up">
+              <Link href="/website/sign-up">
                 Get Started
               </Link>
             </Button>

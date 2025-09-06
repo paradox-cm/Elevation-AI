@@ -232,13 +232,13 @@ function StaticMainHeader() {
         <div className="flex items-center space-x-3">
           <div className="hidden xl:flex items-center space-x-3">
             <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-              <Link href="/wireframes/login">
+              <Link href="/website/login">
                 <Icon name="login-box-line" className="h-4 w-4 mr-1" />
                 Login
               </Link>
             </Button>
             <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
-              <Link href="/wireframes/sign-up">
+              <Link href="/website/sign-up">
                 Get Started
               </Link>
             </Button>
@@ -255,20 +255,20 @@ function StaticGlobalHeader() {
     <header className="border-b border-border dark:border-muted bg-background/40 backdrop-blur-2xl flex-shrink-0">
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         <div className="flex items-center">
-          <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
+          <Link href="/website/home" className="hover:opacity-80 transition-opacity">
             <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
           </Link>
         </div>
         <div className="flex items-center space-x-3">
           <ThemeToggle />
           <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-            <Link href="/wireframes/login">
+            <Link href="/website/login">
               <Icon name="login-box-line" className="h-4 w-4 mr-1" />
               Login
             </Link>
           </Button>
           <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
-            <Link href="/wireframes/demo">
+              <Link href="/website/demo">
               Request a Demo
             </Link>
           </Button>
@@ -299,8 +299,8 @@ function StaticDesignSystemNavigation() {
           <a href="/design-system" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground bg-muted">
             Design System
           </a>
-          <a href="/wireframes" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
-            Wireframes
+          <a href="/website" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
+            Website
           </a>
           <ThemeToggle />
         </div>
@@ -330,8 +330,8 @@ function StaticNavigation() {
           <a href="/design-system" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground bg-muted">
             Design System
           </a>
-          <a href="/wireframes" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
-            Wireframes
+          <a href="/website" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
+            Website
           </a>
           <ThemeToggle />
         </div>
@@ -344,16 +344,16 @@ export default function NavigationPage() {
   const navigationComponents = [
     {
       name: "MainHeader",
-      description: "Main site navigation for wireframe pages with Platform link, People dropdown, Solutions dropdown, and Resources dropdown",
-      usage: "Used on wireframes subpages (home, demo, login, etc.) - NOT on main /wireframes page",
+      description: "Main site navigation for website pages with Platform link, People dropdown, Solutions dropdown, and Resources dropdown",
+      usage: "Used on website subpages (home, demo, login, etc.) - NOT on main /website page",
       features: ["Logo", "Platform link", "People dropdown", "Solutions dropdown with mega menu", "Pricing link", "Resources dropdown", "Login/Get Started buttons", "Theme toggle", "Mobile menu"],
       file: "src/components/ui/main-header.tsx",
       example: <StaticMainHeader />
     },
     {
       name: "GlobalHeader",
-      description: "Simple navigation for basic wireframe pages with login and demo buttons",
-      usage: "Used on simple wireframe pages that don't need the full navigation",
+      description: "Simple navigation for basic website pages with login and demo buttons",
+      usage: "Used on simple website pages that don't need the full navigation",
       features: ["Logo", "Login button", "Get Started button", "Theme toggle"],
       file: "src/components/ui/global-header.tsx",
       example: <StaticGlobalHeader />
@@ -519,16 +519,16 @@ export default function NavigationPage() {
                   <div>
                     <h4 className="font-medium text-sm mb-2">When to Use MainHeader</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Wireframe subpages (/wireframes/home, /wireframes/demo, etc.)</li>
+                      <li>• Website subpages (/website/home, /website/demo, etc.)</li>
                       <li>• Pages requiring full navigation menu</li>
                       <li>• Pages with Solutions dropdown</li>
-                      <li>• NOT on main /wireframes page</li>
+                      <li>• NOT on main /website page</li>
                     </ul>
                   </div>
                   <div>
                     <h4 className="font-medium text-sm mb-2">When to Use GlobalHeader</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Simple wireframe pages</li>
+                      <li>• Simple website pages</li>
                       <li>• Pages requiring only login/demo buttons</li>
                       <li>• Basic marketing pages</li>
                     </ul>

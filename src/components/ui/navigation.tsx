@@ -35,7 +35,7 @@ export function Navigation({
   const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/design-system", label: "Design System", active: currentPage === "overview" },
-    { href: "/wireframes", label: "Wireframes", active: currentPage === "wireframes" }
+    { href: "/website", label: "Website", active: currentPage === "website" }
   ]
 
   return (

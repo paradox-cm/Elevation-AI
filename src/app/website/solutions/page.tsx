@@ -36,31 +36,31 @@ const solutionCategories: SolutionCategory[] = [
         id: 'private-markets',
         title: 'Private Market Organizations',
         description: 'Solutions for private equity and venture capital',
-        route: '/wireframes/solutions/industry/private-market-organizations'
+        route: '/website/solutions/industry/private-market-organizations'
       },
       {
         id: 'public-markets',
         title: 'Public Market Organizations',
         description: 'Solutions for public market participants',
-        route: '/wireframes/solutions/industry/public-market-organizations'
+        route: '/website/solutions/industry/public-market-organizations'
       },
       {
         id: 'banks',
         title: 'Banks',
         description: 'Banking and financial institution solutions',
-        route: '/wireframes/solutions/industry/banks'
+        route: '/website/solutions/industry/banks'
       },
       {
         id: 'enterprise',
         title: 'Enterprise',
         description: 'Large enterprise organization solutions',
-        route: '/wireframes/solutions/industry/enterprise'
+        route: '/website/solutions/industry/enterprise'
       },
       {
         id: 'government',
         title: 'Government',
         description: 'Government and public sector solutions',
-        route: '/wireframes/solutions/industry/government'
+        route: '/website/solutions/industry/government'
       }
     ]
   },
@@ -74,31 +74,31 @@ const solutionCategories: SolutionCategory[] = [
         id: 'creating-growing',
         title: 'Creating & Growing a New Venture',
         description: 'Solutions for startups and new ventures',
-        route: '/wireframes/solutions/stage/creating-growing-new-venture'
+        route: '/website/solutions/stage/creating-growing-new-venture'
       },
       {
         id: 'scaling',
         title: 'Scaling a Venture',
         description: 'Solutions for growth-stage companies',
-        route: '/wireframes/solutions/stage/scaling-venture'
+        route: '/website/solutions/stage/scaling-venture'
       },
       {
         id: 'exiting',
         title: 'Exiting a Venture',
         description: 'Solutions for exit strategies and transitions',
-        route: '/wireframes/solutions/stage/exiting-venture'
+        route: '/website/solutions/stage/exiting-venture'
       },
       {
         id: 'post-ipo',
         title: 'Post-IPO Growth',
         description: 'Solutions for post-IPO companies',
-        route: '/wireframes/solutions/stage/post-ipo-growth'
+        route: '/website/solutions/stage/post-ipo-growth'
       },
       {
         id: 'family-office',
         title: 'Post-Exit Family Office Creation',
         description: 'Solutions for family office establishment',
-        route: '/wireframes/solutions/stage/post-exit-family-office-creation'
+        route: '/website/solutions/stage/post-exit-family-office-creation'
       }
     ]
   }

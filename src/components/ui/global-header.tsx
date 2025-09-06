@@ -18,7 +18,7 @@ export function GlobalHeader({ showLogin = true, showDemo = false }: GlobalHeade
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
+          <Link href="/website/home" className="hover:opacity-80 transition-opacity">
             <div className="w-[114px] h-[21px] lg:w-[127px] lg:h-[23px]">
               <Logo width={127} height={23} className="w-full h-full object-contain" />
             </div>
@@ -29,7 +29,7 @@ export function GlobalHeader({ showLogin = true, showDemo = false }: GlobalHeade
         <div className="flex items-center space-x-3">
           {showLogin && (
             <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-              <Link href="/wireframes/login">
+              <Link href="/website/login">
                 <Icon name="login-box-line" className="h-4 w-4 mr-1" />
                 Login
               </Link>
@@ -37,7 +37,7 @@ export function GlobalHeader({ showLogin = true, showDemo = false }: GlobalHeade
           )}
           {showDemo && (
             <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
-              <Link href="/wireframes/demo">
+              <Link href="/website/demo">
                 Request a Demo
               </Link>
             </Button>

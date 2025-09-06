@@ -71,7 +71,7 @@ function SignUpForm() {
     <Card className="w-full h-fit">
       <CardHeader className="text-center pt-6 sm:pt-8 pb-4 sm:pb-6">
         <div className="flex justify-center mb-4 sm:mb-6">
-          <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
+          <Link href="/website/home" className="hover:opacity-80 transition-opacity">
             <div className="relative h-10 w-28 sm:h-12 sm:w-32">
               <AnimatedFavicon 
                 width={128} 
@@ -383,7 +383,7 @@ function SignUpForm() {
           <BodySmall className="text-muted-foreground text-xs sm:text-sm">
             Already have an account?{" "}
             <Link
-              href="/wireframes/login"
+              href="/website/login"
               className="text-primary hover:text-primary/80 transition-colors font-medium"
             >
               Sign in

@@ -11,7 +11,7 @@ export function MobileNavigation() {
   const navigationLinks = [
     { href: "/", label: "Home", active: pathname === "/" },
     { href: "/design-system", label: "Design System", active: pathname === "/design-system" },
-    { href: "/wireframes", label: "Wireframes", active: pathname.startsWith("/wireframes") }
+    { href: "/website", label: "Wireframes", active: pathname.startsWith("/website") }
   ]
 
   return (

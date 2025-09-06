@@ -279,12 +279,12 @@ function HeroSection() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/wireframes/sign-up">
+                <Link href="/website/sign-up">
                   Get Started
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/wireframes/demo">
+                <Link href="/website/demo">
                   Request a Demo
                 </Link>
               </Button>
@@ -1222,12 +1222,12 @@ function ClosingCTASection() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/sign-up">
+                <Link href="/website/sign-up">
                   Get Started
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/demo">
+                <Link href="/website/demo">
                   Request a Demo
                 </Link>
               </Button>
@@ -1247,12 +1247,12 @@ function ClosingCTASection() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/sign-up">
+                <Link href="/website/sign-up">
                   Get Started
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/demo">
+                <Link href="/website/demo">
                   Request a Demo
                 </Link>
               </Button>
@@ -1349,8 +1349,8 @@ function Footer() {
               <div className="space-y-4">
                 <H3 className="text-base font-semibold">People</H3>
                 <ul className="space-y-2">
-                  <li><Link href="/wireframes/people/concierge-team" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
-                  <li><Link href="/wireframes/people/expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
+                  <li><Link href="/website/people/concierge-team" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
+                  <li><Link href="/website/people/expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
                 </ul>
               </div>
             </div>

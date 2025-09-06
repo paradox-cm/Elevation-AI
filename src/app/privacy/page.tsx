@@ -418,7 +418,7 @@ export default function PrivacyPolicyPage() {
                 {/* Back to Home */}
                 <div className="text-center mt-12">
                   <Button asChild variant="outline" size="lg">
-                    <Link href="/wireframes/home">
+                    <Link href="/website/home">
                       <Icon name="arrow-left-line" className="w-4 h-4 mr-2" />
                       Back to Home
                     </Link>

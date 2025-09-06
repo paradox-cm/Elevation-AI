@@ -42,7 +42,7 @@ const siteStructure: SiteStructureItem[] = [
     pageNumber: 2,
     status: 'wip',
     icon: LogIn,
-    href: '/wireframes/login'
+    href: '/website/login'
   },
   {
     id: 'sign-up',
@@ -51,7 +51,7 @@ const siteStructure: SiteStructureItem[] = [
     pageNumber: 3,
     status: 'wip',
     icon: Users,
-    href: '/wireframes/sign-up'
+    href: '/website/sign-up'
   },
   {
     id: 'demo',
@@ -60,7 +60,7 @@ const siteStructure: SiteStructureItem[] = [
     pageNumber: 4,
     status: 'wip',
     icon: MessageSquare,
-    href: '/wireframes/demo'
+    href: '/website/demo'
   },
   {
     id: 'platform',
@@ -281,38 +281,38 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
   const IconComponent = item.icon
 
   const handleCardClick = () => {
-    // Map item IDs to wireframe page routes
-    const wireframeRoutes: { [key: string]: string } = {
-      'home': '/wireframes/home',
-      'platform': '/wireframes/platform',
-      'pricing': '/wireframes/pricing',
-      'solutions': '/wireframes/solutions',
-      'resources': '/wireframes/resources',
-      'private-markets': '/wireframes/solutions/industry/private-market-organizations',
-      'public-markets': '/wireframes/solutions/industry/public-market-organizations',
-      'banks': '/wireframes/solutions/industry/banks',
-      'enterprise': '/wireframes/solutions/industry/enterprise',
-      'government': '/wireframes/solutions/industry/government',
-      'creating-growing': '/wireframes/solutions/stage/creating-growing-new-venture',
-      'scaling': '/wireframes/solutions/stage/scaling-venture',
-      'exiting': '/wireframes/solutions/stage/exiting-venture',
-      'post-ipo': '/wireframes/solutions/stage/post-ipo-growth',
-      'family-office': '/wireframes/solutions/stage/post-exit-family-office-creation',
-      'security': '/wireframes/resources/security',
-      'careers': '/wireframes/resources/careers',
-      'partners': '/wireframes/resources/partners',
-      'investors': '/wireframes/resources/investors',
-      'developers': '/wireframes/resources/developers-platforms',
-      'blog-news': '/wireframes/resources/blog-news',
-      'login': '/wireframes/login',
-      'demo': '/wireframes/demo',
-      'sign-up': '/wireframes/sign-up'
+    // Map item IDs to website page routes
+    const websiteRoutes: { [key: string]: string } = {
+      'home': '/website/home',
+      'platform': '/website/platform',
+      'pricing': '/website/pricing',
+      'solutions': '/website/solutions',
+      'resources': '/website/resources',
+      'private-markets': '/website/solutions/industry/private-market-organizations',
+      'public-markets': '/website/solutions/industry/public-market-organizations',
+      'banks': '/website/solutions/industry/banks',
+      'enterprise': '/website/solutions/industry/enterprise',
+      'government': '/website/solutions/industry/government',
+      'creating-growing': '/website/solutions/stage/creating-growing-new-venture',
+      'scaling': '/website/solutions/stage/scaling-venture',
+      'exiting': '/website/solutions/stage/exiting-venture',
+      'post-ipo': '/website/solutions/stage/post-ipo-growth',
+      'family-office': '/website/solutions/stage/post-exit-family-office-creation',
+      'security': '/website/resources/security',
+      'careers': '/website/resources/careers',
+      'partners': '/website/resources/partners',
+      'investors': '/website/resources/investors',
+      'developers': '/website/resources/developers-platforms',
+      'blog-news': '/website/resources/blog-news',
+      'login': '/website/login',
+      'demo': '/website/demo',
+      'sign-up': '/website/sign-up'
     }
 
-    const wireframeRoute = wireframeRoutes[item.id]
+    const websiteRoute = websiteRoutes[item.id]
     
-    if (wireframeRoute) {
-      router.push(wireframeRoute)
+    if (websiteRoute) {
+      router.push(websiteRoute)
     }
   }
 
@@ -365,17 +365,17 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
   )
 }
 
-export default function WireframesPage() {
+export default function WebsitePage() {
   return (
     <PageWrapper>
       <MobileOnlyLayout
-        header={<MobileOnlyNavigation currentPage="wireframes" />}
-        mobileMenu={<MobileMenu currentPage="wireframes" />}
+        header={<MobileOnlyNavigation currentPage="website" />}
+        mobileMenu={<MobileMenu currentPage="website" />}
       >
         <Container size="2xl">
           <Section paddingY="xl">
             <PageHeader
-              title="Site Structure Wireframes"
+              title="Elevation AI Site"
               description="Comprehensive overview of our website structure and navigation hierarchy"
               size="lg"
               centered

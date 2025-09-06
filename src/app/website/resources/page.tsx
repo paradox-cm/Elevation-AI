@@ -27,7 +27,7 @@ const resourceItems: ResourceItem[] = [
     title: 'Security',
     description: 'Security information and compliance',
     icon: Shield,
-    route: '/wireframes/resources/security',
+    route: '/website/resources/security',
     status: 'to-create'
   },
   {
@@ -35,7 +35,7 @@ const resourceItems: ResourceItem[] = [
     title: 'Careers',
     description: 'Career opportunities and job listings',
     icon: Briefcase,
-    route: '/wireframes/resources/careers',
+    route: '/website/resources/careers',
     status: 'completed'
   },
   {
@@ -43,7 +43,7 @@ const resourceItems: ResourceItem[] = [
     title: 'Partners',
     description: 'Partnership opportunities and programs',
     icon: Handshake,
-    route: '/wireframes/resources/partners',
+    route: '/website/resources/partners',
     status: 'completed'
   },
   {
@@ -51,7 +51,7 @@ const resourceItems: ResourceItem[] = [
     title: 'Investors',
     description: 'Information for investors and stakeholders',
     icon: TrendingUp,
-    route: '/wireframes/resources/investors',
+    route: '/website/resources/investors',
     status: 'completed'
   },
   {
@@ -59,7 +59,7 @@ const resourceItems: ResourceItem[] = [
     title: 'For Developers & Platforms',
     description: 'Developer resources and platform integrations',
     icon: Code,
-    route: '/wireframes/resources/developers-platforms',
+    route: '/website/resources/developers-platforms',
     status: 'completed'
   },
   {
@@ -67,7 +67,7 @@ const resourceItems: ResourceItem[] = [
     title: 'Blog & News',
     description: 'Latest updates, insights, and company news',
     icon: Newspaper,
-    route: '/wireframes/resources/blog-news',
+    route: '/website/resources/blog-news',
     status: 'to-create'
   }
 ]

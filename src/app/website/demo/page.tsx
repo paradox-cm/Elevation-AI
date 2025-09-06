@@ -416,7 +416,7 @@ function DemoRequestForm() {
       <CardHeader className="text-center space-y-4 pt-6 sm:pt-8">
         {/* Perlin SVG Animation Logo */}
                 <div className="flex justify-center mb-4">
-          <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
+          <Link href="/website/home" className="hover:opacity-80 transition-opacity">
             <div className="relative h-10 w-28 sm:h-12 sm:w-32">
               <AnimatedFavicon
                 width={128}

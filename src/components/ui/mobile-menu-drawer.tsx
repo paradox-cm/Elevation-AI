@@ -35,8 +35,8 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const peopleSubLinks = [
-    { href: "/wireframes/people/concierge-team", label: "Concierge Team" },
-    { href: "/wireframes/people/expert-network", label: "Expert Network" }
+    { href: "/website/people/concierge-team", label: "Concierge Team" },
+    { href: "/website/people/expert-network", label: "Expert Network" }
   ]
 
   const resourcesSubLinks = [
@@ -169,21 +169,21 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
         <div className="space-y-4">
           {/* Get Started Button */}
           <Button className="w-full" size="lg" asChild>
-            <Link href="/wireframes/sign-up">
+            <Link href="/website/sign-up">
               Get Started
             </Link>
           </Button>
           
           {/* Request a Demo Button */}
           <Button variant="outline" className="w-full" size="lg" asChild>
-            <Link href="/wireframes/demo">
+            <Link href="/website/demo">
               Request a Demo
             </Link>
           </Button>
           
           {/* Login Button - Text Button */}
           <Link 
-            href="/wireframes/login"
+            href="/website/login"
             className="flex items-center justify-center w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
           >
             <Icon name="login-box-line" className="h-4 w-4 mr-2" />
