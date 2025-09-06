@@ -202,3 +202,27 @@
     opacity: 0.7; 
   }
 }
+
+/* Word sliding animation keyframes */
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Word sliding animation with better alignment */
+@keyframes slideInFromBottomAligned {
+  0% {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

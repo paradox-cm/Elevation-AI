@@ -13,7 +13,7 @@ import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
-import { GlobalHeader } from "@/components/ui/global-header"
+import { MainHeader } from "@/components/ui/main-header"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { PlasmaBackground } from "@/components/ui/plasma-background"
@@ -22,7 +22,6 @@ import Link from "next/link"
 import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standards"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
-import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { 
@@ -64,18 +63,24 @@ function TypewriterText({
   const [isTyping, setIsTyping] = React.useState(false)
   const [isCycling, setIsCycling] = React.useState(false)
   const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
-  const [isDeleting, setIsDeleting] = React.useState(false)
+  const [isScrolling, setIsScrolling] = React.useState(false)
+  const [isTransitioning, setIsTransitioning] = React.useState(false)
+  const [previousWord, setPreviousWord] = React.useState("")
 
-  // Split text into words
+  // Split text into words to find where to insert cycling word
   const words = text.split(" ")
-  const baseWords = words // Keep all words as base text
-  const lastWord = "" // No word to replace - we append cycling words
+  const cyclingWordIndex = words.findIndex(word => word === "business") // Find "business" position
+  
+  // Create base text without the cycling word
+  const beforeCyclingWord = words.slice(0, cyclingWordIndex).join(" ")
+  const afterCyclingWord = words.slice(cyclingWordIndex + 1).join(" ")
 
   // Reset animation on mount and when text changes
   React.useEffect(() => {
     if (skipAnimation) {
       // If skipping animation, show full text immediately
-      setDisplayText(text)
+      const firstCycleWord = cyclingWords.length > 0 ? cyclingWords[0] : "business"
+      setDisplayText(beforeCyclingWord + " " + firstCycleWord + " " + afterCyclingWord)
       setCurrentWordIndex(words.length)
       setIsTyping(false)
     } else {
@@ -83,17 +88,18 @@ function TypewriterText({
       setCurrentWordIndex(0)
       setIsTyping(false)
     }
-  }, [text, words.length]) // Removed skipAnimation from dependencies to prevent reset
+  }, [text, words.length, cyclingWords, beforeCyclingWord, afterCyclingWord])
 
   // Handle skipAnimation changes
   React.useEffect(() => {
     if (skipAnimation) {
       // If skipping animation, show full text immediately
-      setDisplayText(text)
+      const firstCycleWord = cyclingWords.length > 0 ? cyclingWords[0] : "business"
+      setDisplayText(beforeCyclingWord + " " + firstCycleWord + " " + afterCyclingWord)
       setCurrentWordIndex(words.length)
       setIsTyping(false)
     }
-  }, [skipAnimation, text, words.length])
+  }, [skipAnimation, text, words.length, cyclingWords, beforeCyclingWord, afterCyclingWord])
 
   React.useEffect(() => {
     if (skipAnimation) return // Don't start typing if skipping animation
@@ -115,335 +121,113 @@ function TypewriterText({
     }
   }, [skipAnimation])
 
-  // Initial typing animation
+  // Initial typing animation - types out the complete text with first cycling word
   React.useEffect(() => {
-    if (skipAnimation || !isTyping || currentWordIndex >= words.length) return
+    if (skipAnimation || !isTyping) return
 
-    const timer = setTimeout(() => {
-      const newWordIndex = currentWordIndex + 1
-      setDisplayText(words.slice(0, newWordIndex).join(" "))
-      setCurrentWordIndex(newWordIndex)
-      
-      // Start cycling after initial text is complete
-      if (newWordIndex >= words.length && cyclingWords.length > 0) {
-        setTimeout(() => {
-          setIsCycling(true)
-        }, cyclingDelay) // Wait before starting to cycle
-      }
-    }, speed) // Consistent 150ms timing for all words
+    const firstCycleWord = cyclingWords.length > 0 ? cyclingWords[0] : "business"
+    const fullText = beforeCyclingWord + " " + firstCycleWord + " " + afterCyclingWord
+    const fullWords = fullText.split(" ")
 
-    return () => clearTimeout(timer)
-  }, [currentWordIndex, words, speed, isTyping, skipAnimation, cyclingWords.length, cyclingDelay])
-
-  // Cycling animation
-  React.useEffect(() => {
-    if (!isCycling || cyclingWords.length === 0) return
-
-    const currentCycleWord = cyclingWords[currentCycleIndex]
-    const fullText = baseWords.join(" ") + " " + currentCycleWord
-
-    if (isDeleting) {
-      // Delete only the cycling word, keep base text
+    if (currentWordIndex < fullWords.length) {
       const timer = setTimeout(() => {
-        setDisplayText(baseWords.join(" "))
-        setIsDeleting(false)
-        setCurrentCycleIndex((prev) => (prev + 1) % cyclingWords.length)
-      }, cyclingSpeed) // Use consistent cycling speed
-
-      return () => clearTimeout(timer)
-    } else {
-      // Type the entire word at once (faster after deletion)
-      const timer = setTimeout(() => {
-        setDisplayText(fullText)
-      }, cyclingSpeed / 2) // Type faster after deletion
+        const newWordIndex = currentWordIndex + 1
+        setDisplayText(fullWords.slice(0, newWordIndex).join(" "))
+        setCurrentWordIndex(newWordIndex)
+        
+        // Start scrolling animation after initial text is complete
+        if (newWordIndex >= fullWords.length && cyclingWords.length > 1) {
+          setTimeout(() => {
+            setIsCycling(true)
+            setIsScrolling(true)
+          }, cyclingDelay) // Wait before starting to cycle
+        }
+      }, speed)
 
       return () => clearTimeout(timer)
     }
-  }, [isCycling, currentCycleIndex, isDeleting, baseWords, cyclingWords, cyclingSpeed])
+  }, [currentWordIndex, text, speed, isTyping, skipAnimation, cyclingWords, cyclingDelay, beforeCyclingWord, afterCyclingWord])
 
-  // Handle the 2-second display duration after typing
+  // Scrolling animation for cycling words
   React.useEffect(() => {
-    if (!isCycling || isDeleting) return
-    
+    if (!isScrolling || cyclingWords.length <= 1) return
+
     const timer = setTimeout(() => {
-      setIsDeleting(true)
-    }, 2000) // Show each word for exactly 2 seconds
+      // Start transition
+      setIsTransitioning(true)
+      setPreviousWord(cyclingWords[currentCycleIndex])
+      
+      // After transition starts, change the word
+      setTimeout(() => {
+        setCurrentCycleIndex((prev) => (prev + 1) % cyclingWords.length)
+        setIsTransitioning(false)
+      }, 300) // Half of the transition duration
+    }, cyclingDelay) // Wait before switching to next word
 
     return () => clearTimeout(timer)
-  }, [isCycling, isDeleting, currentCycleIndex]) // Only trigger on cycle index change
+  }, [isScrolling, currentCycleIndex, cyclingWords.length, cyclingDelay, cyclingWords])
 
+  // Update display text when cycling word changes
+  React.useEffect(() => {
+    if (isScrolling && cyclingWords.length > 0) {
+      const currentCycleWord = cyclingWords[currentCycleIndex]
+      const fullText = beforeCyclingWord + " " + currentCycleWord + " " + afterCyclingWord
+      setDisplayText(fullText)
+    }
+  }, [isScrolling, currentCycleIndex, beforeCyclingWord, afterCyclingWord, cyclingWords])
 
   return (
-    <>
-      {/* Mobile: Two-line layout */}
-      <div className="block sm:hidden">
-        {/* Base text - always visible */}
-        <div className="block">
-          {baseWords.join(" ")}
-        </div>
-        {/* Cycling words - only show when cycling */}
-        {isCycling && (
-          <div className="block">
-            {displayText.replace(baseWords.join(" "), "").trim()}
-            {!skipAnimation && (
-              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+    <span className="inline-block leading-tight">
+      {beforeCyclingWord}
+      {beforeCyclingWord && " "}
+      <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
+        {/* Top gradient mask for fade effect - positioned above container to catch sliding words */}
+        {isScrolling && (
+          <div className="absolute left-0 right-0 pointer-events-none z-10 bg-gradient-to-b from-background via-background/80 via-background/40 to-transparent" style={{ top: '-32px', height: '32px' }}></div>
+        )}
+        {/* Cycling word with sliding animation - no overflow control */}
+        {isScrolling && cyclingWords.length > 0 ? (
+          <>
+            {/* Current word sliding up */}
+            <span 
+              className={`inline-block transition-transform duration-600 ease-in-out ${
+                isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
+              }`}
+              style={{ 
+                lineHeight: 'inherit',
+                clipPath: isTransitioning ? 'inset(0 0 100% 0)' : 'inset(0 0 0 0)'
+              }}
+            >
+              {cyclingWords[currentCycleIndex]}
+            </span>
+            {/* Next word sliding in from bottom */}
+            {isTransitioning && (
+              <span 
+                className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out"
+                style={{
+                  lineHeight: 'inherit',
+                  transform: 'translateY(24px)',
+                  clipPath: 'inset(100% 0 0 0)',
+                  animation: 'slideInFromBottomAligned 0.6s ease-in-out forwards'
+                }}
+              >
+                {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
+              </span>
             )}
-          </div>
-        )}
-        {/* Cursor for initial typing */}
-        {!isCycling && currentWordIndex < words.length && (
-          <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
-        )}
-      </div>
-      
-      {/* Desktop: Single-line layout */}
-      <span className="hidden sm:inline-block min-h-[1.2em] leading-tight">
-        {displayText}
-        {!skipAnimation && (currentWordIndex < words.length || isCycling) && (
-          <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+          </>
+        ) : (
+          <span style={{ lineHeight: 'inherit' }}>{cyclingWords[0] || "business"}</span>
         )}
       </span>
-    </>
+      {afterCyclingWord && " "}
+      {afterCyclingWord}
+      {!skipAnimation && !isScrolling && currentWordIndex < (beforeCyclingWord + " " + (cyclingWords[0] || "business") + " " + afterCyclingWord).split(" ").length && (
+        <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+      )}
+    </span>
   )
 }
 
-// Header Component
-function Header() {
-  const { mobileMenuOpen, setMobileMenuOpen } = useMobileMenu()
-
-  return (
-    <header className="sticky top-0 z-50 w-full border-b border-border dark:border-muted bg-background/40 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/20 transition-colors duration-300" style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}>
-      <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center">
-          <Link href="/" className="hover:opacity-80 transition-opacity">
-            <Logo width={110} height={20} />
-          </Link>
-        </div>
-
-        {/* Center Navigation */}
-        <nav className="hidden xl:flex items-center space-x-4">
-          {/* Platform */}
-          <Link href="/platform" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
-            Platform
-          </Link>
-          
-          {/* Solutions Dropdown */}
-          <div className="relative group">
-            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
-              Solutions
-              <Icon name="arrow-down-s-line" className="h-4 w-4" />
-            </button>
-            {/* Mega menu for Solutions */}
-            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[800px] bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <div className="p-6 grid grid-cols-3 gap-8">
-                {/* Featured Content */}
-                <div className="space-y-4">
-                  <div className="w-full h-32 rounded-lg flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0">
-                      <canvas 
-                        className="w-full h-full"
-                        ref={(canvas) => {
-                          if (!canvas) return;
-                          
-                          const ctx = canvas.getContext('2d');
-                          if (!ctx) return;
-                          
-                          let time = 0;
-                          let animationId: number;
-                          
-                          function animate() {
-                            if (!canvas) return;
-                            const width = canvas.offsetWidth;
-                            const height = canvas.offsetHeight;
-                            
-                            // Only animate if canvas has valid dimensions
-                            if (width <= 0 || height <= 0) {
-                              animationId = requestAnimationFrame(animate);
-                              return;
-                            }
-                            
-                            canvas.width = width;
-                            canvas.height = height;
-                            
-                            if (!ctx) return;
-                            ctx.clearRect(0, 0, width, height);
-                            
-                            const imageData = ctx.createImageData(width, height);
-                            const data = imageData.data;
-                            
-                            for (let x = 0; x < width; x++) {
-                              for (let y = 0; y < height; y++) {
-                                const index = (y * width + x) * 4;
-                                
-                                // More intense, smaller-scale plasma for dropdown
-                                const scale = 0.05;
-                                const r1 = 0.3;
-                                const r2 = 0.7;
-                                const r3 = 0.2;
-                                
-                                const col = 
-                                  Math.sin(Math.sqrt((x * r1 + time * 50) ** 2 + (y * r2) ** 2) * scale) +
-                                  Math.sin(Math.sqrt((x * r2) ** 2 + (y * r1 + time * 30) ** 2) * scale) +
-                                  Math.sin(Math.sqrt((x * r3 + time * 40) ** 2 + (y * r3 + time * 20) ** 2) * scale);
-                                
-                                // Use original plasma color palette
-                                const r = Math.floor(128 + 127 * Math.sin(col));
-                                const g = Math.floor(128 + 127 * Math.cos(col));
-                                const b = Math.floor(128 + 127 * (Math.cos(col) - Math.sin(col)));
-                                
-                                // Add the original checkerboard pattern
-                                const checkerboard = Math.floor(x / 2) % 2 === 0 ? 0 : 102;
-                                const finalR = Math.min(255, r + checkerboard);
-                                const finalG = Math.min(255, g + checkerboard);
-                                const finalB = Math.min(255, b + checkerboard);
-                                
-                                data[index] = finalR;
-                                data[index + 1] = finalG;
-                                data[index + 2] = finalB;
-                                data[index + 3] = 255;
-                              }
-                            }
-                            
-                            ctx.putImageData(imageData, 0, 0);
-                            time += 0.005;
-                            animationId = requestAnimationFrame(animate);
-                          }
-                          
-                          // Start animation
-                          animate();
-                          
-                          // Cleanup function
-                          return () => {
-                            if (animationId) {
-                              cancelAnimationFrame(animationId);
-                            }
-                          };
-                        }}
-                      />
-                    </div>
-                    <div className="text-center relative z-10">
-                      <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto">
-                        <img 
-                          src="/images/branding/E-AI-Arrow.svg" 
-                          alt="Elevation AI Arrow" 
-                          className="h-6 w-6"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-base text-foreground mb-2">Transform Your Business</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Tailored AI solutions driving growth, efficiency, and innovation across your organization.
-                    </p>
-                  </div>
-                </div>
-
-                {/* By Industry */}
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Industry</h3>
-                  <ul className="space-y-3">
-                    <li><Link href="/solutions/private-markets" className="text-sm hover:text-primary transition-colors">Private Market Organizations</Link></li>
-                    <li><Link href="/solutions/public-markets" className="text-sm hover:text-primary transition-colors">Public Market Organizations</Link></li>
-                    <li><Link href="/solutions/banks" className="text-sm hover:text-primary transition-colors">Banks</Link></li>
-                    <li><Link href="/solutions/enterprise" className="text-sm hover:text-primary transition-colors">Enterprise</Link></li>
-                    <li><Link href="/solutions/government" className="text-sm hover:text-primary transition-colors">Government</Link></li>
-                  </ul>
-                </div>
-                
-                {/* By Stage */}
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Stage</h3>
-                  <ul className="space-y-3">
-                    <li><Link href="/solutions/creating-growing" className="text-sm hover:text-primary transition-colors">Creating & Growing a New Venture</Link></li>
-                    <li><Link href="/solutions/scaling" className="text-sm hover:text-primary transition-colors">Scaling a Venture</Link></li>
-                    <li><Link href="/solutions/exiting" className="text-sm hover:text-primary transition-colors">Exiting a Venture</Link></li>
-                    <li><Link href="/solutions/post-ipo" className="text-sm hover:text-primary transition-colors">Post-IPO Growth</Link></li>
-                    <li><Link href="/solutions/family-office" className="text-sm hover:text-primary transition-colors">Post-Exit/Family Office</Link></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Pricing */}
-          <Link href="/pricing" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
-            Pricing
-          </Link>
-          
-          {/* Resources Dropdown */}
-          <div className="relative group">
-            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
-              Resources
-              <Icon name="arrow-down-s-line" className="h-4 w-4" />
-            </button>
-            {/* Dropdown menu for Resources */}
-            <div className="absolute top-full left-0 mt-2 w-64 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <div className="p-4 space-y-3">
-                <Link href="/security" className="block text-sm hover:text-primary transition-colors">Security</Link>
-                <Link href="/careers" className="block text-sm hover:text-primary transition-colors">Careers</Link>
-                <Link href="/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
-                <Link href="/investors" className="text-sm hover:text-primary transition-colors">Investors</Link>
-                <Link href="/developers" className="text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
-                <Link href="/blog" className="text-sm hover:text-primary transition-colors">Blog + News</Link>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        {/* Right side - CTAs and Mobile Menu */}
-        <div className="flex items-center space-x-3">
-          {/* Desktop CTAs - Hidden below xl */}
-          <div className="hidden xl:flex items-center space-x-3">
-            <Button variant="ghost" size="sm" asChild className="text-xs xl:text-sm hover:bg-muted/50">
-              <Link href="/wireframes/login">
-                <Icon name="login-box-line" className="h-4 w-4 mr-1" />
-                Login
-              </Link>
-            </Button>
-            <Button size="sm" asChild className="text-xs xl:text-sm hover:bg-primary/90">
-              <Link href="/wireframes/demo">
-                Request a Demo
-              </Link>
-            </Button>
-          </div>
-          
-          {/* Mobile/Tablet CTAs - Hidden on small screens, visible on medium+ */}
-          <div className="hidden lg:flex xl:hidden items-center space-x-3">
-            <Button variant="ghost" size="sm" asChild className="text-xs lg:text-sm hover:bg-muted/50">
-              <Link href="/wireframes/login">
-                <Icon name="login-box-line" className="h-4 w-4 mr-1" />
-                Login
-              </Link>
-            </Button>
-            <Button size="sm" asChild className="text-xs lg:text-sm hover:bg-primary/90">
-              <Link href="/wireframes/demo">
-                Request a Demo
-              </Link>
-            </Button>
-          </div>
-          
-          {/* Theme Toggle - Always visible */}
-          <ThemeToggle />
-          
-          {/* Mobile Menu Button - Only visible below xl */}
-          <div className="xl:hidden">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-muted/50"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <Icon name={mobileMenuOpen ? "close-line" : "menu-line"} className="h-5 w-5" />
-              <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Toggle menu"}</span>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </header>
-  )
-}
 
 // Hero Section
 function HeroSection() {
@@ -457,43 +241,43 @@ function HeroSection() {
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-                              <div className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight h-16 sm:h-20 md:h-auto lg:h-auto xl:h-auto 2xl:h-auto flex items-start">
+                              <div className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
                   <TypewriterText 
-                    text="The AI Control Panel for" 
+                    text="The platform & team bringing business into the agentic era." 
                     speed={100} 
                     delay={500}
                     cyclingSpeed={300}
-                    cyclingDelay={0}
+                    cyclingDelay={2000}
                     cyclingWords={[
-                      "Business.",
-                      "Ventures.",
-                      "Teams.",
-                      "Enterprise.",
-                      "Startups.",
-                      "Family Offices.",
-                      "Private Capital.",
-                      "Investors.",
-                      "Hedge Funds.",
-                      "Banks.",
-                      "Government.",
-                      "Consultancies.",
-                      "Institutions."
+                      "business",
+                      "ventures",
+                      "teams",
+                      "enterprise",
+                      "startups",
+                      "family offices",
+                      "private capital",
+                      "investors",
+                      "hedge funds",
+                      "banks",
+                      "government",
+                      "consultancies",
+                      "institutions"
                     ]}
                   />
                               </div>
               <BodyLarge className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-lg leading-relaxed">
-                Elevation AI is the agentic knowledge and work orchestration platform—built for the future of business—powered by a concierge team. Unifying knowledge, orchestrating workflows, securing your use of AI.
+                Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team. Unifying knowledge, orchestrating workflows, securing your use of AI.
               </BodyLarge>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/wireframes/demo">
-                  Request a Demo
+                <Link href="/wireframes/sign-up">
+                  Get Started
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/wireframes/sign-up">
-                  Get Started
+                <Link href="/wireframes/demo">
+                  Request a Demo
                 </Link>
               </Button>
             </div>
@@ -1765,13 +1549,13 @@ function ClosingCTASection() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/demo">
-                  Request a Demo
+                <Link href="/wireframes/sign-up">
+                  Get Started
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/sign-up">
-                  Get Started
+                <Link href="/wireframes/demo">
+                  Request a Demo
                 </Link>
               </Button>
             </div>
@@ -1790,13 +1574,13 @@ function ClosingCTASection() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/demo">
-                  Request a Demo
+                <Link href="/wireframes/sign-up">
+                  Get Started
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/wireframes/sign-up">
-                  Get Started
+                <Link href="/wireframes/demo">
+                  Request a Demo
                 </Link>
               </Button>
             </div>
@@ -1985,7 +1769,7 @@ export default function WireframesHomePage() {
   return (
     <PageWrapper>
       <MobileOnlyLayout
-        header={<Header />}
+        header={<MainHeader />}
         footer={<Footer />}
         mobileMenu={<MobileMenuDrawer currentPage="homepage" />}
       >

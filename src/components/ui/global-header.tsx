@@ -19,7 +19,7 @@ export function GlobalHeader({ showLogin = true, showDemo = false }: GlobalHeade
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
-            <Logo width={110} height={20} />
+            <Logo width={127} height={23} />
           </Link>
         </div>
 

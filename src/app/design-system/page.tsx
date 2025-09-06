@@ -38,6 +38,7 @@ export default function DesignSystemPage() {
       description: "Reusable UI components and patterns",
       items: [
         { name: "Components", href: "/design-system/components", icon: "apps-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Navigation", href: "/design-system/navigation", icon: "navigation-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Carousels", href: "/design-system/carousels", icon: "slideshow-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Content Components", href: "/design-system/content-components", icon: "article-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Dashboard", href: "/design-system/dashboard", icon: "dashboard-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
