@@ -32,7 +32,6 @@ export const Logo = React.memo(function Logo({
         priority={priority}
         unoptimized={false}
         className={cn(
-          "w-full h-auto", // Make image responsive to container
           variant === "dark" ? "invert" : "dark:invert"
         )}
       />
