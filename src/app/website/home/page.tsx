@@ -67,6 +67,9 @@ function OriginalTypewriterText({
   const [isCycling, setIsCycling] = React.useState(false)
   const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
   const [isDeleting, setIsDeleting] = React.useState(false)
+  const [isTypingComplete, setIsTypingComplete] = React.useState(false)
+  const [cyclingWordIndex, setCyclingWordIndex] = React.useState(0)
+  const [isTypingCyclingWord, setIsTypingCyclingWord] = React.useState(false)
 
   // Split text into words
   const words = text.split(" ")
@@ -129,42 +132,63 @@ function OriginalTypewriterText({
     return () => clearTimeout(timer)
   }, [currentWordIndex, words, speed, isTyping, skipAnimation, cyclingWords.length, cyclingDelay])
 
-  // Cycling animation
+  // Cycling animation - word by word typing and deletion
   React.useEffect(() => {
     if (!isCycling || cyclingWords.length === 0) return
 
     const currentCycleWord = cyclingWords[currentCycleIndex]
-    const fullText = baseWords.join(" ") + " " + currentCycleWord
+    const cyclingWordParts = currentCycleWord.split(" ")
+    const baseText = baseWords.join(" ") + " "
 
     if (isDeleting) {
-      // Delete only the cycling word, keep base text
-      const timer = setTimeout(() => {
-        setDisplayText(baseWords.join(" "))
-        setIsDeleting(false)
-        setCurrentCycleIndex((prev) => (prev + 1) % cyclingWords.length)
-      }, cyclingSpeed)
+      // Delete word by word
+      if (cyclingWordIndex > 0) {
+        const timer = setTimeout(() => {
+          const remainingWords = cyclingWordParts.slice(0, cyclingWordIndex - 1)
+          setDisplayText(baseText + remainingWords.join(" "))
+          setCyclingWordIndex(cyclingWordIndex - 1)
+        }, cyclingSpeed / 2)
 
-      return () => clearTimeout(timer)
+        return () => clearTimeout(timer)
+      } else {
+        // All words deleted, move to next cycle
+        const timer = setTimeout(() => {
+          setDisplayText(baseText)
+          setIsDeleting(false)
+          setCyclingWordIndex(0)
+          setCurrentCycleIndex((prev) => (prev + 1) % cyclingWords.length)
+        }, cyclingSpeed / 2)
+
+        return () => clearTimeout(timer)
+      }
     } else {
-      // Type the entire word at once (faster after deletion)
-      const timer = setTimeout(() => {
-        setDisplayText(fullText)
-      }, cyclingSpeed / 2) // Type faster after deletion
+      // Type word by word
+      if (cyclingWordIndex < cyclingWordParts.length) {
+        const timer = setTimeout(() => {
+          const currentWords = cyclingWordParts.slice(0, cyclingWordIndex + 1)
+          setDisplayText(baseText + currentWords.join(" "))
+          setCyclingWordIndex(cyclingWordIndex + 1)
+        }, cyclingSpeed / 2)
 
-      return () => clearTimeout(timer)
+        return () => clearTimeout(timer)
+      } else {
+        // All words typed, mark as complete and start 2-second timer
+        setIsTypingComplete(true)
+      }
     }
-  }, [isCycling, currentCycleIndex, isDeleting, baseWords, cyclingWords, cyclingSpeed])
+  }, [isCycling, currentCycleIndex, isDeleting, cyclingWordIndex, baseWords, cyclingWords, cyclingSpeed])
 
-  // Handle the 2-second display duration after typing
+  // Handle the 2-second display duration after typing is complete
   React.useEffect(() => {
-    if (!isCycling || isDeleting) return
+    if (!isCycling || isDeleting || !isTypingComplete) return
     
     const timer = setTimeout(() => {
       setIsDeleting(true)
+      setIsTypingComplete(false) // Reset for next cycle
     }, 2000) // Show each word for exactly 2 seconds
 
     return () => clearTimeout(timer)
-  }, [isCycling, isDeleting, currentCycleIndex])
+  }, [isCycling, isDeleting, isTypingComplete, currentCycleIndex])
 
   return (
     <>
