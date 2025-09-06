@@ -82,9 +82,9 @@ export function CookiesBanner({ className }: CookiesBannerProps) {
                 variant="ghost"
                 size="sm"
                 onClick={handleClose}
-                className="flex-shrink-0 w-7 h-7 p-0"
+                className="flex-shrink-0 w-10 h-10 p-0"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-5 h-5" />
               </Button>
             </div>
             

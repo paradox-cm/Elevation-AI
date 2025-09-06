@@ -1006,7 +1006,7 @@ function HowWeDoItSection() {
           <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1>More Than a Platform.</H1>
             <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
-              A Partnership to Power Every Stage.
+              Your Partner at Every Step.
             </BodyLarge>
           </div>
 
@@ -1434,7 +1434,7 @@ function Footer() {
           
           <Separator className="my-4 lg:my-6 bg-border/60" />
           
-          <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-4 pb-3">
+          <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-4 pb-0 md:pb-3">
             <BodySmall className="text-muted-foreground text-left">
               © 2025 Elevation AI. All rights reserved.
             </BodySmall>
