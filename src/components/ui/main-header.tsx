@@ -16,7 +16,7 @@ interface MainHeaderProps {
 export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProps) {
   // Try to get mobile menu context, but don't fail if it's not available
   let mobileMenuOpen = false
-  let setMobileMenuOpen = () => {}
+  let setMobileMenuOpen: (open: boolean) => void = () => {}
   
   try {
     const mobileMenuContext = useMobileMenu()

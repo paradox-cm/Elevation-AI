@@ -272,9 +272,9 @@ function StaticDesignSystemNavigation() {
           </div>
         </div>
         <div className="hidden lg:flex lg:items-center lg:space-x-6">
-          <a href="/" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
+          <Link href="/" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
             Home
-          </a>
+          </Link>
           <a href="/design-system" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground bg-muted">
             Design System
           </a>
@@ -303,9 +303,9 @@ function StaticNavigation() {
           </div>
         </div>
         <div className="hidden lg:flex lg:items-center lg:space-x-6">
-          <a href="/" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
+          <Link href="/" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground/60 hover:bg-muted/50">
             Home
-          </a>
+          </Link>
           <a href="/design-system" className="text-sm font-medium transition-colors hover:text-foreground/80 px-3 py-2 rounded-md text-foreground bg-muted">
             Design System
           </a>
