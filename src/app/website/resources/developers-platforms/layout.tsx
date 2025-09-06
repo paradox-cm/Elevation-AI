@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Elevation AI – Developers title: "Developers & Platforms - Resources - Elevation AI" Platforms"
+  title: "Elevation AI – Developers & Platforms"
 }
 
 export default function Layout({

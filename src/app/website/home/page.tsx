@@ -414,19 +414,14 @@ function HeroSection() {
                     cyclingSpeed={300}
                     cyclingDelay={0}
                     cyclingWords={[
-                      "Business.",
-                      "Ventures.",
-                      "Teams.",
-                      "Enterprise.",
-                      "Startups.",
-                      "Family Offices.",
-                      "Private Capital.",
-                      "Investors.",
-                      "Hedge Funds.",
-                      "Banks.",
-                      "Government.",
-                      "Consultancies.",
-                      "Institutions."
+                      "Intelligent Operations.",
+                      "Seamless Workflows.",
+                      "Data-Driven Decisions.",
+                      "Automated Processes.",
+                      "Strategic Growth.",
+                      "Operational Excellence.",
+                      "Business Transformation.",
+                      "Digital Innovation."
                     ]}
                   />
                               </div>

@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
@@ -478,19 +479,14 @@ function HeroSection({
                     cyclingSpeed={300}
                     cyclingDelay={0}
                     cyclingWords={[
-                      "Business.",
-                      "Ventures.",
-                      "Teams.",
-                      "Enterprise.",
-                      "Startups.",
-                      "Family Offices.",
-                      "Private Capital.",
-                      "Investors.",
-                      "Hedge Funds.",
-                      "Banks.",
-                      "Government.",
-                      "Consultancies.",
-                      "Institutions."
+                      "Intelligent Operations.",
+                      "Seamless Workflows.",
+                      "Data-Driven Decisions.",
+                      "Automated Processes.",
+                      "Strategic Growth.",
+                      "Operational Excellence.",
+                      "Business Transformation.",
+                      "Digital Innovation."
                     ]}
                   />
                 ) : variant === "original" && showAnimation ? (
@@ -692,6 +688,183 @@ export default function HeroPage() {
                 ))}
               </div>
             </div>
+          </Section>
+
+          {/* Cycling Words Options */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="refresh-line" className="h-5 w-5" />
+                  Cycling Words Options
+                </CardTitle>
+                <CardDescription>
+                  Alternative word sets for the hero headline cycling animation. Each option targets different messaging approaches and audience segments.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* Option 1: Action-Oriented */}
+                  <div className="space-y-3">
+                    <H4 className="text-blue-600">Option 1: Action-Oriented (What We Do)</H4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Transformation.<br/>
+                        • Innovation.<br/>
+                        • Automation.<br/>
+                        • Orchestration.<br/>
+                        • Optimization.<br/>
+                        • Acceleration.<br/>
+                        • Evolution.<br/>
+                        • Revolution.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Emphasizes what Elevation AI does and the actions it enables.
+                    </BodySmall>
+                  </div>
+
+                  {/* Option 2: Outcome-Focused */}
+                  <div className="space-y-3">
+                    <H4 className="text-green-600">Option 2: Outcome-Focused (What You Get)</H4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Breakthroughs.<br/>
+                        • Excellence.<br/>
+                        • Growth.<br/>
+                        • Success.<br/>
+                        • Impact.<br/>
+                        • Results.<br/>
+                        • Victories.<br/>
+                        • Achievements.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Highlights the results and outcomes customers can expect.
+                    </BodySmall>
+                  </div>
+
+                  {/* Option 3: Process-Focused */}
+                  <div className="space-y-3">
+                    <H4 className="text-purple-600">Option 3: Process-Focused (How We Work)</H4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Intelligence.<br/>
+                        • Insights.<br/>
+                        • Decisions.<br/>
+                        • Workflows.<br/>
+                        • Operations.<br/>
+                        • Processes.<br/>
+                        • Strategies.<br/>
+                        • Solutions.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Describes the processes and methodologies Elevation AI uses.
+                    </BodySmall>
+                  </div>
+
+                  {/* Option 4: Partnership-Focused */}
+                  <div className="space-y-3">
+                    <H4 className="text-orange-600">Option 4: Partnership-Focused (Who We Serve)</H4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Leaders.<br/>
+                        • Pioneers.<br/>
+                        • Visionaries.<br/>
+                        • Innovators.<br/>
+                        • Entrepreneurs.<br/>
+                        • Teams.<br/>
+                        • Organizations.<br/>
+                        • Enterprises.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Emphasizes the types of people and organizations Elevation AI serves.
+                    </BodySmall>
+                  </div>
+
+                  {/* Option 5: Future-Focused */}
+                  <div className="space-y-3">
+                    <H4 className="text-cyan-600">Option 5: Future-Focused (What's Possible)</H4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Tomorrow.<br/>
+                        • The Future.<br/>
+                        • What's Next.<br/>
+                        • Possibilities.<br/>
+                        • Potential.<br/>
+                        • Opportunities.<br/>
+                        • Advancement.<br/>
+                        • Progress.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Looks forward to what's possible and what the future holds.
+                    </BodySmall>
+                  </div>
+
+                  {/* Option 6: Hybrid (Current) */}
+                  <div className="space-y-3">
+                    <H4 className="text-emerald-600">Option 6: Hybrid (Current Implementation)</H4>
+                    <div className="bg-emerald-50 dark:bg-emerald-950/20 p-4 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Intelligent Operations.<br/>
+                        • Seamless Workflows.<br/>
+                        • Data-Driven Decisions.<br/>
+                        • Automated Processes.<br/>
+                        • Strategic Growth.<br/>
+                        • Operational Excellence.<br/>
+                        • Business Transformation.<br/>
+                        • Digital Innovation.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Combines what we do, how we work, and what you get. <strong>Currently implemented.</strong>
+                    </BodySmall>
+                  </div>
+
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <H4>Alternative Creative Approach</H4>
+                  <div className="space-y-3">
+                    <H4 className="text-rose-600">Inclusive Universal Appeal</H4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <BodySmall className="font-mono text-sm">
+                        "The Agentic Platform for"<br/>
+                        • Every Business.<br/>
+                        • Every Team.<br/>
+                        • Every Vision.<br/>
+                        • Every Goal.<br/>
+                        • Every Challenge.<br/>
+                        • Every Opportunity.<br/>
+                        • Every Success.<br/>
+                        • Every Future.
+                      </BodySmall>
+                    </div>
+                    <BodySmall className="text-muted-foreground">
+                      <strong>Focus:</strong> Emphasizes inclusivity and universal appeal while maintaining the powerful cycling animation.
+                    </BodySmall>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <BodySmall className="text-blue-800 dark:text-blue-200">
+                    <strong>💡 Recommendation:</strong> Option 6 (Hybrid) is currently implemented as it clearly communicates what Elevation AI does while being inclusive to all business sizes and maintaining professional, campaign-worthy language.
+                  </BodySmall>
+                </div>
+              </CardContent>
+            </Card>
           </Section>
 
           {/* Hero Headlines Analysis */}
