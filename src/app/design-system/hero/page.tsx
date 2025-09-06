@@ -157,57 +157,59 @@ function TypewriterText({
 
   return (
     <>
-      {/* Mobile: Two-line layout */}
+      {/* Mobile: Two-line layout with fixed height */}
       <div className="block sm:hidden">
-        {!isScrolling ? (
-          // Show the typing animation text
-          <>
-            {displayText}
-            {!skipAnimation && currentWordIndex < (beforeCyclingWord + " " + (cyclingWords[0] || "business") + " " + afterCyclingWord).split(" ").length && (
-              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
-            )}
-          </>
-        ) : (
-          // Show the cycling words animation - same as desktop but with mobile spacing
-          <>
-            {beforeCyclingWord}
-            {beforeCyclingWord && " "}
-             <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
-               {/* Cycling word with sliding animation - no overflow control */}
-              {cyclingWords.length > 0 && (
-                <>
-                  {/* Current word sliding up */}
-                  <span 
-                    className={`inline-block transition-transform duration-600 ease-in-out ${
-                      isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
-                    }`}
-                    style={{ 
-                      lineHeight: 'inherit',
-                      clipPath: isTransitioning ? 'inset(0 0 100% 0)' : 'inset(0 0 0 0)'
-                    }}
-                  >
-                    {cyclingWords[currentCycleIndex]}
-                  </span>
-                  {/* Next word sliding in from bottom */}
-                  {isTransitioning && (
+        <div className="min-h-[3em] relative">
+          {!isScrolling ? (
+            // Show the typing animation text
+            <div className="inline">
+              {displayText}
+              {!skipAnimation && currentWordIndex < (beforeCyclingWord + " " + (cyclingWords[0] || "business") + " " + afterCyclingWord).split(" ").length && (
+                <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+              )}
+            </div>
+          ) : (
+            // Show the cycling words animation - same as desktop but with mobile spacing
+            <div className="inline">
+              {beforeCyclingWord}
+              {beforeCyclingWord && " "}
+               <span className="inline-block relative min-h-[1.5em] w-[200px]" style={{ lineHeight: 'inherit' }}>
+                 {/* Cycling word with sliding animation - no overflow control */}
+                {cyclingWords.length > 0 && (
+                  <>
+                    {/* Current word sliding up */}
                     <span 
-                      className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
-                      style={{
+                      className={`inline-block transition-transform duration-600 ease-in-out ${
+                        isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
+                      }`}
+                      style={{ 
                         lineHeight: 'inherit',
-                        transform: 'translateY(12px)',
-                        clipPath: 'inset(100% 0 0 0)'
+                        clipPath: isTransitioning ? 'inset(0 0 100% 0)' : 'inset(0 0 0 0)'
                       }}
                     >
-                      {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
+                      {cyclingWords[currentCycleIndex]}
                     </span>
-                  )}
-                </>
-              )}
-            </span>
-            {afterCyclingWord && " "}
-            {afterCyclingWord}
-          </>
-        )}
+                    {/* Next word sliding in from bottom */}
+                    {isTransitioning && (
+                      <span 
+                        className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
+                        style={{
+                          lineHeight: 'inherit',
+                          transform: 'translateY(12px)',
+                          clipPath: 'inset(100% 0 0 0)'
+                        }}
+                      >
+                        {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
+                      </span>
+                    )}
+                  </>
+                )}
+              </span>
+              {afterCyclingWord && " "}
+              {afterCyclingWord}
+            </div>
+          )}
+        </div>
       </div>
       
       {/* Desktop: Single-line layout */}

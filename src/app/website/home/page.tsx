@@ -168,25 +168,27 @@ function OriginalTypewriterText({
 
   return (
     <>
-      {/* Mobile: Two-line layout */}
+      {/* Mobile: Two-line layout with fixed height */}
       <div className="block sm:hidden">
-        {!isCycling ? (
-          // Show the typing animation text
-          <>
-            {displayText}
-            {!skipAnimation && currentWordIndex < words.length && (
-              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
-            )}
-          </>
-        ) : (
-          // Show the cycling words animation - same as desktop but with mobile spacing
-          <>
-            {displayText}
-            {!skipAnimation && (
-              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
-            )}
-          </>
-        )}
+        <div className="min-h-[3em] relative">
+          {!isCycling ? (
+            // Show the typing animation text
+            <div className="inline">
+              {displayText}
+              {!skipAnimation && currentWordIndex < words.length && (
+                <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+              )}
+            </div>
+          ) : (
+            // Show the cycling words animation - same as desktop but with mobile spacing
+            <div className="inline">
+              {displayText}
+              {!skipAnimation && (
+                <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       
       {/* Desktop: Single-line layout */}
@@ -351,7 +353,7 @@ function TypewriterText({
         <>
           {beforeCyclingWord}
           {beforeCyclingWord && " "}
-          <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
+          <span className="inline-block relative w-[200px]" style={{ lineHeight: 'inherit' }}>
             {/* Top gradient mask for fade effect - positioned above container to catch sliding words - hidden on mobile and small */}
             <div className="hidden md:block absolute left-0 right-0 pointer-events-none z-10 bg-gradient-to-b from-background via-background/80 via-background/40 to-transparent" style={{ top: '-32px', height: '32px' }}></div>
             {/* Cycling word with sliding animation - no overflow control */}
