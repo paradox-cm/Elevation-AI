@@ -591,7 +591,7 @@ export default function HeroPage() {
       id: "original-animated",
       title: "Option B",
       description: "The current hero headline with typewriter effect and cycling words animation that is now implemented on the website.",
-      subheadline: "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your Universe. Intelligently Orchestrated.",
+      subheadline: "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.",
       variant: "original-animated" as const,
       showAnimation: true,
       badge: "Current"

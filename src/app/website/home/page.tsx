@@ -428,7 +428,7 @@ function HeroSection() {
                   />
                               </div>
               <BodyLarge className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-lg leading-relaxed">
-                Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your Universe. Intelligently Orchestrated.
+                Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.
               </BodyLarge>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
