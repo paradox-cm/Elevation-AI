@@ -13,7 +13,7 @@ export function MobileMenu({ currentPage }: MobileMenuProps) {
   const navigationLinks = [
     { href: "/", label: "Home", icon: "home-line" },
     { href: "/design-system", label: "Design System", icon: "apps-line" },
-    { href: "/website", label: "Wireframes", icon: "layout-line" }
+    { href: "/website", label: "Website", icon: "layout-line" }
   ]
 
   return (

@@ -18,6 +18,7 @@ export function DesignSystemSidebar() {
           title: "Foundation",
           items: [
             { name: "Brand Identity", href: "/design-system/branding", icon: "image-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+            { name: "Hero", href: "/design-system/hero", icon: "text", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Colors", href: "/design-system/colors", icon: "palette-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Typography", href: "/design-system/typography", icon: "text", color: "text-blue-500", bgColor: "bg-blue-500/10" },
             { name: "Spacing", href: "/design-system/spacing", icon: "ruler-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
