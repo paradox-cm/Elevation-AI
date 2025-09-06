@@ -181,9 +181,9 @@ function TypewriterText({
       {beforeCyclingWord}
       {beforeCyclingWord && " "}
       <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
-        {/* Top gradient mask for fade effect - positioned above container to catch sliding words */}
+        {/* Top gradient mask for fade effect - positioned above container to catch sliding words - hidden on mobile and small */}
         {isScrolling && (
-          <div className="absolute left-0 right-0 pointer-events-none z-10 bg-gradient-to-b from-background via-background/80 via-background/40 to-transparent" style={{ top: '-32px', height: '32px' }}></div>
+          <div className="hidden md:block absolute left-0 right-0 pointer-events-none z-10 bg-gradient-to-b from-background via-background/80 via-background/40 to-transparent" style={{ top: '-32px', height: '32px' }}></div>
         )}
         {/* Cycling word with sliding animation - no overflow control */}
         {isScrolling && cyclingWords.length > 0 ? (
@@ -203,12 +203,11 @@ function TypewriterText({
             {/* Next word sliding in from bottom */}
             {isTransitioning && (
               <span 
-                className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out"
+                className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
                 style={{
                   lineHeight: 'inherit',
-                  transform: 'translateY(24px)',
-                  clipPath: 'inset(100% 0 0 0)',
-                  animation: 'slideInFromBottomAligned 0.6s ease-in-out forwards'
+                  transform: 'translateY(12px)',
+                  clipPath: 'inset(100% 0 0 0)'
                 }}
               >
                 {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
