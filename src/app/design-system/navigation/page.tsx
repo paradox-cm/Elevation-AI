@@ -26,7 +26,7 @@ function StaticMainHeader() {
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         <div className="flex items-center">
           <Link href="/" className="hover:opacity-80 transition-opacity">
-            <Logo width={127} height={23} />
+            <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
           </Link>
         </div>
         <nav className="hidden xl:flex items-center space-x-4">
@@ -256,7 +256,7 @@ function StaticGlobalHeader() {
       <div className="w-full px-4 sm:px-4 md:px-6 lg:px-8 flex h-14 sm:h-18 items-center justify-between">
         <div className="flex items-center">
           <Link href="/wireframes/home" className="hover:opacity-80 transition-opacity">
-            <Logo width={127} height={23} />
+            <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
           </Link>
         </div>
         <div className="flex items-center space-x-3">
@@ -285,7 +285,7 @@ function StaticDesignSystemNavigation() {
         <div className="flex items-center">
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Link href="/" className="hover:opacity-80 transition-opacity">
-              <Logo width={127} height={23} />
+              <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
             </Link>
             <Badge variant="secondary" className="text-xs sm:text-sm px-2 py-1">
               Design System
@@ -316,7 +316,7 @@ function StaticNavigation() {
         <div className="flex items-center">
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Link href="/" className="hover:opacity-80 transition-opacity">
-              <Logo width={127} height={23} />
+              <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
             </Link>
             <Badge variant="secondary" className="text-xs sm:text-sm px-2 py-1">
               Design System

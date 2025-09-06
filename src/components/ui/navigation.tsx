@@ -45,7 +45,7 @@ export function Navigation({
         <div className="flex items-center">
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Link href="/" className="hover:opacity-80 transition-opacity">
-              <Logo width={127} height={23} />
+              <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
             </Link>
             {showBadge && (
               <Badge variant="secondary" className="text-xs sm:text-sm px-2 py-1">

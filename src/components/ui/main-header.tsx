@@ -33,7 +33,7 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="hover:opacity-80 transition-opacity">
-            <Logo width={114} height={21} className="sm:w-[127px] sm:h-[23px]" />
+            <Logo width={114} height={21} className="lg:w-[127px] lg:h-[23px]" />
           </Link>
         </div>
 
