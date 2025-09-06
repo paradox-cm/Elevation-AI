@@ -1,5 +1,6 @@
 "use client"
 
+
 import React from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"

@@ -1,4 +1,8 @@
-"use client"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Elevation AI – Platform"
+}
 
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"

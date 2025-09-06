@@ -43,6 +43,163 @@ import {
   EnterpriseSecurity
 } from "@/components/animations"
 
+// Original Typewriter Text Component (for "The Agentic Platform for" format)
+function OriginalTypewriterText({ 
+  text, 
+  speed = 200, 
+  delay = 0, 
+  skipAnimation = false,
+  cyclingWords = [],
+  cyclingSpeed = 300,
+  cyclingDelay = 0
+}: { 
+  text: string; 
+  speed?: number; 
+  delay?: number; 
+  skipAnimation?: boolean;
+  cyclingWords?: string[];
+  cyclingSpeed?: number;
+  cyclingDelay?: number;
+}) {
+  const [displayText, setDisplayText] = React.useState("")
+  const [currentWordIndex, setCurrentWordIndex] = React.useState(0)
+  const [isTyping, setIsTyping] = React.useState(false)
+  const [isCycling, setIsCycling] = React.useState(false)
+  const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
+  const [isDeleting, setIsDeleting] = React.useState(false)
+
+  // Split text into words
+  const words = text.split(" ")
+  const baseWords = words // Keep all words as base text
+
+  // Reset animation on mount and when text changes
+  React.useEffect(() => {
+    if (skipAnimation) {
+      // If skipping animation, show full text immediately
+      setDisplayText(text)
+      setCurrentWordIndex(words.length)
+      setIsTyping(false)
+    } else {
+      setDisplayText("")
+      setCurrentWordIndex(0)
+      setIsTyping(false)
+    }
+  }, [text, words.length])
+
+  // Handle skipAnimation changes
+  React.useEffect(() => {
+    if (skipAnimation) {
+      // If skipping animation, show full text immediately
+      setDisplayText(text)
+      setCurrentWordIndex(words.length)
+      setIsTyping(false)
+    }
+  }, [skipAnimation, text, words.length])
+
+  React.useEffect(() => {
+    if (skipAnimation) return // Don't start typing if skipping animation
+    
+    if (delay > 0) {
+      const delayTimer = setTimeout(() => {
+        setIsTyping(true)
+      }, delay)
+      return () => clearTimeout(delayTimer)
+    } else {
+      setIsTyping(true)
+    }
+  }, [delay, skipAnimation])
+
+  // Initial typing animation
+  React.useEffect(() => {
+    if (skipAnimation || !isTyping || currentWordIndex >= words.length) return
+
+    const timer = setTimeout(() => {
+      const newWordIndex = currentWordIndex + 1
+      setDisplayText(words.slice(0, newWordIndex).join(" "))
+      setCurrentWordIndex(newWordIndex)
+      
+      // Start cycling after initial text is complete
+      if (newWordIndex >= words.length && cyclingWords.length > 0) {
+        setTimeout(() => {
+          setIsCycling(true)
+        }, cyclingDelay) // Wait before starting to cycle
+      }
+    }, speed)
+
+    return () => clearTimeout(timer)
+  }, [currentWordIndex, words, speed, isTyping, skipAnimation, cyclingWords.length, cyclingDelay])
+
+  // Cycling animation
+  React.useEffect(() => {
+    if (!isCycling || cyclingWords.length === 0) return
+
+    const currentCycleWord = cyclingWords[currentCycleIndex]
+    const fullText = baseWords.join(" ") + " " + currentCycleWord
+
+    if (isDeleting) {
+      // Delete only the cycling word, keep base text
+      const timer = setTimeout(() => {
+        setDisplayText(baseWords.join(" "))
+        setIsDeleting(false)
+        setCurrentCycleIndex((prev) => (prev + 1) % cyclingWords.length)
+      }, cyclingSpeed)
+
+      return () => clearTimeout(timer)
+    } else {
+      // Type the entire word at once (faster after deletion)
+      const timer = setTimeout(() => {
+        setDisplayText(fullText)
+      }, cyclingSpeed / 2) // Type faster after deletion
+
+      return () => clearTimeout(timer)
+    }
+  }, [isCycling, currentCycleIndex, isDeleting, baseWords, cyclingWords, cyclingSpeed])
+
+  // Handle the 2-second display duration after typing
+  React.useEffect(() => {
+    if (!isCycling || isDeleting) return
+    
+    const timer = setTimeout(() => {
+      setIsDeleting(true)
+    }, 2000) // Show each word for exactly 2 seconds
+
+    return () => clearTimeout(timer)
+  }, [isCycling, isDeleting, currentCycleIndex])
+
+  return (
+    <>
+      {/* Mobile: Two-line layout */}
+      <div className="block sm:hidden">
+        {!isCycling ? (
+          // Show the typing animation text
+          <>
+            {displayText}
+            {!skipAnimation && currentWordIndex < words.length && (
+              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+            )}
+          </>
+        ) : (
+          // Show the cycling words animation - same as desktop but with mobile spacing
+          <>
+            {displayText}
+            {!skipAnimation && (
+              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+            )}
+          </>
+        )}
+      </div>
+      
+      {/* Desktop: Single-line layout */}
+      <span className="hidden sm:inline-block leading-tight">
+        {displayText}
+        {!skipAnimation && (
+          <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
+        )}
+      </span>
+    </>
+  )
+}
+
 // Typewriter Text Component
 function TypewriterText({ 
   text, 
@@ -250,26 +407,26 @@ function HeroSection() {
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
                               <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
-                  <TypewriterText 
-                    text="Bringing into the agentic era." 
+                  <OriginalTypewriterText 
+                    text="The Agentic Platform for" 
                     speed={100} 
                     delay={500}
                     cyclingSpeed={300}
-                    cyclingDelay={2000}
+                    cyclingDelay={0}
                     cyclingWords={[
-                      "business",
-                      "ventures",
-                      "teams",
-                      "enterprise",
-                      "startups",
-                      "family offices",
-                      "private capital",
-                      "investors",
-                      "hedge funds",
-                      "banks",
-                      "government",
-                      "consultancies",
-                      "institutions"
+                      "Business.",
+                      "Ventures.",
+                      "Teams.",
+                      "Enterprise.",
+                      "Startups.",
+                      "Family Offices.",
+                      "Private Capital.",
+                      "Investors.",
+                      "Hedge Funds.",
+                      "Banks.",
+                      "Government.",
+                      "Consultancies.",
+                      "Institutions."
                     ]}
                   />
                               </div>
@@ -339,7 +496,7 @@ function HeroSection() {
 function IntroductionSection() {
   const accordionItems = [
     {
-      title: "Welcome to the Future of Business",
+      title: "Securely Orchestrate Your Business",
       content: "Your business's greatest asset—its collective data and knowledge—unlocked and ready to power every decision.",
       value: "greatest-asset"
     },
@@ -364,7 +521,7 @@ function IntroductionSection() {
           {/* Left Column - Heading */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             <H3>
-              From Fragmentation to Focus
+              The Agentic Era is Here
             </H3>
           </div>
 

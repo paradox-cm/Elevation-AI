@@ -1,5 +1,7 @@
 "use client"
 
+
+
 import React from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
@@ -165,22 +167,44 @@ function TypewriterText({
             )}
           </>
         ) : (
-          // Show the cycling words animation
+          // Show the cycling words animation - same as desktop but with mobile spacing
           <>
-            {/* Base text - always visible */}
-            <div className="block">
-              {beforeCyclingWord}
-              {afterCyclingWord}
-            </div>
-            {/* Cycling words - only show when cycling */}
-            {isScrolling && (
-              <div className="block">
-                {cyclingWords[currentCycleIndex]}
-                {!skipAnimation && (
-                  <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
-                )}
-              </div>
-            )}
+            {beforeCyclingWord}
+            {beforeCyclingWord && " "}
+             <span className="inline-block relative" style={{ lineHeight: 'inherit' }}>
+               {/* Cycling word with sliding animation - no overflow control */}
+              {cyclingWords.length > 0 && (
+                <>
+                  {/* Current word sliding up */}
+                  <span 
+                    className={`inline-block transition-transform duration-600 ease-in-out ${
+                      isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
+                    }`}
+                    style={{ 
+                      lineHeight: 'inherit',
+                      clipPath: isTransitioning ? 'inset(0 0 100% 0)' : 'inset(0 0 0 0)'
+                    }}
+                  >
+                    {cyclingWords[currentCycleIndex]}
+                  </span>
+                  {/* Next word sliding in from bottom */}
+                  {isTransitioning && (
+                    <span 
+                      className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
+                      style={{
+                        lineHeight: 'inherit',
+                        transform: 'translateY(12px)',
+                        clipPath: 'inset(100% 0 0 0)'
+                      }}
+                    >
+                      {cyclingWords[(currentCycleIndex + 1) % cyclingWords.length]}
+                    </span>
+                  )}
+                </>
+              )}
+            </span>
+            {afterCyclingWord && " "}
+            {afterCyclingWord}
           </>
         )}
       </div>
@@ -377,20 +401,11 @@ function OriginalTypewriterText({
             )}
           </>
         ) : (
-          // Show the cycling words animation
+          // Show the cycling words animation - same as desktop but with mobile spacing
           <>
-            {/* Base text - always visible */}
-            <div className="block">
-              {baseWords.join(" ")}
-            </div>
-            {/* Cycling words - only show when cycling */}
-            {isCycling && (
-              <div className="block">
-                {displayText.replace(baseWords.join(" "), "").trim()}
-                {!skipAnimation && (
-                  <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
-                )}
-              </div>
+            {displayText}
+            {!skipAnimation && (
+              <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
             )}
           </>
         )}
@@ -568,20 +583,20 @@ export default function HeroPage() {
     {
       id: "current-animated",
       title: "Option A",
-      description: "Our current hero headline with the full typewriter effect and cycling words animation.",
+      description: "Our previous hero headline with the full typewriter effect and cycling words animation.",
       subheadline: "Your Universe. Intelligently Orchestrated. Elevation AI is the agentic knowledge and work orchestration platform & team—unifying knowledge, orchestrating workflows and securing your use of AI.",
       variant: "current" as const,
       showAnimation: true,
-      badge: "Current"
+      badge: "Previous"
     },
     {
       id: "original-animated",
       title: "Option B",
-      description: "The original hero headline with typewriter effect and cycling words animation that was implemented before the current version.",
+      description: "The current hero headline with typewriter effect and cycling words animation that is now implemented on the website.",
       subheadline: "Your Universe. Intelligently Orchestrated. Elevation AI is the agentic knowledge and work orchestration platform & team—unifying knowledge, orchestrating workflows and securing your use of AI.",
       variant: "original-animated" as const,
       showAnimation: true,
-      badge: "Original"
+      badge: "Current"
     },
     {
       id: "original",
@@ -596,10 +611,10 @@ export default function HeroPage() {
       id: "enterprise-orchestration",
       title: "Option D",
       description: "The enterprise orchestration approach with cycling business segments, emphasizing Elevation AI as the definitive platform and partnership for business transformation.",
-      subheadline: "Elevation AI is the agentic knowledge and work platform—powered by a concierge team, unifying knowledge, streamlining workflows, and securing your AI.",
+      subheadline: "Elevation AI is the agentic knowledge and work orchestration platform—powered by a concierge team, unifying knowledge, streamlining workflows, and securing your AI.",
       variant: "enterprise-orchestration" as const,
       showAnimation: true,
-      badge: "Recommended"
+      badge: "Alternate"
     }
   ]
 
@@ -879,33 +894,33 @@ export default function HeroPage() {
                       <Icon name="check-line" className="h-6 w-6 text-green-600 dark:text-green-400" />
                     </div>
                     <div className="flex-1">
-                      <H3 className="mb-2 text-green-800 dark:text-green-200">Recommended: Option D</H3>
-                      <H4 className="mb-3 text-gray-800 dark:text-gray-200">"The Platform & Partnership for [Enterprise Segments]."</H4>
+                      <H3 className="mb-2 text-green-800 dark:text-green-200">Current Implementation: Option B</H3>
+                      <H4 className="mb-3 text-gray-800 dark:text-gray-200">"The Agentic Platform for [Enterprise Segments]."</H4>
                       <BodyLarge className="text-gray-700 dark:text-gray-300 mb-4">
-                        After comprehensive analysis of all four options against Elevation AI's positioning, target market, and competitive landscape, Option D emerges as the objectively strongest choice for the following reasons:
+                        Option B is now the current implementation on the website, providing a strong balance of technical sophistication and market appeal. Option D remains available as an alternate approach for future consideration.
                       </BodyLarge>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border">
-                  <H4 className="mb-3 text-gray-800 dark:text-gray-200">Updated Analysis: Why Option D Wins</H4>
+                  <H4 className="mb-3 text-gray-800 dark:text-gray-200">Current Status: Option B Implementation</H4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
-                      <strong className="text-gray-700 dark:text-gray-300">Against Option A:</strong>
-                      <p className="text-muted-foreground mt-1">While Option A is dynamic and engaging, "bringing into the agentic era" is too abstract for enterprise buyers who need concrete value propositions. Option D's "Platform & Partnership" is immediately clear and actionable.</p>
+                      <strong className="text-gray-700 dark:text-gray-300">Option B (Current):</strong>
+                      <p className="text-muted-foreground mt-1">"The Agentic Platform for" provides strong technical positioning with clear enterprise appeal. The cycling words demonstrate comprehensive market coverage while maintaining focus on Elevation AI's core value proposition.</p>
                     </div>
                     <div>
-                      <strong className="text-gray-700 dark:text-gray-300">Against Option B:</strong>
-                      <p className="text-muted-foreground mt-1">Option B's "The Agentic Platform for" is strong but misses Elevation AI's key differentiator: the concierge team. Option D captures both technology and human expertise in one clear statement.</p>
+                      <strong className="text-gray-700 dark:text-gray-300">Option A (Previous):</strong>
+                      <p className="text-muted-foreground mt-1">While dynamic and engaging, "bringing into the agentic era" was too abstract for enterprise buyers who need concrete value propositions. Option B's "Agentic Platform" is more immediately clear and actionable.</p>
                     </div>
                     <div>
-                      <strong className="text-gray-700 dark:text-gray-300">Against Option C:</strong>
-                      <p className="text-muted-foreground mt-1">Option C's "Your Universe. Intelligently Orchestrated." is poetic but too abstract for enterprise decision-makers. Option D provides concrete positioning that enterprise buyers can immediately understand and evaluate.</p>
+                      <strong className="text-gray-700 dark:text-gray-300">Option C (Original):</strong>
+                      <p className="text-muted-foreground mt-1">"Your Universe. Intelligently Orchestrated." is poetic but too abstract for enterprise decision-makers. Option B provides concrete positioning that enterprise buyers can immediately understand and evaluate.</p>
                     </div>
                     <div>
-                      <strong className="text-gray-700 dark:text-gray-300">Option D's Edge:</strong>
-                      <p className="text-muted-foreground mt-1">Perfectly balances Elevation AI's dual value proposition while maintaining enterprise-grade clarity. The cycling words show comprehensive market coverage without redundancy, and the messaging aligns with Elevation AI's unique positioning as both platform and partnership.</p>
+                      <strong className="text-gray-700 dark:text-gray-300">Option D (Alternate):</strong>
+                      <p className="text-muted-foreground mt-1">"The Platform & Partnership for" captures both technology and human expertise, but Option B's "Agentic Platform" provides stronger technical differentiation while maintaining enterprise appeal.</p>
                     </div>
                   </div>
                 </div>
@@ -962,10 +977,10 @@ export default function HeroPage() {
                     Recommended Subheadline
                   </H4>
                   <BodyLarge className="text-amber-700 dark:text-amber-300 mb-2">
-                    "Elevation AI is the agentic knowledge and work platform—powered by a concierge team, unifying knowledge, streamlining workflows, and securing your AI."
+                    "Elevation AI is the agentic knowledge and work orchestration platform—powered by a concierge team, unifying knowledge, streamlining workflows, and securing your AI."
                   </BodyLarge>
                   <BodySmall className="text-amber-600 dark:text-amber-400">
-                    This subheadline complements the headline by explaining what Elevation AI does while maintaining the enterprise tone and avoiding redundancy with "orchestration/orchestrating."
+                    This subheadline complements the headline by explaining what Elevation AI does while maintaining the enterprise tone. The use of "orchestration" in the platform description and "streamlining" in the triad avoids redundancy while maintaining clarity.
                   </BodySmall>
                 </div>
 
