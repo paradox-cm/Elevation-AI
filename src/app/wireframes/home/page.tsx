@@ -1662,7 +1662,6 @@ function Footer() {
             <div className="space-y-4">
               <H3 className="text-base font-semibold">Platform</H3>
               <ul className="space-y-2">
-                <li><Link href="/platform" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Overview</Link></li>
                 <li><Link href="/platform/features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
                 <li><Link href="/platform/security" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Security</Link></li>
                 <li><Link href="/platform/integrations" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Integrations</Link></li>

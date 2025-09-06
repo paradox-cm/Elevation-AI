@@ -42,6 +42,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
 
   const quickLinks = [
     { href: "/about", label: "About" },
+    { href: "/investors", label: "Investors" },
     { href: "/contact", label: "Contact" },
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/terms", label: "Terms of Service" }
