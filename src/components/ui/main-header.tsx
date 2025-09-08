@@ -43,23 +43,20 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
         <nav className="hidden xl:flex items-center space-x-4">
           {/* Platform Dropdown */}
           <div className="relative group">
-            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <Link href="/website/platform" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
               Platform
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
-            </button>
+            </Link>
             {/* Dropdown menu for Platform */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-2 space-y-1">
-                <Link href="/platform" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
-                  Overview
-                </Link>
-                <Link href="/platform/features" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/platform#features" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Features
                 </Link>
-                <Link href="/platform/security" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/platform#security" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Security
                 </Link>
-                <Link href="/platform/integrations" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/platform#integrations" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Integrations
                 </Link>
               </div>
@@ -68,17 +65,17 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           
           {/* People Dropdown */}
           <div className="relative group">
-            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <Link href="/website/people" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
               People
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
-            </button>
+            </Link>
             {/* Dropdown menu for People */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-2 space-y-1">
-                <Link href="/website/people/concierge-team" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/people#concierge-team" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Concierge Team
                 </Link>
-                <Link href="/website/people/expert-network" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/people#expert-network" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Expert Network
                 </Link>
               </div>
@@ -87,10 +84,10 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           
           {/* Solutions Dropdown */}
           <div className="relative group">
-            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <Link href="/website/solutions" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
               Solutions
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
-            </button>
+            </Link>
             {/* Mega menu for Solutions */}
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[800px] bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-6 grid grid-cols-3 gap-8">
@@ -190,7 +187,10 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-base text-foreground mb-2">Transform Your Business</h3>
+                    <Link href="/website/solutions" className="group flex items-center gap-2 mb-2">
+                      <h3 className="font-semibold text-base text-foreground group-hover:text-primary transition-colors">Transform Your Business</h3>
+                      <Icon name="arrow-right-s-line" className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </Link>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Tailored AI solutions driving growth, efficiency, and innovation across your organization.
                     </p>
@@ -201,11 +201,11 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Industry</h3>
                   <ul className="space-y-3">
-                    <li><Link href="/solutions/private-markets" className="text-sm hover:text-primary transition-colors">Private Market Organizations</Link></li>
-                    <li><Link href="/solutions/public-markets" className="text-sm hover:text-primary transition-colors">Public Market Organizations</Link></li>
-                    <li><Link href="/solutions/banks" className="text-sm hover:text-primary transition-colors">Banks</Link></li>
-                    <li><Link href="/solutions/enterprise" className="text-sm hover:text-primary transition-colors">Enterprise</Link></li>
-                    <li><Link href="/solutions/government" className="text-sm hover:text-primary transition-colors">Government</Link></li>
+                    <li><Link href="/website/solutions#private-markets" className="text-sm hover:text-primary transition-colors">Private Market Organizations</Link></li>
+                    <li><Link href="/website/solutions#public-markets" className="text-sm hover:text-primary transition-colors">Public Market Organizations</Link></li>
+                    <li><Link href="/website/solutions#banks" className="text-sm hover:text-primary transition-colors">Banks</Link></li>
+                    <li><Link href="/website/solutions#enterprise" className="text-sm hover:text-primary transition-colors">Enterprise</Link></li>
+                    <li><Link href="/website/solutions#government" className="text-sm hover:text-primary transition-colors">Government</Link></li>
                   </ul>
                 </div>
                 
@@ -213,11 +213,11 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Stage</h3>
                   <ul className="space-y-3">
-                    <li><Link href="/solutions/creating-growing" className="text-sm hover:text-primary transition-colors">Creating & Growing a New Venture</Link></li>
-                    <li><Link href="/solutions/scaling" className="text-sm hover:text-primary transition-colors">Scaling a Venture</Link></li>
-                    <li><Link href="/solutions/exiting" className="text-sm hover:text-primary transition-colors">Exiting a Venture</Link></li>
-                    <li><Link href="/solutions/post-ipo" className="text-sm hover:text-primary transition-colors">Post-IPO Growth</Link></li>
-                    <li><Link href="/solutions/family-office" className="text-sm hover:text-primary transition-colors">Post-Exit/Family Office</Link></li>
+                    <li><Link href="/website/solutions#creating-growing" className="text-sm hover:text-primary transition-colors">Creating a New Venture</Link></li>
+                    <li><Link href="/website/solutions#scaling" className="text-sm hover:text-primary transition-colors">Scaling a Venture</Link></li>
+                    <li><Link href="/website/solutions#exiting" className="text-sm hover:text-primary transition-colors">Exiting a Venture</Link></li>
+                    <li><Link href="/website/solutions#post-ipo" className="text-sm hover:text-primary transition-colors">Post-IPO Growth</Link></li>
+                    <li><Link href="/website/solutions#family-office" className="text-sm hover:text-primary transition-colors">Post-Exit/Family Office</Link></li>
                   </ul>
                 </div>
               </div>
@@ -238,12 +238,11 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
             {/* Dropdown menu for Resources */}
             <div className="absolute top-full left-0 mt-2 w-64 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-4 space-y-3">
-                <Link href="/security" className="block text-sm hover:text-primary transition-colors">Security</Link>
-                <Link href="/careers" className="block text-sm hover:text-primary transition-colors">Careers</Link>
                 <Link href="/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
                 <Link href="/investors" className="block text-sm hover:text-primary transition-colors">Investors</Link>
                 <Link href="/developers" className="block text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
-                <Link href="/blog" className="block text-sm hover:text-primary transition-colors">Blog + News</Link>
+                <Link href="/blog" className="block text-sm hover:text-primary transition-colors">Blog</Link>
+                <Link href="/faq" className="block text-sm hover:text-primary transition-colors">FAQ</Link>
               </div>
             </div>
           </div>

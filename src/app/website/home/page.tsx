@@ -1514,47 +1514,52 @@ function Footer() {
             <div className="space-y-6">
             {/* Platform */}
             <div className="space-y-4">
-              <H3 className="text-base font-semibold">Platform</H3>
+              <Link href="/website/platform" className="block">
+                <H3 className="text-base font-semibold hover:text-primary transition-colors">Platform</H3>
+              </Link>
               <ul className="space-y-2">
-                <li><Link href="/platform" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Overview</Link></li>
-                <li><Link href="/platform/features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
-                <li><Link href="/platform/security" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Security</Link></li>
-                <li><Link href="/platform/integrations" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Integrations</Link></li>
+                <li><Link href="/website/platform#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
+                <li><Link href="/website/platform#security" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Security</Link></li>
+                <li><Link href="/website/platform#integrations" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Integrations</Link></li>
               </ul>
               </div>
               
               {/* People */}
               <div className="space-y-4">
-                <H3 className="text-base font-semibold">People</H3>
+                <Link href="/website/people" className="block">
+                  <H3 className="text-base font-semibold hover:text-primary transition-colors">People</H3>
+                </Link>
                 <ul className="space-y-2">
-                  <li><Link href="/website/people/concierge-team" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
-                  <li><Link href="/website/people/expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
+                  <li><Link href="/website/people#concierge-team" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
+                  <li><Link href="/website/people#expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
                 </ul>
               </div>
             </div>
             
             {/* Solutions */}
             <div className="space-y-4">
-              <H3 className="text-base font-semibold">Solutions</H3>
+              <Link href="/website/solutions" className="block">
+                <H3 className="text-base font-semibold hover:text-primary transition-colors">Solutions</H3>
+              </Link>
               <div className="space-y-4">
                 <div>
-                  <h4 className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">By Industry</h4>
+                  <h4 className="text-sm font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">By Industry</h4>
                   <ul className="space-y-2">
-                    <li><Link href="/solutions/private-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Private Markets</Link></li>
-                    <li><Link href="/solutions/public-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Public Markets</Link></li>
-                    <li><Link href="/solutions/banks" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Banks</Link></li>
-                    <li><Link href="/solutions/enterprise" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Enterprise</Link></li>
-                    <li><Link href="/solutions/government" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Government</Link></li>
+                    <li><Link href="/website/solutions#private-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Private Market Organizations</Link></li>
+                    <li><Link href="/website/solutions#public-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Public Market Organizations</Link></li>
+                    <li><Link href="/website/solutions#banks" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Banks</Link></li>
+                    <li><Link href="/website/solutions#enterprise" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Enterprise</Link></li>
+                    <li><Link href="/website/solutions#government" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Government</Link></li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">By Stage</h4>
+                  <h4 className="text-sm font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">By Stage</h4>
                   <ul className="space-y-2">
-                    <li><Link href="/solutions/creating-growing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Creating & Growing</Link></li>
-                    <li><Link href="/solutions/scaling" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Scaling</Link></li>
-                    <li><Link href="/solutions/exiting" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Exiting</Link></li>
-                    <li><Link href="/solutions/post-ipo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-IPO</Link></li>
-                    <li><Link href="/solutions/family-office" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Family Office</Link></li>
+                    <li><Link href="/website/solutions#creating-growing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Creating a New Venture</Link></li>
+                    <li><Link href="/website/solutions#scaling" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Scaling a Venture</Link></li>
+                    <li><Link href="/website/solutions#exiting" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Exiting a Venture</Link></li>
+                    <li><Link href="/website/solutions#post-ipo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-IPO Growth</Link></li>
+                    <li><Link href="/website/solutions#family-office" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-Exit Family Office</Link></li>
                   </ul>
                 </div>
               </div>
@@ -1564,12 +1569,11 @@ function Footer() {
             <div className="space-y-4">
               <H3 className="text-base font-semibold">Resources</H3>
               <ul className="space-y-2">
-                <li><Link href="/security" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Security</Link></li>
-                <li><Link href="/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</Link></li>
                 <li><Link href="/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Partners</Link></li>
                 <li><Link href="/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
                 <li><Link href="/developers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">For Developers</Link></li>
-                <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog + News</Link></li>
+                <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+                <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link></li>
               </ul>
             </div>
             
@@ -1578,7 +1582,8 @@ function Footer() {
               <H3 className="text-base font-semibold">Company</H3>
               <ul className="space-y-2">
                 <li><Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link></li>
-                <li><Link href="/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
+                <li><Link href="/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</Link></li>
+                <li><Link href="/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</Link></li>
                 <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
               </ul>
             </div>

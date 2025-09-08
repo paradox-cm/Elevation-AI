@@ -69,7 +69,7 @@ const siteStructure: SiteStructureItem[] = [
     pageNumber: 5,
     status: 'pending',
     icon: Building2,
-    href: '/platform'
+    href: '/website/platform'
   },
   {
     id: 'solutions',

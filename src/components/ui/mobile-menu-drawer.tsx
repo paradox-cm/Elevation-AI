@@ -15,28 +15,45 @@ interface MobileMenuDrawerProps {
 export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps) {
   const [expandedPlatform, setExpandedPlatform] = React.useState(false) // Platform closed by default
   const [expandedPeople, setExpandedPeople] = React.useState(false)
+  const [expandedSolutions, setExpandedSolutions] = React.useState(false)
   const [expandedResources, setExpandedResources] = React.useState(false)
   const [expandedQuickLinks, setExpandedQuickLinks] = React.useState(false)
 
   const mainNavigationLinks = [
     { href: "/", label: "Home", active: currentPage === "home" },
-    { href: "/platform", label: "Platform", active: currentPage === "platform", hasDropdown: true },
+    { href: "/website/platform", label: "Platform", active: currentPage === "platform", hasDropdown: true },
     { href: "/people", label: "People", active: currentPage === "people", hasDropdown: true },
-    { href: "/solutions", label: "Solutions", active: currentPage === "solutions" },
+    { href: "/website/solutions", label: "Solutions", active: currentPage === "solutions", hasDropdown: true },
     { href: "/pricing", label: "Pricing", active: currentPage === "pricing" },
     { href: "/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true }
   ]
 
   const platformSubLinks = [
-    { href: "/platform", label: "Overview" },
-    { href: "/platform/features", label: "Features" },
-    { href: "/platform/security", label: "Security" },
-    { href: "/platform/integrations", label: "Integrations" }
+    { href: "/website/platform", label: "Overview" },
+    { href: "/website/platform#features", label: "Features" },
+    { href: "/website/platform#security", label: "Security" },
+    { href: "/website/platform#integrations", label: "Integrations" }
   ]
 
   const peopleSubLinks = [
     { href: "/website/people/concierge-team", label: "Concierge Team" },
     { href: "/website/people/expert-network", label: "Expert Network" }
+  ]
+
+  const solutionsSubLinks = [
+    { type: "header", label: "By Industry" },
+    { href: "/website/solutions#private-markets", label: "Private Market Organizations" },
+    { href: "/website/solutions#public-markets", label: "Public Market Organizations" },
+    { href: "/website/solutions#banks", label: "Banks" },
+    { href: "/website/solutions#enterprise", label: "Enterprise" },
+    { href: "/website/solutions#government", label: "Government" },
+    { type: "divider" },
+    { type: "header", label: "By Stage" },
+    { href: "/website/solutions#creating-growing", label: "Creating a New Venture" },
+    { href: "/website/solutions#scaling", label: "Scaling a Venture" },
+    { href: "/website/solutions#exiting", label: "Exiting a Venture" },
+    { href: "/website/solutions#post-ipo", label: "Post-IPO Growth" },
+    { href: "/website/solutions#family-office", label: "Post-Exit Family Office" }
   ]
 
   const resourcesSubLinks = [
@@ -78,6 +95,8 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                         setExpandedPlatform(!expandedPlatform)
                       } else if (link.label === "People") {
                         setExpandedPeople(!expandedPeople)
+                      } else if (link.label === "Solutions") {
+                        setExpandedSolutions(!expandedSolutions)
                       } else if (link.label === "Resources") {
                         setExpandedResources(!expandedResources)
                       }
@@ -90,6 +109,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                         "h-4 w-4 transition-transform",
                         ((link.label === "Platform" && expandedPlatform) || 
                          (link.label === "People" && expandedPeople) ||
+                         (link.label === "Solutions" && expandedSolutions) ||
                          (link.label === "Resources" && expandedResources)) 
                           ? "rotate-180" 
                           : ""
@@ -126,6 +146,40 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                           {subLink.label}
                         </Link>
                       ))}
+                    </div>
+                  )}
+                  
+                  {/* Solutions Dropdown */}
+                  {link.label === "Solutions" && expandedSolutions && (
+                    <div className="ml-4 space-y-1 bg-background">
+                      {solutionsSubLinks.map((subLink, index) => {
+                        if (subLink.type === "header") {
+                          return (
+                            <div key={`header-${index}`} className="px-3 py-2">
+                              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                                {subLink.label}
+                              </h4>
+                            </div>
+                          )
+                        }
+                        if (subLink.type === "divider") {
+                          return (
+                            <div key={`divider-${index}`} className="px-3 py-1">
+                              <div className="border-t border-border"></div>
+                            </div>
+                          )
+                        }
+                        return (
+                          <Link
+                            key={subLink.href}
+                            href={subLink.href}
+                            className="flex items-center px-3 py-2 text-sm rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                            onClick={onClose}
+                          >
+                            {subLink.label}
+                          </Link>
+                        )
+                      })}
                     </div>
                   )}
                   
