@@ -35,7 +35,7 @@ const contactFormSchema = z.object({
   companySize: z.string().min(1, "Please select company size"),
   inquiryType: z.string().min(1, "Please select an inquiry type"),
   message: z.string().min(10, "Message must be at least 10 characters"),
-  newsletter: z.boolean().default(false),
+  newsletter: z.boolean(),
   privacy: z.boolean().refine((val) => val === true, {
     message: "You must agree to the privacy policy",
   }),
