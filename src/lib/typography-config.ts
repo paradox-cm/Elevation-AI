@@ -91,7 +91,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Body Large",
-    class: "text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl",
+    class: "text-sm sm:text-base",
     weight: "font-normal",
     lineHeight: "leading-relaxed",
     tracking: "tracking-normal",

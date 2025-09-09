@@ -36,8 +36,8 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const peopleSubLinks = [
-    { href: "/website/people/concierge-team", label: "Concierge Team" },
-    { href: "/website/people/expert-network", label: "Expert Network" }
+    { href: "/website/people#concierge-team", label: "Concierge Team" },
+    { href: "/website/people#expert-network", label: "Expert Network" }
   ]
 
   const solutionsSubLinks = [
