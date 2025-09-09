@@ -1209,7 +1209,7 @@ function HowWeDoItSection() {
           <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1>More Than a Platform.</H1>
             <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
-              Your Partner at Every Step.
+              Your partner at every step.
             </BodyLarge>
           </div>
 

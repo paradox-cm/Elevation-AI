@@ -145,25 +145,49 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     
     setHoverState(side)
     
+    // Get the current actual position from the refs
+    const currentFirstRowPosition = firstRowPositionRef.current
+    const currentSecondRowPosition = secondRowPositionRef.current
+    
+    console.log(`Mouse enter ${side}:`, {
+      currentFirstRowPosition,
+      currentSecondRowPosition,
+      currentDirection: directionRef.current,
+      currentSpeed: speedRef.current
+    })
+    
     if (side === 'left') {
-      // For reverse direction, we need to map the current position to the reverse progress
-      const currentProgress = firstRowPositionRef.current / 50 // Convert position to progress (0-1)
+      // For reverse direction
+      directionRef.current = -1 // Reverse direction
+      speedRef.current = 2.1 // Faster reverse speed (30% slower than before)
+      
+      // Calculate progress based on current position for reverse animation
+      const currentProgress = currentFirstRowPosition / 50 // Convert position to progress (0-1)
       const reverseProgress = 1 - currentProgress // Invert the progress for reverse
       
-      directionRef.current = -1 // Reverse direction
-      speedRef.current = 3 // Faster reverse speed
+      // Set start time so reverse animation continues from current position
+      startTimeRef.current = performance.now() - (reverseProgress * 29714) // ~29.7s for fast reverse
       
-      // Reset start time so the reverse animation starts from the correct position
-      startTimeRef.current = performance.now() - (reverseProgress * 20800) // ~20.8s for fast reverse
+      console.log('Left hover - reverse:', {
+        currentProgress,
+        reverseProgress,
+        newStartTime: startTimeRef.current
+      })
     } else if (side === 'right') {
       // For fast forward, continue from current position
-      const currentProgress = firstRowPositionRef.current / 50
-      
       directionRef.current = 1 // Forward direction
-      speedRef.current = 3 // Faster forward speed
+      speedRef.current = 2.1 // Faster forward speed (30% slower than before)
       
-      // Reset start time for fast animation
-      startTimeRef.current = performance.now() - (currentProgress * 20800) // ~20.8s for fast forward
+      // Calculate progress based on current position
+      const currentProgress = currentFirstRowPosition / 50
+      
+      // Set start time for fast animation from current position
+      startTimeRef.current = performance.now() - (currentProgress * 29714) // ~29.7s for fast forward
+      
+      console.log('Right hover - fast forward:', {
+        currentProgress,
+        newStartTime: startTimeRef.current
+      })
     }
   }
 
@@ -172,38 +196,42 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     
     setHoverState('none')
     
-    // When leaving, continue from the CURRENT position (not the position before hover)
-    // We need to calculate the progress based on the current animation state
-    const elapsed = performance.now() - (startTimeRef.current || 0)
-    const adjustedDuration = 62400 / speedRef.current
-    const currentProgress = (elapsed / adjustedDuration) % 1
+    // Get the current actual position from the refs (these are updated in the animate function)
+    const currentFirstRowPosition = firstRowPositionRef.current
+    const currentSecondRowPosition = secondRowPositionRef.current
     
-    // Calculate the actual current position based on the current direction
-    let currentPosition
-    if (directionRef.current === 1) {
-      currentPosition = currentProgress * 50 // Forward: 0% to 50%
-    } else {
-      currentPosition = 50 - (currentProgress * 50) // Reverse: 50% to 0%
-    }
+    console.log('Mouse leave:', {
+      currentFirstRowPosition,
+      currentSecondRowPosition,
+      previousDirection: directionRef.current,
+      previousSpeed: speedRef.current
+    })
     
-    // Update the position refs to the current actual position
-    firstRowPositionRef.current = currentPosition
-    secondRowPositionRef.current = currentPosition
-    
+    // Reset to normal speed and forward direction
     directionRef.current = 1 // Forward direction
     speedRef.current = 1 // Normal speed
     
-    // Reset start time to continue from the current position at normal speed
-    startTimeRef.current = performance.now() - (currentProgress * 62400)
+    // Calculate the progress based on current position for normal speed animation
+    const currentProgress = currentFirstRowPosition / 50
+    
+    // Set start time to continue from current position at normal speed
+    startTimeRef.current = performance.now() - (currentProgress * 62400) // 62.4s for normal speed
+    
+    console.log('Mouse leave - reset to normal:', {
+      currentProgress,
+      newStartTime: startTimeRef.current
+    })
   }
 
   return (
-    <div ref={containerRef} className={cn("relative overflow-hidden", className)}>
-      {/* Left fade mask */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
-      
-      {/* Right fade mask */}
-      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
+    <div 
+      ref={containerRef} 
+      className={cn("relative overflow-hidden", className)}
+      style={{
+        maskImage: 'linear-gradient(to right, transparent 0px, black 64px, black calc(100% - 64px), transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0px, black 64px, black calc(100% - 64px), transparent 100%)'
+      }}
+    >
       
       {/* Left hover zone for reverse direction (desktop only) */}
       <div 
