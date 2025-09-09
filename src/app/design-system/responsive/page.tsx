@@ -54,7 +54,7 @@ export default function ResponsivePage() {
       minWidth: "1024px",
       maxWidth: "1599px",
       description: "Standard desktop screens and 14-inch MacBooks (1512px)",
-      usage: "Full desktop experience"
+      usage: "Full desktop experience with 1400px max-width"
     },
     {
       name: "Large Desktop",
@@ -62,7 +62,7 @@ export default function ResponsivePage() {
       minWidth: "1600px",
       maxWidth: "2559px",
       description: "Large desktop monitors and ultra-wide displays",
-      usage: "Enhanced desktop experience with larger typography and components"
+      usage: "Enhanced desktop experience with 1920px max-width"
     },
     {
       name: "Extra Large",
@@ -70,7 +70,7 @@ export default function ResponsivePage() {
       minWidth: "2560px",
       maxWidth: "∞",
       description: "Ultra-wide displays, 4K monitors, and 3360px+ screens",
-      usage: "Maximum desktop experience with full-width content utilization"
+      usage: "Maximum desktop experience with 2560px max-width"
     }
   ]
 
@@ -117,6 +117,13 @@ export default function ResponsivePage() {
       description: "Consistent padding across all breakpoints"
     },
     {
+      name: "Container Max-Width",
+      mobile: "Standard container sizing",
+      tablet: "Standard container sizing",
+      desktop: "lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]",
+      description: "Progressive container growth for optimal content utilization"
+    },
+    {
       name: "Typography Scaling",
       mobile: "text-3xl sm:text-4xl md:text-5xl",
       tablet: "lg:text-4xl",
@@ -148,8 +155,8 @@ export default function ResponsivePage() {
     {
       name: "Containers",
       mobile: "px-4 sm:px-6 lg:px-8",
-      tablet: "Consistent padding across breakpoints",
-      desktop: "lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]"
+      tablet: "px-4 sm:px-6 lg:px-8",
+      desktop: "size='2xl' with lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]"
     },
     {
       name: "Footer Layout",
@@ -359,6 +366,135 @@ export default function ResponsivePage() {
                   </CardContent>
                 </Card>
 
+                {/* Two-Tier Responsive System */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Icon name="layout-line" className="h-5 w-5 text-primary" />
+                      <span>Two-Tier Responsive System</span>
+                    </CardTitle>
+                    <CardDescription>
+                      Our sophisticated approach to responsive design that optimizes for both container growth and content readability.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg p-6">
+                      <H4 className="mb-3">System Overview</H4>
+                      <BodySmall className="text-muted-foreground mb-4">
+                        We use a two-tier responsive system that separates container-level responsiveness from content-level optimization. 
+                        This approach ensures optimal user experience across different content types and screen sizes.
+                      </BodySmall>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="maximize-line" className="h-4 w-4 text-primary" />
+                            <BodySmall className="font-medium">Tier 1: Container Level</BodySmall>
+                          </div>
+                          <div className="bg-background/50 p-3 rounded border">
+                            <BodySmall className="text-muted-foreground text-xs">
+                              <strong>Full Responsive Width:</strong><br/>
+                              lg: 1400px → xl: 1920px → 2xl: 2560px
+                            </BodySmall>
+                          </div>
+                          <BodySmall className="text-muted-foreground text-xs">
+                            All pages use Container size="2xl" with progressive max-width growth for optimal screen utilization.
+                          </BodySmall>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="text-wrap" className="h-4 w-4 text-primary" />
+                            <BodySmall className="font-medium">Tier 2: Content Level</BodySmall>
+                          </div>
+                          <div className="bg-background/50 p-3 rounded border">
+                            <BodySmall className="text-muted-foreground text-xs">
+                              <strong>Content-Appropriate Width:</strong><br/>
+                              max-w-4xl (~900px) for text-heavy content
+                            </BodySmall>
+                          </div>
+                          <BodySmall className="text-muted-foreground text-xs">
+                            Content sections adapt their width based on content type and readability requirements.
+                          </BodySmall>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <H4>Content Type Guidelines</H4>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="fullscreen-line" className="h-4 w-4 text-green-500" />
+                            <BodySmall className="font-medium">Full Width Content</BodySmall>
+                          </div>
+                          <div className="space-y-2">
+                            <BodySmall className="text-muted-foreground text-xs">• Home page hero sections</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Product showcases</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Team grids and profiles</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Visual galleries</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Marketing content</BodySmall>
+                          </div>
+                          <div className="bg-muted p-2 rounded font-mono text-xs">
+                            No max-width constraints
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="text-line" className="h-4 w-4 text-blue-500" />
+                            <BodySmall className="font-medium">Constrained Content</BodySmall>
+                          </div>
+                          <div className="space-y-2">
+                            <BodySmall className="text-muted-foreground text-xs">• FAQ pages</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Technical documentation</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Investment information</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Partnership details</BodySmall>
+                            <BodySmall className="text-muted-foreground text-xs">• Developer resources</BodySmall>
+                          </div>
+                          <div className="bg-muted p-2 rounded font-mono text-xs">
+                            max-w-4xl mx-auto
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <H4>Implementation Example</H4>
+                      <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-2">
+                        <div className="text-muted-foreground">// Container: Full responsive width</div>
+                        <div>&lt;Container size="2xl"&gt;</div>
+                        <div>  &lt;!-- Tier 1: Container grows with screen size --&gt;</div>
+                        <div>  </div>
+                        <div>  &lt;Section&gt;</div>
+                        <div>    &lt;div className="max-w-4xl mx-auto"&gt;</div>
+                        <div>      &lt;!-- Tier 2: Content optimized for readability --&gt;</div>
+                        <div>      &lt;p&gt;Text content here...&lt;/p&gt;</div>
+                        <div>    &lt;/div&gt;</div>
+                        <div>  &lt;/Section&gt;</div>
+                        <div>&lt;/Container&gt;</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <Icon name="information-line" className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <BodySmall className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+                            Why This Approach?
+                          </BodySmall>
+                          <BodySmall className="text-blue-700 dark:text-blue-300 text-xs">
+                            This two-tier system follows industry best practices used by companies like Stripe, Linear, and GitHub. 
+                            It optimizes for both visual impact (full-width containers) and content readability (constrained text), 
+                            creating a more sophisticated and user-friendly experience.
+                          </BodySmall>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
@@ -497,14 +633,15 @@ export default function ResponsivePage() {
                       <div>--breakpoint-sm: 640px;</div>
                       <div>--breakpoint-md: 768px;</div>
                       <div>--breakpoint-lg: 1024px;</div>
-                      <div>--breakpoint-xl: 1280px;</div>
-                      <div>--breakpoint-2xl: 1536px;</div>
+                      <div>--breakpoint-xl: 1600px;</div>
+                      <div>--breakpoint-2xl: 2560px;</div>
                       <div></div>
                       <div className="text-muted-foreground">/* Container max-widths */</div>
                       <div>--container-sm: 640px;</div>
                       <div>--container-md: 768px;</div>
-                      <div>--container-lg: 1024px;</div>
-                      <div>--container-xl: 1280px;</div>
+                      <div>--container-lg: 1400px;</div>
+                      <div>--container-xl: 1920px;</div>
+                      <div>--container-2xl: 2560px;</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -522,14 +659,17 @@ export default function ResponsivePage() {
                       <div>sm: → @media (min-width: 640px)</div>
                       <div>md: → @media (min-width: 768px)</div>
                       <div>lg: → @media (min-width: 1024px)</div>
-                      <div>xl: → @media (min-width: 1280px)</div>
-                      <div>2xl: → @media (min-width: 1536px)</div>
+                      <div>xl: → @media (min-width: 1600px)</div>
+                      <div>2xl: → @media (min-width: 2560px)</div>
                       <div></div>
                       <div className="text-muted-foreground">/* Common patterns */</div>
                       <div>grid-cols-1 md:grid-cols-2 lg:grid-cols-3</div>
                       <div>flex-col md:flex-row</div>
                       <div>text-sm md:text-base lg:text-lg</div>
                       <div>p-4 md:p-6 lg:p-8</div>
+                      <div></div>
+                      <div className="text-muted-foreground">/* Container standards */</div>
+                      <div>Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]"</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -545,18 +685,15 @@ export default function ResponsivePage() {
                     <div>
                       <H4 className="mb-3">Responsive Card Component</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">// Responsive card component</div>
-                        <div>function ResponsiveCard(&#123; children, className &#125;) &#123;</div>
+                        <div className="text-muted-foreground">// Responsive page container</div>
+                        <div>function ResponsivePage(&#123; children &#125;) &#123;</div>
                         <div>  return (</div>
-                        <div>    &lt;div className=&#123;cn(</div>
-                        <div>      &quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3&quot;,</div>
-                        <div>      &quot;gap-4 md:gap-6 lg:gap-8&quot;,</div>
-                        <div>      &quot;p-4 md:p-6 lg:p-8&quot;,</div>
-                        <div>      &quot;bg-card border rounded-lg&quot;,</div>
-                        <div>      className</div>
-                        <div>    )&#125;&gt;</div>
+                        <div>    &lt;Container </div>
+                        <div>      size="2xl" </div>
+                        <div>      className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]"</div>
+                        <div>    &gt;</div>
                         <div>      &#123;children&#125;</div>
-                        <div>    &lt;/div&gt;</div>
+                        <div>    &lt;/Container&gt;</div>
                         <div>  )</div>
                         <div>&#125;</div>
                       </div>
@@ -572,8 +709,8 @@ export default function ResponsivePage() {
                         <div>  useEffect(() =&gt; &#123;</div>
                         <div>    const handleResize = () =&gt; &#123;</div>
                         <div>      const width = window.innerWidth</div>
-                        <div>      if (width &gt;= 1536) setBreakpoint(&apos;2xl&apos;)</div>
-                        <div>      else if (width &gt;= 1280) setBreakpoint(&apos;xl&apos;)</div>
+                        <div>      if (width &gt;= 2560) setBreakpoint(&apos;2xl&apos;)</div>
+                        <div>      else if (width &gt;= 1600) setBreakpoint(&apos;xl&apos;)</div>
                         <div>      else if (width &gt;= 1024) setBreakpoint(&apos;lg&apos;)</div>
                         <div>      else if (width &gt;= 768) setBreakpoint(&apos;md&apos;)</div>
                         <div>      else setBreakpoint(&apos;sm&apos;)</div>

@@ -225,7 +225,7 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           </div>
           
           {/* Pricing */}
-          <Link href="/pricing" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
+          <Link href="/website/pricing" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
             Pricing
           </Link>
           
@@ -238,11 +238,11 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
             {/* Dropdown menu for Resources */}
             <div className="absolute top-full left-0 mt-2 w-64 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-4 space-y-3">
-                <Link href="/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
-                <Link href="/investors" className="block text-sm hover:text-primary transition-colors">Investors</Link>
-                <Link href="/developers" className="block text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
-                <Link href="/blog" className="block text-sm hover:text-primary transition-colors">Blog</Link>
-                <Link href="/faq" className="block text-sm hover:text-primary transition-colors">FAQ</Link>
+                <Link href="/website/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
+                <Link href="/website/investors" className="block text-sm hover:text-primary transition-colors">Investors</Link>
+                <Link href="/website/developers" className="block text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
+                <Link href="/website/blog" className="block text-sm hover:text-primary transition-colors">Blog</Link>
+                <Link href="/website/faq" className="block text-sm hover:text-primary transition-colors">FAQ</Link>
               </div>
             </div>
           </div>

@@ -41,7 +41,8 @@ import {
   WorkspacesCanvases,
   AgenticEngine,
   PersonalCopilot,
-  EnterpriseSecurity
+  EnterpriseSecurity,
+  LogoCarousel
 } from "@/components/animations"
 
 // Original Typewriter Text Component (for "The Agentic Platform for" format)
@@ -428,7 +429,7 @@ function HeroSection() {
       paddingY="lg" 
       className="flex items-center h-screen pt-8 sm:pt-0"
     >
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" >
         <div className="space-y-6 sm:space-y-8 lg:space-y-10">
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
@@ -664,7 +665,7 @@ function ProblemSection() {
 
     return (
     <Section paddingY="lg" className="bg-muted/30">
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" >
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           {!isDesktop && (
@@ -961,7 +962,7 @@ function PlatformSection() {
 
   return (
     <Section paddingY="lg">
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" >
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
@@ -1154,6 +1155,29 @@ function PlatformSection() {
   )
 }
 
+// Logo Carousel Section
+function LogoCarouselSection() {
+  return (
+    <Section paddingY="lg" className="bg-muted/20">
+      <Container size="2xl">
+        <div className="space-y-6 sm:space-y-8">
+          {/* Section Header */}
+          <div className="text-center space-y-2">
+            <H3 className="text-muted-foreground">
+              Led by industry veterans from:
+            </H3>
+          </div>
+          
+          {/* Logo Carousel */}
+          <div className="py-4 sm:py-6">
+            <LogoCarousel />
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
 // How We Do It Section
 function HowWeDoItSection() {
   
@@ -1179,7 +1203,7 @@ function HowWeDoItSection() {
 
   return (
     <Section paddingY="lg" className="bg-muted/30">
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" >
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
@@ -1302,7 +1326,7 @@ function WhoWeServeSection() {
 
   return (
     <Section paddingY="lg">
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="2xl" >
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
@@ -1355,7 +1379,7 @@ function WhoWeServeSection() {
 
         {/* Grid Layout for Large Breakpoints */}
         <div className="hidden lg:block">
-          <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+          <Container size="2xl" >
             <div className="grid grid-cols-5 gap-4">
               {smallCards.map((card, index) => (
                 <div
@@ -1498,6 +1522,7 @@ export default function WireframesHomePage() {
                       <main>
               <HeroSection />
               <IntroductionSection />
+              <LogoCarouselSection />
                       <ProblemSection />
         <PlatformSection />
               <WhoWeServeSection />

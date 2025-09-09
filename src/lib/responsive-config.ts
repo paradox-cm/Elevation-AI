@@ -251,21 +251,21 @@ export const responsiveConfig: ResponsiveConfig = {
       {
         id: "lg",
         name: "Large",
-        description: "Desktop screens and laptops",
+        description: "Desktop screens and 14-inch MacBooks (1512px) - 1400px max-width",
         prefix: "lg",
         className: "breakpoint-lg"
       },
       {
         id: "xl",
         name: "Extra Large",
-        description: "Large desktop monitors and wide displays",
+        description: "Large desktop monitors and ultra-wide displays - 1920px max-width",
         prefix: "xl",
         className: "breakpoint-xl"
       },
       {
         id: "2xl",
         name: "2X Large",
-        description: "Ultra-wide and 4K displays",
+        description: "Ultra-wide displays, 4K monitors, and 3360px+ screens - 2560px max-width",
         prefix: "2xl",
         className: "breakpoint-2xl"
       }
@@ -780,8 +780,8 @@ export const responsiveConfig: ResponsiveConfig = {
       maxWidths: {
         sm: "640px",
         md: "768px",
-        lg: "1024px",
-        xl: "1600px",
+        lg: "1400px",
+        xl: "1920px",
         "2xl": "2560px"
       },
       padding: "1rem",
@@ -790,7 +790,8 @@ export const responsiveConfig: ResponsiveConfig = {
       cssClasses: [
         "container",
         "mx-auto",
-        "px-4",
+        "px-4 sm:px-6 lg:px-8",
+        "lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]",
         "responsive-container"
       ],
       implementation: "Use CSS max-width with responsive breakpoints"

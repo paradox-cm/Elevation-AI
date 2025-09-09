@@ -22,10 +22,10 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   const mainNavigationLinks = [
     { href: "/", label: "Home", active: currentPage === "home" },
     { href: "/website/platform", label: "Platform", active: currentPage === "platform", hasDropdown: true },
-    { href: "/people", label: "People", active: currentPage === "people", hasDropdown: true },
+    { href: "/website/people", label: "People", active: currentPage === "people", hasDropdown: true },
     { href: "/website/solutions", label: "Solutions", active: currentPage === "solutions", hasDropdown: true },
-    { href: "/pricing", label: "Pricing", active: currentPage === "pricing" },
-    { href: "/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true }
+    { href: "/website/pricing", label: "Pricing", active: currentPage === "pricing" },
+    { href: "/website/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true }
   ]
 
   const platformSubLinks = [
@@ -57,20 +57,19 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const resourcesSubLinks = [
-    { href: "/security", label: "Security" },
-    { href: "/careers", label: "Careers" },
-    { href: "/partners", label: "Partners" },
-    { href: "/investors", label: "Investors" },
-    { href: "/developers", label: "For Developers & Platforms" },
-    { href: "/blog", label: "Blog + News" }
+    { href: "/website/partners", label: "Partners" },
+    { href: "/website/investors", label: "Investors" },
+    { href: "/website/developers", label: "For Developers & Platforms" },
+    { href: "/website/blog", label: "Blog + News" },
+    { href: "/website/faq", label: "FAQ" }
   ]
 
   const quickLinks = [
-    { href: "/about", label: "About" },
-    { href: "/investors", label: "Investors" },
-    { href: "/contact", label: "Contact" },
-    { href: "/privacy", label: "Privacy Policy" },
-    { href: "/terms", label: "Terms of Service" }
+    { href: "/website/about", label: "About" },
+    { href: "/website/investors", label: "Investors" },
+    { href: "/website/contact", label: "Contact" },
+    { href: "/website/privacy", label: "Privacy Policy" },
+    { href: "/website/terms-of-service", label: "Terms of Service" }
   ]
 
   return (
@@ -83,39 +82,62 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
             <div key={link.href}>
               {link.hasDropdown ? (
                 <div className="space-y-1">
-                  <button
-                    className={cn(
-                      "flex items-center justify-between w-full px-3 py-2 text-sm rounded-md transition-colors",
-                      link.active 
-                        ? "bg-primary text-primary-foreground" 
-                        : "text-foreground hover:bg-muted"
-                    )}
-                    onClick={() => {
-                      if (link.label === "Platform") {
-                        setExpandedPlatform(!expandedPlatform)
-                      } else if (link.label === "People") {
-                        setExpandedPeople(!expandedPeople)
-                      } else if (link.label === "Solutions") {
-                        setExpandedSolutions(!expandedSolutions)
-                      } else if (link.label === "Resources") {
-                        setExpandedResources(!expandedResources)
-                      }
-                    }}
-                  >
-                    <span>{link.label}</span>
-                    <Icon 
-                      name="arrow-down-s-line" 
+                  <div className="flex items-center">
+                    {/* Main clickable link */}
+                    <Link
+                      href={link.href}
                       className={cn(
-                        "h-4 w-4 transition-transform",
-                        ((link.label === "Platform" && expandedPlatform) || 
-                         (link.label === "People" && expandedPeople) ||
-                         (link.label === "Solutions" && expandedSolutions) ||
-                         (link.label === "Resources" && expandedResources)) 
-                          ? "rotate-180" 
-                          : ""
-                      )} 
-                    />
-                  </button>
+                        "flex-1 px-3 py-2 text-sm rounded-l-md transition-colors",
+                        link.active 
+                          ? "bg-primary text-primary-foreground" 
+                          : "text-foreground hover:bg-muted"
+                      )}
+                      onClick={onClose}
+                    >
+                      {link.label}
+                    </Link>
+                    
+                    {/* Separate expand/collapse button */}
+                    <button
+                      className={cn(
+                        "px-3 py-2 text-sm rounded-r-md border-l border-border/20 transition-colors",
+                        link.active 
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                          : "text-foreground hover:bg-muted"
+                      )}
+                      onClick={() => {
+                        if (link.label === "Platform") {
+                          setExpandedPlatform(!expandedPlatform)
+                        } else if (link.label === "People") {
+                          setExpandedPeople(!expandedPeople)
+                        } else if (link.label === "Solutions") {
+                          setExpandedSolutions(!expandedSolutions)
+                        } else if (link.label === "Resources") {
+                          setExpandedResources(!expandedResources)
+                        }
+                      }}
+                      aria-label={`${
+                        (link.label === "Platform" && expandedPlatform) ||
+                        (link.label === "People" && expandedPeople) ||
+                        (link.label === "Solutions" && expandedSolutions) ||
+                        (link.label === "Resources" && expandedResources)
+                          ? 'Collapse' : 'Expand'
+                      } ${link.label} menu`}
+                    >
+                      <Icon 
+                        name="arrow-down-s-line" 
+                        className={cn(
+                          "h-4 w-4 transition-transform",
+                          ((link.label === "Platform" && expandedPlatform) || 
+                           (link.label === "People" && expandedPeople) ||
+                           (link.label === "Solutions" && expandedSolutions) ||
+                           (link.label === "Resources" && expandedResources)) 
+                            ? "rotate-180" 
+                            : ""
+                        )} 
+                      />
+                    </button>
+                  </div>
                   
                   {/* Platform Dropdown */}
                   {link.label === "Platform" && expandedPlatform && (

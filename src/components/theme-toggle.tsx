@@ -16,7 +16,7 @@ export function ThemeToggle() {
   const { setTheme } = useThemeProvider()
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline" 

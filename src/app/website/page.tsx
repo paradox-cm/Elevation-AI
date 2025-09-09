@@ -31,7 +31,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Home',
     description: 'Main landing page and entry point',
     pageNumber: 1,
-    status: 'wip',
+    status: 'completed',
     icon: FileText,
     href: '/'
   },
@@ -40,7 +40,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Login',
     description: 'User authentication and sign-in page',
     pageNumber: 2,
-    status: 'wip',
+    status: 'completed',
     icon: LogIn,
     href: '/website/login'
   },
@@ -49,7 +49,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Create Account',
     description: 'User registration and account creation page',
     pageNumber: 3,
-    status: 'wip',
+    status: 'completed',
     icon: Users,
     href: '/website/sign-up'
   },
@@ -58,7 +58,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Request Demo',
     description: 'Demo request form for potential customers',
     pageNumber: 4,
-    status: 'wip',
+    status: 'pending',
     icon: MessageSquare,
     href: '/website/demo'
   },
@@ -67,7 +67,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Platform',
     description: 'Core platform features and capabilities',
     pageNumber: 5,
-    status: 'pending',
+    status: 'completed',
     icon: Building2,
     href: '/website/platform'
   },
@@ -193,7 +193,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Pricing',
     description: 'Pricing plans and packages',
     pageNumber: 16,
-    status: 'pending',
+    status: 'completed',
     icon: CreditCard,
     href: '/pricing'
   },
@@ -208,7 +208,7 @@ const siteStructure: SiteStructureItem[] = [
         id: 'security',
         title: 'Security',
         description: 'Security information and compliance',
-        status: 'to-create',
+        status: 'pending',
         icon: Shield,
         href: '/resources/security'
       },
@@ -217,7 +217,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Careers',
         description: 'Career opportunities and job listings',
         pageNumber: 17,
-        status: 'pending',
+        status: 'completed',
         icon: Briefcase,
         href: '/resources/careers'
       },
@@ -226,7 +226,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Partners',
         description: 'Partnership opportunities and programs',
         pageNumber: 18,
-        status: 'pending',
+        status: 'completed',
         icon: Handshake,
         href: '/resources/partners'
       },
@@ -235,7 +235,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Investors',
         description: 'Information for investors and stakeholders',
         pageNumber: 19,
-        status: 'pending',
+        status: 'completed',
         icon: TrendingUp,
         href: '/resources/investors'
       },
@@ -244,17 +244,63 @@ const siteStructure: SiteStructureItem[] = [
         title: 'For Developers & Platforms',
         description: 'Developer resources and platform integrations',
         pageNumber: 20,
-        status: 'pending',
+        status: 'completed',
         icon: Code,
         href: '/resources/developers'
       },
       {
         id: 'blog-news',
-        title: 'Blog & News',
-        description: 'Latest updates, insights, and company news',
-        status: 'to-create',
+        title: 'Blog',
+        description: 'Latest insights, strategies, and thought leadership',
+        pageNumber: 21,
+        status: 'completed',
         icon: Newspaper,
-        href: '/resources/blog-news'
+        href: '/resources/blog'
+      },
+      {
+        id: 'faq',
+        title: 'FAQ',
+        description: 'Frequently asked questions and answers',
+        pageNumber: 22,
+        status: 'completed',
+        icon: MessageSquare,
+        href: '/resources/faq'
+      },
+      {
+        id: 'about',
+        title: 'About',
+        description: 'Company information and team details',
+        pageNumber: 23,
+        status: 'completed',
+        icon: Users,
+        href: '/resources/about'
+      },
+      {
+        id: 'people',
+        title: 'People',
+        description: 'Meet our team and leadership',
+        pageNumber: 24,
+        status: 'completed',
+        icon: Users,
+        href: '/resources/people'
+      },
+      {
+        id: 'contact',
+        title: 'Contact',
+        description: 'Get in touch with our team',
+        pageNumber: 25,
+        status: 'completed',
+        icon: MessageSquare,
+        href: '/resources/contact'
+      },
+      {
+        id: 'press',
+        title: 'Press',
+        description: 'Press releases and media resources',
+        pageNumber: 26,
+        status: 'completed',
+        icon: Newspaper,
+        href: '/resources/press'
       }
     ]
   }
@@ -265,6 +311,8 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
   
   const getStatusBadge = (status: string) => {
     switch (status) {
+      case 'completed':
+        return <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">Completed</Badge>
       case 'wip':
         return <Badge variant="default" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">WIP</Badge>
       case 'pending':
@@ -298,12 +346,17 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
       'exiting': '/website/solutions/stage/exiting-venture',
       'post-ipo': '/website/solutions/stage/post-ipo-growth',
       'family-office': '/website/solutions/stage/post-exit-family-office-creation',
-      'security': '/website/resources/security',
-      'careers': '/website/resources/careers',
-      'partners': '/website/resources/partners',
-      'investors': '/website/resources/investors',
-      'developers': '/website/resources/developers-platforms',
-      'blog-news': '/website/resources/blog-news',
+      'security': '/website/security',
+      'careers': '/website/careers',
+      'partners': '/website/partners',
+      'investors': '/website/investors',
+      'developers': '/website/developers',
+      'blog-news': '/website/blog',
+      'faq': '/website/faq',
+      'about': '/website/about',
+      'people': '/website/people',
+      'contact': '/website/contact',
+      'press': '/website/press',
       'login': '/website/login',
       'demo': '/website/demo',
       'sign-up': '/website/sign-up'
@@ -401,7 +454,7 @@ export default function WebsitePage() {
               description="Overview of our site structure and completion status"
               size="md"
             />
-            <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={6} className="mt-8">
+            <Grid cols={{ base: 1, sm: 2, lg: 4 }} gap={6} className="mt-8">
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
@@ -410,7 +463,7 @@ export default function WebsitePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold">20</div>
+                  <div className="text-2xl sm:text-3xl font-bold">26</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Main content pages</p>
                 </CardContent>
               </Card>
@@ -419,12 +472,12 @@ export default function WebsitePage() {
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                    WIP
+                    Completed
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold text-yellow-600">1</div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Pages in progress</p>
+                  <div className="text-2xl sm:text-3xl font-bold text-green-600">15</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Pages completed</p>
                 </CardContent>
               </Card>
               
@@ -436,8 +489,21 @@ export default function WebsitePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">18</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">11</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Pages to be developed</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Progress
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="text-2xl sm:text-3xl font-bold text-blue-600">58%</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Completion rate</p>
                 </CardContent>
               </Card>
             </Grid>

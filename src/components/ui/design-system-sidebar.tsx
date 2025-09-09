@@ -73,7 +73,7 @@ export function DesignSystemSidebar() {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4 sm:p-6">
+    <div className="h-full overflow-y-auto p-4 sm:p-6 scrollbar-width-none [&::-webkit-scrollbar]:hidden">
       <div className="space-y-3 sm:space-y-4">
         <div>
           <nav className="space-y-1">

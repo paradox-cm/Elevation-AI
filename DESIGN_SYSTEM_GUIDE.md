@@ -4,6 +4,95 @@
 
 This document explains how the `/design-system` page serves as the **single source of truth** for all UI components, colors, typography, and design tokens used throughout the application.
 
+## 📐 **Page Layout Standards**
+
+### **Hero Section Pattern**
+For all `/website` pages, use this pattern to ensure balanced spacing:
+
+```tsx
+{/* Hero Section - Perfect Centering */}
+<div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
+  <div className="text-center space-y-1">
+    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+      Page Title
+    </h1>
+    <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
+      Page description
+    </p>
+  </div>
+</div>
+
+{/* Content Sections - Reduced Padding */}
+<Section paddingY="sm">
+  {/* Page content */}
+</Section>
+```
+
+**Key Points:**
+- Use flexbox centering for hero sections (not padding-based approaches)
+- Use `Section paddingY="sm"` for content sections (not `paddingY="lg"`)
+- This prevents the hero from appearing off-center due to excessive content padding
+
+### **Content Width Standards**
+For consistent visual alignment across page sections:
+
+```tsx
+{/* Standardized Content Width */}
+<Section paddingY="sm">
+  <div className="max-w-4xl mx-auto space-y-6">
+    {/* Section content */}
+  </div>
+</Section>
+```
+
+**Width Guidelines:**
+- Use `max-w-4xl` for most content sections to maintain consistency
+- Avoid mixing different max-width values (e.g., `max-w-5xl` vs `max-w-4xl`) on the same page
+- This ensures visual alignment and prevents jarring width differences between sections
+
+### **Two-Tier Responsive System**
+Our sophisticated approach to responsive design that optimizes for both container growth and content readability:
+
+#### **Tier 1: Container Level**
+All pages use `Container size="2xl"` with progressive max-width growth:
+- **LG (1024px+)**: `max-w-[1400px]`
+- **XL (1600px+)**: `max-w-[1920px]` 
+- **2XL (2560px+)**: `max-w-[2560px]`
+
+#### **Tier 2: Content Level**
+Content sections adapt their width based on content type:
+
+**Full Width Content** (no max-width constraints):
+- Home page hero sections
+- Product showcases
+- Team grids and profiles
+- Visual galleries
+- Marketing content
+
+**Constrained Content** (`max-w-4xl mx-auto`):
+- FAQ pages
+- Technical documentation
+- Investment information
+- Partnership details
+- Developer resources
+
+#### **Implementation Pattern**
+```tsx
+<Container size="2xl">
+  {/* Tier 1: Container grows with screen size */}
+  
+  <Section>
+    <div className="max-w-4xl mx-auto">
+      {/* Tier 2: Content optimized for readability */}
+      <p>Text content here...</p>
+    </div>
+  </Section>
+</Container>
+```
+
+**Why This Approach?**
+This two-tier system follows industry best practices used by companies like Stripe, Linear, and GitHub. It optimizes for both visual impact (full-width containers) and content readability (constrained text), creating a more sophisticated and user-friendly experience.
+
 ## 🎨 **Color System**
 
 ### **Hybrid Color Approach**

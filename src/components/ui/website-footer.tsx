@@ -94,11 +94,11 @@ export function WebsiteFooter() {
             <div className="space-y-4">
               <H3 className="text-base font-semibold">Resources</H3>
               <ul className="space-y-2">
-                <li><Link href="/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Partners</Link></li>
-                <li><Link href="/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
-                <li><Link href="/developers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">For Developers</Link></li>
-                <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
-                <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link></li>
+                <li><Link href="/website/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Partners</Link></li>
+                <li><Link href="/website/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
+                <li><Link href="/website/developers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">For Developers & Platforms</Link></li>
+                <li><Link href="/website/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+                <li><Link href="/website/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link></li>
               </ul>
             </div>
             
@@ -106,10 +106,11 @@ export function WebsiteFooter() {
             <div className="space-y-4">
               <H3 className="text-base font-semibold">Company</H3>
               <ul className="space-y-2">
-                <li><Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link></li>
-                <li><Link href="/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</Link></li>
-                <li><Link href="/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</Link></li>
-                <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
+                <li><Link href="/website/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link></li>
+                <li><Link href="/website/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</Link></li>
+                <li><Link href="/website/careers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</Link></li>
+                <li><Link href="/website/press" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Press</Link></li>
+                <li><Link href="/website/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
               </ul>
             </div>
           </div>

@@ -15,6 +15,7 @@ import { DesignSystemNavigation } from "@/components/ui/design-system-navigation
 import { GlobalHeader } from "@/components/ui/global-header"
 import { MainHeader } from "@/components/ui/main-header"
 import { Navigation } from "@/components/ui/navigation"
+import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Logo } from "@/components/ui/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Icon from "@/components/ui/icon"
@@ -375,6 +376,14 @@ export default function NavigationPage() {
       features: ["Logo", "Badge support", "Navigation links", "Theme toggle", "Mobile responsive"],
       file: "src/components/ui/navigation.tsx",
       example: <StaticNavigation />
+    },
+    {
+      name: "WebsiteFooter",
+      description: "Global footer component for all website pages with comprehensive navigation, newsletter signup, and company information",
+      usage: "Used on all website pages (/website/*) to provide consistent footer navigation and branding",
+      features: ["Brand section with logo", "Platform & People navigation", "Solutions by industry and stage", "Resources and Company links", "Newsletter signup", "Social media links", "Legal links", "Responsive design"],
+      file: "src/components/ui/website-footer.tsx",
+      example: <WebsiteFooter />
     }
   ]
 
@@ -405,11 +414,11 @@ export default function NavigationPage() {
                   Navigation Overview
                 </CardTitle>
                 <CardDescription>
-                  The site currently uses 4 distinct top navigation implementations, each optimized for different sections and use cases.
+                  The site currently uses 4 distinct top navigation implementations and 1 global footer component, each optimized for different sections and use cases.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                   <div className="p-4 border rounded-lg">
                     <h4 className="font-semibold text-sm mb-2">MainHeader</h4>
                     <BodySmall className="text-muted-foreground text-sm">
@@ -432,6 +441,12 @@ export default function NavigationPage() {
                     <h4 className="font-semibold text-sm mb-2">Navigation (Base)</h4>
                     <BodySmall className="text-muted-foreground text-sm">
                       Base component used by other navigation variants
+                    </BodySmall>
+                  </div>
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-semibold text-sm mb-2">WebsiteFooter</h4>
+                    <BodySmall className="text-muted-foreground text-sm">
+                      Global footer for all website pages with comprehensive navigation
                     </BodySmall>
                   </div>
                 </div>
@@ -517,7 +532,7 @@ export default function NavigationPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div>
                     <h4 className="font-medium text-sm mb-2">When to Use MainHeader</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
@@ -541,6 +556,15 @@ export default function NavigationPage() {
                       <li>• Design system pages (/design-system/*)</li>
                       <li>• Documentation pages</li>
                       <li>• Pages requiring design system badge</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-sm mb-2">When to Use WebsiteFooter</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• All website pages (/website/*)</li>
+                      <li>• Pages requiring comprehensive footer navigation</li>
+                      <li>• Pages with newsletter signup</li>
+                      <li>• Pages needing consistent branding</li>
                     </ul>
                   </div>
                 </div>
