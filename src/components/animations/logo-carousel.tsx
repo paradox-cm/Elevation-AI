@@ -41,8 +41,8 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
   const firstRowRef = React.useRef<HTMLDivElement>(null)
   const secondRowRef = React.useRef<HTMLDivElement>(null)
   const containerRef = React.useRef<HTMLDivElement>(null)
-  const animationRef = React.useRef<number>()
-  const startTimeRef = React.useRef<number>()
+  const animationRef = React.useRef<number | undefined>(undefined)
+  const startTimeRef = React.useRef<number | undefined>(undefined)
   const firstRowPositionRef = React.useRef<number>(0)
   const secondRowPositionRef = React.useRef<number>(0)
   const directionRef = React.useRef<number>(1) // 1 for forward, -1 for reverse
@@ -174,7 +174,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     
     // When leaving, continue from the CURRENT position (not the position before hover)
     // We need to calculate the progress based on the current animation state
-    const elapsed = performance.now() - startTimeRef.current
+    const elapsed = performance.now() - (startTimeRef.current || 0)
     const adjustedDuration = 62400 / speedRef.current
     const currentProgress = (elapsed / adjustedDuration) % 1
     

@@ -9,7 +9,7 @@ interface BusinessDataAnimationProps {
 
 export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | undefined>(undefined)
   const linesRef = useRef<Array<{
     x: number
     y: number
