@@ -217,10 +217,10 @@ export default function CarouselsPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      Default Carousel
+                      Standard Carousel (Current Implementation)
                     </CardTitle>
                     <CardDescription>
-                      Full-featured carousel with auto-play, progress indicators, smart gradients, and active card highlighting. Perfect for feature showcases and product benefits.
+                      The current standard configuration used in "Intelligent Solutions for Every Domain" section. Features auto-play with manual interaction detection, responsive design, and smart progress indicators.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -228,13 +228,20 @@ export default function CarouselsPage() {
                       <Carousel 
                         items={benefitsData}
                         autoPlay={true}
-                        autoPlayInterval={4000}
+                        autoPlayInterval={5000}
                         showProgressIndicators={true}
-                        showGradients={true}
+                        showGradients={false}
+                        cardWidth={400}
+                        cardGap={32}
+                        responsive={{
+                          sm: { cardWidth: 288, cardGap: 12 },
+                          md: { cardWidth: 336, cardGap: 16 },
+                          lg: { cardWidth: 320, cardGap: 24 }
+                        }}
                       />
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      <strong>Features:</strong> Auto-play every 4 seconds, progress indicators, edge gradients, active card highlighting with blue borders and backgrounds.
+                      <strong>Current Standard Features:</strong> Auto-play every 5 seconds, progress indicators, no gradients, responsive card sizing (400px desktop, 288px mobile), manual interaction detection on mobile, active card highlighting.
                     </div>
                   </CardContent>
                 </Card>
@@ -416,22 +423,27 @@ export default function CarouselsPage() {
               <div className="mt-6 space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-base">Marketing Landing Page</CardTitle>
+                    <CardTitle className="text-base">Standard Implementation (Current)</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="bg-muted/30 p-4 rounded-lg font-mono text-sm">
                       {`<Carousel
-  items={marketingData}
+  items={solutionsData}
   autoPlay={true}
   autoPlayInterval={5000}
   showProgressIndicators={true}
-  showGradients={true}
-  cardWidth={280}
-  cardGap={16}
+  showGradients={false}
+  cardWidth={400}
+  cardGap={32}
+  responsive={{
+    sm: { cardWidth: 288, cardGap: 12 },
+    md: { cardWidth: 336, cardGap: 16 },
+    lg: { cardWidth: 320, cardGap: 24 }
+  }}
 />`}
                     </div>
                     <div className="mt-3 text-sm text-muted-foreground">
-                      <strong>Use case:</strong> Feature highlights, customer testimonials, product benefits
+                      <strong>Use case:</strong> Current standard for "Intelligent Solutions for Every Domain" section - feature showcases, solution highlights, product benefits
                     </div>
                   </CardContent>
                 </Card>
@@ -515,7 +527,7 @@ export default function CarouselsPage() {
                     <div>
                       <H4 className="text-sm font-semibold mb-2">autoPlayInterval?: number</H4>
                       <BodySmall className="text-muted-foreground">
-                        Time in milliseconds between auto-play transitions. Default: 4000
+                        Time in milliseconds between auto-play transitions. Current standard: 5000 (5 seconds)
                       </BodySmall>
                     </div>
                     
@@ -529,21 +541,28 @@ export default function CarouselsPage() {
                     <div>
                       <H4 className="text-sm font-semibold mb-2">showGradients?: boolean</H4>
                       <BodySmall className="text-muted-foreground">
-                        Whether to show edge fade gradients. Default: true
+                        Whether to show edge fade gradients. Current standard: false (disabled for cleaner look)
                       </BodySmall>
                     </div>
                     
                     <div>
                       <H4 className="text-sm font-semibold mb-2">cardWidth?: number</H4>
                       <BodySmall className="text-muted-foreground">
-                        Width of each carousel card in pixels. Default: 260
+                        Width of each carousel card in pixels. Current standard: 400px (desktop), with responsive breakpoints
                       </BodySmall>
                     </div>
                     
                     <div>
                       <H4 className="text-sm font-semibold mb-2">cardGap?: number</H4>
                       <BodySmall className="text-muted-foreground">
-                        Gap between carousel cards in pixels. Default: 16
+                        Gap between carousel cards in pixels. Current standard: 32px (desktop), with responsive breakpoints
+                      </BodySmall>
+                    </div>
+                    
+                    <div>
+                      <H4 className="text-sm font-semibold mb-2">responsive?: object</H4>
+                      <BodySmall className="text-muted-foreground">
+                        Responsive configuration for different screen sizes. Current standard: sm: cardWidth 288px, cardGap 12px; md: cardWidth 336px, cardGap 16px; lg: cardWidth 320px, cardGap 24px
                       </BodySmall>
                     </div>
                     
@@ -603,6 +622,63 @@ export default function CarouselsPage() {
             </div>
           </Section>
 
+          {/* Current Implementation Rules */}
+          <Section paddingY="lg">
+            <PageHeader
+              title="Current Implementation Rules"
+              description="The standard configuration and behavior rules currently implemented in the 'Intelligent Solutions for Every Domain' section."
+              size="md"
+            />
+            
+            <div className="mt-8 space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Standard Configuration</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <H4 className="text-sm font-semibold mb-2">Auto-Play Behavior</H4>
+                      <BodySmall className="text-muted-foreground">
+                        • Auto-play enabled with 5-second intervals<br/>
+                        • Manual interaction detection on mobile (sm/md breakpoints)<br/>
+                        • Auto-play resumes after 5 seconds of inactivity on mobile<br/>
+                        • Desktop auto-play continues uninterrupted
+                      </BodySmall>
+                    </div>
+                    <div>
+                      <H4 className="text-sm font-semibold mb-2">Visual Design</H4>
+                      <BodySmall className="text-muted-foreground">
+                        • No edge gradients (showGradients: false)<br/>
+                        • Progress indicators enabled<br/>
+                        • Active card highlighting with primary color<br/>
+                        • Smooth scroll behavior for programmatic navigation
+                      </BodySmall>
+                    </div>
+                    <div>
+                      <H4 className="text-sm font-semibold mb-2">Responsive Sizing</H4>
+                      <BodySmall className="text-muted-foreground">
+                        • Desktop: 400px cards, 32px gap<br/>
+                        • Large: 320px cards, 24px gap<br/>
+                        • Medium: 336px cards, 16px gap<br/>
+                        • Small: 288px cards, 12px gap
+                      </BodySmall>
+                    </div>
+                    <div>
+                      <H4 className="text-sm font-semibold mb-2">Interaction Rules</H4>
+                      <BodySmall className="text-muted-foreground">
+                        • Indicator clicks update active slide immediately<br/>
+                        • Scroll position detection for manual navigation<br/>
+                        • Race condition prevention for programmatic vs manual scrolls<br/>
+                        • Throttled scroll events for performance
+                      </BodySmall>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </Section>
+
           {/* Best Practices */}
           <Section paddingY="lg">
             <PageHeader
@@ -617,11 +693,12 @@ export default function CarouselsPage() {
                   <CardTitle>✅ Do&apos;s</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <BodySmall>• Keep carousel items concise and focused</BodySmall>
-                  <BodySmall>• Use consistent card dimensions for visual harmony</BodySmall>
-                  <BodySmall>• Enable auto-play for engaging content presentation</BodySmall>
-                  <BodySmall>• Include progress indicators for navigation clarity</BodySmall>
-                  <BodySmall>• Test on mobile devices for touch scrolling</BodySmall>
+                  <BodySmall>• Use the standard 5-second auto-play interval for optimal engagement</BodySmall>
+                  <BodySmall>• Implement responsive card sizing (400px desktop, 288px mobile)</BodySmall>
+                  <BodySmall>• Enable manual interaction detection on mobile breakpoints</BodySmall>
+                  <BodySmall>• Use progress indicators for clear navigation feedback</BodySmall>
+                  <BodySmall>• Disable gradients for cleaner visual presentation</BodySmall>
+                  <BodySmall>• Test indicator click behavior and auto-play resume functionality</BodySmall>
                 </CardContent>
               </Card>
               
@@ -630,11 +707,12 @@ export default function CarouselsPage() {
                   <CardTitle>❌ Don&apos;ts</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <BodySmall>• Don&apos;t overload cards with too much information</BodySmall>
-                  <BodySmall>• Avoid extremely fast auto-play that&apos;s hard to read</BodySmall>
-                  <BodySmall>• Don&apos;t disable gradients without considering scroll context</BodySmall>
-                  <BodySmall>• Avoid inconsistent card heights that create visual noise</BodySmall>
-                  <BodySmall>• Don&apos;t forget to handle edge cases in mobile layouts</BodySmall>
+                  <BodySmall>• Don&apos;t use auto-play intervals shorter than 3 seconds</BodySmall>
+                  <BodySmall>• Avoid enabling gradients when using the standard configuration</BodySmall>
+                  <BodySmall>• Don&apos;t disable manual interaction detection on mobile</BodySmall>
+                  <BodySmall>• Avoid inconsistent responsive breakpoint configurations</BodySmall>
+                  <BodySmall>• Don&apos;t forget to handle race conditions between manual and programmatic scrolling</BodySmall>
+                  <BodySmall>• Don&apos;t use card widths smaller than 288px on mobile</BodySmall>
                 </CardContent>
               </Card>
             </div>

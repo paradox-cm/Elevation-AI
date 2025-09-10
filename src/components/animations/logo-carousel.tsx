@@ -21,7 +21,7 @@ const logos: LogoItem[] = [
   { name: "Capital One", filename: "Capital-One.svg", showText: true },
   { name: "Deutsche Bank", filename: "Deutsche-Bank.svg", showText: true },
   { name: "eBay", filename: "ebay.svg", showText: false },
-  { name: "Google", filename: "Google.svg", showText: false },
+  { name: "Google", filename: "Google.svg", showText: true },
   { name: "Indeed", filename: "Indeed.svg", showText: true },
   { name: "JPM", filename: "JPM.svg", showText: true },
   { name: "McKinsey", filename: "McKinsey.svg", showText: true },
@@ -31,26 +31,71 @@ const logos: LogoItem[] = [
   { name: "Microsoft", filename: "Windows.svg", showText: true }
 ]
 
-// Split logos into two rows
-const firstRowLogos = logos.slice(0, Math.ceil(logos.length / 2))
-const secondRowLogos = logos.slice(Math.ceil(logos.length / 2))
+// Split logos responsively
+// Mobile (< 640px): 3 rows (5 logos each)
+// Small/Medium/Desktop (≥ 640px): 2 rows (7-8 logos each)
+const getResponsiveLogoDistribution = (isMobile: boolean) => {
+  if (isMobile) {
+    // Mobile (< 640px): 3 rows of 5 logos each
+    return {
+      firstRow: logos.slice(0, 5),
+      secondRow: logos.slice(5, 10),
+      thirdRow: logos.slice(10, 15)
+    }
+  } else {
+    // Small/Medium/Desktop (≥ 640px): 2 rows of 7-8 logos each
+    return {
+      firstRow: logos.slice(0, 8),
+      secondRow: logos.slice(8, 15),
+      thirdRow: [] // No third row on sm/md/lg+ breakpoints
+    }
+  }
+}
 
 export function LogoCarousel({ className }: LogoCarouselProps) {
   const [hoverState, setHoverState] = React.useState<'left' | 'right' | 'none'>('none')
   const [isInView, setIsInView] = React.useState(false)
+  const [isMobile, setIsMobile] = React.useState(false)
   const firstRowRef = React.useRef<HTMLDivElement>(null)
   const secondRowRef = React.useRef<HTMLDivElement>(null)
+  const thirdRowRef = React.useRef<HTMLDivElement>(null)
   const containerRef = React.useRef<HTMLDivElement>(null)
   const animationRef = React.useRef<number | undefined>(undefined)
   const startTimeRef = React.useRef<number | undefined>(undefined)
   const firstRowPositionRef = React.useRef<number>(0)
   const secondRowPositionRef = React.useRef<number>(0)
+  const thirdRowPositionRef = React.useRef<number>(0)
   const directionRef = React.useRef<number>(1) // 1 for forward, -1 for reverse
   const speedRef = React.useRef<number>(1) // 1 for normal, 3 for fast
   
-  // Duplicate logos for seamless infinite scroll
-  const duplicatedFirstRowLogos = [...firstRowLogos, ...firstRowLogos]
-  const duplicatedSecondRowLogos = [...secondRowLogos, ...secondRowLogos]
+  // Media query to detect mobile vs desktop
+  React.useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 640) // sm breakpoint - only true mobile shows 3 rows
+    }
+    
+    checkIsMobile()
+    window.addEventListener('resize', checkIsMobile)
+    return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
+  
+  // Get responsive logo distribution
+  const logoDistribution = getResponsiveLogoDistribution(isMobile)
+  
+  // Duplicate logos for seamless infinite scroll - more duplicates on desktop for better tiling
+  const getDuplicatedLogos = (logos: LogoItem[]) => {
+    if (isMobile) {
+      // Mobile: 2 sets for seamless loop
+      return [...logos, ...logos]
+    } else {
+      // Desktop: 3 sets for better tiling and seamless loop
+      return [...logos, ...logos, ...logos]
+    }
+  }
+  
+  const duplicatedFirstRowLogos = getDuplicatedLogos(logoDistribution.firstRow)
+  const duplicatedSecondRowLogos = getDuplicatedLogos(logoDistribution.secondRow)
+  const duplicatedThirdRowLogos = getDuplicatedLogos(logoDistribution.thirdRow)
 
   const animate = (timestamp: number) => {
     if (!startTimeRef.current) {
@@ -64,24 +109,38 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     // Calculate progress (0 to 1) and wrap around
     const progress = (elapsed / adjustedDuration) % 1
     
+    // Calculate movement range based on number of duplicates
+    const movementRange = isMobile ? 50 : 33.33 // 50% for 2 sets, 33.33% for 3 sets
+    
     // First row: moves left (forward direction)
     let firstRowPosition
     if (directionRef.current === 1) {
-      firstRowPosition = progress * 50 // Forward: 0% to 50%
+      firstRowPosition = progress * movementRange // Forward: 0% to movementRange%
     } else {
-      firstRowPosition = 50 - (progress * 50) // Reverse: 50% to 0%
+      firstRowPosition = movementRange - (progress * movementRange) // Reverse: movementRange% to 0%
     }
     
     // Second row: moves right (reverse direction)
     let secondRowPosition
     if (directionRef.current === 1) {
-      secondRowPosition = 50 - (progress * 50) // Reverse: 50% to 0%
+      secondRowPosition = movementRange - (progress * movementRange) // Reverse: movementRange% to 0%
     } else {
-      secondRowPosition = progress * 50 // Forward: 0% to 50%
+      secondRowPosition = progress * movementRange // Forward: 0% to movementRange%
+    }
+    
+    // Third row: only animate on mobile (when third row exists)
+    let thirdRowPosition = 0
+    if (isMobile && logoDistribution.thirdRow.length > 0) {
+      if (directionRef.current === 1) {
+        thirdRowPosition = (progress * movementRange) + (movementRange * 0.5) // Forward: 25% to 75%
+      } else {
+        thirdRowPosition = (movementRange * 1.5) - (progress * movementRange) // Reverse: 75% to 25%
+      }
     }
     
     firstRowPositionRef.current = firstRowPosition
     secondRowPositionRef.current = secondRowPosition
+    thirdRowPositionRef.current = thirdRowPosition
     
     if (firstRowRef.current) {
       firstRowRef.current.style.transform = `translateX(-${firstRowPosition}%)`
@@ -89,6 +148,10 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     
     if (secondRowRef.current) {
       secondRowRef.current.style.transform = `translateX(-${secondRowPosition}%)`
+    }
+    
+    if (thirdRowRef.current) {
+      thirdRowRef.current.style.transform = `translateX(-${thirdRowPosition}%)`
     }
     
     animationRef.current = requestAnimationFrame(animate)
@@ -123,7 +186,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     }
   }, [])
 
-  // Start/stop animation based on visibility
+  // Start/stop animation based on visibility and responsive changes
   React.useEffect(() => {
     if (isInView) {
       animationRef.current = requestAnimationFrame(animate)
@@ -138,7 +201,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [isInView])
+  }, [isInView, isMobile, logoDistribution])
 
   const handleMouseEnter = (side: 'left' | 'right') => {
     if (!isInView) return // Only allow hover interactions when in view
@@ -162,7 +225,8 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       speedRef.current = 2.1 // Faster reverse speed (30% slower than before)
       
       // Calculate progress based on current position for reverse animation
-      const currentProgress = currentFirstRowPosition / 50 // Convert position to progress (0-1)
+      const movementRange = isMobile ? 50 : 33.33
+      const currentProgress = currentFirstRowPosition / movementRange // Convert position to progress (0-1)
       const reverseProgress = 1 - currentProgress // Invert the progress for reverse
       
       // Set start time so reverse animation continues from current position
@@ -179,7 +243,8 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       speedRef.current = 2.1 // Faster forward speed (30% slower than before)
       
       // Calculate progress based on current position
-      const currentProgress = currentFirstRowPosition / 50
+      const movementRange = isMobile ? 50 : 33.33
+      const currentProgress = currentFirstRowPosition / movementRange
       
       // Set start time for fast animation from current position
       startTimeRef.current = performance.now() - (currentProgress * 29714) // ~29.7s for fast forward
@@ -212,7 +277,8 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     speedRef.current = 1 // Normal speed
     
     // Calculate the progress based on current position for normal speed animation
-    const currentProgress = currentFirstRowPosition / 50
+    const movementRange = isMobile ? 50 : 33.33
+    const currentProgress = currentFirstRowPosition / movementRange
     
     // Set start time to continue from current position at normal speed
     startTimeRef.current = performance.now() - (currentProgress * 62400) // 62.4s for normal speed
@@ -250,7 +316,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       {/* First row - moves left */}
       <div ref={firstRowRef} className="flex mb-4 sm:mb-8 lg:mb-16">
         {/* Extra padding at the start for better visibility */}
-        <div className="flex-shrink-0 w-8 sm:w-24 lg:w-32" />
+        <div className="flex-shrink-0 w-4 sm:w-12 lg:w-16" />
         {duplicatedFirstRowLogos.map((logo, index) => (
           <div
             key={`first-${logo.filename}-${index}`}
@@ -261,7 +327,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
               <img
                 src={`/images/logos/${logo.filename}`}
                 alt={`${logo.name} logo`}
-                className="w-full h-full object-contain filter dark:brightness-0 dark:invert"
+                className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
                 loading="lazy"
               />
             </div>
@@ -279,9 +345,9 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       </div>
 
       {/* Second row - moves right */}
-      <div ref={secondRowRef} className="flex">
+      <div ref={secondRowRef} className="flex mb-4 sm:mb-8 lg:mb-16">
         {/* Extra padding at the start for better visibility */}
-        <div className="flex-shrink-0 w-8 sm:w-24 lg:w-32" />
+        <div className="flex-shrink-0 w-4 sm:w-12 lg:w-16" />
         {duplicatedSecondRowLogos.map((logo, index) => (
           <div
             key={`second-${logo.filename}-${index}`}
@@ -292,7 +358,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
               <img
                 src={`/images/logos/${logo.filename}`}
                 alt={`${logo.name} logo`}
-                className="w-full h-full object-contain filter dark:brightness-0 dark:invert"
+                className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
                 loading="lazy"
               />
             </div>
@@ -308,6 +374,39 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
         {/* Extra padding at the end for smooth looping */}
         <div className="flex-shrink-0 w-16 sm:w-24 lg:w-32" />
       </div>
+
+      {/* Third row - only show on mobile */}
+      {isMobile && logoDistribution.thirdRow.length > 0 && (
+        <div ref={thirdRowRef} className="flex">
+          {/* Extra padding at the start for better visibility */}
+          <div className="flex-shrink-0 w-4 sm:w-12 lg:w-16" />
+          {duplicatedThirdRowLogos.map((logo, index) => (
+            <div
+              key={`third-${logo.filename}-${index}`}
+              className="flex-shrink-0 flex items-center gap-3 px-4 sm:px-6 lg:px-8"
+            >
+              {/* Logo */}
+              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center">
+                <img
+                  src={`/images/logos/${logo.filename}`}
+                  alt={`${logo.name} logo`}
+                  className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
+                  loading="lazy"
+                />
+              </div>
+              
+              {/* Company name - only show if showText is true */}
+              {logo.showText && (
+                <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
+                  {logo.name}
+                </span>
+              )}
+            </div>
+          ))}
+          {/* Extra padding at the end for smooth looping */}
+          <div className="flex-shrink-0 w-16 sm:w-24 lg:w-32" />
+        </div>
+      )}
     </div>
   )
 }

@@ -11,9 +11,10 @@ import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 interface MainHeaderProps {
   showLogin?: boolean
   showDemo?: boolean
+  currentPage?: string
 }
 
-export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProps) {
+export function MainHeader({ showLogin = true, showDemo = true, currentPage }: MainHeaderProps) {
   // Try to get mobile menu context, but don't fail if it's not available
   let mobileMenuOpen = false
   let setMobileMenuOpen: (open: boolean) => void = () => {}
@@ -43,9 +44,12 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
         <nav className="hidden xl:flex items-center space-x-4">
           {/* Platform Dropdown */}
           <div className="relative group">
-            <Link href="/website/platform" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <Link href="/website/platform" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
               Platform
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
+              {currentPage === 'platform' && (
+                <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
+              )}
             </Link>
             {/* Dropdown menu for Platform */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -65,9 +69,12 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           
           {/* People Dropdown */}
           <div className="relative group">
-            <Link href="/website/people" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <Link href="/website/people" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
               People
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
+              {currentPage === 'people' && (
+                <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
+              )}
             </Link>
             {/* Dropdown menu for People */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -84,9 +91,12 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           
           {/* Solutions Dropdown */}
           <div className="relative group">
-            <Link href="/website/solutions" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <Link href="/website/solutions" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
               Solutions
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
+              {currentPage === 'solutions' && (
+                <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
+              )}
             </Link>
             {/* Mega menu for Solutions */}
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[800px] bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -200,24 +210,24 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
                 {/* By Industry */}
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Industry</h3>
-                  <ul className="space-y-3">
-                    <li><Link href="/website/solutions#private-markets" className="text-sm hover:text-primary transition-colors">Private Market Organizations</Link></li>
-                    <li><Link href="/website/solutions#public-markets" className="text-sm hover:text-primary transition-colors">Public Market Organizations</Link></li>
-                    <li><Link href="/website/solutions#banks" className="text-sm hover:text-primary transition-colors">Banks</Link></li>
-                    <li><Link href="/website/solutions#enterprise" className="text-sm hover:text-primary transition-colors">Enterprise</Link></li>
-                    <li><Link href="/website/solutions#government" className="text-sm hover:text-primary transition-colors">Government</Link></li>
+                  <ul className="space-y-1">
+                    <li><Link href="/website/solutions#private-markets" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Private Market Organizations</Link></li>
+                    <li><Link href="/website/solutions#public-markets" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Public Market Organizations</Link></li>
+                    <li><Link href="/website/solutions#banks" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Banks</Link></li>
+                    <li><Link href="/website/solutions#enterprise" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Enterprise</Link></li>
+                    <li><Link href="/website/solutions#government" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Government</Link></li>
                   </ul>
                 </div>
                 
                 {/* By Stage */}
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Stage</h3>
-                  <ul className="space-y-3">
-                    <li><Link href="/website/solutions#creating-growing" className="text-sm hover:text-primary transition-colors">Creating a New Venture</Link></li>
-                    <li><Link href="/website/solutions#scaling" className="text-sm hover:text-primary transition-colors">Scaling a Venture</Link></li>
-                    <li><Link href="/website/solutions#exiting" className="text-sm hover:text-primary transition-colors">Exiting a Venture</Link></li>
-                    <li><Link href="/website/solutions#post-ipo" className="text-sm hover:text-primary transition-colors">Post-IPO Growth</Link></li>
-                    <li><Link href="/website/solutions#family-office" className="text-sm hover:text-primary transition-colors">Post-Exit/Family Office</Link></li>
+                  <ul className="space-y-1">
+                    <li><Link href="/website/solutions#creating-growing" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Creating a New Venture</Link></li>
+                    <li><Link href="/website/solutions#scaling" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Scaling a Venture</Link></li>
+                    <li><Link href="/website/solutions#exiting" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Exiting a Venture</Link></li>
+                    <li><Link href="/website/solutions#post-ipo" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Post-IPO Growth</Link></li>
+                    <li><Link href="/website/solutions#family-office" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Post-Exit/Family Office</Link></li>
                   </ul>
                 </div>
               </div>
@@ -225,24 +235,31 @@ export function MainHeader({ showLogin = true, showDemo = true }: MainHeaderProp
           </div>
           
           {/* Pricing */}
-          <Link href="/website/pricing" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md">
+          <Link href="/website/pricing" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md relative">
             Pricing
+            {currentPage === 'pricing' && (
+              <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
+            )}
           </Link>
           
           {/* Resources Dropdown */}
           <div className="relative group">
-            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1">
+            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
               Resources
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
+              {currentPage === 'resources' && (
+                <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
+              )}
             </button>
             {/* Dropdown menu for Resources */}
             <div className="absolute top-full left-0 mt-2 w-64 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <div className="p-4 space-y-3">
-                <Link href="/website/partners" className="block text-sm hover:text-primary transition-colors">Partners</Link>
-                <Link href="/website/investors" className="block text-sm hover:text-primary transition-colors">Investors</Link>
-                <Link href="/website/developers" className="block text-sm hover:text-primary transition-colors">For Developers & Platforms</Link>
-                <Link href="/website/blog" className="block text-sm hover:text-primary transition-colors">Blog</Link>
-                <Link href="/website/faq" className="block text-sm hover:text-primary transition-colors">FAQ</Link>
+              <div className="p-2 space-y-1">
+                <Link href="/website/about" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">About</Link>
+                <Link href="/website/partners" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Partners</Link>
+                <Link href="/website/investors" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Investors</Link>
+                <Link href="/website/developers" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">For Developers & Platforms</Link>
+                <Link href="/website/blog" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Blog</Link>
+                <Link href="/website/faq" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">FAQ</Link>
               </div>
             </div>
           </div>

@@ -177,21 +177,6 @@ function ExpertCategoryCard({ category }: { category: ExpertCategory }) {
 
 // Creative Hero Section Component
 function CreativeHeroSection() {
-  const [activeExpert, setActiveExpert] = React.useState(0)
-  
-  const expertTypes = [
-    { icon: Brain },
-    { icon: Shield },
-    { icon: Globe },
-    { icon: Award }
-  ]
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveExpert((prev) => (prev + 1) % expertTypes.length)
-    }, 2000)
-    return () => clearInterval(interval)
-  }, [expertTypes.length])
 
   return (
     <Section 
@@ -256,43 +241,6 @@ function CreativeHeroSection() {
                 />
               </div>
 
-              {/* Central Hub */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/40 rounded-full flex items-center justify-center border-4 border-primary/30 animate-pulse">
-                  <Users className="w-16 h-16 text-primary" />
-                </div>
-              </div>
-
-              {/* Orbiting Expert Cards */}
-              {expertTypes.map((expert, index) => {
-                const angle = (index * 90) * (Math.PI / 180)
-                const radius = 140 // Increased radius for better spacing
-                const x = Math.cos(angle) * radius
-                const y = Math.sin(angle) * radius
-                
-                return (
-                  <div
-                    key={index}
-                    className="absolute transition-all duration-1000"
-                    style={{
-                      top: `calc(50% + ${y}px)`,
-                      left: `calc(50% + ${x}px)`,
-                      transform: 'translate(-50%, -50%)',
-                      animationDelay: `${index * 0.5}s`
-                    }}
-                  >
-                    <div className={`w-20 h-20 bg-background/80 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg transition-all duration-500 ${
-                      activeExpert === index ? 'scale-110 shadow-xl border-primary/50' : 'hover:scale-105'
-                    }`}>
-                      <div className="w-full h-full flex items-center justify-center">
-                        <expert.icon className={`w-8 h-8 transition-colors duration-500 flex-shrink-0 ${
-                          activeExpert === index ? 'text-primary' : 'text-muted-foreground'
-                        }`} />
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
 
             </div>
 
@@ -308,20 +256,20 @@ export default function PeoplePage() {
   return (
             <PageWrapper>
               <MobileOnlyLayout
-                header={<MainHeader />}
+                header={<MainHeader currentPage="people" />}
                 footer={<WebsiteFooter />}
                 mobileMenu={<MobileMenuDrawer currentPage="people" />}
               >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
-            <Container size="2xl" >
-          {/* Creative Hero Section */}
-          <CreativeHeroSection />
+            {/* Creative Hero Section */}
+            <CreativeHeroSection />
 
-          {/* Concierge Support Section */}
-          <div id="concierge-team">
-            <Section paddingY="sm">
-              <div className="space-y-6">
+            {/* Concierge Support Section */}
+            <div id="concierge-team">
+              <Section paddingY="sm">
+                <Container size="2xl">
+                  <div className="space-y-6">
                 {/* Hero Section with Visual Elements */}
                 <div className="relative">
                   <div className="text-center space-y-8">
@@ -484,14 +432,16 @@ export default function PeoplePage() {
                     <Link href="/website/contact">Speak With Our Team</Link>
                   </Button>
                 </div>
-              </div>
-            </Section>
-          </div>
+                  </div>
+                </Container>
+              </Section>
+            </div>
 
-          {/* Expert Network Section - Placeholder */}
-          <div id="expert-network">
-            <Section paddingY="sm" className="bg-muted/30">
-              <div className="space-y-6 rounded-2xl">
+            {/* Expert Network Section - Placeholder */}
+            <div id="expert-network">
+              <Section paddingY="sm" className="bg-muted/30">
+                <Container size="2xl">
+                  <div className="space-y-6 rounded-2xl">
                 <div className="text-center space-y-6">
                   <H1>Expert Network</H1>
                   <BodyLarge className="text-muted-foreground">
@@ -511,10 +461,10 @@ export default function PeoplePage() {
                     <Link href="/website/contact">Get Notified When Available</Link>
                   </Button>
                 </div>
-              </div>
-            </Section>
-          </div>
-            </Container>
+                  </div>
+                </Container>
+              </Section>
+            </div>
           </main>
         </div>
       </MobileOnlyLayout>

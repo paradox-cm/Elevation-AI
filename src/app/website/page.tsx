@@ -374,7 +374,7 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
       className={`h-full transition-all duration-200 cursor-pointer hover:shadow-lg hover:bg-primary/5 hover:border-primary/20`}
       onClick={handleCardClick}
     >
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-0">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div className="flex items-start gap-3">
             <div className="p-2 rounded-lg bg-primary/10 flex-shrink-0">
@@ -392,7 +392,7 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent>
         <CardDescription className="mb-4 text-sm leading-relaxed">{item.description}</CardDescription>
         
         {item.children && (
@@ -456,7 +456,7 @@ export default function WebsitePage() {
             />
             <Grid cols={{ base: 1, sm: 2, lg: 4 }} gap={6} className="mt-8">
               <Card>
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                     Total Pages
@@ -469,7 +469,7 @@ export default function WebsitePage() {
               </Card>
               
               <Card>
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     Completed
@@ -482,7 +482,7 @@ export default function WebsitePage() {
               </Card>
               
               <Card>
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     <Code className="w-4 h-4 sm:w-5 sm:h-5" />
                     Pending
@@ -495,7 +495,7 @@ export default function WebsitePage() {
               </Card>
 
               <Card>
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                     Progress

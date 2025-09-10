@@ -113,9 +113,9 @@ export default function DesignSystemPage() {
                     className="absolute inset-0 sm:hidden"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 90%),
+                        radial-gradient(circle at 20% 20%, rgba(30, 64, 175, 0.5) 0%, rgba(30, 64, 175, 0.1) 50%, transparent 90%),
                         radial-gradient(circle at 80% 80%, rgba(156, 163, 175, 0.4) 0%, rgba(156, 163, 175, 0.08) 50%, transparent 90%),
-                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.35) 0%, rgba(59, 130, 246, 0.05) 60%, transparent 95%),
+                        radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.35) 0%, rgba(30, 64, 175, 0.05) 60%, transparent 95%),
                         radial-gradient(circle at 30% 70%, rgba(156, 163, 175, 0.25) 0%, rgba(156, 163, 175, 0.04) 60%, transparent 95%)
                       `,
                       backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
@@ -142,9 +142,9 @@ export default function DesignSystemPage() {
                     className="absolute inset-0 hidden sm:block"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 90%),
+                        radial-gradient(circle at 20% 20%, rgba(30, 64, 175, 0.5) 0%, rgba(30, 64, 175, 0.1) 50%, transparent 90%),
                         radial-gradient(circle at 80% 80%, rgba(156, 163, 175, 0.4) 0%, rgba(156, 163, 175, 0.08) 50%, transparent 90%),
-                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.35) 0%, rgba(59, 130, 246, 0.05) 60%, transparent 95%),
+                        radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.35) 0%, rgba(30, 64, 175, 0.05) 60%, transparent 95%),
                         radial-gradient(circle at 30% 70%, rgba(156, 163, 175, 0.25) 0%, rgba(156, 163, 175, 0.04) 60%, transparent 95%)
                       `,
                       backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
@@ -171,9 +171,9 @@ export default function DesignSystemPage() {
                     className="absolute inset-0 sm:hidden"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.25) 0%, transparent 70%),
+                        radial-gradient(circle at 60% 40%, rgba(30, 64, 175, 0.25) 0%, transparent 70%),
                         radial-gradient(circle at 40% 60%, rgba(156, 163, 175, 0.2) 0%, transparent 70%),
-                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 80%),
+                        radial-gradient(circle at 70% 30%, rgba(30, 64, 175, 0.2) 0%, transparent 80%),
                         radial-gradient(circle at 10% 90%, rgba(156, 163, 175, 0.18) 0%, transparent 80%)
                       `,
                       backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
@@ -200,9 +200,9 @@ export default function DesignSystemPage() {
                     className="absolute inset-0 hidden sm:block"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.25) 0%, transparent 70%),
+                        radial-gradient(circle at 60% 40%, rgba(30, 64, 175, 0.25) 0%, transparent 70%),
                         radial-gradient(circle at 40% 60%, rgba(156, 163, 175, 0.2) 0%, transparent 70%),
-                        radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 80%),
+                        radial-gradient(circle at 70% 30%, rgba(30, 64, 175, 0.2) 0%, transparent 80%),
                         radial-gradient(circle at 10% 90%, rgba(156, 163, 175, 0.18) 0%, transparent 80%)
                       `,
                       backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
@@ -229,7 +229,7 @@ export default function DesignSystemPage() {
                     className="absolute inset-0 sm:hidden"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 80%),
+                        radial-gradient(circle at 25% 25%, rgba(30, 64, 175, 0.15) 0%, transparent 80%),
                         radial-gradient(circle at 75% 75%, rgba(156, 163, 175, 0.12) 0%, transparent 80%)
                       `,
                       backgroundSize: '1000px 1000px, 1200px 1200px',
@@ -256,7 +256,7 @@ export default function DesignSystemPage() {
                     className="absolute inset-0 hidden sm:block"
                     style={{
                       backgroundImage: `
-                        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 80%),
+                        radial-gradient(circle at 25% 25%, rgba(30, 64, 175, 0.15) 0%, transparent 80%),
                         radial-gradient(circle at 75% 75%, rgba(156, 163, 175, 0.12) 0%, transparent 80%)
                       `,
                       backgroundSize: '1000px 1000px, 1200px 1200px',

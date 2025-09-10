@@ -387,7 +387,7 @@ function TypewriterText({
               <>
                 {/* Current word sliding up */}
                 <span 
-                  className={`inline-block transition-transform duration-600 ease-in-out ${
+                  className={`inline-block transition-transform duration-300 ease-out will-change-transform ${
                     isTransitioning ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
                   }`}
                   style={{ 
@@ -400,7 +400,7 @@ function TypewriterText({
                 {/* Next word sliding in from bottom */}
                 {isTransitioning && (
                   <span 
-                    className="absolute top-0 left-0 inline-block transition-all duration-600 ease-in-out sm:top-0 top-4 animate-[slideInFromBottomMobile_0.6s_ease-in-out_forwards] sm:animate-[slideInFromBottomAligned_0.6s_ease-in-out_forwards]"
+                    className="absolute top-0 left-0 inline-block transition-transform duration-300 ease-out will-change-transform sm:top-0 top-4"
                     style={{
                       lineHeight: 'inherit',
                       transform: 'translateY(12px)',
@@ -539,7 +539,7 @@ function IntroductionSection() {
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-600/15 to-blue-500/10"></div>
-      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
+      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
         <div className="grid grid-cols-12 gap-4 lg:gap-8 items-start">
           {/* Left Column - Heading */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
@@ -552,14 +552,12 @@ function IntroductionSection() {
           <div className="col-span-12 lg:col-span-8 space-y-4 pb-6">
             <Accordion type="single" collapsible className="w-full" defaultValue="greatest-asset">
               {accordionItems.map((item, index) => (
-                <AccordionItem key={item.value} value={item.value} className="border-b border-border/50 px-0 sm:px-0 md:px-0 lg:px-6">
-                  <AccordionTrigger className="text-left sm:text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-primary hover:no-underline py-6 w-full">
+                <AccordionItem key={item.value} value={item.value} className="border-b border-border/50">
+                  <AccordionTrigger className="text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium leading-tight sm:leading-normal tracking-normal text-primary hover:no-underline py-4">
                     {item.title}
                   </AccordionTrigger>
-                  <AccordionContent className="pb-6">
-                    <DisplaySmall className="text-primary">
-                      {item.content}
-                    </DisplaySmall>
+                  <AccordionContent className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-medium leading-tight sm:leading-normal tracking-normal text-muted-foreground pb-4">
+                    {item.content}
                   </AccordionContent>
                 </AccordionItem>
               ))}
@@ -685,7 +683,7 @@ function ProblemSection() {
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-300 flex flex-col gap-0">
+                    <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -763,21 +761,21 @@ function ProblemSection() {
                     {problems.map((problem, index) => (
                     <div
                       key={index}
-                      className={`transition-opacity duration-75 absolute inset-0 ${
+                      className={`transition-opacity duration-150 ease-out absolute inset-0 will-change-opacity ${
                         index === activeStep
                           ? 'opacity-100'
                           : 'opacity-0 pointer-events-none'
                       }`}
                     >
                       {/* Card Content */}
-                      <Card className="group transition-all duration-300 border-border/50 transition-colors duration-300 h-full rounded-lg relative overflow-hidden">
+                      <Card className="group transition-colors duration-200 ease-out border-border/50 h-full rounded-lg relative overflow-hidden">
                         {/* Step Indicators - Positioned inside card on the left */}
                         <div className="absolute left-0 top-0 bottom-0 flex flex-col w-20 z-10">
                           {problems.map((_, stepIndex) => (
                             <button
                               key={stepIndex}
                               onClick={() => setActiveStep(stepIndex)}
-                              className={`flex-1 border-r border-border/50 flex items-center justify-center text-lg font-medium transition-all duration-300 ${
+                              className={`flex-1 border-r border-border/50 flex items-center justify-center text-lg font-medium transition-colors duration-200 ease-out ${
                                 stepIndex === activeStep
                                   ? 'bg-primary border-primary text-white shadow-lg border-b border-primary'
                                   : stepIndex < activeStep
@@ -965,16 +963,16 @@ function PlatformSection() {
       <Container size="2xl" >
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
-          <div className="block lg:hidden mb-0">
+          <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
-            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8">
+            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
               <H1>The agentic platform</H1>
               <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
               </BodyLarge>
             </div>
             <div className="overflow-x-auto pb-1">
-              <div className="flex gap-4 w-max">
+              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
                 {features.map((feature, index) => (
                   <div
                     key={index}
@@ -1336,7 +1334,7 @@ function WhoWeServeSection() {
             </BodyLarge>
           </div>
           {/* Carousel Layout */}
-          <div className="mt-8 lg:mt-12">
+          <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
             <Carousel 
               items={solutions}
               autoPlay={true}
@@ -1514,7 +1512,7 @@ export default function WireframesHomePage() {
   return (
     <PageWrapper>
       <MobileOnlyLayout
-        header={<MainHeader />}
+        header={<MainHeader currentPage="home" />}
         footer={<WebsiteFooter />}
         mobileMenu={<MobileMenuDrawer currentPage="homepage" />}
       >

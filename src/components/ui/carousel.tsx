@@ -55,6 +55,8 @@ export function Carousel({
   const carouselRef = React.useRef<HTMLDivElement>(null)
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([])
   const autoPlayIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
+  const manualInteractionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const isProgrammaticScrollRef = React.useRef<boolean>(false)
 
   // Responsive screen size detection
   React.useEffect(() => {
@@ -164,38 +166,60 @@ export function Carousel({
     }
   }, [items.length, measureCardHeights])
 
-  // Check if we're at the end of the carousel
-  const checkScrollPosition = () => {
+  // Check if we're at the end of the carousel and update active slide
+  const checkScrollPosition = React.useCallback(() => {
     if (carouselRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
       const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1 // -1 for rounding errors
       setShowGradient(!isAtEnd)
+      
+      // Don't update slide position if this is a programmatic scroll (from indicator click)
+      if (isProgrammaticScrollRef.current) {
+        return
+      }
+      
+      // Calculate which slide is currently in view based on scroll position
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      const currentSlideIndex = Math.round(scrollLeft / totalCardWidth)
+      const clampedSlideIndex = Math.max(0, Math.min(currentSlideIndex, items.length - 1))
+      
+      // Only update if the slide has actually changed to avoid unnecessary re-renders
+      if (clampedSlideIndex !== currentSlide) {
+        setCurrentSlide(clampedSlideIndex)
+        setProgress(0) // Reset progress when manually scrolling
+      }
     }
-  }
+  }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide])
 
   // Detect manual interaction (mobile only)
   const handleManualInteraction = React.useCallback(() => {
     // Only stop auto-play on mobile devices (screen size 'sm' or 'md')
     if (screenSize === 'sm' || screenSize === 'md') {
       setHasManualInteraction(true)
+      
+      // Clear existing timeout
+      if (manualInteractionTimeoutRef.current) {
+        clearTimeout(manualInteractionTimeoutRef.current)
+      }
+      
+      // Set 5-second timer for auto-play resume
+      manualInteractionTimeoutRef.current = setTimeout(() => {
+        setHasManualInteraction(false)
+      }, 5000)
     }
   }, [screenSize])
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
+    console.log('scrollToSlide called with index:', index)
     setCurrentSlide(index)
     setProgress(0)
     
     // Detect manual interaction when user clicks indicators
     handleManualInteraction()
     
-    if (carouselRef.current) {
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
-      carouselRef.current.scrollTo({
-        left: index * totalCardWidth,
-        behavior: 'smooth'
-      })
-    }
+    // Note: The auto-scroll effect will handle the actual scrolling
+    // when currentSlide changes, so we don't need to scroll here
     
     onSlideChange?.(index)
   }
@@ -231,14 +255,34 @@ export function Carousel({
     }
   }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize])
 
+  // Cleanup timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (manualInteractionTimeoutRef.current) {
+        clearTimeout(manualInteractionTimeoutRef.current)
+      }
+    }
+  }, [])
+
   // Auto-scroll carousel when currentSlide changes
   React.useEffect(() => {
     if (carouselRef.current) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      
+      console.log('Auto-scroll effect triggered, currentSlide:', currentSlide, 'scrollTo:', currentSlide * totalCardWidth)
+      
+      // Set flag to indicate this is a programmatic scroll
+      isProgrammaticScrollRef.current = true
+      
       carouselRef.current.scrollTo({
         left: currentSlide * totalCardWidth,
         behavior: 'smooth'
       })
+      
+      // Reset flag after scroll completes
+      setTimeout(() => {
+        isProgrammaticScrollRef.current = false
+      }, 500) // Wait for smooth scroll to complete
     }
   }, [currentSlide, responsiveCardWidth, responsiveCardGap])
 
@@ -246,9 +290,15 @@ export function Carousel({
   React.useEffect(() => {
     const carousel = carouselRef.current
     if (carousel) {
+      let scrollTimeout: ReturnType<typeof setTimeout>
+      
       const handleScroll = () => {
-        checkScrollPosition()
-        handleManualInteraction()
+        // Throttle scroll events for better performance
+        clearTimeout(scrollTimeout)
+        scrollTimeout = setTimeout(() => {
+          checkScrollPosition()
+          handleManualInteraction()
+        }, 16) // ~60fps throttling
       }
       
       const handleTouchStart = () => {
@@ -261,11 +311,12 @@ export function Carousel({
       checkScrollPosition()
       
       return () => {
+        clearTimeout(scrollTimeout)
         carousel.removeEventListener('scroll', handleScroll)
         carousel.removeEventListener('touchstart', handleTouchStart)
       }
     }
-  }, [handleManualInteraction])
+  }, [checkScrollPosition, handleManualInteraction])
 
 
   return (

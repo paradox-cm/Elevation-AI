@@ -13,7 +13,7 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { H1, BodyLarge } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
-import { Building2, TrendingUp, ChevronRight, Building, Landmark, Briefcase, Users, Globe } from "lucide-react"
+import { Building2, TrendingUp, ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import React from "react"
@@ -21,52 +21,6 @@ import Icon from "@/components/ui/icon"
 
 // Solutions Hero Section Component
 function SolutionsHeroSection() {
-  const [activeIndustry, setActiveIndustry] = React.useState(0)
-  
-  const industries = [
-    { 
-      icon: Building, 
-      label: "Private Markets", 
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/20"
-    },
-    { 
-      icon: TrendingUp, 
-      label: "Public Markets", 
-      color: "text-green-500",
-      bgColor: "bg-green-500/10",
-      borderColor: "border-green-500/20"
-    },
-    { 
-      icon: Landmark, 
-      label: "Banks", 
-      color: "text-purple-500",
-      bgColor: "bg-purple-500/10",
-      borderColor: "border-purple-500/20"
-    },
-    { 
-      icon: Briefcase, 
-      label: "Enterprise", 
-      color: "text-orange-500",
-      bgColor: "bg-orange-500/10",
-      borderColor: "border-orange-500/20"
-    },
-    { 
-      icon: Users, 
-      label: "Government", 
-      color: "text-cyan-500",
-      bgColor: "bg-cyan-500/10",
-      borderColor: "border-cyan-500/20"
-    }
-  ]
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndustry((prev) => (prev + 1) % industries.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [industries.length])
 
   return (
     <Section 
@@ -130,120 +84,7 @@ function SolutionsHeroSection() {
                 />
               </div>
 
-              {/* Central Solutions Hub */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/40 rounded-2xl flex items-center justify-center border-4 border-primary/30 animate-pulse">
-                  <Globe className="w-16 h-16 text-primary" />
-                </div>
-              </div>
 
-              {/* Industry Ecosystem Grid */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-4 w-80 h-80">
-                  {/* Top Row */}
-                  <div className="flex justify-center">
-                    <div className={`w-16 h-16 rounded-xl border-2 shadow-lg transition-all duration-500 flex items-center justify-center ${
-                      activeIndustry === 0 ? 'scale-110 shadow-xl border-primary/50 bg-primary/10' : 'bg-background/80 backdrop-blur-sm border-border/50 hover:scale-105'
-                    }`}>
-                      <Building className={`w-6 h-6 transition-colors duration-500 ${
-                        activeIndustry === 0 ? 'text-primary' : 'text-blue-500'
-                      }`} />
-                    </div>
-                  </div>
-                  <div className="flex justify-center">
-                    <div className={`w-16 h-16 rounded-xl border-2 shadow-lg transition-all duration-500 flex items-center justify-center ${
-                      activeIndustry === 1 ? 'scale-110 shadow-xl border-primary/50 bg-primary/10' : 'bg-background/80 backdrop-blur-sm border-border/50 hover:scale-105'
-                    }`}>
-                      <TrendingUp className={`w-6 h-6 transition-colors duration-500 ${
-                        activeIndustry === 1 ? 'text-primary' : 'text-green-500'
-                      }`} />
-                    </div>
-                  </div>
-                  <div className="flex justify-center">
-                    <div className={`w-16 h-16 rounded-xl border-2 shadow-lg transition-all duration-500 flex items-center justify-center ${
-                      activeIndustry === 2 ? 'scale-110 shadow-xl border-primary/50 bg-primary/10' : 'bg-background/80 backdrop-blur-sm border-border/50 hover:scale-105'
-                    }`}>
-                      <Landmark className={`w-6 h-6 transition-colors duration-500 ${
-                        activeIndustry === 2 ? 'text-primary' : 'text-purple-500'
-                      }`} />
-                    </div>
-                  </div>
-                  
-                  {/* Middle Row */}
-                  <div className="flex justify-center">
-                    <div className={`w-16 h-16 rounded-xl border-2 shadow-lg transition-all duration-500 flex items-center justify-center ${
-                      activeIndustry === 3 ? 'scale-110 shadow-xl border-primary/50 bg-primary/10' : 'bg-background/80 backdrop-blur-sm border-border/50 hover:scale-105'
-                    }`}>
-                      <Briefcase className={`w-6 h-6 transition-colors duration-500 ${
-                        activeIndustry === 3 ? 'text-primary' : 'text-orange-500'
-                      }`} />
-                    </div>
-                  </div>
-                  <div className="flex justify-center">
-                    {/* Central hub space */}
-                  </div>
-                  <div className="flex justify-center">
-                    <div className={`w-16 h-16 rounded-xl border-2 shadow-lg transition-all duration-500 flex items-center justify-center ${
-                      activeIndustry === 4 ? 'scale-110 shadow-xl border-primary/50 bg-primary/10' : 'bg-background/80 backdrop-blur-sm border-border/50 hover:scale-105'
-                    }`}>
-                      <Users className={`w-6 h-6 transition-colors duration-500 ${
-                        activeIndustry === 4 ? 'text-primary' : 'text-cyan-500'
-                      }`} />
-                    </div>
-                  </div>
-                  
-                  {/* Bottom Row - Stage indicators */}
-                  <div className="col-span-3 flex justify-center space-x-4">
-                    <div className="w-12 h-8 bg-background/80 backdrop-blur-sm rounded-lg border border-border/50 flex items-center justify-center">
-                      <span className="text-xs text-muted-foreground">Start</span>
-                    </div>
-                    <div className="w-12 h-8 bg-background/80 backdrop-blur-sm rounded-lg border border-border/50 flex items-center justify-center">
-                      <span className="text-xs text-muted-foreground">Scale</span>
-                    </div>
-                    <div className="w-12 h-8 bg-background/80 backdrop-blur-sm rounded-lg border border-border/50 flex items-center justify-center">
-                      <span className="text-xs text-muted-foreground">Exit</span>
-                    </div>
-                    <div className="w-12 h-8 bg-background/80 backdrop-blur-sm rounded-lg border border-border/50 flex items-center justify-center">
-                      <span className="text-xs text-muted-foreground">Grow</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Connection Lines to Central Hub */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                {industries.map((_, index) => {
-                  const positions = [
-                    { x: 25, y: 25 }, // Top left
-                    { x: 50, y: 25 }, // Top center
-                    { x: 75, y: 25 }, // Top right
-                    { x: 25, y: 50 }, // Middle left
-                    { x: 75, y: 50 }  // Middle right
-                  ]
-                  
-                  if (index < positions.length) {
-                    const pos = positions[index]
-                    return (
-                      <line
-                        key={index}
-                        x1={`${pos.x}%`}
-                        y1={`${pos.y}%`}
-                        x2="50%"
-                        y2="50%"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        strokeDasharray="3,3"
-                        className="text-primary/20 animate-pulse"
-                        style={{ 
-                          animationDelay: `${index * 0.3}s`,
-                          animationDuration: '4s'
-                        }}
-                      />
-                    )
-                  }
-                  return null
-                })}
-              </svg>
             </div>
           </div>
         </div>
@@ -385,7 +226,7 @@ export default function WireframesSolutionsPage() {
   return (
     <PageWrapper>
       <MobileOnlyLayout
-        header={<MainHeader />}
+        header={<MainHeader currentPage="solutions" />}
         footer={<WebsiteFooter />}
         mobileMenu={<MobileMenuDrawer currentPage="solutions" />}
       >
@@ -401,7 +242,7 @@ export default function WireframesSolutionsPage() {
                     description="Browse solutions by industry sector or business lifecycle stage"
                     size="md"
                   />
-                  <Grid cols={1} gap={6} className="mt-8">
+                  <Grid cols={{ base: 1, md: 2 }} gap={6} className="mt-8">
                     {solutionCategories.map((category) => (
                       <SolutionCategoryCard key={category.id} category={category} />
                     ))}

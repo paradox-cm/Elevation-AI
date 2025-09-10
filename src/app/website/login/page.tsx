@@ -15,7 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -160,16 +160,13 @@ function LoginForm() {
                   Signing in...
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
-                  Sign in
-                  <ArrowRight className="h-4 w-4" />
-                </div>
+                "Sign in"
               )}
             </Button>
           </form>
         </Form>
 
-        <div className="relative pt-4">
+        <div className="relative pt-2">
           <div className="flex items-center">
             <div className="flex-1 h-px bg-border"></div>
             <span className="px-3 text-xs uppercase text-muted-foreground">
@@ -179,7 +176,7 @@ function LoginForm() {
           </div>
         </div>
 
-        <div className="pt-4">
+        <div className="pt-2">
           <button className="w-full h-10 sm:h-11 bg-transparent border border-border rounded-md hover:bg-muted/50 hover:border-border/80 transition-all duration-200 flex items-center justify-center text-sm font-medium text-foreground">
             <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -191,7 +188,7 @@ function LoginForm() {
           </button>
         </div>
 
-        <div className="text-center pt-4 pb-2">
+        <div className="text-center pt-2 pb-1">
           <BodySmall className="text-muted-foreground text-xs sm:text-sm">
             Don't have an account?{" "}
             <Link

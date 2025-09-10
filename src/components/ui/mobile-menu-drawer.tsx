@@ -29,7 +29,6 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const platformSubLinks = [
-    { href: "/website/platform", label: "Overview" },
     { href: "/website/platform#features", label: "Features" },
     { href: "/website/platform#security", label: "Security" },
     { href: "/website/platform#integrations", label: "Integrations" }
@@ -178,7 +177,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
                         if (subLink.type === "header") {
                           return (
                             <div key={`header-${index}`} className="px-3 py-2">
-                              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                              <h4 className="text-xs font-semibold text-primary uppercase tracking-wide">
                                 {subLink.label}
                               </h4>
                             </div>
