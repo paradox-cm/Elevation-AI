@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import React from "react"
 import Icon from "@/components/ui/icon"
+import { WIPBanner } from "@/components/ui/wip-banner"
 
 // Solutions Hero Section Component
 function SolutionsHeroSection() {
@@ -232,6 +233,13 @@ export default function WireframesSolutionsPage() {
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
+            {/* WIP Banner */}
+            <div className="pt-8">
+              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+                <WIPBanner />
+              </Container>
+            </div>
+            
               {/* Solutions Hero Section */}
               <SolutionsHeroSection />
 

@@ -18,6 +18,7 @@ import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Users, Headphones, Brain, Shield, Clock, Globe, CheckCircle, ArrowRight, Star, Award, UserCheck, Zap, Target, Sparkles } from "lucide-react"
 import Link from "next/link"
 import Icon from "@/components/ui/icon"
+import { WIPBanner } from "@/components/ui/wip-banner"
 
 interface ConciergeService {
   id: string
@@ -262,6 +263,13 @@ export default function PeoplePage() {
               >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
+            {/* WIP Banner */}
+            <div className="pt-8">
+              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+                <WIPBanner />
+              </Container>
+            </div>
+            
             {/* Creative Hero Section */}
             <CreativeHeroSection />
 
@@ -279,9 +287,9 @@ export default function PeoplePage() {
                         <span className="text-sm font-medium text-primary">Concierge Support</span>
                       </div>
                       <H1>Your Dedicated Team for the Agentic Era</H1>
-                      <BodyLarge className="text-muted-foreground leading-relaxed">
+                      <H1 className="text-muted-foreground leading-relaxed">
                         For organizations that need more than a platform, our Concierge Support team acts as an extension of your own, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.
-                      </BodyLarge>
+                      </H1>
                     </div>
                     
                     {/* Visual Element */}
@@ -291,36 +299,43 @@ export default function PeoplePage() {
                   </div>
                 </div>
 
-                {/* The Challenge Section with Enhanced Design */}
-                <div className="relative">
+                {/* Challenge and Solution Side by Side */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                  {/* The Challenge Section */}
+                  <div className="relative">
+                    <div className="space-y-8">
+                      <div className="text-center space-y-4">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/10 rounded-full border border-orange-500/20">
+                          <Brain className="w-4 h-4 text-orange-500" />
+                          <span className="text-sm font-medium text-orange-500">The Challenge</span>
+                        </div>
+                        <H2>Technology Alone Isn't Transformation</H2>
+                      </div>
+                      
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent rounded-2xl"></div>
+                        <div className="relative p-8 rounded-2xl border border-orange-500/10 bg-background/50 backdrop-blur-sm">
+                          <BodyLarge className="text-muted-foreground leading-relaxed text-center">
+                            Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates. The transition requires a unique blend of strategic foresight to identify the right opportunities, deep technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption. Most organizations don't have this specialized, multi-disciplinary team in-house.
+                          </BodyLarge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Our Solution Section */}
                   <div className="space-y-8">
                     <div className="text-center space-y-4">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/10 rounded-full border border-orange-500/20">
-                        <Brain className="w-4 h-4 text-orange-500" />
-                        <span className="text-sm font-medium text-orange-500">The Challenge</span>
-                      </div>
-                      <H2>Technology Alone Isn't Transformation</H2>
-                    </div>
-                    
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent rounded-2xl"></div>
-                      <div className="relative p-8 rounded-2xl border border-orange-500/10 bg-background/50 backdrop-blur-sm">
-                        <BodyLarge className="text-muted-foreground leading-relaxed text-center">
-                          Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates. The transition requires a unique blend of strategic foresight to identify the right opportunities, deep technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption. Most organizations don't have this specialized, multi-disciplinary team in-house.
-                        </BodyLarge>
-                      </div>
+                      <H2>We Become Your Agentic Operations Team</H2>
+                      <P className="text-muted-foreground leading-relaxed">
+                        Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.
+                      </P>
                     </div>
                   </div>
                 </div>
 
-                {/* Our Solution Section */}
+                {/* Process Flow Section - Full Width Below */}
                 <div className="space-y-8">
-                  <div className="text-center space-y-4">
-                    <H2>We Become Your Agentic Operations Team</H2>
-                    <P className="text-muted-foreground leading-relaxed">
-                      Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.
-                    </P>
-                  </div>
                   
                   {/* Process Flow - Two Rows */}
                   <div className="space-y-8">
