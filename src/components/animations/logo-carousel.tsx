@@ -248,7 +248,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       />
       
       {/* First row - moves left */}
-      <div ref={firstRowRef} className="flex mb-16">
+      <div ref={firstRowRef} className="flex mb-4 sm:mb-8 lg:mb-16">
         {/* Extra padding at the start for better visibility */}
         <div className="flex-shrink-0 w-8 sm:w-24 lg:w-32" />
         {duplicatedFirstRowLogos.map((logo, index) => (
