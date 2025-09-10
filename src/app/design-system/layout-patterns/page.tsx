@@ -571,6 +571,119 @@ export default function LayoutPatternsPage() {
             </ResponsiveTabs>
           </Section>
 
+          {/* Mobile Padding Standards */}
+          <Section paddingY="lg">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="smartphone-line" className="h-5 w-5" />
+                  Mobile Padding Standards
+                </CardTitle>
+                <CardDescription>
+                  Global mobile padding rules for consistent spacing across all pages
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="bg-muted/30 rounded-lg p-6">
+                    <H3 className="mb-4">Global Mobile Padding Rules</H3>
+                    <div className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <H3 className="mb-2 text-sm font-semibold">Container Component</H3>
+                          <div className="bg-background border rounded-lg p-4">
+                            <code className="text-sm">
+                              px-3 sm:px-6 lg:px-8
+                            </code>
+                          </div>
+                          <BodySmall className="text-muted-foreground mt-2">
+                            Standard mobile padding: 12px (px-3) on mobile, 24px (px-6) on small screens and up
+                          </BodySmall>
+                        </div>
+                        <div>
+                          <H3 className="mb-2 text-sm font-semibold">Max Width Rules</H3>
+                          <div className="bg-background border rounded-lg p-4">
+                            <code className="text-sm">
+                              sm: max-w-full<br/>
+                              md: max-w-full<br/>
+                              lg: max-w-[1400px]
+                            </code>
+                          </div>
+                          <BodySmall className="text-muted-foreground mt-2">
+                            Full width on mobile/tablet, constrained width on desktop
+                          </BodySmall>
+                        </div>
+                      </div>
+                      
+                      <div className="border-t pt-4">
+                        <H3 className="mb-3">Implementation Guidelines</H3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <H3 className="mb-2 text-sm font-semibold">✅ DO</H3>
+                            <ul className="space-y-1 text-sm text-muted-foreground">
+                              <li>• Use Container component for all page content</li>
+                              <li>• Apply px-3 on mobile for consistent spacing</li>
+                              <li>• Use max-w-full on mobile/tablet</li>
+                              <li>• Let Container handle responsive padding</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <H3 className="mb-2 text-sm font-semibold">❌ DON'T</H3>
+                            <ul className="space-y-1 text-sm text-muted-foreground">
+                              <li>• Override Container padding with custom classes</li>
+                              <li>• Use px-4 or px-6 on mobile</li>
+                              <li>• Add custom max-width constraints on mobile</li>
+                              <li>• Create double padding with nested Containers</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t pt-4">
+                        <H3 className="mb-3">Code Examples</H3>
+                        <div className="space-y-4">
+                          <div>
+                            <H3 className="mb-2 text-sm font-semibold">✅ Correct Implementation</H3>
+                            <div className="bg-background border rounded-lg p-4">
+                              <pre className="text-sm overflow-x-auto">
+{`<Container size="2xl">
+  <Section paddingY="lg">
+    <div className="text-center">
+      <h1>Page Title</h1>
+      <p>Page content</p>
+    </div>
+  </Section>
+</Container>`}
+                              </pre>
+                            </div>
+                          </div>
+                          <div>
+                            <H3 className="mb-2 text-sm font-semibold">❌ Incorrect Implementation</H3>
+                            <div className="bg-background border rounded-lg p-4">
+                              <pre className="text-sm overflow-x-auto text-red-600">
+{`<Container size="2xl" className="px-4 sm:px-6 lg:px-8">
+  <Section paddingY="lg">
+    <div className="text-center">
+      <h1>Page Title</h1>
+      <p>Page content</p>
+    </div>
+  </Section>
+</Container>`}
+                              </pre>
+                            </div>
+                            <BodySmall className="text-red-600 mt-2">
+                              This creates double padding and inconsistent mobile spacing
+                            </BodySmall>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Section>
+
           {/* Best Practices */}
           <Section paddingY="lg">
             <Card>

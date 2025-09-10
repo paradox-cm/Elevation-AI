@@ -58,7 +58,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Request Demo',
     description: 'Demo request form for potential customers',
     pageNumber: 4,
-    status: 'pending',
+    status: 'completed',
     icon: MessageSquare,
     href: '/website/demo'
   },
@@ -67,7 +67,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Platform',
     description: 'Core platform features and capabilities',
     pageNumber: 5,
-    status: 'completed',
+    status: 'wip',
     icon: Building2,
     href: '/website/platform'
   },
@@ -193,7 +193,7 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Pricing',
     description: 'Pricing plans and packages',
     pageNumber: 16,
-    status: 'completed',
+    status: 'wip',
     icon: CreditCard,
     href: '/pricing'
   },
@@ -217,7 +217,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Careers',
         description: 'Career opportunities and job listings',
         pageNumber: 17,
-        status: 'completed',
+        status: 'wip',
         icon: Briefcase,
         href: '/resources/careers'
       },
@@ -226,7 +226,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Partners',
         description: 'Partnership opportunities and programs',
         pageNumber: 18,
-        status: 'completed',
+        status: 'wip',
         icon: Handshake,
         href: '/resources/partners'
       },
@@ -235,7 +235,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Investors',
         description: 'Information for investors and stakeholders',
         pageNumber: 19,
-        status: 'completed',
+        status: 'wip',
         icon: TrendingUp,
         href: '/resources/investors'
       },
@@ -244,7 +244,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'For Developers & Platforms',
         description: 'Developer resources and platform integrations',
         pageNumber: 20,
-        status: 'completed',
+        status: 'wip',
         icon: Code,
         href: '/resources/developers'
       },
@@ -253,7 +253,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Blog',
         description: 'Latest insights, strategies, and thought leadership',
         pageNumber: 21,
-        status: 'completed',
+        status: 'wip',
         icon: Newspaper,
         href: '/resources/blog'
       },
@@ -262,7 +262,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'FAQ',
         description: 'Frequently asked questions and answers',
         pageNumber: 22,
-        status: 'completed',
+        status: 'wip',
         icon: MessageSquare,
         href: '/resources/faq'
       },
@@ -271,7 +271,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'About',
         description: 'Company information and team details',
         pageNumber: 23,
-        status: 'completed',
+        status: 'wip',
         icon: Users,
         href: '/resources/about'
       },
@@ -280,7 +280,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'People',
         description: 'Meet our team and leadership',
         pageNumber: 24,
-        status: 'completed',
+        status: 'wip',
         icon: Users,
         href: '/resources/people'
       },
@@ -289,7 +289,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Contact',
         description: 'Get in touch with our team',
         pageNumber: 25,
-        status: 'completed',
+        status: 'wip',
         icon: MessageSquare,
         href: '/resources/contact'
       },
@@ -298,7 +298,7 @@ const siteStructure: SiteStructureItem[] = [
         title: 'Press',
         description: 'Press releases and media resources',
         pageNumber: 26,
-        status: 'completed',
+        status: 'wip',
         icon: Newspaper,
         href: '/resources/press'
       }

@@ -6,6 +6,47 @@ This document explains how the `/design-system` page serves as the **single sour
 
 ## 📐 **Page Layout Standards**
 
+### **Mobile Padding Standards** 🎯
+**CRITICAL:** All pages must follow these global mobile padding rules for consistency:
+
+#### **Container Component Rules**
+```tsx
+// ✅ CORRECT - Use Container component with default padding
+<Container size="2xl">
+  <Section paddingY="lg">
+    {/* Page content */}
+  </Section>
+</Container>
+
+// ❌ INCORRECT - Don't override Container padding
+<Container size="2xl" className="px-4 sm:px-6 lg:px-8">
+  {/* This creates double padding and inconsistent spacing */}
+</Container>
+```
+
+#### **Global Mobile Padding Values**
+- **Mobile (default):** `px-3` (12px padding)
+- **Small screens (sm):** `px-6` (24px padding) 
+- **Large screens (lg):** `px-8` (32px padding)
+
+#### **Max Width Rules**
+- **Mobile/Tablet (sm, md):** `max-w-full` (full width)
+- **Desktop (lg+):** `max-w-[1400px]` (constrained width)
+
+#### **Implementation Guidelines**
+- ✅ **DO:** Use Container component for all page content
+- ✅ **DO:** Let Container handle responsive padding automatically
+- ✅ **DO:** Use `max-w-full` on mobile/tablet for full width
+- ❌ **DON'T:** Override Container padding with custom classes
+- ❌ **DON'T:** Use `px-4` or `px-6` on mobile (creates inconsistent spacing)
+- ❌ **DON'T:** Create double padding with nested Containers
+
+#### **Enforcement & Validation**
+- **Design System Page:** `/design-system/layout-patterns` contains live examples and validation
+- **Code Review:** All new pages must follow these mobile padding standards
+- **Testing:** Verify mobile padding consistency across all breakpoints
+- **Documentation:** This guide serves as the authoritative source for mobile padding rules
+
 ### **Hero Section Pattern**
 For all `/website` pages, use this pattern to ensure balanced spacing:
 

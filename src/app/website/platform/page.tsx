@@ -40,10 +40,10 @@ function PlatformHeroSection() {
       paddingY="lg" 
       className="flex items-center min-h-screen pt-8 sm:pt-0 relative overflow-hidden"
     >
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <Container size="2xl" className="relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
               <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
                 The Agentic Platform for
@@ -72,7 +72,7 @@ function PlatformHeroSection() {
           {/* Right Column - Visual */}
           <div className="relative">
             {/* Main Visual Container */}
-            <div className="relative h-[500px] lg:h-[600px] rounded-3xl bg-gradient-to-br from-background/50 to-background/30 border border-border/50 overflow-hidden backdrop-blur-sm">
+            <div className="relative h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600px] rounded-3xl bg-gradient-to-br from-background/50 to-background/30 border border-border/50 overflow-hidden backdrop-blur-sm">
               {/* Animated Grid Background */}
               <div className="absolute inset-0">
                 <div 
@@ -205,16 +205,16 @@ export default function WireframesPlatformPage() {
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
-        <Container size="2xl">
               {/* Platform Hero Section */}
               <PlatformHeroSection />
 
           <Section paddingY="lg">
-            <div className="text-center">
-                  <p className="text-muted-foreground">Platform content sections will go here</p>
-            </div>
+            <Container size="2xl">
+              <div className="text-center">
+                    <p className="text-muted-foreground">Platform content sections will go here</p>
+              </div>
+            </Container>
           </Section>
-        </Container>
           </main>
         </div>
       </MobileOnlyLayout>

@@ -539,7 +539,7 @@ function IntroductionSection() {
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-600/15 to-blue-500/10"></div>
-      <Container size="2xl" className="px-4 sm:px-6 lg:px-8 lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px] relative z-10">
         <div className="grid grid-cols-12 gap-4 lg:gap-8 items-start">
           {/* Left Column - Heading */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
@@ -965,16 +965,16 @@ function PlatformSection() {
       <Container size="2xl" >
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
-          <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+          <div className="block lg:hidden mb-0">
             {/* Section Headline */}
-            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8">
               <H1>The agentic platform</H1>
               <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
               </BodyLarge>
             </div>
             <div className="overflow-x-auto pb-1">
-              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
+              <div className="flex gap-4 w-max">
                 {features.map((feature, index) => (
                   <div
                     key={index}
@@ -1336,7 +1336,7 @@ function WhoWeServeSection() {
             </BodyLarge>
           </div>
           {/* Carousel Layout */}
-          <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
+          <div className="mt-8 lg:mt-12">
             <Carousel 
               items={solutions}
               autoPlay={true}

@@ -215,7 +215,7 @@ export default function LoginPage() {
         {/* Global Header */}
         <GlobalHeader showLogin={false} showDemo={false} />
 
-        <main className="flex-1 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+        <main className="flex-1 flex items-center justify-center px-3 py-8 sm:px-6 lg:px-8">
           <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
             <LoginForm />
           </div>

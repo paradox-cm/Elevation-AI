@@ -9,8 +9,8 @@ interface ContainerProps {
 }
 
 const containerSizes = {
-  sm: "max-w-screen-sm",
-  md: "max-w-screen-md", 
+  sm: "max-w-full",
+  md: "max-w-full", 
   lg: "max-w-[1400px]",
   xl: "max-w-[1920px]",
   "2xl": "max-w-[2560px]",
@@ -26,7 +26,7 @@ export function Container({
   return (
     <Component
       className={cn(
-        "mx-auto w-full px-4 sm:px-6 lg:px-8",
+        "mx-auto w-full px-3 sm:px-6 lg:px-8",
         containerSizes[size],
         className
       )}
