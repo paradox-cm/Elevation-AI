@@ -109,7 +109,7 @@ export function UnifiedKnowledge({
 
   // Alternative approach: Use breakpoint reset hook
   useBreakpointReset(containerRef, () => {
-    console.log('UnifiedKnowledge: Breakpoint change detected, restarting animation')
+    // Animation restart triggered by breakpoint change
     initializeAndStartAnimation()
   })
 

@@ -51,6 +51,7 @@ export function Carousel({
   const [showGradient, setShowGradient] = React.useState(true)
   const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
   const [maxCardHeight, setMaxCardHeight] = React.useState<number>(0)
+  const [hasManualInteraction, setHasManualInteraction] = React.useState(false)
   const carouselRef = React.useRef<HTMLDivElement>(null)
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([])
   const autoPlayIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
@@ -97,9 +98,9 @@ export function Carousel({
   const getResponsivePadding = () => {
     switch (screenSize) {
       case 'sm':
-        return { paddingLeft: '1.5rem', paddingRight: '1.5rem' } // sm:px-6 = 1.5rem
+        return { paddingLeft: '1.5rem', paddingRight: '2.5rem' } // sm:px-6 = 1.5rem, extra right padding for mobile
       case 'md':
-        return { paddingLeft: '1.5rem', paddingRight: '1.5rem' } // sm:px-6 = 1.5rem
+        return { paddingLeft: '1.5rem', paddingRight: '2.5rem' } // sm:px-6 = 1.5rem, extra right padding for mobile
       case 'lg':
         return { paddingLeft: '2rem', paddingRight: '2rem' } // lg:px-8 = 2rem
       case 'xl':
@@ -172,10 +173,21 @@ export function Carousel({
     }
   }
 
+  // Detect manual interaction (mobile only)
+  const handleManualInteraction = React.useCallback(() => {
+    // Only stop auto-play on mobile devices (screen size 'sm' or 'md')
+    if (screenSize === 'sm' || screenSize === 'md') {
+      setHasManualInteraction(true)
+    }
+  }, [screenSize])
+
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
     setCurrentSlide(index)
     setProgress(0)
+    
+    // Detect manual interaction when user clicks indicators
+    handleManualInteraction()
     
     if (carouselRef.current) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
@@ -190,7 +202,8 @@ export function Carousel({
 
   // Auto-play functionality with synchronized progress
   React.useEffect(() => {
-    if (!autoPlay) return
+    // Don't auto-play if user has manually interacted (mobile only)
+    if (!autoPlay || (hasManualInteraction && (screenSize === 'sm' || screenSize === 'md'))) return
     
     // Reset progress when starting
     setProgress(0)
@@ -216,7 +229,7 @@ export function Carousel({
     return () => {
       clearInterval(progressTimer)
     }
-  }, [autoPlay, autoPlayInterval, items.length])
+  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize])
 
   // Auto-scroll carousel when currentSlide changes
   React.useEffect(() => {
@@ -229,17 +242,30 @@ export function Carousel({
     }
   }, [currentSlide, responsiveCardWidth, responsiveCardGap])
 
-  // Add scroll event listener to check position
+  // Add scroll event listener to check position and detect manual interaction
   React.useEffect(() => {
     const carousel = carouselRef.current
     if (carousel) {
-      carousel.addEventListener('scroll', checkScrollPosition)
+      const handleScroll = () => {
+        checkScrollPosition()
+        handleManualInteraction()
+      }
+      
+      const handleTouchStart = () => {
+        handleManualInteraction()
+      }
+      
+      carousel.addEventListener('scroll', handleScroll)
+      carousel.addEventListener('touchstart', handleTouchStart, { passive: true })
       // Check initial position
       checkScrollPosition()
       
-      return () => carousel.removeEventListener('scroll', checkScrollPosition)
+      return () => {
+        carousel.removeEventListener('scroll', handleScroll)
+        carousel.removeEventListener('touchstart', handleTouchStart)
+      }
     }
-  }, [])
+  }, [handleManualInteraction])
 
 
   return (

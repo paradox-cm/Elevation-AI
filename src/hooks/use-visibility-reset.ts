@@ -20,13 +20,7 @@ export function useVisibilityReset(
     entries.forEach((entry) => {
       const isVisible = entry.isIntersecting && entry.intersectionRatio >= threshold
       
-      // Debug logging
-      console.log('Visibility change detected:', {
-        isVisible,
-        wasVisible: isVisibleRef.current,
-        intersectionRatio: entry.intersectionRatio,
-        isIntersecting: entry.isIntersecting
-      })
+      // Debug logging removed to prevent console spam
       
       // Only trigger callback when visibility state actually changes
       if (isVisible !== isVisibleRef.current) {

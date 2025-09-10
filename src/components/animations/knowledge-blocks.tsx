@@ -425,7 +425,7 @@ export function KnowledgeBlocksMobile({
 
   // Alternative approach: Use breakpoint reset hook
   useBreakpointReset(containerRef, () => {
-    console.log('KnowledgeBlocksMobile: Breakpoint change detected, restarting animation')
+    // Animation restart triggered by breakpoint change
     initializeAndStartAnimation()
   })
 

@@ -31,19 +31,10 @@ export function useBreakpointReset(
       computedStyle.visibility !== 'hidden' &&
       computedStyle.opacity !== '0'
 
-    // Debug logging
-    console.log('Breakpoint visibility check:', {
-      isVisible,
-      wasVisible: isVisibleRef.current,
-      rect: { width: rect.width, height: rect.height },
-      display: computedStyle.display,
-      visibility: computedStyle.visibility,
-      opacity: computedStyle.opacity
-    })
+    // Debug logging removed to prevent console spam
 
     // If visibility changed from hidden to visible, trigger callback
     if (isVisible && !isVisibleRef.current) {
-      console.log('Element became visible, triggering animation restart')
       onBreakpointChange()
     }
 

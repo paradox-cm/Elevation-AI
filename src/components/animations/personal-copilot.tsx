@@ -77,7 +77,7 @@ export function PersonalCopilot({
 
   // Alternative approach: Use breakpoint reset hook
   useBreakpointReset(containerRef, () => {
-    console.log('PersonalCopilot: Breakpoint change detected, restarting animation')
+    // Animation restart triggered by breakpoint change
     initializeAndStartAnimation()
   })
 

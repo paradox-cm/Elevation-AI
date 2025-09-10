@@ -250,7 +250,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       {/* First row - moves left */}
       <div ref={firstRowRef} className="flex mb-16">
         {/* Extra padding at the start for better visibility */}
-        <div className="flex-shrink-0 w-16 sm:w-24 lg:w-32" />
+        <div className="flex-shrink-0 w-8 sm:w-24 lg:w-32" />
         {duplicatedFirstRowLogos.map((logo, index) => (
           <div
             key={`first-${logo.filename}-${index}`}
@@ -281,7 +281,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       {/* Second row - moves right */}
       <div ref={secondRowRef} className="flex">
         {/* Extra padding at the start for better visibility */}
-        <div className="flex-shrink-0 w-16 sm:w-24 lg:w-32" />
+        <div className="flex-shrink-0 w-8 sm:w-24 lg:w-32" />
         {duplicatedSecondRowLogos.map((logo, index) => (
           <div
             key={`second-${logo.filename}-${index}`}
