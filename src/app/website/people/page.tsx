@@ -18,7 +18,84 @@ import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Users, Headphones, Brain, Shield, Clock, Globe, CheckCircle, ArrowRight, Star, Award, UserCheck, Zap, Target, Sparkles } from "lucide-react"
 import Link from "next/link"
 import Icon from "@/components/ui/icon"
-import { WIPBanner } from "@/components/ui/wip-banner"
+import { VerticalSquareFlow } from "@/components/animations"
+
+// Animated Text Carousel Component
+function AnimatedTextCarousel({ 
+  texts, 
+  autoPlayInterval = 4000 
+}: { 
+  texts: string[]
+  autoPlayInterval?: number 
+}) {
+  const [currentIndex, setCurrentIndex] = React.useState(0)
+  const [progress, setProgress] = React.useState(0)
+
+  // Auto-play functionality
+  React.useEffect(() => {
+    const progressIncrement = 2 // 2% every 80ms
+    const progressInterval = 80 // 80ms intervals
+    
+    let currentProgress = 0
+    const progressTimer = setInterval(() => {
+      currentProgress += progressIncrement
+      setProgress(currentProgress)
+      
+      if (currentProgress >= 100) {
+        currentProgress = 0
+        setProgress(0)
+        setCurrentIndex((prev) => (prev + 1) % texts.length)
+      }
+    }, progressInterval)
+
+    return () => clearInterval(progressTimer)
+  }, [texts.length, autoPlayInterval])
+
+  return (
+    <div className="space-y-6">
+      {/* Text Display */}
+      <div className="relative h-32 flex items-center justify-center">
+        {texts.map((text, index) => (
+          <div
+            key={index}
+            className={`transition-opacity duration-300 absolute inset-0 flex items-center justify-center ${
+              index === currentIndex
+                ? 'opacity-100'
+                : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <H3 className="text-orange-500 leading-relaxed">
+              {text}
+            </H3>
+          </div>
+        ))}
+      </div>
+      
+      {/* Thin Line Indicators */}
+      <div className="flex gap-2 justify-center">
+        {texts.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              setCurrentIndex(index)
+              setProgress(0)
+            }}
+            className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+            aria-label={`Go to statement ${index + 1}`}
+          >
+            <div 
+              className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
+                index === currentIndex
+                  ? 'bg-orange-500' 
+                  : 'bg-muted-foreground/30'
+              }`}
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 interface ConciergeService {
   id: string
@@ -145,11 +222,11 @@ function ExpertCategoryCard({ category }: { category: ExpertCategory }) {
   const IconComponent = category.icon
 
   return (
-    <Card className="h-full">
+    <Card className="h-full bg-blue-500/5 border-blue-500/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <IconComponent className="w-5 h-5 text-primary" />
+          <div className="p-2 rounded-lg bg-blue-500/10">
+            <IconComponent className="w-5 h-5 text-blue-500" />
           </div>
           {category.title}
         </CardTitle>
@@ -160,12 +237,12 @@ function ExpertCategoryCard({ category }: { category: ExpertCategory }) {
       <CardContent>
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-primary" />
+            <Users className="w-4 h-4 text-blue-500" />
             <span className="text-sm font-medium">{category.expertCount} Experts Available</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {category.specialties.map((specialty) => (
-              <Badge key={specialty} variant="secondary" className="text-xs">
+              <Badge key={specialty} variant="secondary" className="text-xs bg-blue-500/10 text-blue-500 border-blue-500/20">
                 {specialty}
               </Badge>
             ))}
@@ -175,6 +252,7 @@ function ExpertCategoryCard({ category }: { category: ExpertCategory }) {
     </Card>
   )
 }
+
 
 // Creative Hero Section Component
 function CreativeHeroSection() {
@@ -189,12 +267,12 @@ function CreativeHeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
           <div className="space-y-6 sm:space-y-8">
-            <div className="space-y-4 sm:space-y-6">
+             <div className="space-y-4 sm:space-y-6">
                         <H1>
-                          Your Expert Network Awaits
+                          Your Dedicated Team for the Agentic Era
                         </H1>
               <BodyLarge className="text-muted-foreground max-w-2xl">
-                Access world-class expertise and dedicated support through our Concierge Team and global Expert Network. Get the specialized knowledge and hands-on assistance you need to maximize your platform's potential.
+                Your concierge support team, acting as an extension of your own team, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.
               </BodyLarge>
             </div>
 
@@ -242,6 +320,14 @@ function CreativeHeroSection() {
                 />
               </div>
 
+              {/* Center Logo */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img 
+                  src="/images/branding/E-AI-Squircle.svg" 
+                  alt="Elevation AI Logo"
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 dark:brightness-0 dark:invert"
+                />
+              </div>
 
             </div>
 
@@ -263,219 +349,263 @@ export default function PeoplePage() {
               >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
-            {/* WIP Banner */}
-            <div className="pt-8">
-              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-                <WIPBanner />
-              </Container>
-            </div>
             
             {/* Creative Hero Section */}
             <CreativeHeroSection />
 
-            {/* Concierge Support Section */}
+
+            {/* Concierge Details Section */}
             <div id="concierge-team">
               <Section paddingY="sm">
                 <Container size="2xl">
                   <div className="space-y-6">
-                {/* Hero Section with Visual Elements */}
-                <div className="relative">
-                  <div className="text-center space-y-8">
-                    <div className="space-y-4">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
-                        <Users className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-medium text-primary">Concierge Support</span>
-                      </div>
-                      <H1>Your Dedicated Team for the Agentic Era</H1>
-                      <H1 className="text-muted-foreground leading-relaxed">
-                        For organizations that need more than a platform, our Concierge Support team acts as an extension of your own, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.
-                      </H1>
-                    </div>
-                    
-                    {/* Visual Element */}
-                    <div className="flex justify-center pt-4">
-                      <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Challenge and Solution Side by Side */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                {/* Challenge and Solution - Full Width Layout */}
+                <div className="space-y-8">
                   {/* The Challenge Section */}
                   <div className="relative">
-                    <div className="space-y-8">
-                      <div className="text-center space-y-4">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/10 rounded-full border border-orange-500/20">
-                          <Brain className="w-4 h-4 text-orange-500" />
-                          <span className="text-sm font-medium text-orange-500">The Challenge</span>
+                    <div className="text-center space-y-8">
+                      <div className="space-y-4">
+                        <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500/10 rounded-full border border-orange-500/20">
+                          <Brain className="w-5 h-5 text-orange-500" />
+                          <span className="text-sm font-semibold text-orange-500">The Challenge</span>
                         </div>
                         <H2>Technology Alone Isn't Transformation</H2>
                       </div>
                       
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent rounded-2xl"></div>
-                        <div className="relative p-8 rounded-2xl border border-orange-500/10 bg-background/50 backdrop-blur-sm">
-                          <BodyLarge className="text-muted-foreground leading-relaxed text-center">
-                            Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates. The transition requires a unique blend of strategic foresight to identify the right opportunities, deep technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption. Most organizations don't have this specialized, multi-disciplinary team in-house.
-                          </BodyLarge>
+                      <div className="relative w-full">
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-orange-500/10 to-transparent rounded-3xl"></div>
+                        <div className="relative p-8 sm:p-12 lg:p-16 rounded-3xl border border-orange-500/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
+                          <div className="max-w-5xl mx-auto">
+                            <AnimatedTextCarousel 
+                              texts={[
+                                "Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates.",
+                                "The transition requires a unique blend of strategic foresight to identify opportunities, the technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption.",
+                                "Most organizations don't have this specialized, multi-disciplinary team in-house."
+                              ]}
+                              autoPlayInterval={5000}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Our Solution Section */}
-                  <div className="space-y-8">
-                    <div className="text-center space-y-4">
-                      <H2>We Become Your Agentic Operations Team</H2>
-                      <P className="text-muted-foreground leading-relaxed">
-                        Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.
-                      </P>
-                    </div>
+                  {/* Our Solution Section - Single Container */}
+                  <div className="relative">
+                    <Card className="border-border bg-transparent">
+                      <CardContent className="p-8 sm:p-12 lg:p-16">
+                        <div className="space-y-12">
+                          {/* Header Section */}
+                          <div className="text-center space-y-8">
+                            <div className="space-y-4">
+                              <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
+                                <Users className="w-5 h-5 text-primary" />
+                                <span className="text-sm font-semibold text-primary">Our Solution</span>
+                              </div>
+                              <H2>We Become Your Agentic Operations Team</H2>
+                            </div>
+                            
+                            <div className="relative w-full">
+                              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/10 to-transparent rounded-3xl"></div>
+                              <div className="relative p-8 sm:p-12 lg:p-16 rounded-3xl border border-primary/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
+                                <BodyLarge className="text-muted-foreground leading-relaxed text-center text-lg max-w-5xl mx-auto">
+                                  Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.
+                                </BodyLarge>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Process Flow Section */}
+                          <div className="space-y-8">
+                            {/* Four Column Process Flow */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <Card className="border-border h-full bg-transparent">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <Target className="w-5 h-5 text-primary" />
+                          </div>
+                          <CardTitle className="text-lg">Design & Strategize</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <P className="text-muted-foreground leading-relaxed">
+                          Our engagement begins with a deep-dive discovery process. We work alongside your leadership to map your unique challenges, identify the highest-value automation opportunities, and co-design a clear, phased roadmap for your agentic transformation.
+                        </P>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-border h-full bg-transparent">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <Zap className="w-5 h-5 text-primary" />
+                          </div>
+                          <CardTitle className="text-lg">Build & Implement</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <P className="text-muted-foreground leading-relaxed">
+                          Our agentic engineers get to work building the custom solutions you need. This includes creating specialized agents, designing complex automated workflows, and configuring your Workspaces and Canvases for your specific operational needs.
+                        </P>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-border h-full bg-transparent">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <Shield className="w-5 h-5 text-primary" />
+                          </div>
+                          <CardTitle className="text-lg">Integrate & Orchestrate</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <P className="text-muted-foreground leading-relaxed">
+                          We handle the complexity of connecting our platform to your existing systems of record. We ensure a seamless flow of data, allowing your new agentic workflows to orchestrate your entire tech stack.
+                        </P>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-border h-full bg-transparent">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <Sparkles className="w-5 h-5 text-primary" />
+                          </div>
+                          <CardTitle className="text-lg">Support & Iterate</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <P className="text-muted-foreground leading-relaxed">
+                          Our partnership doesn't end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.
+                        </P>
+                      </CardContent>
+                    </Card>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 </div>
 
-                {/* Process Flow Section - Full Width Below */}
+                {/* Who This Is For Section - Enhanced */}
                 <div className="space-y-8">
+                  <div className="text-center space-y-4">
+                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
+                      <Target className="w-5 h-5 text-primary" />
+                      <span className="text-sm font-semibold text-primary">Who This Is For</span>
+                    </div>
+                    <H2>A Partnership for Ambitious Leaders</H2>
+                    <P className="text-muted-foreground leading-relaxed text-lg max-w-3xl mx-auto">
+                      Our Concierge service is designed for growth-oriented leaders who understand that the future belongs to those who act decisively today.
+                    </P>
+                  </div>
                   
-                  {/* Process Flow - Two Rows */}
-                  <div className="space-y-8">
-                    {/* First Row - Design & Build */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <Card className="border-border h-full">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                              <Target className="w-5 h-5 text-primary" />
-                            </div>
-                            <CardTitle className="text-lg">Design & Strategize</CardTitle>
+                  <div className="relative w-full">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/10 to-transparent rounded-3xl"></div>
+                    <div className="relative p-8 sm:p-12 rounded-3xl border border-primary/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="flex items-start gap-4 group">
+                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                            <CheckCircle className="w-4 h-4 text-primary" />
                           </div>
-                        </CardHeader>
-                        <CardContent>
-                          <P className="text-muted-foreground leading-relaxed">
-                            Our engagement begins with a deep-dive discovery process. We work alongside your leadership to map your unique challenges, identify the highest-value automation opportunities, and co-design a clear, phased roadmap for your agentic transformation.
-                          </P>
-                        </CardContent>
-                      </Card>
-
-                      <Card className="border-border h-full">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                              <Zap className="w-5 h-5 text-primary" />
-                            </div>
-                            <CardTitle className="text-lg">Build & Implement</CardTitle>
+                          <div>
+                            <P className="font-medium text-foreground">First-Mover Advantage</P>
+                            <P className="text-sm text-muted-foreground leading-relaxed">Want to move quickly and capture a first-mover advantage in their industry.</P>
                           </div>
-                        </CardHeader>
-                        <CardContent>
-                          <P className="text-muted-foreground leading-relaxed">
-                            Our agentic engineers get to work building the custom solutions you need. This includes creating specialized agents, designing complex automated workflows, and configuring your Workspaces and Canvases for your specific operational needs.
-                          </P>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    {/* Second Row - Integrate & Support */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <Card className="border-border h-full">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                              <Shield className="w-5 h-5 text-primary" />
-                            </div>
-                            <CardTitle className="text-lg">Integrate & Orchestrate</CardTitle>
+                        </div>
+                        
+                        <div className="flex items-start gap-4 group">
+                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                            <CheckCircle className="w-4 h-4 text-primary" />
                           </div>
-                        </CardHeader>
-                        <CardContent>
-                          <P className="text-muted-foreground leading-relaxed">
-                            We handle the complexity of connecting our platform to your existing systems of record. We ensure a seamless flow of data, allowing your new agentic workflows to orchestrate your entire tech stack.
-                          </P>
-                        </CardContent>
-                      </Card>
-
-                      <Card className="border-border h-full">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                              <Sparkles className="w-5 h-5 text-primary" />
-                            </div>
-                            <CardTitle className="text-lg">Support & Iterate</CardTitle>
+                          <div>
+                            <P className="font-medium text-foreground">Complex Workflows</P>
+                            <P className="text-sm text-muted-foreground leading-relaxed">Have complex, mission-critical workflows that require a bespoke, tailored solution.</P>
                           </div>
-                        </CardHeader>
-                        <CardContent>
-                          <P className="text-muted-foreground leading-relaxed">
-                            Our partnership doesn't end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.
-                          </P>
-                        </CardContent>
-                      </Card>
+                        </div>
+                        
+                        <div className="flex items-start gap-4 group">
+                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                          </div>
+                          <div>
+                            <P className="font-medium text-foreground">Strategic Partnership</P>
+                            <P className="text-sm text-muted-foreground leading-relaxed">Prefer a strategic partner to act as their dedicated agentic implementation team.</P>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-4 group">
+                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                          </div>
+                          <div>
+                            <P className="font-medium text-foreground">Specialized Talent</P>
+                            <P className="text-sm text-muted-foreground leading-relaxed">Need to augment their existing team's capacity with specialized, hard-to-find talent.</P>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Who This Is For Section */}
-                <div className="space-y-6">
-                  <H2>A Partnership for Ambitious Leaders</H2>
-                  <P className="text-muted-foreground leading-relaxed">
-                    Our Concierge service is designed for growth-oriented leaders who:
-                  </P>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <P className="text-sm">Want to move quickly and capture a first-mover advantage in their industry.</P>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <P className="text-sm">Have complex, mission-critical workflows that require a bespoke, tailored solution.</P>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <P className="text-sm">Prefer a strategic partner to act as their dedicated agentic implementation team.</P>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <P className="text-sm">Need to augment their existing team's capacity with specialized, hard-to-find talent.</P>
-                    </div>
-                  </div>
-                </div>
-
-                {/* CTA Section */}
-                <div className="text-center space-y-6 pt-6">
-                  <H2>Ready to Build Your Agentic Future?</H2>
-                  <P className="text-muted-foreground">
-                    Let's discuss how our Concierge Support Team can help you achieve your goals.
-                  </P>
-                  <Button size="lg" asChild>
-                    <Link href="/website/contact">Speak With Our Team</Link>
-                  </Button>
-                </div>
                   </div>
                 </Container>
               </Section>
             </div>
 
-            {/* Expert Network Section - Placeholder */}
+            {/* Expert Network Section */}
             <div id="expert-network">
-              <Section paddingY="sm" className="bg-muted/30">
+              <Section paddingY="lg" className="bg-blue-500/10">
                 <Container size="2xl">
-                  <div className="space-y-6 rounded-2xl">
-                <div className="text-center space-y-6">
-                  <H1>Expert Network</H1>
-                  <BodyLarge className="text-muted-foreground">
-                    Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.
-                  </BodyLarge>
-                </div>
+                  <div className="space-y-12">
+                    {/* Header */}
+                    <div className="text-center space-y-6">
+                      <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
+                        <Users className="w-5 h-5 text-primary" />
+                        <span className="text-sm font-semibold text-primary">Expert Network</span>
+                      </div>
+                      <H1>Access World-Class Expertise</H1>
+                      <BodyLarge className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-lg">
+                        Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.
+                      </BodyLarge>
+                    </div>
 
-                <div className="text-center space-y-6 py-12">
-                  <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                    <Users className="w-12 h-12 text-primary" />
+                    {/* Expert Categories Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {expertCategories.map((category) => (
+                        <ExpertCategoryCard key={category.id} category={category} />
+                      ))}
+                    </div>
+
                   </div>
-                  <H2>Expert Network Content Coming Soon</H2>
-                  <P className="text-muted-foreground">
-                    We're building a comprehensive network of vetted experts across multiple domains. This section will showcase our expert categories, vetting process, and how to connect with the right specialists for your needs.
-                  </P>
-                  <Button variant="outline" asChild>
-                    <Link href="/website/contact">Get Notified When Available</Link>
-                  </Button>
-                </div>
+                </Container>
+              </Section>
+            </div>
+
+            {/* CTA Section */}
+            <div id="connect-experts">
+              <Section paddingY="lg" className="bg-muted/30">
+                <Container size="2xl">
+                  <div className="max-w-4xl mx-auto text-center space-y-8">
+                    <div className="space-y-4">
+                      <H2>Ready to Connect with Experts?</H2>
+                      <P className="text-muted-foreground leading-relaxed">
+                        Our expert network is ready to help you tackle your most complex challenges. Connect with the right specialists for your specific needs.
+                      </P>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button size="lg" asChild>
+                        <Link href="/website/contact">Connect with Experts</Link>
+                      </Button>
+                      <Button variant="outline" size="lg" asChild>
+                        <Link href="/website/demo">Schedule a Demo</Link>
+                      </Button>
+                    </div>
                   </div>
                 </Container>
               </Section>

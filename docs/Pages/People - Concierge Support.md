@@ -1,0 +1,107 @@
+People - Concierge Support
+[Hero Section]
+Headline: Your Dedicated Team for the Agentic Era
+Sub-headline: For organizations that need more than a platform, our Concierge Support team acts as an extension of your own, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.
+[The Challenge Section]
+Headline: Technology Alone Isn't Transformation
+Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates. The transition requires a unique blend of strategic foresight to identify the right opportunities, deep technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption. Most organizations don't have this specialized, multi-disciplinary team in-house.
+[Our Solution: Your Embedded Team of Experts]
+Headline: We Become Your Agentic Operations Team
+Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.
+(Four columns/icons)
+	•	Design & Strategize: Our engagement begins with a deep-dive discovery process. We work alongside your leadership to map your unique challenges, identify the highest-value automation opportunities, and co-design a clear, phased roadmap for your agentic transformation.
+	•	Build & Implement: Our agentic engineers get to work building the custom solutions you need. This includes creating specialized agents, designing complex automated workflows, and configuring your Workspaces and Canvases for your specific operational needs.
+	•	Integrate & Orchestrate: We handle the complexity of connecting our platform to your existing systems of record. We ensure a seamless flow of data, allowing your new agentic workflows to orchestrate your entire tech stack.
+	•	Support & Iterate: Our partnership doesn't end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.
+[Who This Is For Section]
+Headline: A Partnership for Ambitious Leaders
+Our Concierge service is designed for growth-oriented leaders who:
+	•	Want to move quickly and capture a first-mover advantage in their industry.
+	•	Have complex, mission-critical workflows that require a bespoke, tailored solution.
+	•	Prefer a strategic partner to act as their dedicated agentic implementation team.
+	•	Need to augment their existing team's capacity with specialized, hard-to-find talent.
+[CTA Section]
+Headline: Ready to Build Your Agentic Future?
+Sub-headline: Let's discuss how our Concierge Support Team can help you achieve your goals.
+Primary CTA: Speak With Our Team
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 15: People - Embedded Experts
+[Hero Section]
+Headline: On-Demand Expertise, Natively Integrated
+Sub-headline: Augment your team with world-class, on-demand subject matter experts. Our network of vetted specialists can be embedded directly into your Workspaces to solve specific challenges with precision and speed.
+[The Challenge Section]
+Headline: The Friction of Finding and Integrating Expertise
+Sometimes you don't need a full-time hire or a large consulting firm; you just need a few hours with a world-class expert. However, the process of finding, vetting, onboarding, and securely integrating external specialists for short-term engagements is filled with friction and security risks.
+[Our Solution: A Frictionless Flow of Knowledge]
+Headline: The Right Expert, in the Right Context, at the Right Time
+The Elevation AI Expert Network removes the friction from sourcing specialized talent. Our experts are native to our platform, allowing them to be seamlessly and securely "parachuted" into your projects as needed.
+(Three columns/icons)
+	•	Discover & Select: Browse our curated network of vetted experts across dozens of domains—from go-to-market strategy and legal review to financial modeling and cybersecurity.
+	•	Securely Embed: With one click, grant an expert temporary, secure access to a specific Workspace. They get the full context of the project's Knowledge Base without ever gaining access to your broader company universe.
+	•	Execute & Deliver: The expert collaborates with your team directly within your existing workflows, providing their insights where they're most valuable. When the engagement is complete, their access is cleanly revoked, and all the knowledge they created remains securely in your Knowledge Base.
+[Who This Is For Section]
+Headline: Targeted Expertise for High-Stakes Moments
+Our Embedded Experts are ideal for teams who need:
+	•	A senior-level sounding board for a key strategic decision.
+	•	Specialized expertise to unblock a critical phase of a project.
+	•	A fractional executive to fill a short-term leadership gap.
+	•	An objective third-party review of a plan or document.
+[CTA Section]
+Headline: Augment Your Team with On-Demand Talent
+Sub-headline: Explore our network of subject matter experts and see how they can help you solve your next big challenge.
+Primary CTA: Explore the Expert Network
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 16: People - Partner Network
+[Hero Section]
+Headline: Scale Your Execution with a Trusted Ecosystem of Specialized Firms
+Sub-headline: For large-scale initiatives, leverage our Partner Network—a curated ecosystem of specialized consulting firms and agencies that bring deep domain expertise and a full team of resources to solve your most complex challenges.
+[The Challenge Section]
+Headline: The Disconnect of Traditional Consulting
+Large-scale projects often require the horsepower of a dedicated consulting firm. However, traditional engagements can be disjointed. External firms often work in their own systems, leading to siloed communication, a painful knowledge transfer process at the end of the project, and a lack of real integration with your team.
+[Our Solution: A Natively Integrated Partnership]
+Headline: A New Model for Consulting Engagement
+Our Partner Network consists of leading, highly specialized consulting firms who are experts on the Elevation AI platform. This creates a fundamentally better engagement model, providing a level of integrated expertise that a single expert cannot offer.
+(Three columns/icons)
+	•	A Unified Workspace: Instead of working in separate systems, our partners embed directly into your Elevation AI Workspaces. This creates a single, shared environment for all communication, deliverables, and project management, providing you with unprecedented transparency.
+	•	No Lost Knowledge: Because the entire engagement happens on your platform, all of the work product, research, and strategic insights generated by the consulting team are automatically captured in your private Knowledge Base. When the project ends, the knowledge stays with you.
+	•	Accelerated Execution: Our partners leverage our platform's library of pre-built agents and workflows to deliver results faster. They spend less time on manual data gathering and more time on high-value strategic work, resulting in a more efficient and impactful engagement.
+[Who This Is For Section]
+Headline: Strategic Horsepower for Your Biggest Initiatives
+Our Partner Network is ideal for organizations undertaking:
+	•	Large-scale digital or agentic transformation projects.
+	•	Post-merger integration for a newly acquired company.
+	•	The rollout of a new product or entry into a new market.
+	•	A comprehensive operational overhaul to prepare for an exit.
+[CTA Section]
+Headline: Find the Right Partner for Your Next Big Move
+Sub-headline: Discover our ecosystem of trusted consulting firms and agencies.
+Primary CTA: Meet Our Partners

@@ -101,16 +101,16 @@ function PlatformHeroSection() {
 }
 
 
-// Platform Components Section
-function PlatformComponentsSection() {
+// Platform Features Section
+function PlatformFeaturesSection() {
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-16">
           <div className="text-center space-y-4 max-w-4xl mx-auto">
-            <H1>Platform Components</H1>
+            <H1>Platform Features</H1>
             <P className="text-muted-foreground">
-              Our platform consists of five core components that work together to create a comprehensive AI-powered operating system for your organization.
+              Our platform consists of five core features that work together to create a comprehensive AI-powered operating system for your organization.
             </P>
           </div>
 
@@ -781,14 +781,20 @@ export default function WireframesPlatformPage() {
             <PlatformHeroSection />
 
 
-            {/* Platform Components Section */}
-            <PlatformComponentsSection />
+            {/* Platform Features Section */}
+            <div id="features" className="pt-14">
+              <PlatformFeaturesSection />
+            </div>
 
             {/* Security Section */}
-            <SecuritySection />
+            <div id="security" className="pt-14">
+              <SecuritySection />
+            </div>
 
             {/* Integrations Section */}
-            <IntegrationsSection />
+            <div id="integrations" className="pt-14">
+              <IntegrationsSection />
+            </div>
 
             {/* Use Cases Section */}
             <UseCasesSection />
