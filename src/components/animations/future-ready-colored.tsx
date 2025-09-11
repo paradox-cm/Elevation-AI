@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useCallback } from "react"
-import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useCanvasResize, maintainAspectRatio } from "@/hooks/use-canvas-resize"
 
 interface Arrow {
   x: number
@@ -41,170 +41,221 @@ export function FutureReadyColored({
   const isStartingUpRef = useRef(true)
   const startupDelayRef = useRef(0)
 
-  // Color palette from design system
-  const colors = [
-    '#0e62fd', // Elevation (Primary Blue)
-    '#7458f4', // Periwinkle (Secondary Purple)
-    '#12c55d', // Green (Success)
-    '#ebbc48', // Gold (Warning)
-    '#e433c3', // Magenta (Creative)
-    '#5bc8f7', // Cyan (Info)
-    '#df3523', // Red (Error)
-  ]
+  // Theme-aware colors - will be set in useEffect
+  const isDarkRef = useRef(false);
+  const observerRef = useRef<MutationObserver | null>(null);
 
   // E-AI-Arrow SVG path data
   const arrowPathData = "M91.7,158.3c-7.2,0-13.1-5.9-13.1-13.1v-40.1c0-11.1-9-20.1-20.1-20.1H13.1c-7.2,0-13.1-5.9-13.1-13.1V13.1C0,5.9,5.9,0,13.1,0h137.5c7.2,0,13.1,5.9,13.1,13.1v132.1c0,7.2-5.9,13.1-13.1,13.1h-58.8Z";
 
-  // Create path from SVG data
-  const createPath = useCallback((ctx: CanvasRenderingContext2D, pathData: string) => {
-    const path = new Path2D(pathData)
-    return path
-  }, [])
+  // Color palette from design system
+  const colorPalette = [
+    '#0e62fd', // Elevation Blue
+    '#7458f4', // Periwinkle Purple
+    '#12c55d', // Green
+    '#ebbc48', // Gold
+    '#e74c3c', // Red
+    '#3498db', // Cyan
+    '#9b59b6'  // Magenta
+  ]
 
-  // Initialize arrows with different colors
-  const initializeArrows = useCallback((canvas: HTMLCanvasElement) => {
+  // Create arrows with different colors
+  const createArrows = useCallback((canvas: HTMLCanvasElement) => {
     const arrows: Arrow[] = []
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const radius = Math.min(canvas.width, canvas.height) * 0.15
-
-    // Create 7 arrows (one for each color)
-    for (let i = 0; i < 7; i++) {
-      const angle = (i / 7) * Math.PI * 2
-      const x = centerX + Math.cos(angle) * radius
-      const y = centerY + Math.sin(angle) * radius
+    const centerX = canvas.width / 2 / (window.devicePixelRatio || 1)
+    const centerY = canvas.height / 2 / (window.devicePixelRatio || 1)
+    
+    // Create 5 arrows in a vertical line, each with a different color
+    for (let i = 0; i < 5; i++) {
+      const y = centerY - 60 + (i * 30) // Vertical spacing
+      const color = colorPalette[i % colorPalette.length]
       
       arrows.push({
-        x,
-        y,
+        x: centerX,
+        y: y,
         opacity: 0,
-        delay: i * 0.2, // Stagger the appearance
-        originalX: x,
+        delay: i * 0.36, // 360ms delay between each arrow
+        originalX: centerX,
         originalY: y,
-        color: colors[i % colors.length]
+        color: color
       })
     }
+    
+    return arrows
+  }, [])
 
-    arrowsRef.current = arrows
-  }, [colors])
+  // Draw arrow function with color support
+  const drawArrow = useCallback((ctx: CanvasRenderingContext2D, arrow: Arrow, canvas: HTMLCanvasElement) => {
+    ctx.save()
+    
+    // Calculate scale factor to maintain aspect ratio
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    const baseWidth = 600
+    const baseHeight = 400
+    const scaleX = logicalWidth / baseWidth
+    const scaleY = logicalHeight / baseHeight
+    const scale = Math.min(scaleX, scaleY)
+    
+    // Set position and transform
+    ctx.translate(arrow.x, arrow.y)
+    ctx.scale(scale, scale) // Scale the arrow to maintain aspect ratio
+    
+    // Set stroke color and opacity
+    ctx.strokeStyle = arrow.color
+    ctx.lineWidth = 2 / scale // Adjust line width for scale
+    ctx.globalAlpha = arrow.opacity
 
-  // Animation function
-  const animate = useCallback((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-    const currentTime = Date.now()
+    // Create path from SVG data
+    const path = new Path2D(arrowPathData)
+    
+    // Draw stroke only (no fill)
+    ctx.stroke(path)
+    
+    ctx.restore()
+  }, [])
+
+  // Animation loop
+  const animateArrows = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+    const currentTime = performance.now()
     
     // Frame rate limiting
     if (currentTime - lastFrameTimeRef.current < frameInterval) {
+      animationRef.current = requestAnimationFrame(() => animateArrows(canvas, ctx))
       return
     }
     lastFrameTimeRef.current = currentTime
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    // Draw border if enabled
+    if (showBorder) {
+      ctx.strokeStyle = isDarkRef.current ? '#ffffff' : '#000000'
+      ctx.lineWidth = 1
+      ctx.strokeRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1))
+    }
 
-    // Update animation time
-    animationTimeRef.current += 0.016 // ~60fps
+    const arrows = arrowsRef.current
+    if (!arrows.length) return
 
-    // Draw arrows
-    arrowsRef.current.forEach((arrow, index) => {
-      const time = animationTimeRef.current - arrow.delay
+    // Calculate animation timing
+    const currentTime2 = (currentTime - (isStartingUpRef.current ? startupDelayRef.current : 0)) / 1000
+    const totalAppearTime = 5 * 0.36 // 5 arrows * 360ms each
+    const totalFadeOutTime = 5 * 0.36 // Same timing for fade out
+    const loopDuration = totalAppearTime + totalFadeOutTime // Perfect loop timing for smooth transition
+    const loopTime = currentTime2 % loopDuration
+    
+    // Update animation time for state persistence
+    animationTimeRef.current = currentTime2
+    
+    // Update and draw arrows
+    arrows.forEach((arrow, index) => {
+      // Check if we're in the fade-out phase
+      const fadeOutStartTime = totalAppearTime + (index * 0.36) // Start fading out from bottom (index 0)
       
-      if (time < 0) return
-
-      // Calculate opacity with smooth fade-in and pulse
-      const fadeInDuration = 1.0
-      const pulseDuration = 2.0
-      const totalCycle = fadeInDuration + pulseDuration
-      
-      let opacity = 0
-      if (time < fadeInDuration) {
-        // Fade in
-        opacity = Math.min(time / fadeInDuration, 1)
-      } else if (time < totalCycle) {
-        // Pulse effect
-        const pulseTime = (time - fadeInDuration) / pulseDuration
-        opacity = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(pulseTime * Math.PI * 4))
+      if (loopTime >= fadeOutStartTime) {
+        // Fade out phase - calculate fade progress
+        const fadeProgress = Math.min(1, (loopTime - fadeOutStartTime) / 0.36)
+        arrow.opacity = 0.9 * (1 - fadeProgress)
       } else {
-        // Reset for next cycle
-        animationTimeRef.current = arrow.delay
-        opacity = 0
+        // Fade in phase - sequential from bottom to top (index 0 to 4)
+        const fadeInStartTime = index * 0.36 // Start fading in from bottom (index 0)
+        
+        if (loopTime >= fadeInStartTime) {
+          // Calculate fade in progress - match fade-out timing exactly
+          const fadeInProgress = Math.min(1, (loopTime - fadeInStartTime) / 0.36)
+          arrow.opacity = 0.9 * fadeInProgress
+        } else {
+          // Keep opacity at 0 before fade-in starts
+          arrow.opacity = 0
+        }
       }
-
-      // Update arrow opacity
-      arrow.opacity = opacity
-
-      // Draw arrow with its assigned color
-      if (opacity > 0) {
-        ctx.save()
-        ctx.globalAlpha = opacity
-        ctx.fillStyle = arrow.color
-        ctx.translate(arrow.x, arrow.y)
-        
-        // Rotate arrow based on its position
-        const angle = Math.atan2(arrow.originalY - canvas.height/2, arrow.originalX - canvas.width/2)
-        ctx.rotate(angle)
-        
-        // Scale arrow based on opacity for a nice effect
-        const scale = 0.5 + (opacity * 0.5)
-        ctx.scale(scale, scale)
-        
-        // Draw the arrow path
-        const path = createPath(ctx, arrowPathData)
-        ctx.fill(path)
-        
-        ctx.restore()
+      
+      // Only draw if opacity > 0
+      if (arrow.opacity > 0) {
+        drawArrow(ctx, arrow, canvas)
       }
     })
 
-    // Continue animation
-    if (isPlaying) {
-      animationRef.current = requestAnimationFrame(() => animate(ctx, canvas))
-    }
-  }, [createPath, isPlaying])
+    animationRef.current = requestAnimationFrame(() => animateArrows(canvas, ctx))
+  }, [isPlaying, drawArrow])
 
   // Initialize canvas and start animation
-  const initializeCanvas = useCallback(() => {
+  const initializeAndStartAnimation = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Set canvas size
-    canvas.width = width
-    canvas.height = height
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
 
-    // Initialize arrows
-    initializeArrows(canvas)
+    // Create arrows with new dimensions
+    arrowsRef.current = createArrows(canvas)
 
     // Start animation
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current)
-    }
-    
-    animationRef.current = requestAnimationFrame(() => animate(ctx, canvas))
-  }, [width, height, initializeArrows, animate])
+    animateArrows(canvas, ctx)
+  }, [createArrows, animateArrows])
 
-  // Handle canvas resize
-  useCanvasResize(canvasRef, initializeCanvas)
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
 
-  // Initialize on mount
   useEffect(() => {
-    initializeCanvas()
-    
+    // Theme-aware colors
+    const updateColors = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      isDarkRef.current = isDark;
+    };
+
+    // Initial color update
+    updateColors();
+
+    // Observe theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          updateColors();
+        }
+      });
+    });
+    observerRef.current = observer;
+    observer.observe(document.documentElement, { attributes: true });
+
+    // Start initial animation
+    initializeAndStartAnimation()
+
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
     }
-  }, [initializeCanvas])
+  }, [initializeAndStartAnimation])
 
   return (
-    <div className={`relative ${className}`}>
-      <canvas
-        ref={canvasRef}
-        className={`w-full h-full ${showBorder ? 'border border-border/20 rounded-lg' : ''}`}
-        style={{ width: `${width}px`, height: `${height}px` }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className={`block ${className}`}
+      style={{ width: `${width}px`, height: `${height}px` }}
+    />
   )
 }
