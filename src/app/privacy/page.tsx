@@ -5,7 +5,7 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { DisplaySmall, H3, BodyLarge, BodySmall, P } from "@/components/ui/typography"
+import { H1, H3, BodyLarge, BodySmall, P } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
@@ -24,9 +24,9 @@ export default function PrivacyPolicyPage() {
               <div className="max-w-4xl mx-auto">
                 {/* Page Header */}
                 <div className="text-center space-y-6 mb-12">
-                  <DisplaySmall className="font-bold">
+                  <H1 className="font-bold">
                     Privacy Policy
-                  </DisplaySmall>
+                  </H1>
                   <BodySmall className="text-muted-foreground">
                     Last updated: January 2025
                   </BodySmall>
