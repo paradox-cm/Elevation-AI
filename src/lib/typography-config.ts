@@ -51,7 +51,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Heading Medium",
-    class: "text-2xl sm:text-base md:text-lg lg:text-3xl xl:text-3xl 2xl:text-3xl",
+    class: "text-xl sm:text-base md:text-lg lg:text-3xl xl:text-3xl 2xl:text-3xl",
     weight: "font-medium",
     lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",

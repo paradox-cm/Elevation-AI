@@ -89,6 +89,7 @@ function PlatformHeroSection() {
                   width={600} 
                   height={400} 
                   showBorder={false}
+                  className="w-[200px] h-[133px] sm:w-[280px] sm:h-[187px] md:w-[320px] md:h-[213px] lg:w-[600px] lg:h-[400px]"
                 />
               </div>
 
@@ -448,63 +449,63 @@ function IntegrationsSection() {
     {
       id: "productivity",
       title: "Productivity",
-      description: "Google Workspace, Microsoft 365, Slack, Notion",
+      description: "Streamline document collaboration and project management across your favorite productivity suites, ensuring seamless workflow integration.",
       icon: "file-text-line",
       logos: logoMapping.productivity
     },
     {
       id: "crm-sales",
       title: "CRM & Sales",
-      description: "Salesforce, HubSpot, Pipedrive, and more sales tools",
+      description: "Unify customer data and sales processes across platforms, enabling intelligent lead management and automated follow-ups.",
       icon: "user-line",
       logos: logoMapping["crm-sales"]
     },
     {
       id: "development",
       title: "Development",
-      description: "GitHub, GitLab, Jira, Confluence, and development platforms",
+      description: "Connect your development workflow from code repositories to project management, enabling AI-powered code assistance and automated deployments.",
       icon: "code-s-slash-line",
       logos: logoMapping.development
     },
     {
       id: "communication",
       title: "Communication",
-      description: "Zoom, Teams, Discord",
+      description: "Integrate video conferencing and team chat platforms to create a unified communication hub with intelligent meeting insights.",
       icon: "message-3-line",
       logos: logoMapping.communication
     },
     {
       id: "data-analytics",
       title: "Data & Analytics",
-      description: "Tableau, Power BI, Google Analytics, and business intelligence tools",
+      description: "Transform raw data into actionable insights by connecting business intelligence tools and creating intelligent dashboards.",
       icon: "bar-chart-line",
       logos: logoMapping["data-analytics"]
     },
     {
       id: "custom-apis",
       title: "Custom APIs",
-      description: "RESTful APIs, webhooks, custom connectors",
+      description: "Build powerful integrations with your existing systems through flexible API connections and custom webhook configurations.",
       icon: "links-line",
       logos: logoMapping["custom-apis"]
     },
     {
       id: "finance",
       title: "Finance & Accounting",
-      description: "QuickBooks, Xero, Stripe, and financial management tools",
+      description: "Automate financial processes and gain real-time insights into your business performance through integrated accounting systems.",
       icon: "money-dollar-circle-line",
       logos: logoMapping.finance
     },
     {
       id: "marketing",
       title: "Marketing",
-      description: "Mailchimp, Hootsuite, Google Ads, and marketing automation platforms",
+      description: "Orchestrate multi-channel marketing campaigns with AI-driven personalization and automated content optimization.",
       icon: "megaphone-line",
       logos: logoMapping.marketing
     },
     {
       id: "hr",
       title: "Human Resources",
-      description: "BambooHR, Workday, ADP, and HR management systems",
+      description: "Streamline HR operations with intelligent talent management, automated onboarding, and data-driven workforce insights.",
       icon: "team-line",
       logos: logoMapping.hr
     }
@@ -527,10 +528,10 @@ function IntegrationsSection() {
               return (
                 <div
                   key={category.id}
-                  className="group break-inside-avoid border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent flex flex-col"
+                  className="group break-inside-avoid border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-transparent flex flex-col"
                 >
                   <div className="flex flex-col">
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Icon name={category.icon} size="lg" className="text-primary" />
               </div>
@@ -538,10 +539,8 @@ function IntegrationsSection() {
                         {category.title}
                       </h3>
             </div>
-                    <p className="text-muted-foreground text-sm mb-4">
-                      {category.description}
-                    </p>
-                    <div className="space-y-4">
+                    <div className="border-b border-border/50 mb-4"></div>
+                    <div className="space-y-4 mb-4">
                       {category.logos.map((logo, index) => (
                         <div
                           key={index}
@@ -560,6 +559,9 @@ function IntegrationsSection() {
             </div>
                       ))}
               </div>
+                    <p className="text-muted-foreground text-sm">
+                      {category.description}
+                    </p>
             </div>
               </div>
               )
@@ -709,7 +711,7 @@ function UseCasesSection() {
               return (
                 <div
                   key={category.id}
-                  className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent flex flex-col"
+                  className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-transparent flex flex-col"
                 >
                   <div className="flex flex-col flex-1">
                     <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">

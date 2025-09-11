@@ -191,10 +191,11 @@ export function Carousel({
     }
   }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide])
 
-  // Detect manual interaction (mobile only)
+  // Detect manual interaction (desktop only - mobile uses natural scroll)
   const handleManualInteraction = React.useCallback(() => {
-    // Only stop auto-play on mobile devices (screen size 'sm' or 'md')
-    if (screenSize === 'sm' || screenSize === 'md') {
+    // Only stop auto-play on desktop devices (screen size 'lg' or 'xl')
+    // Mobile devices will use natural horizontal scrolling
+    if (screenSize === 'lg' || screenSize === 'xl') {
       setHasManualInteraction(true)
       
       // Clear existing timeout
@@ -226,8 +227,9 @@ export function Carousel({
 
   // Auto-play functionality with synchronized progress
   React.useEffect(() => {
-    // Don't auto-play if user has manually interacted (mobile only)
-    if (!autoPlay || (hasManualInteraction && (screenSize === 'sm' || screenSize === 'md'))) return
+    // Don't auto-play if user has manually interacted (desktop only)
+    // Mobile devices use natural scrolling, so auto-play is disabled on mobile
+    if (!autoPlay || (hasManualInteraction && (screenSize === 'lg' || screenSize === 'xl')) || screenSize === 'sm' || screenSize === 'md') return
     
     // Reset progress when starting
     setProgress(0)
@@ -264,9 +266,10 @@ export function Carousel({
     }
   }, [])
 
-  // Auto-scroll carousel when currentSlide changes
+  // Auto-scroll carousel when currentSlide changes (desktop only)
   React.useEffect(() => {
-    if (carouselRef.current) {
+    // Only auto-scroll on desktop devices - mobile uses natural scrolling
+    if (carouselRef.current && (screenSize === 'lg' || screenSize === 'xl')) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
       console.log('Auto-scroll effect triggered, currentSlide:', currentSlide, 'scrollTo:', currentSlide * totalCardWidth)
@@ -284,7 +287,7 @@ export function Carousel({
         isProgrammaticScrollRef.current = false
       }, 500) // Wait for smooth scroll to complete
     }
-  }, [currentSlide, responsiveCardWidth, responsiveCardGap])
+  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize])
 
   // Add scroll event listener to check position and detect manual interaction
   React.useEffect(() => {
@@ -297,26 +300,37 @@ export function Carousel({
         clearTimeout(scrollTimeout)
         scrollTimeout = setTimeout(() => {
           checkScrollPosition()
-          handleManualInteraction()
+          // Only handle manual interaction on desktop
+          if (screenSize === 'lg' || screenSize === 'xl') {
+            handleManualInteraction()
+          }
         }, 16) // ~60fps throttling
       }
       
+      // Only add touch event listener on desktop (mobile uses natural scroll)
       const handleTouchStart = () => {
-        handleManualInteraction()
+        if (screenSize === 'lg' || screenSize === 'xl') {
+          handleManualInteraction()
+        }
       }
       
       carousel.addEventListener('scroll', handleScroll)
-      carousel.addEventListener('touchstart', handleTouchStart, { passive: true })
+      // Only add touch listener on desktop
+      if (screenSize === 'lg' || screenSize === 'xl') {
+        carousel.addEventListener('touchstart', handleTouchStart, { passive: true })
+      }
       // Check initial position
       checkScrollPosition()
       
       return () => {
         clearTimeout(scrollTimeout)
         carousel.removeEventListener('scroll', handleScroll)
-        carousel.removeEventListener('touchstart', handleTouchStart)
+        if (screenSize === 'lg' || screenSize === 'xl') {
+          carousel.removeEventListener('touchstart', handleTouchStart)
+        }
       }
     }
-  }, [checkScrollPosition, handleManualInteraction])
+  }, [checkScrollPosition, handleManualInteraction, screenSize])
 
 
   return (
