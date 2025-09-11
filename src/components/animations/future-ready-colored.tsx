@@ -48,15 +48,18 @@ export function FutureReadyColored({
   // E-AI-Arrow SVG path data
   const arrowPathData = "M91.7,158.3c-7.2,0-13.1-5.9-13.1-13.1v-40.1c0-11.1-9-20.1-20.1-20.1H13.1c-7.2,0-13.1-5.9-13.1-13.1V13.1C0,5.9,5.9,0,13.1,0h137.5c7.2,0,13.1,5.9,13.1,13.1v132.1c0,7.2-5.9,13.1-13.1,13.1h-58.8Z";
 
-  // Color palette from design system
+  // Elevation Blue color palette from darkest to lightest
   const colorPalette = [
-    '#0e62fd', // Elevation Blue
-    '#7458f4', // Periwinkle Purple
-    '#12c55d', // Green
-    '#ebbc48', // Gold
-    '#e74c3c', // Red
-    '#3498db', // Cyan
-    '#9b59b6'  // Magenta
+    '#052864', // Elevation Blue 900 (darkest)
+    '#083996', // Elevation Blue 800
+    '#0a49bd', // Elevation Blue 700
+    '#0d58e4', // Elevation Blue 600
+    '#0e62fd', // Elevation Blue 500 (base)
+    '#479cff', // Elevation Blue 400
+    '#94c6ff', // Elevation Blue 300
+    '#badbff', // Elevation Blue 200
+    '#e0efff', // Elevation Blue 100
+    '#f5f9ff'  // Elevation Blue 50 (lightest)
   ]
 
   // Create arrows with different colors
@@ -92,10 +95,11 @@ export function FutureReadyColored({
     const arrowSpacing = baseArrowSpacing * scale
     const verticalOffset = baseVerticalOffset * scale
     
-    // Create 5 arrows that repeat up and to the right
+    // Create 5 arrows that repeat up and to the right, cycling through all Elevation Blue shades
     for (let i = 0; i < 5; i++) {
       const x = centerX + (i * arrowSpacing)
       const y = centerY - (i * verticalOffset)
+      // Cycle through the color palette, starting from darkest
       const color = colorPalette[i % colorPalette.length]
       
       arrows.push({
