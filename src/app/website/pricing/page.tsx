@@ -8,19 +8,19 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, H2, BodyLarge } from "@/components/ui/typography"
+import { H1, H2, BodyLarge, P } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
 import React from "react"
-import { WIPBanner } from "@/components/ui/wip-banner"
+import Image from "next/image"
 
 // Pricing Hero Section Component
 function PricingHeroSection() {
   return (
     <Section 
       paddingY="lg" 
-      className="flex items-center py-16 sm:py-20 lg:py-24 relative overflow-hidden"
+      className="flex items-center pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-12 lg:pb-16 relative overflow-hidden"
     >
       <Container size="2xl" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
@@ -78,6 +78,19 @@ function PricingHeroSection() {
                   }}
                 />
               </div>
+              
+              {/* E-AI-Circle Logo - Centered */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
+                  <Image
+                    src="/images/branding/E-AI-Circle.svg"
+                    alt="Elevation AI Logo"
+                    fill
+                    className="object-contain dark:invert invert-0"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -94,9 +107,9 @@ function CTASection() {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <H2>Ready to Transform Your Operations?</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               Discover how Elevation AI can unify your knowledge, secure your operations, and orchestrate intelligent workflows across your organization.
-            </BodyLarge>
+            </P>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -125,27 +138,10 @@ export default function PricingPage() {
         footer={<WebsiteFooter />}
         mobileMenu={<MobileMenuDrawer currentPage="pricing" />}
       >
-        <div className="min-h-screen bg-background transition-colors duration-300">
+        <div className="bg-background transition-colors duration-300">
           <main>
-            {/* WIP Banner */}
-            <div className="pt-8">
-              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-                <WIPBanner />
-              </Container>
-            </div>
-            
             {/* Pricing Hero Section */}
             <PricingHeroSection />
-
-            <Container size="2xl">
-              <Section paddingY="lg">
-                <div className="text-center">
-                  <p className="text-muted-foreground">Pricing content will go here</p>
-                </div>
-              </Section>
-            </Container>
-
-            {/* CTA Section */}
             <CTASection />
           </main>
         </div>

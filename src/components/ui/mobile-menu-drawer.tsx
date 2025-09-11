@@ -41,18 +41,18 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
 
   const solutionsSubLinks = [
     { type: "header", label: "By Industry" },
-    { href: "/website/solutions#private-markets", label: "Private Market Organizations" },
-    { href: "/website/solutions#public-markets", label: "Public Market Organizations" },
-    { href: "/website/solutions#banks", label: "Banks" },
-    { href: "/website/solutions#enterprise", label: "Enterprise" },
-    { href: "/website/solutions#government", label: "Government" },
+    { href: "/website/solutions?open=private-markets", label: "Private Market Organizations" },
+    { href: "/website/solutions?open=public-markets", label: "Public Market Organizations" },
+    { href: "/website/solutions?open=banks", label: "Banks" },
+    { href: "/website/solutions?open=enterprise", label: "Enterprise" },
+    { href: "/website/solutions?open=government", label: "Government" },
     { type: "divider" },
     { type: "header", label: "By Stage" },
-    { href: "/website/solutions#creating-growing", label: "Creating a New Venture" },
-    { href: "/website/solutions#scaling", label: "Scaling a Venture" },
-    { href: "/website/solutions#exiting", label: "Exiting a Venture" },
-    { href: "/website/solutions#post-ipo", label: "Post-IPO Growth" },
-    { href: "/website/solutions#family-office", label: "Post-Exit Family Office" }
+    { href: "/website/solutions?open=creating-venture", label: "Creating a New Venture" },
+    { href: "/website/solutions?open=scaling-venture", label: "Scaling a Venture" },
+    { href: "/website/solutions?open=exiting-venture", label: "Exiting a Venture" },
+    { href: "/website/solutions?open=post-ipo-growth", label: "Post-IPO Growth" },
+    { href: "/website/solutions?open=family-office", label: "Post-Exit Family Office" }
   ]
 
   const resourcesSubLinks = [

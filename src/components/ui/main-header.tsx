@@ -211,11 +211,11 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Industry</h3>
                   <ul className="space-y-1">
-                    <li><Link href="/website/solutions#private-markets" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Private Market Organizations</Link></li>
-                    <li><Link href="/website/solutions#public-markets" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Public Market Organizations</Link></li>
-                    <li><Link href="/website/solutions#banks" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Banks</Link></li>
-                    <li><Link href="/website/solutions#enterprise" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Enterprise</Link></li>
-                    <li><Link href="/website/solutions#government" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Government</Link></li>
+                    <li><Link href="/website/solutions?open=private-markets" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Private Market Organizations</Link></li>
+                    <li><Link href="/website/solutions?open=public-markets" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Public Market Organizations</Link></li>
+                    <li><Link href="/website/solutions?open=banks" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Banks</Link></li>
+                    <li><Link href="/website/solutions?open=enterprise" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Enterprise</Link></li>
+                    <li><Link href="/website/solutions?open=government" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Government</Link></li>
                   </ul>
                 </div>
                 
@@ -223,11 +223,11 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
                 <div className="space-y-4">
                   <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">By Stage</h3>
                   <ul className="space-y-1">
-                    <li><Link href="/website/solutions#creating-growing" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Creating a New Venture</Link></li>
-                    <li><Link href="/website/solutions#scaling" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Scaling a Venture</Link></li>
-                    <li><Link href="/website/solutions#exiting" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Exiting a Venture</Link></li>
-                    <li><Link href="/website/solutions#post-ipo" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Post-IPO Growth</Link></li>
-                    <li><Link href="/website/solutions#family-office" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Post-Exit/Family Office</Link></li>
+                    <li><Link href="/website/solutions?open=creating-venture" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Creating a New Venture</Link></li>
+                    <li><Link href="/website/solutions?open=scaling-venture" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Scaling a Venture</Link></li>
+                    <li><Link href="/website/solutions?open=exiting-venture" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Exiting a Venture</Link></li>
+                    <li><Link href="/website/solutions?open=post-ipo-growth" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Post-IPO Growth</Link></li>
+                    <li><Link href="/website/solutions?open=family-office" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Post-Exit/Family Office</Link></li>
                   </ul>
                 </div>
               </div>
