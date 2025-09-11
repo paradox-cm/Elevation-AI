@@ -542,19 +542,19 @@ function IntegrationsSection() {
                     <p className="text-muted-foreground text-sm mb-4">
                       {category.description}
                     </p>
-                    <div className="space-y-2">
+                    <div className="space-y-4">
                       {category.logos.map((logo, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-2 text-xs text-muted-foreground"
+                          className="flex items-center gap-3 text-xs text-muted-foreground"
                         >
-                          <div className="w-12 h-12 flex items-center justify-center">
+                          <div className="w-10 h-10 flex items-center justify-center">
                             <Image
                               src={`/images/platform-logos/${logo.file}`}
                               alt={logo.name}
-                              width={48}
-                              height={48}
-                              className="w-12 h-12 object-contain filter dark:brightness-0 dark:invert"
+                              width={40}
+                              height={40}
+                              className="w-10 h-10 object-contain filter dark:brightness-0 dark:invert"
                             />
                           </div>
                           <span>{logo.name}</span>
