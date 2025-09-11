@@ -62,27 +62,55 @@ export function FutureReadyColored({
   // Create arrows with different colors
   const createArrows = useCallback((canvas: HTMLCanvasElement) => {
     const arrows: Arrow[] = []
-    const centerX = canvas.width / 2 / (window.devicePixelRatio || 1)
-    const centerY = canvas.height / 2 / (window.devicePixelRatio || 1)
     
-    // Create 5 arrows in a vertical line, each with a different color
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    // Maintain aspect ratio to prevent warping
+    const baseWidth = 600 // Original design width
+    const baseHeight = 400 // Original design height
+    const scaleX = logicalWidth / baseWidth
+    const scaleY = logicalHeight / baseHeight
+    const scale = Math.min(scaleX, scaleY) // Use smaller scale to maintain aspect ratio
+    
+    // Calculate centered positioning
+    const scaledWidth = baseWidth * scale
+    const scaledHeight = baseHeight * scale
+    const offsetX = (logicalWidth - scaledWidth) / 2
+    const offsetY = (logicalHeight - scaledHeight) / 2
+    
+    // Base positioning (from original design)
+    const baseCenterX = baseWidth * 0.3
+    const baseCenterY = baseHeight * 0.5
+    const baseArrowSpacing = 25
+    const baseVerticalOffset = 25
+    
+    // Scale and center the positioning
+    const centerX = offsetX + (baseCenterX * scale)
+    const centerY = offsetY + (baseCenterY * scale)
+    const arrowSpacing = baseArrowSpacing * scale
+    const verticalOffset = baseVerticalOffset * scale
+    
+    // Create 5 arrows that repeat up and to the right
     for (let i = 0; i < 5; i++) {
-      const y = centerY - 60 + (i * 30) // Vertical spacing
+      const x = centerX + (i * arrowSpacing)
+      const y = centerY - (i * verticalOffset)
       const color = colorPalette[i % colorPalette.length]
       
       arrows.push({
-        x: centerX,
-        y: y,
-        opacity: 0,
-        delay: i * 0.36, // 360ms delay between each arrow
-        originalX: centerX,
+        x,
+        y,
+        opacity: 0.1, // Start very transparent
+        delay: i * 0.36, // Staggered appearance (slowed down by 20%)
+        originalX: x,
         originalY: y,
         color: color
       })
     }
     
     return arrows
-  }, [])
+  }, [colorPalette])
 
   // Draw arrow function with color support
   const drawArrow = useCallback((ctx: CanvasRenderingContext2D, arrow: Arrow, canvas: HTMLCanvasElement) => {
