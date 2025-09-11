@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Building2, TrendingUp, ChevronRight, ChevronDown } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import * as THREE from "three"
 import Icon from "@/components/ui/icon"
@@ -839,10 +839,14 @@ export default function WireframesSolutionsPage() {
             <SolutionsHeroSection />
 
             {/* Industry Solutions Section */}
-            <IndustrySolutionsSection />
+            <Suspense fallback={<div>Loading...</div>}>
+              <IndustrySolutionsSection />
+            </Suspense>
 
             {/* Stage Solutions Section */}
-            <StageSolutionsSection />
+            <Suspense fallback={<div>Loading...</div>}>
+              <StageSolutionsSection />
+            </Suspense>
 
             {/* Solution Features Section */}
             <Section paddingY="lg" className="bg-primary/5">
