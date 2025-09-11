@@ -253,7 +253,7 @@ export function Carousel({
     return () => {
       clearInterval(progressTimer)
     }
-  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize])
+  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, currentSlide])
 
   // Cleanup timeout on unmount
   React.useEffect(() => {
@@ -336,7 +336,7 @@ export function Carousel({
                 cardRefs.current[index] = el
               }}
               className={cn(
-                "flex-shrink-0 border rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer",
+                "flex-shrink-0 border rounded-lg transition-all duration-300",
                 cardStyle === 'outline' 
                   ? 'border-border bg-transparent' 
                   : highlightActiveCard && index === currentSlide 

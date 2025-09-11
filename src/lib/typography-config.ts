@@ -30,40 +30,20 @@ export interface FontFamily {
 // Type Scale Configuration - Mobile First
 export const typeScale: TypeScaleItem[] = [
   {
-    name: "Display Large",
-    class: "text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl",
+    name: "Hero Heading",
+    class: "text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl",
     weight: "font-semibold",
-    lineHeight: "leading-tight sm:leading-normal",
+    lineHeight: "leading-tight",
     tracking: "tracking-normal",
     usage: "Hero headlines, page titles",
-    example: "Display Large",
-    component: "DisplayLarge"
-  },
-  {
-    name: "Display Medium", 
-    class: "text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl",
-    weight: "font-semibold",
-    lineHeight: "leading-tight sm:leading-normal",
-    tracking: "tracking-normal",
-    usage: "Section headlines, major headings",
-    example: "Display Medium",
-    component: "DisplayMedium"
-  },
-  {
-    name: "Display Small",
-    class: "text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl", 
-    weight: "font-semibold",
-    lineHeight: "leading-tight sm:leading-normal",
-    tracking: "tracking-normal",
-    usage: "Subsection headlines",
-    example: "Display Small",
-    component: "DisplaySmall"
+    example: "Hero Heading",
+    component: "HeroHeading"
   },
   {
     name: "Heading Large",
-    class: "text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl",
+    class: "text-xl sm:text-lg md:text-xl lg:text-4xl xl:text-4xl 2xl:text-4xl",
     weight: "font-medium", 
-    lineHeight: "leading-tight sm:leading-normal",
+    lineHeight: "leading-tight",
     tracking: "tracking-normal",
     usage: "Page headings, article titles",
     example: "Heading Large",
@@ -71,7 +51,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Heading Medium",
-    class: "text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl",
+    class: "text-2xl sm:text-base md:text-lg lg:text-3xl xl:text-3xl 2xl:text-3xl",
     weight: "font-medium",
     lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
@@ -81,7 +61,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Heading Small",
-    class: "text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl",
+    class: "text-xl sm:text-sm md:text-base lg:text-2xl xl:text-2xl 2xl:text-2xl",
     weight: "font-medium",
     lineHeight: "leading-tight sm:leading-normal",
     tracking: "tracking-normal",
@@ -91,7 +71,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Body Large",
-    class: "text-sm sm:text-base",
+    class: "text-lg sm:text-xl",
     weight: "font-normal",
     lineHeight: "leading-relaxed",
     tracking: "tracking-normal",
@@ -101,7 +81,7 @@ export const typeScale: TypeScaleItem[] = [
   },
   {
     name: "Body",
-    class: "text-sm sm:text-base",
+    class: "text-base sm:text-lg",
     weight: "font-normal",
     lineHeight: "leading-relaxed",
     tracking: "tracking-normal",

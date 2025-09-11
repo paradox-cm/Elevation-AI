@@ -59,7 +59,7 @@ export default function TypographyPage() {
               <div className="space-y-6">
                 <div>
                   <H3 className="mb-3">Key Principles</H3>
-                  <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Icon name={typographyPrinciples.readability.icon} className="h-4 w-4 text-primary" />
@@ -78,7 +78,7 @@ export default function TypographyPage() {
                         {typographyPrinciples.consistency.description}
                       </P>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 sm:col-span-2 md:col-span-1">
                       <div className="flex items-center gap-2">
                         <Icon name={typographyPrinciples.performance.icon} className="h-4 w-4 text-primary" />
                         <span className="font-semibold">{typographyPrinciples.performance.title}</span>
@@ -94,7 +94,7 @@ export default function TypographyPage() {
 
                 <div>
                   <H3 className="mb-3">Font Specifications</H3>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Primary Font</span>
@@ -146,19 +146,19 @@ export default function TypographyPage() {
               <div className="space-y-8">
                 {typeScale.map((type, index) => (
                   <div key={type.name} className="space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div>
                         <span className="font-semibold">{type.name}</span>
                         <div className="text-sm text-muted-foreground">{type.usage}</div>
                       </div>
-                      <div className="text-right">
-                        <Badge variant="outline">{type.class}</Badge>
-                        <div className="text-xs text-muted-foreground mt-1">
+                      <div className="flex flex-col sm:items-end gap-2">
+                        <Badge variant="outline" className="w-fit">{type.class}</Badge>
+                        <div className="text-xs text-muted-foreground">
                           {type.weight} • {type.lineHeight} • {type.tracking}
                         </div>
                       </div>
                     </div>
-                    <div className={`${type.class} ${type.weight} ${type.lineHeight} ${type.tracking} border-l-4 border-primary/20 pl-4`}>
+                    <div className={`${type.class} ${type.weight} ${type.lineHeight} ${type.tracking} border-l-4 border-primary/20 pl-4 break-words`}>
                       {type.example}
                     </div>
                     {index < typeScale.length - 1 && <Separator />}
@@ -182,14 +182,14 @@ export default function TypographyPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {fontWeights.map((weight) => (
                   <div key={weight.weight} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">{weight.name}</span>
                       <Badge variant="outline">{weight.weight}</Badge>
                     </div>
-                    <div className={`${weight.class} text-lg`}>
+                    <div className={`${weight.class} text-lg break-words`}>
                       The quick brown fox
                     </div>
                   </div>
@@ -215,14 +215,14 @@ export default function TypographyPage() {
               <div className="space-y-6">
                 {fontFamilies.map((font) => (
                   <div key={font.name} className="space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <div>
                         <span className="font-semibold">{font.name}</span>
                         <div className="text-sm text-muted-foreground">{font.description}</div>
                       </div>
-                      <Badge variant="outline">{font.class}</Badge>
+                      <Badge variant="outline" className="w-fit">{font.class}</Badge>
                     </div>
-                    <div className={`${font.class} text-lg p-4 bg-muted/20 rounded-lg`}>
+                    <div className={`${font.class} text-lg p-4 bg-muted/20 rounded-lg break-words`}>
                       {font.example}
                     </div>
                   </div>

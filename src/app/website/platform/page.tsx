@@ -8,7 +8,8 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, H2, H3, BodyLarge, P } from "@/components/ui/typography"
+import { H1, H2, H3, P } from "@/components/ui/typography"
+import { CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import Image from "next/image"
@@ -16,6 +17,7 @@ import Link from "next/link"
 import React from "react"
 import { FutureReady } from "@/components/animations"
 import { WIPBanner } from "@/components/ui/wip-banner"
+import { Carousel, CarouselItem } from "@/components/ui/carousel"
 
 // Platform Hero Section Component
 function PlatformHeroSection() {
@@ -23,20 +25,20 @@ function PlatformHeroSection() {
   return (
     <Section 
       paddingY="lg" 
-      className="flex items-center min-h-screen pt-8 sm:pt-0 relative overflow-hidden"
+      className="flex items-center py-16 sm:py-20 lg:py-24 relative overflow-hidden"
     >
       <Container size="2xl" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
           <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
-              <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
-                The Operating System for
-                <span className="block">the Agentic Era</span>
-              </div>
-              <BodyLarge className="text-muted-foreground max-w-2xl">
+               <H1>
+                  The Operating System for
+                  <span className="block">the Agentic Era</span>
+               </H1>
+              <P className="text-muted-foreground max-w-2xl">
                 The Elevation AI platform is the central, agentic backbone that unifies your universe, provides intelligent workspaces, and securely connects you to the world of AI.
-              </BodyLarge>
+              </P>
             </div>
 
             {/* CTA Buttons */}
@@ -103,23 +105,23 @@ function PlatformHeroSection() {
 // Platform Components Section
 function PlatformComponentsSection() {
   return (
-    <Section paddingY="lg" className="bg-muted/30">
+    <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-16">
           <div className="text-center space-y-4 max-w-4xl mx-auto">
-            <H2>Platform Components</H2>
-            <BodyLarge className="text-muted-foreground">
+            <H1>Platform Components</H1>
+            <P className="text-muted-foreground">
               Our platform consists of five core components that work together to create a comprehensive AI-powered operating system for your organization.
-            </BodyLarge>
+            </P>
           </div>
 
           {/* Knowledge Graph */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[70vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
-              <H3>Your Company's Private Brain</H3>
-              <BodyLarge className="text-muted-foreground">
+              <H2>Your Company's Private Brain</H2>
+              <P className="text-muted-foreground">
                 We start by creating a secure, dynamic Knowledge Graph of your entire business—capturing the unstructured information from meetings, emails, and documents. This becomes your unique, private intelligence layer, the single source of truth that powers everything.
-              </BodyLarge>
+              </P>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
@@ -139,21 +141,21 @@ function PlatformComponentsSection() {
                 </li>
               </ul>
             </div>
-            <div className="lg:col-span-6 h-[70vh] bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl border border-border/50 flex items-center justify-center">
+            <div className="lg:col-span-6 h-[300px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center">
               <P className="text-muted-foreground text-lg">Knowledge Graph Visualization</P>
             </div>
           </div>
 
           {/* Workspaces & Canvases */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[70vh]">
-            <div className="lg:col-span-6 h-[70vh] bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl border border-border/50 flex items-center justify-center order-2 lg:order-1">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+            <div className="lg:col-span-6 h-[300px] lg:h-[845px]  rounded-3xl border border-border/50 flex items-center justify-center order-2 lg:order-1">
               <P className="text-muted-foreground text-lg">Workspace Interface</P>
             </div>
             <div className="lg:col-span-6 space-y-6 order-1 lg:order-2 flex flex-col justify-center">
-              <H3>A Place to Work</H3>
-              <BodyLarge className="text-muted-foreground">
+              <H2>A Place to Work</H2>
+              <P className="text-muted-foreground">
                 Our platform's Workspaces are the collaborative fabric where your teams, clients, and partners come together. Within a workspace, your unique knowledge graph informs every task and conversation, creating a single, intelligent place to execute both manual and automated work using our suite of Canvases, such as Pipelines and Flows.
-              </BodyLarge>
+              </P>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
@@ -176,12 +178,12 @@ function PlatformComponentsSection() {
           </div>
 
           {/* Agentic Engine */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[70vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
-              <H3>Connect to the World of AI, Securely</H3>
-              <BodyLarge className="text-muted-foreground">
+              <H2>Connect to the World of AI, Securely</H2>
+              <P className="text-muted-foreground">
                 We act as the essential middleware layer for the agentic era. You plug into our platform once, and we handle the rest. Our team continuously searches for and integrates the best models, agents, and tools into our ecosystem. We then de-identify your sensitive data before it's used by these external resources and re-identify the results upon return, ensuring you can leverage the best of AI without the complexity or the security risk.
-              </BodyLarge>
+              </P>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
@@ -201,21 +203,21 @@ function PlatformComponentsSection() {
                 </li>
               </ul>
             </div>
-            <div className="lg:col-span-6 h-[70vh] bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl border border-border/50 flex items-center justify-center">
+            <div className="lg:col-span-6 h-[300px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center">
               <P className="text-muted-foreground text-lg">AI Integration Hub</P>
             </div>
           </div>
 
           {/* Library */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[70vh]">
-            <div className="lg:col-span-6 h-[70vh] bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl border border-border/50 flex items-center justify-center order-2 lg:order-1">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+            <div className="lg:col-span-6 h-[300px] lg:h-[845px]  rounded-3xl border border-border/50 flex items-center justify-center order-2 lg:order-1">
               <P className="text-muted-foreground text-lg">Library Interface</P>
             </div>
             <div className="lg:col-span-6 space-y-6 order-1 lg:order-2 flex flex-col justify-center">
-              <H3>Your Arsenal of Reusable Intelligence</H3>
-              <BodyLarge className="text-muted-foreground">
+              <H2>Your Arsenal of Reusable Intelligence</H2>
+              <P className="text-muted-foreground">
                 The Library is your central repository for all agentic resources. Here you can store, share, and reuse powerful Prompts, complex automated Flows, and specialized Agents. This allows you to codify your best practices and scale your most effective workflows across the entire organization.
-              </BodyLarge>
+              </P>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
@@ -238,12 +240,12 @@ function PlatformComponentsSection() {
           </div>
 
           {/* Primary Agent */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[70vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
-              <H3>Your Conversational Command Center</H3>
-              <BodyLarge className="text-muted-foreground">
+              <H2>Your Conversational Command Center</H2>
+              <P className="text-muted-foreground">
                 Every user gets their own personal Co-pilot. Accessible via text, voice, or directly within the platform, it's your primary conversational interface to your entire universe. Use it to ask complex questions, create tasks, and trigger automated workflows using simple, natural language.
-              </BodyLarge>
+              </P>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
@@ -263,7 +265,7 @@ function PlatformComponentsSection() {
                 </li>
               </ul>
             </div>
-            <div className="lg:col-span-6 h-[70vh] bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl border border-border/50 flex items-center justify-center">
+            <div className="lg:col-span-6 h-[300px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center">
               <P className="text-muted-foreground text-lg">Co-pilot Interface</P>
             </div>
           </div>
@@ -275,63 +277,114 @@ function PlatformComponentsSection() {
 
 // Security Section
 function SecuritySection() {
+  const securityFeatures: CarouselItem[] = [
+    {
+      id: "data-protection",
+      title: "Data Protection",
+      description: "",
+      content: (
+        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+          <div className="flex justify-start mb-4">
+            <Icon name="shield-check-line" size="2xl" className="text-primary text-4xl" />
+          </div>
+          <P className="text-muted-foreground">
+            End-to-end encryption, zero-knowledge architecture
+          </P>
+        </div>
+      )
+    },
+    {
+      id: "compliance",
+      title: "Compliance",
+      description: "",
+      content: (
+        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+          <div className="flex justify-start mb-4">
+            <Icon name="file-shield-line" size="2xl" className="text-primary text-4xl" />
+          </div>
+          <P className="text-muted-foreground">
+            SOC 2 Type II, GDPR, HIPAA ready
+          </P>
+        </div>
+      )
+    },
+    {
+      id: "access-control",
+      title: "Access Control",
+      description: "",
+      content: (
+        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+          <div className="flex justify-start mb-4">
+            <Icon name="key-line" size="2xl" className="text-primary text-4xl" />
+          </div>
+          <P className="text-muted-foreground">
+            Role-based permissions, multi-factor authentication
+          </P>
+        </div>
+      )
+    },
+    {
+      id: "audit-trail",
+      title: "Audit Trail",
+      description: "",
+      content: (
+        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+          <div className="flex justify-start mb-4">
+            <Icon name="history-line" size="2xl" className="text-primary text-4xl" />
+          </div>
+          <P className="text-muted-foreground">
+            Complete activity logging and monitoring
+          </P>
+        </div>
+      )
+    },
+    {
+      id: "data-residency",
+      title: "Data Residency",
+      description: "",
+      content: (
+        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+          <div className="flex justify-start mb-4">
+            <Icon name="database-2-line" size="2xl" className="text-primary text-4xl" />
+          </div>
+          <P className="text-muted-foreground">
+            Choose your data location and retention policies
+          </P>
+        </div>
+      )
+    }
+  ]
+
   return (
     <Section paddingY="lg">
-      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+      <Container size="full">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H2>Enterprise-Grade Security & Compliance</H2>
-            <BodyLarge className="text-muted-foreground">
+            <H1>Enterprise-Grade Security & Compliance</H1>
+            <P className="text-muted-foreground">
               Your data security is our top priority. We implement industry-leading security measures and maintain compliance with the highest standards.
-            </BodyLarge>
+            </P>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Data Protection Icon</P>
-              </div>
-              <H3>Data Protection</H3>
-              <P className="text-muted-foreground">
-                End-to-end encryption, zero-knowledge architecture
-              </P>
-            </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Compliance Icon</P>
-              </div>
-              <H3>Compliance</H3>
-              <P className="text-muted-foreground">
-                SOC 2 Type II, GDPR, HIPAA ready
-              </P>
-            </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Access Control Icon</P>
-              </div>
-              <H3>Access Control</H3>
-              <P className="text-muted-foreground">
-                Role-based permissions, multi-factor authentication
-              </P>
-            </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Audit Trail Icon</P>
-              </div>
-              <H3>Audit Trail</H3>
-              <P className="text-muted-foreground">
-                Complete activity logging and monitoring
-              </P>
-            </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Data Residency Icon</P>
-              </div>
-              <H3>Data Residency</H3>
-              <P className="text-muted-foreground">
-                Choose your data location and retention policies
-              </P>
-            </div>
+          {/* Interactive Carousel for All Breakpoints */}
+          <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+            <Carousel 
+              items={securityFeatures}
+              autoPlay={true}
+              autoPlayInterval={4000}
+              showProgressIndicators={true}
+              showGradients={false}
+              cardWidth={480}
+              cardGap={40}
+              className="w-full"
+              highlightActiveCard={true}
+              cardStyle="filled"
+              responsive={{
+                sm: { cardWidth: 280, cardGap: 16 },
+                md: { cardWidth: 300, cardGap: 20 },
+                lg: { cardWidth: 320, cardGap: 24 }
+              }}
+            />
           </div>
         </div>
       </Container>
@@ -341,72 +394,120 @@ function SecuritySection() {
 
 // Integrations Section
 function IntegrationsSection() {
+  const integrationCategories = [
+    {
+      id: "productivity",
+      title: "Productivity",
+      description: "Google Workspace, Microsoft 365, Slack, Notion",
+      icon: "file-text-line",
+      logos: ["Google Workspace", "Microsoft 365", "Slack", "Notion"]
+    },
+    {
+      id: "crm-sales",
+      title: "CRM & Sales",
+      description: "Salesforce, HubSpot, Pipedrive, and more sales tools",
+      icon: "user-line",
+      logos: ["Salesforce", "HubSpot", "Pipedrive"]
+    },
+    {
+      id: "development",
+      title: "Development",
+      description: "GitHub, GitLab, Jira, Confluence, and development platforms",
+      icon: "code-s-slash-line",
+      logos: ["GitHub", "GitLab", "Jira", "Confluence"]
+    },
+    {
+      id: "communication",
+      title: "Communication",
+      description: "Zoom, Teams, Discord",
+      icon: "message-3-line",
+      logos: ["Zoom", "Teams", "Discord"]
+    },
+    {
+      id: "data-analytics",
+      title: "Data & Analytics",
+      description: "Tableau, Power BI, Google Analytics, and business intelligence tools",
+      icon: "bar-chart-line",
+      logos: ["Tableau", "Power BI", "Google Analytics"]
+    },
+    {
+      id: "custom-apis",
+      title: "Custom APIs",
+      description: "RESTful APIs, webhooks, custom connectors",
+      icon: "links-line",
+      logos: ["REST API", "GraphQL", "Webhooks"]
+    },
+    {
+      id: "finance",
+      title: "Finance & Accounting",
+      description: "QuickBooks, Xero, Stripe, and financial management tools",
+      icon: "money-dollar-circle-line",
+      logos: ["QuickBooks", "Xero", "Stripe"]
+    },
+    {
+      id: "marketing",
+      title: "Marketing",
+      description: "Mailchimp, Hootsuite, Google Ads, and marketing automation platforms",
+      icon: "megaphone-line",
+      logos: ["Mailchimp", "Hootsuite", "Google Ads"]
+    },
+    {
+      id: "hr",
+      title: "Human Resources",
+      description: "BambooHR, Workday, ADP, and HR management systems",
+      icon: "team-line",
+      logos: ["BambooHR", "Workday", "ADP"]
+    }
+  ]
+
   return (
-    <Section paddingY="lg" className="bg-muted/30">
+    <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H2>Connect Your Entire Universe</H2>
-            <BodyLarge className="text-muted-foreground">
+            <H1>Connect Your Entire Universe</H1>
+            <P className="text-muted-foreground">
               Elevation AI is built to be the central hub of your operations. We connect with the tools you already use, bringing all your data and workflows into one secure control plane.
-            </BodyLarge>
+            </P>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Productivity Icon</P>
+          {/* Masonry/Pinterest Style Layout */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+            {integrationCategories.map((category) => {
+              return (
+                <div
+                  key={category.id}
+                  className="group break-inside-avoid border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent flex flex-col"
+                >
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name={category.icon} size="lg" className="text-primary" />
               </div>
-              <H3>Productivity</H3>
-              <P className="text-muted-foreground">
-                Google Workspace, Microsoft 365, Slack, Notion
-              </P>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        {category.title}
+                      </h3>
             </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">CRM & Sales Icon</P>
+                    <p className="text-muted-foreground text-sm mb-4">
+                      {category.description}
+                    </p>
+                    <div className="space-y-2">
+                      {category.logos.map((logo, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 text-xs text-muted-foreground"
+                        >
+                          <div className="w-4 h-4 bg-muted rounded border border-border/50 flex items-center justify-center">
+                            <div className="w-2 h-2 bg-primary/60 rounded-full"></div>
               </div>
-              <H3>CRM & Sales</H3>
-              <P className="text-muted-foreground">
-                Salesforce, HubSpot, Pipedrive
-              </P>
+                          <span>{logo}</span>
             </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Development Icon</P>
+                      ))}
               </div>
-              <H3>Development</H3>
-              <P className="text-muted-foreground">
-                GitHub, GitLab, Jira, Confluence
-              </P>
             </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Communication Icon</P>
               </div>
-              <H3>Communication</H3>
-              <P className="text-muted-foreground">
-                Zoom, Teams, Discord
-              </P>
-            </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Data & Analytics Icon</P>
-              </div>
-              <H3>Data & Analytics</H3>
-              <P className="text-muted-foreground">
-                Tableau, Power BI, Google Analytics
-              </P>
-            </div>
-            <div className="p-6 bg-background/50 rounded-2xl border border-border/50 space-y-4">
-              <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
-                <P className="text-muted-foreground text-sm font-medium">Custom APIs Icon</P>
-              </div>
-              <H3>Custom APIs</H3>
-              <P className="text-muted-foreground">
-                RESTful APIs, webhooks, custom connectors
-              </P>
-            </div>
+              )
+            })}
           </div>
         </div>
       </Container>
@@ -416,157 +517,162 @@ function IntegrationsSection() {
 
 // Use Cases Section
 function UseCasesSection() {
+  const industryCategories: CarouselItem[] = [
+    {
+      id: "sales-marketing",
+      title: "Sales & Marketing",
+      description: "Lead qualification, content generation, campaign optimization",
+      content: (
+        <div className="text-left">
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-lg flex items-center justify-center">
+            <Icon name="line-chart-line" size="2xl" className="text-blue-600" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "customer-support",
+      title: "Customer Support",
+      description: "Intelligent ticketing, knowledge base automation",
+      content: (
+        <div className="text-left">
+          <div className="w-16 h-16 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-lg flex items-center justify-center">
+            <Icon name="customer-service-line" size="2xl" className="text-green-600" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "product-development",
+      title: "Product Development",
+      description: "Requirements analysis, testing automation",
+      content: (
+        <div className="text-left">
+          <div className="w-16 h-16 bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-lg flex items-center justify-center">
+            <Icon name="code-s-slash-line" size="2xl" className="text-purple-600" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "operations",
+      title: "Operations",
+      description: "Process optimization, compliance monitoring",
+      content: (
+        <div className="text-left">
+          <div className="w-16 h-16 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-lg flex items-center justify-center">
+            <Icon name="settings-3-line" size="2xl" className="text-orange-600" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "research-development",
+      title: "Research & Development",
+      description: "Data analysis, hypothesis testing",
+      content: (
+        <div className="text-left">
+          <div className="w-16 h-16 bg-gradient-to-br from-indigo-500/10 to-indigo-600/10 rounded-lg flex items-center justify-center">
+            <Icon name="microscope-line" size="2xl" className="text-indigo-600" />
+          </div>
+        </div>
+      )
+    }
+  ]
+
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H2>Built for Every Industry, Every Team</H2>
-            <BodyLarge className="text-muted-foreground">
+            <H1>Built for Every Industry, Every Team</H1>
+            <P className="text-muted-foreground">
               From startups to enterprises, Elevation AI adapts to your unique needs and industry requirements.
-            </BodyLarge>
+            </P>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            <div className="p-4 bg-background/30 rounded-xl border border-border/30 hover:bg-background/50 transition-colors">
-              <div className="flex gap-4 h-full">
-                <div className="w-16 h-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon name="line-chart-line" size="2xl" className="text-blue-600" />
-                </div>
-                <div className="flex flex-col justify-center space-y-2">
-                  <H3 className="text-lg">Sales & Marketing</H3>
-                  <P className="text-muted-foreground text-sm">
-                    Lead qualification, content generation, campaign optimization
-                  </P>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 bg-background/30 rounded-xl border border-border/30 hover:bg-background/50 transition-colors">
-              <div className="flex gap-4 h-full">
-                <div className="w-16 h-full bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon name="customer-service-line" size="2xl" className="text-green-600" />
-                </div>
-                <div className="flex flex-col justify-center space-y-2">
-                  <H3 className="text-lg">Customer Support</H3>
-                  <P className="text-muted-foreground text-sm">
-                    Intelligent ticketing, knowledge base automation
-                  </P>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 bg-background/30 rounded-xl border border-border/30 hover:bg-background/50 transition-colors">
-              <div className="flex gap-4 h-full">
-                <div className="w-16 h-full bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon name="code-s-slash-line" size="2xl" className="text-purple-600" />
-                </div>
-                <div className="flex flex-col justify-center space-y-2">
-                  <H3 className="text-lg">Product Development</H3>
-                  <P className="text-muted-foreground text-sm">
-                    Requirements analysis, testing automation
-                  </P>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 bg-background/30 rounded-xl border border-border/30 hover:bg-background/50 transition-colors">
-              <div className="flex gap-4 h-full">
-                <div className="w-16 h-full bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon name="settings-3-line" size="2xl" className="text-orange-600" />
-                </div>
-                <div className="flex flex-col justify-center space-y-2">
-                  <H3 className="text-lg">Operations</H3>
-                  <P className="text-muted-foreground text-sm">
-                    Process optimization, compliance monitoring
-                  </P>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 bg-background/30 rounded-xl border border-border/30 hover:bg-background/50 transition-colors">
-              <div className="flex gap-4 h-full">
-                <div className="w-16 h-full bg-gradient-to-br from-indigo-500/10 to-indigo-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon name="microscope-line" size="2xl" className="text-indigo-600" />
-                </div>
-                <div className="flex flex-col justify-center space-y-2">
-                  <H3 className="text-lg">Research & Development</H3>
-                  <P className="text-muted-foreground text-sm">
-                    Data analysis, hypothesis testing
-                  </P>
-                </div>
-              </div>
-            </div>
+          {/* Mobile/Tablet Carousel Layout */}
+          <div className="lg:hidden -mx-4 sm:-mx-6">
+            <Carousel 
+              items={industryCategories}
+              autoPlay={false}
+              showProgressIndicators={false}
+              showGradients={false}
+              cardWidth={280}
+              cardGap={16}
+              className="w-full"
+              highlightActiveCard={false}
+              cardStyle="outline"
+              responsive={{
+                sm: { cardWidth: 300, cardGap: 20 },
+                md: { cardWidth: 320, cardGap: 24 }
+              }}
+            />
           </div>
-        </div>
-      </Container>
-    </Section>
-  )
-}
 
-// Pricing Section
-function PricingSection() {
-  return (
-    <Section paddingY="lg" className="bg-blue-500/10">
-      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-12">
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H2>Flexible Plans for Every Organization</H2>
-            <BodyLarge className="text-muted-foreground">
-              Choose the plan that fits your needs, with the ability to scale as you grow.
-            </BodyLarge>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            <div className="p-8 border border-border rounded-3xl bg-blue-500/10 backdrop-blur-sm space-y-6 hover:border-primary/50 transition-colors">
-              <div className="flex justify-center">
-                <Image
-                  src="/images/branding/E-AI-Circle.svg"
-                  alt="Elevation AI Logo"
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 dark:invert"
-                />
-              </div>
-              <div className="space-y-3 text-center">
-                <H3>Starter</H3>
-                <P className="text-muted-foreground">For small teams getting started</P>
-              </div>
-            </div>
-            <div className="p-8 border border-border rounded-3xl bg-blue-500/10 backdrop-blur-sm space-y-6 hover:border-primary/50 transition-colors">
-              <div className="flex justify-center">
-                <Image
-                  src="/images/branding/E-AI-Circle.svg"
-                  alt="Elevation AI Logo"
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 dark:invert"
-                />
-              </div>
-              <div className="space-y-3 text-center">
-                <H3>Professional</H3>
-                <P className="text-muted-foreground">For growing organizations</P>
-              </div>
-            </div>
-            <div className="p-8 border border-border rounded-3xl bg-blue-500/10 backdrop-blur-sm space-y-6 hover:border-primary/50 transition-colors">
-              <div className="flex justify-center">
-                <Image
-                  src="/images/branding/E-AI-Circle.svg"
-                  alt="Elevation AI Logo"
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 dark:invert"
-                />
-              </div>
-              <div className="space-y-3 text-center">
-                <H3>Enterprise</H3>
-                <P className="text-muted-foreground">For large organizations with custom needs</P>
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            <Button size="lg" asChild>
-              <Link href="/website/pricing">
-                View our Pricing
-              </Link>
-            </Button>
+          {/* Desktop Grid Layout */}
+          <div className="hidden lg:grid lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            {industryCategories.map((category) => {
+              // Get the appropriate icon and color for each category
+              let iconName = "line-chart-line"
+              let gradientClass = "from-blue-500/10 to-blue-600/10"
+              let iconColor = "text-blue-600"
+              
+              switch (category.id) {
+                case "sales-marketing": 
+                  iconName = "line-chart-line"
+                  gradientClass = "from-blue-500/10 to-blue-600/10"
+                  iconColor = "text-blue-600"
+                  break
+                case "customer-support": 
+                  iconName = "customer-service-line"
+                  gradientClass = "from-green-500/10 to-green-600/10"
+                  iconColor = "text-green-600"
+                  break
+                case "product-development": 
+                  iconName = "code-s-slash-line"
+                  gradientClass = "from-purple-500/10 to-purple-600/10"
+                  iconColor = "text-purple-600"
+                  break
+                case "operations": 
+                  iconName = "settings-3-line"
+                  gradientClass = "from-orange-500/10 to-orange-600/10"
+                  iconColor = "text-orange-600"
+                  break
+                case "research-development": 
+                  iconName = "microscope-line"
+                  gradientClass = "from-indigo-500/10 to-indigo-600/10"
+                  iconColor = "text-indigo-600"
+                  break
+                default: 
+                  iconName = "line-chart-line"
+                  gradientClass = "from-blue-500/10 to-blue-600/10"
+                  iconColor = "text-blue-600"
+              }
+              
+              return (
+                <div
+                  key={category.id}
+                  className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent flex flex-col"
+                >
+                  <div className="flex flex-col flex-1">
+                    <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
+                      {category.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-4 flex-shrink-0">
+                      {category.description}
+                    </p>
+                    <div className="flex-1 flex items-end">
+                      <div className="text-left">
+                        <div className={`w-16 h-16 bg-gradient-to-br ${gradientClass} rounded-lg flex items-center justify-center`}>
+                          <Icon name={iconName} size="2xl" className={iconColor} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </Container>
@@ -581,10 +687,10 @@ function CTASection() {
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
-            <H2>Ready to Transform Your Organization?</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
-              Join thousands of organizations already using Elevation AI to unlock the power of intelligent automation.
-            </BodyLarge>
+            <H1>Ready to Transform Your Organization?</H1>
+            <P className="text-muted-foreground leading-relaxed">
+              Custom plans built for your organization's specific needs and growth trajectory. Join thousands of organizations already using Elevation AI to unlock the power of intelligent automation.
+            </P>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -594,8 +700,8 @@ function CTASection() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
-              <Link href="/website/demo">
-                Request a Demo
+              <Link href="/website/pricing">
+                Get Custom Pricing
               </Link>
             </Button>
           </div>
@@ -637,9 +743,6 @@ export default function WireframesPlatformPage() {
 
             {/* Use Cases Section */}
             <UseCasesSection />
-
-            {/* Pricing Section */}
-            <PricingSection />
 
             {/* CTA Section */}
             <CTASection />

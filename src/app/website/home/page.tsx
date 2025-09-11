@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
+import { H1, H2, H3, H4, P, BodyLarge, BodySmall, HeroHeading } from "@/components/ui/typography"
 import { MainHeader } from "@/components/ui/main-header"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -434,7 +434,7 @@ function HeroSection() {
           {/* Content */}
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="space-y-4 sm:space-y-6">
-                              <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
+                              <HeroHeading>
                   <OriginalTypewriterText 
                     text="The Agentic Platform for" 
                     speed={100} 
@@ -452,10 +452,10 @@ function HeroSection() {
                       "Digital Innovation."
                     ]}
                   />
-                              </div>
-              <BodyLarge className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-lg leading-relaxed">
+                              </HeroHeading>
+              <P className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-lg leading-relaxed">
                 Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.
-              </BodyLarge>
+              </P>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
@@ -669,11 +669,11 @@ function ProblemSection() {
           {!isDesktop && (
             <div key="mobile-layout" className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
               {/* Section Headline */}
-              <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+              <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
                 <H1>Unify your systems</H1>
-              <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+              <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
-              </BodyLarge>
+              </P>
             </div>
             <div className="overflow-x-auto overflow-y-hidden pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
@@ -750,11 +750,11 @@ function ProblemSection() {
               <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
                 <div className="w-full flex flex-col items-center justify-center min-h-0">
                   {/* Section Headline */}
-                  <div className="text-center space-y-0 lg:space-y-1 mb-4 lg:mb-6 xl:mb-8">
+                  <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
                     <H1>Unify your systems</H1>
-                    <BodyLarge className="text-muted-foreground max-w-4xl mx-auto">
+                    <P className="text-muted-foreground max-w-4xl mx-auto">
                       Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
-                    </BodyLarge>
+                    </P>
                   </div>
                   {/* Carousel Container */}
                   <div className="relative w-full h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]">
@@ -965,11 +965,11 @@ function PlatformSection() {
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
-            <div className="text-left lg:text-center space-y-0 lg:space-y-1 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+            <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
               <H1>The agentic platform</H1>
-              <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+              <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
-              </BodyLarge>
+              </P>
             </div>
             <div className="overflow-x-auto pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
@@ -1051,11 +1051,11 @@ function PlatformSection() {
               <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
                                   <div className="w-full flex flex-col items-center justify-center">
                   {/* Section Headline */}
-                  <div className="text-center space-y-0 lg:space-y-1 mb-4 lg:mb-6 xl:mb-8">
+                  <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
                     <H1>The agentic platform</H1>
-                    <BodyLarge className="text-muted-foreground max-w-4xl mx-auto">
+                    <P className="text-muted-foreground max-w-4xl mx-auto">
                       So your business moves faster, thinks smarter, and stays ahead.
-                    </BodyLarge>
+                    </P>
                   </div>
                   {/* Tab Content Container */}
                   <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px] pb-6">
@@ -1204,11 +1204,11 @@ function HowWeDoItSection() {
       <Container size="2xl" >
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
-          <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
+          <div className="text-left space-y-3 lg:space-y-2 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1>More Than a Platform.</H1>
-            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+            <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
               Your partner at every step.
-            </BodyLarge>
+            </P>
           </div>
 
           {/* Modern Tech Layout */}
@@ -1327,11 +1327,11 @@ function WhoWeServeSection() {
       <Container size="2xl" >
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
-          <div className="text-left space-y-0 lg:space-y-1 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
+          <div className="text-left space-y-3 lg:space-y-2 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1>Intelligent Solutions for Every Domain</H1>
-            <BodyLarge className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+            <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
               Powered by Elevation AI and guided by experts.
-            </BodyLarge>
+            </P>
           </div>
           {/* Carousel Layout */}
           <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
@@ -1416,9 +1416,9 @@ function ClosingCTASection() {
           <div className="text-left sm:text-center space-y-8 max-w-3xl mx-auto">
             <div className="space-y-6">
               <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">Orchestrate Your Universe</H1>
-              <BodyLarge className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
+              <P className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
-              </BodyLarge>
+              </P>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1441,9 +1441,9 @@ function ClosingCTASection() {
           <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
             <div className="space-y-4 lg:space-y-6">
               <H1>Orchestrate Your Universe</H1>
-              <BodyLarge className="text-muted-foreground max-w-2xl mx-auto">
+              <P className="text-muted-foreground max-w-2xl mx-auto">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
-              </BodyLarge>
+              </P>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

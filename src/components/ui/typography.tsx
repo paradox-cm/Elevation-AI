@@ -9,8 +9,8 @@ interface TypographyProps {
 }
 
 // Display Components
-export function DisplayLarge({ children, className, as: Component = "h1" }: TypographyProps) {
-  const typeScaleItem = getTypeScaleByComponent("DisplayLarge")
+export function HeroHeading({ children, className, as: Component = "h1" }: TypographyProps) {
+  const typeScaleItem = getTypeScaleByComponent("HeroHeading")
   const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
   return (
     <Component className={cn(classes, className)}>
@@ -19,25 +19,7 @@ export function DisplayLarge({ children, className, as: Component = "h1" }: Typo
   )
 }
 
-export function DisplayMedium({ children, className, as: Component = "h1" }: TypographyProps) {
-  const typeScaleItem = getTypeScaleByComponent("DisplayMedium")
-  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
-  return (
-    <Component className={cn(classes, className)}>
-      {children}
-    </Component>
-  )
-}
 
-export function DisplaySmall({ children, className, as: Component = "h1" }: TypographyProps) {
-  const typeScaleItem = getTypeScaleByComponent("DisplaySmall")
-  const classes = typeScaleItem ? `${typeScaleItem.class} ${typeScaleItem.weight} ${typeScaleItem.lineHeight} ${typeScaleItem.tracking}` : ""
-  return (
-    <Component className={cn(classes, className)}>
-      {children}
-    </Component>
-  )
-}
 
 // Heading Components
 export function H1({ children, className, as: Component = "h1" }: TypographyProps) {

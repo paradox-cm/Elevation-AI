@@ -204,19 +204,73 @@ Components in `@/components/ui/` are built using:
 ## 📝 **Typography System**
 
 ### **Font Stack**
-- **Primary**: Geist Sans (via Google Fonts)
+- **Primary**: Helvetica Now (Variable Font)
 - **Monospace**: Geist Mono (via Google Fonts)
 
-### **Type Scale**
-Defined in `@/components/ui/typography.tsx`:
-- **Display Large**: `text-5xl font-extrabold`
-- **Display Medium**: `text-4xl font-bold`
-- **Heading Large**: `text-3xl font-semibold`
-- **Heading Medium**: `text-2xl font-semibold`
-- **Heading Small**: `text-xl font-semibold`
-- **Body Large**: `text-lg`
-- **Body**: `text-base`
-- **Body Small**: `text-sm`
+### **Type Scale Hierarchy**
+Defined in `@/lib/typography-config.ts` and `@/components/ui/typography.tsx`:
+
+#### **Display Components**
+- **Hero Heading**: `text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl` (font-semibold, leading-tight)
+  - **Usage**: Hero sections only (home page)
+  - **Mobile**: 24px → **Desktop**: 36px → **XL+**: 48px
+
+#### **Heading Components**
+- **Heading Large (H1)**: `text-xl sm:text-lg md:text-xl lg:text-4xl xl:text-4xl 2xl:text-4xl` (font-medium, leading-tight)
+  - **Usage**: Main section headings, page titles
+  - **Mobile**: 20px → **Desktop**: 36px
+- **Heading Medium (H2)**: `text-2xl sm:text-base md:text-lg lg:text-3xl xl:text-3xl 2xl:text-3xl` (font-medium, leading-tight sm:leading-normal)
+  - **Usage**: Subsection headings, card titles
+  - **Mobile**: 24px → **Desktop**: 30px
+- **Heading Small (H3)**: `text-xl sm:text-sm md:text-base lg:text-2xl xl:text-2xl 2xl:text-2xl` (font-medium, leading-tight sm:leading-normal)
+  - **Usage**: Component headings, form labels
+  - **Mobile**: 20px → **Desktop**: 24px
+
+#### **Body Components**
+- **Body Large**: `text-lg sm:text-xl` (font-normal, leading-relaxed)
+  - **Usage**: Lead paragraphs, important content
+- **Body**: `text-base sm:text-lg` (font-normal, leading-relaxed)
+  - **Usage**: Regular body text, paragraphs
+- **Body Small**: `text-xs sm:text-sm` (font-normal, leading-relaxed)
+  - **Usage**: Secondary text, captions
+
+### **Typography Spacing Standards** 🎯
+**CRITICAL:** All section headings must follow these spacing rules for optimal readability:
+
+#### **Section Heading-to-Description Spacing**
+```tsx
+// ✅ CORRECT - Proper spacing between heading and description
+<div className="space-y-3 lg:space-y-2">
+  <H1>Section Heading</H1>
+  <P>Section description text...</P>
+</div>
+
+// ❌ INCORRECT - Too tight spacing
+<div className="space-y-0 lg:space-y-1">
+  <H1>Section Heading</H1>
+  <P>Section description text...</P>
+</div>
+```
+
+#### **Spacing Values by Breakpoint**
+- **Mobile (base)**: `space-y-3` = **12px gap** ✅
+- **Desktop (lg+)**: `space-y-2` = **8px gap** ✅
+- **Avoid**: `space-y-0` (0px) or `space-y-1` (4px) - too tight
+
+#### **Typography Best Practices**
+- ✅ **DO**: Use `space-y-3 lg:space-y-2` for heading-to-description spacing
+- ✅ **DO**: Maintain consistent hierarchy (Hero > H1 > H2 > H3)
+- ✅ **DO**: Use semantic HTML elements (H1, H2, H3, P)
+- ❌ **DON'T**: Use custom inline text sizing classes
+- ❌ **DON'T**: Override typography component spacing
+- ❌ **DON'T**: Use `space-y-0` or `space-y-1` for section headings
+
+#### **Implementation Guidelines**
+- **Hero Sections**: Use `HeroHeading` component (home page only)
+- **Section Headings**: Use `H1` component with proper spacing
+- **Subsection Headings**: Use `H2` component
+- **Component Headings**: Use `H3` component
+- **Body Text**: Use `P` component for regular text, `BodyLarge` for emphasis
 - **Caption**: `text-xs`
 
 ## 📐 **Layout System**

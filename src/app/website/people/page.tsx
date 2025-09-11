@@ -182,7 +182,7 @@ function CreativeHeroSection() {
   return (
     <Section 
       paddingY="lg" 
-      className="flex items-center min-h-screen pt-8 sm:pt-0 relative overflow-hidden"
+      className="flex items-center py-16 sm:py-20 lg:py-24 relative overflow-hidden"
     >
 
       <Container size="2xl" className="relative z-10">
@@ -190,9 +190,9 @@ function CreativeHeroSection() {
           {/* Left Column - Content */}
           <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
-                        <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
+                        <H1>
                           Your Expert Network Awaits
-                        </div>
+                        </H1>
               <BodyLarge className="text-muted-foreground max-w-2xl">
                 Access world-class expertise and dedicated support through our Concierge Team and global Expert Network. Get the specialized knowledge and hands-on assistance you need to maximize your platform's potential.
               </BodyLarge>

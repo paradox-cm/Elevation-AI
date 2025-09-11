@@ -78,8 +78,8 @@ export default function DesignTokensPage() {
       tokens: [
         { name: "text-xs", value: "0.75rem", description: "Extra small text", usage: "Captions, metadata" },
         { name: "text-sm", value: "0.875rem", description: "Small text", usage: "Secondary text, labels" },
-        { name: "text-base", value: "1rem", description: "Base text size", usage: "Body text, paragraphs" },
-        { name: "text-lg", value: "1.125rem", description: "Large text", usage: "Subheadings, emphasis" },
+        { name: "text-base", value: "1rem", description: "Base text size", usage: "Body text, paragraphs (mobile)" },
+        { name: "text-lg", value: "1.125rem", description: "Large text size", usage: "Body text, paragraphs (desktop), subheadings, emphasis" },
         { name: "text-xl", value: "1.25rem", description: "Extra large text", usage: "Headings, titles" },
         { name: "text-2xl", value: "1.5rem", description: "2X large text", usage: "Page titles, main headings" }
       ]

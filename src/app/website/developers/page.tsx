@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
+import { H1, H2, P } from "@/components/ui/typography"
 import React from "react"
 
 
@@ -29,9 +30,9 @@ export default function DevelopersPage() {
               <div className="relative w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px] overflow-hidden">
                 <BusinessDataAnimation />
                 <div className="relative z-10 text-center space-y-1">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                  <H1>
                     Build on the Operating System for the Agentic Era
-                  </h1>
+                  </H1>
                   <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
                     Integrate your agents and platforms with Elevation AI to gain access to a high-value customer base and participate in a thriving, collaborative ecosystem.
                   </p>
@@ -41,9 +42,9 @@ export default function DevelopersPage() {
               {/* Why Integrate with Elevation AI? */}
               <Section paddingY="sm">
                 <div className="max-w-4xl mx-auto space-y-4">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                  <H2>
                     We Handle the Integration, You Focus on Innovation
-                  </h2>
+                  </H2>
                   <p className="text-muted-foreground">
                     Elevation AI is the essential middleware layer for the agentic era. By integrating with our platform, you gain instant, secure access to our entire network of enterprise and private market clients. We handle the complexities of security, data integration, and the client relationship, allowing you to focus on what you do best: building world-class agents and agentic tools.
                   </p>
@@ -53,9 +54,9 @@ export default function DevelopersPage() {
               {/* How It Works: Credit-Based Economy */}
               <Section paddingY="sm">
                 <div className="max-w-4xl mx-auto space-y-4">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                  <H2>
                     A Clear Path to Revenue
-                  </h2>
+                  </H2>
 
                   <div className="space-y-3">
                     <Card className="border-border">
@@ -93,7 +94,7 @@ export default function DevelopersPage() {
                 <div className="max-w-4xl mx-auto">
                   <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
                     <CardHeader className="text-center pt-8 pb-2">
-                      <CardTitle className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                      <CardTitle className="text-2xl sm:text-2xl font-semibold tracking-tight text-foreground">
                         Let's Build the Future, Together
                       </CardTitle>
                     </CardHeader>

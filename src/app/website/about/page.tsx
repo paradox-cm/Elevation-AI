@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { H1, H2, H3, H4, P, BodyLarge, BodySmall, DisplayLarge, DisplayMedium, DisplaySmall } from "@/components/ui/typography"
+import { H1, H2, H3, H4, P, BodySmall, HeroHeading } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import { VerticalSquareFlow } from "@/components/animations"
 import Link from "next/link"
@@ -33,9 +33,9 @@ function MissionSection() {
       <Container size="2xl" className="relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <H1>Our Mission</H1>
-          <DisplayMedium className="text-primary leading-relaxed">
+          <H1 className="text-primary leading-relaxed">
             Help complex organizations operate with clarity, precision, and trust by unifying knowledge and orchestrating secure, agentic AI across their business.
-          </DisplayMedium>
+          </H1>
         </div>
       </Container>
     </Section>
@@ -50,9 +50,9 @@ function WhatWeBuildSection() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-4">
             <H2>What We Build</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               Elevation AI is the orchestration platform that unifies your company's data, people, and workflows into a single command center—powered by a private Knowledge Graph and securely connected to the world of agentic AI.
-            </BodyLarge>
+            </P>
           </div>
         </div>
       </Container>
@@ -68,9 +68,9 @@ function WhyElevationSection() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-4">
             <H2>Why Elevation Exists</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               Leaders manage a universe of systems that don't talk to each other. Information is trapped in silos; context gets lost in personal AI chats; collaboration devolves into copy‑paste. The result is generic output, operational bottlenecks, and risk. Elevation AI fixes that by turning scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
-            </BodyLarge>
+            </P>
           </div>
         </div>
       </Container>
@@ -115,9 +115,9 @@ function PrinciplesSection() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-4">
             <H2>Principles That Guide Us</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               Our core principles shape every decision we make and every feature we build.
-            </BodyLarge>
+            </P>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -153,9 +153,9 @@ function EcosystemSection() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-4">
             <H2>The Ecosystem We Orchestrate</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               Elevation connects your core systems (from finance and cap tables to communications and docs) with specialized AI tools and open agent standards—so you can compose the right stack for your business and evolve it over time.
-            </BodyLarge>
+            </P>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -201,9 +201,9 @@ function PathAheadSection() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-4">
             <H2>The Path Ahead</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               We're building the agentic backbone for how complex organizations operate—one shared knowledge graph, one secure control plane, and a growing ecosystem of agents and integrations that make work feel orchestrated, not overloaded.
-            </BodyLarge>
+            </P>
           </div>
         </div>
       </Container>
@@ -225,9 +225,9 @@ function CareersSection() {
                 </div>
                 <H3>Careers</H3>
               </div>
-              <BodyLarge className="text-muted-foreground leading-relaxed">
+              <P className="text-muted-foreground leading-relaxed">
                 We're looking for systems thinkers, security‑minded engineers, and product designers who love turning complexity into clarity. If that's you, reach out.
-              </BodyLarge>
+              </P>
               <div className="pt-4">
                 <Button size="lg" asChild>
                   <Link href="/website/careers">
@@ -251,9 +251,9 @@ function CTASection() {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <H2>Ready to Transform Your Operations?</H2>
-            <BodyLarge className="text-muted-foreground leading-relaxed">
+            <P className="text-muted-foreground leading-relaxed">
               Discover how Elevation AI can unify your knowledge, secure your operations, and orchestrate intelligent workflows across your organization.
-            </BodyLarge>
+            </P>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

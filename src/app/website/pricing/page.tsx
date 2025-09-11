@@ -20,17 +20,17 @@ function PricingHeroSection() {
   return (
     <Section 
       paddingY="lg" 
-      className="flex items-center min-h-screen pt-8 sm:pt-0 relative overflow-hidden"
+      className="flex items-center py-16 sm:py-20 lg:py-24 relative overflow-hidden"
     >
       <Container size="2xl" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
           <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
-              <div className="text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl font-semibold leading-tight">
+              <H1>
                 Transparent Pricing for
                 <span className="block">Every Organization</span>
-              </div>
+              </H1>
               <BodyLarge className="text-muted-foreground max-w-2xl">
                 Choose the plan that fits your organization's needs. From startups to enterprises, we provide flexible pricing options to help you scale your agentic operations.
               </BodyLarge>
