@@ -596,7 +596,25 @@ function IndustrySolutionsSection() {
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
   const handleToggle = (cardId: string) => {
-    setOpenCardId(openCardId === cardId ? null : cardId)
+    const newOpenCardId = openCardId === cardId ? null : cardId
+    setOpenCardId(newOpenCardId)
+    
+    // Scroll to the card when opening
+    if (newOpenCardId) {
+      setTimeout(() => {
+        const cardElement = cardRefs.current[newOpenCardId]
+        if (cardElement) {
+          const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
   }
 
   // Handle URL parameters on mount
@@ -608,9 +626,13 @@ function IndustrySolutionsSection() {
       setTimeout(() => {
         const cardElement = cardRefs.current[openParam]
         if (cardElement) {
-          cardElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
+          const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
           })
         }
       }, 100)
@@ -660,7 +682,25 @@ function StageSolutionsSection() {
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
   const handleToggle = (cardId: string) => {
-    setOpenCardId(openCardId === cardId ? null : cardId)
+    const newOpenCardId = openCardId === cardId ? null : cardId
+    setOpenCardId(newOpenCardId)
+    
+    // Scroll to the card when opening
+    if (newOpenCardId) {
+      setTimeout(() => {
+        const cardElement = cardRefs.current[newOpenCardId]
+        if (cardElement) {
+          const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
   }
 
   // Handle URL parameters on mount
@@ -672,9 +712,13 @@ function StageSolutionsSection() {
       setTimeout(() => {
         const cardElement = cardRefs.current[openParam]
         if (cardElement) {
-          cardElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
+          const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
           })
         }
       }, 100)
