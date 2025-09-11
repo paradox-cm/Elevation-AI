@@ -354,8 +354,23 @@ const getStageIcon = (solutionId: string): string => {
   }
 }
 
+// Solution type definition
+interface Solution {
+  id: string
+  title: string
+  subtitle: string
+  description: string
+  challenge: {
+    title: string
+    content: string
+  }
+  solutions: string[]
+  useCases: string[]
+  integrations: string
+}
+
 // Expandable Solution Card Component
-function ExpandableSolutionCard({ solution, type }: { solution: any, type: 'industry' | 'stage' }) {
+function ExpandableSolutionCard({ solution, type }: { solution: Solution, type: 'industry' | 'stage' }) {
   const [isOpen, setIsOpen] = React.useState(false)
   const iconName = type === 'industry' ? getIndustryIcon(solution.id) : getStageIcon(solution.id)
 
