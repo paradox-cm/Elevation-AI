@@ -15,8 +15,7 @@ import Icon from "@/components/ui/icon"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
-import { FutureReady } from "@/components/animations"
-import { WIPBanner } from "@/components/ui/wip-banner"
+import { FutureReadyColored } from "@/components/animations"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
 
 // Platform Hero Section Component
@@ -84,9 +83,9 @@ function PlatformHeroSection() {
                 />
               </div>
 
-              {/* Future Ready Animation */}
+              {/* Future Ready Colored Animation */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <FutureReady 
+                <FutureReadyColored 
                   width={600} 
                   height={400} 
                   showBorder={false}
@@ -554,13 +553,13 @@ function IntegrationsSection() {
                               alt={logo.name}
                               width={40}
                               height={40}
-                              className="w-10 h-10 object-contain filter dark:brightness-0 dark:invert"
+                              className="w-10 h-10 object-contain filter dark:brightness-0 dark:invert opacity-80"
                             />
-                          </div>
+              </div>
                           <span>{logo.name}</span>
-                        </div>
+            </div>
                       ))}
-                    </div>
+              </div>
             </div>
               </div>
               )
@@ -665,7 +664,7 @@ function UseCasesSection() {
                 md: { cardWidth: 320, cardGap: 24 }
               }}
             />
-          </div>
+                </div>
 
           {/* Desktop Grid Layout */}
           <div className="hidden lg:grid lg:grid-cols-3 xl:grid-cols-5 gap-6">
@@ -723,11 +722,11 @@ function UseCasesSection() {
                       <div className="text-left">
                         <div className={`w-16 h-16 bg-gradient-to-br ${gradientClass} rounded-lg flex items-center justify-center`}>
                           <Icon name={iconName} size="2xl" className={iconColor} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
               )
             })}
           </div>
@@ -778,13 +777,6 @@ export default function WireframesPlatformPage() {
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
-            {/* WIP Banner */}
-            <div className="pt-8">
-              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-                <WIPBanner />
-              </Container>
-            </div>
-            
             {/* Platform Hero Section */}
             <PlatformHeroSection />
 

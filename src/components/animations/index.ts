@@ -2,6 +2,7 @@
 export { AgenticEngine } from './agentic-engine'
 export { EnterpriseSecurity } from './enterprise-security'
 export { FutureReady } from './future-ready'
+export { FutureReadyColored } from './future-ready-colored'
 export { FutureReadyMobile } from './future-ready-mobile'
 export { IntelligentProcessAutomation, IntelligentProcessAutomationMobile } from './intelligent-process-automation'
 export { KnowledgeBlocks, KnowledgeBlocksMobile } from './knowledge-blocks'
