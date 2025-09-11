@@ -70,21 +70,21 @@ export function WebsiteFooter() {
                 <div>
                   <h4 className="text-sm font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">By Industry</h4>
                   <ul className="space-y-2">
-                    <li><Link href="/website/solutions#private-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Private Market Organizations</Link></li>
-                    <li><Link href="/website/solutions#public-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Public Market Organizations</Link></li>
-                    <li><Link href="/website/solutions#banks" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Banks</Link></li>
-                    <li><Link href="/website/solutions#enterprise" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Enterprise</Link></li>
-                    <li><Link href="/website/solutions#government" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Government</Link></li>
+                    <li><Link href="/website/solutions?open=private-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Private Market Organizations</Link></li>
+                    <li><Link href="/website/solutions?open=public-markets" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Public Market Organizations</Link></li>
+                    <li><Link href="/website/solutions?open=banks" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Banks</Link></li>
+                    <li><Link href="/website/solutions?open=enterprise" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Enterprise</Link></li>
+                    <li><Link href="/website/solutions?open=government" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Government</Link></li>
                   </ul>
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">By Stage</h4>
                   <ul className="space-y-2">
-                    <li><Link href="/website/solutions#creating-growing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Creating a New Venture</Link></li>
-                    <li><Link href="/website/solutions#scaling" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Scaling a Venture</Link></li>
-                    <li><Link href="/website/solutions#exiting" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Exiting a Venture</Link></li>
-                    <li><Link href="/website/solutions#post-ipo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-IPO Growth</Link></li>
-                    <li><Link href="/website/solutions#family-office" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-Exit Family Office</Link></li>
+                    <li><Link href="/website/solutions?open=creating-venture" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Creating a New Venture</Link></li>
+                    <li><Link href="/website/solutions?open=scaling-venture" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Scaling a Venture</Link></li>
+                    <li><Link href="/website/solutions?open=exiting-venture" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Exiting a Venture</Link></li>
+                    <li><Link href="/website/solutions?open=post-ipo-growth" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-IPO Growth</Link></li>
+                    <li><Link href="/website/solutions?open=family-office" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Post-Exit Family Office</Link></li>
                   </ul>
                 </div>
               </div>
