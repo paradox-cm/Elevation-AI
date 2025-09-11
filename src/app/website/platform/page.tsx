@@ -394,69 +394,120 @@ function SecuritySection() {
 
 // Integrations Section
 function IntegrationsSection() {
+  // Logo mapping for each category
+  const logoMapping = {
+    productivity: [
+      { name: "Google Workspace", file: "Google-Workspace-Docs.svg" },
+      { name: "Microsoft 365", file: "Microsoft-365.svg" },
+      { name: "Slack", file: "slack.svg" },
+      { name: "Notion", file: "notion.svg" }
+    ],
+    "crm-sales": [
+      { name: "Salesforce", file: "Salesforce.svg" },
+      { name: "HubSpot", file: "hubspot.svg" },
+      { name: "Pipedrive", file: "Pipedrive.svg" }
+    ],
+    development: [
+      { name: "GitHub", file: "github.svg" },
+      { name: "GitLab", file: "gitlab.svg" },
+      { name: "Jira", file: "jira.svg" },
+      { name: "Confluence", file: "confluence.svg" }
+    ],
+    communication: [
+      { name: "Zoom", file: "zoom.svg" },
+      { name: "Teams", file: "microsoft-teams.svg" },
+      { name: "Discord", file: "discord.svg" }
+    ],
+    "data-analytics": [
+      { name: "Tableau", file: "tableau.svg" },
+      { name: "Power BI", file: "Power_BI.svg" },
+      { name: "Google Analytics", file: "google-analytics.svg" }
+    ],
+    "custom-apis": [
+      { name: "REST API", file: "rest-api.svg" },
+      { name: "GraphQL", file: "graphql.svg" },
+      { name: "Webhooks", file: "webhooks.svg" }
+    ],
+    finance: [
+      { name: "QuickBooks", file: "Quickbooks.svg" },
+      { name: "Xero", file: "xero.svg" },
+      { name: "Stripe", file: "stripe.svg" }
+    ],
+    marketing: [
+      { name: "Mailchimp", file: "mailchimp.svg" },
+      { name: "Hootsuite", file: "hootsuite.svg" },
+      { name: "Google Ads", file: "Google-Ads.svg" }
+    ],
+    hr: [
+      { name: "BambooHR", file: "bamboo.svg" },
+      { name: "Workday", file: "workday.svg" },
+      { name: "ADP", file: "ADP.svg" }
+    ]
+  }
+
   const integrationCategories = [
     {
       id: "productivity",
       title: "Productivity",
       description: "Google Workspace, Microsoft 365, Slack, Notion",
       icon: "file-text-line",
-      logos: ["Google Workspace", "Microsoft 365", "Slack", "Notion"]
+      logos: logoMapping.productivity
     },
     {
       id: "crm-sales",
       title: "CRM & Sales",
       description: "Salesforce, HubSpot, Pipedrive, and more sales tools",
       icon: "user-line",
-      logos: ["Salesforce", "HubSpot", "Pipedrive"]
+      logos: logoMapping["crm-sales"]
     },
     {
       id: "development",
       title: "Development",
       description: "GitHub, GitLab, Jira, Confluence, and development platforms",
       icon: "code-s-slash-line",
-      logos: ["GitHub", "GitLab", "Jira", "Confluence"]
+      logos: logoMapping.development
     },
     {
       id: "communication",
       title: "Communication",
       description: "Zoom, Teams, Discord",
       icon: "message-3-line",
-      logos: ["Zoom", "Teams", "Discord"]
+      logos: logoMapping.communication
     },
     {
       id: "data-analytics",
       title: "Data & Analytics",
       description: "Tableau, Power BI, Google Analytics, and business intelligence tools",
       icon: "bar-chart-line",
-      logos: ["Tableau", "Power BI", "Google Analytics"]
+      logos: logoMapping["data-analytics"]
     },
     {
       id: "custom-apis",
       title: "Custom APIs",
       description: "RESTful APIs, webhooks, custom connectors",
       icon: "links-line",
-      logos: ["REST API", "GraphQL", "Webhooks"]
+      logos: logoMapping["custom-apis"]
     },
     {
       id: "finance",
       title: "Finance & Accounting",
       description: "QuickBooks, Xero, Stripe, and financial management tools",
       icon: "money-dollar-circle-line",
-      logos: ["QuickBooks", "Xero", "Stripe"]
+      logos: logoMapping.finance
     },
     {
       id: "marketing",
       title: "Marketing",
       description: "Mailchimp, Hootsuite, Google Ads, and marketing automation platforms",
       icon: "megaphone-line",
-      logos: ["Mailchimp", "Hootsuite", "Google Ads"]
+      logos: logoMapping.marketing
     },
     {
       id: "hr",
       title: "Human Resources",
       description: "BambooHR, Workday, ADP, and HR management systems",
       icon: "team-line",
-      logos: ["BambooHR", "Workday", "ADP"]
+      logos: logoMapping.hr
     }
   ]
 
@@ -497,13 +548,19 @@ function IntegrationsSection() {
                           key={index}
                           className="flex items-center gap-2 text-xs text-muted-foreground"
                         >
-                          <div className="w-4 h-4 bg-muted rounded border border-border/50 flex items-center justify-center">
-                            <div className="w-2 h-2 bg-primary/60 rounded-full"></div>
-              </div>
-                          <span>{logo}</span>
-            </div>
+                          <div className="w-12 h-12 flex items-center justify-center">
+                            <Image
+                              src={`/images/platform-logos/${logo.file}`}
+                              alt={logo.name}
+                              width={48}
+                              height={48}
+                              className="w-12 h-12 object-contain filter dark:brightness-0 dark:invert"
+                            />
+                          </div>
+                          <span>{logo.name}</span>
+                        </div>
                       ))}
-              </div>
+                    </div>
             </div>
               </div>
               )
