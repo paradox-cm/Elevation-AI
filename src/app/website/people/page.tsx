@@ -17,8 +17,10 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Users, Headphones, Brain, Shield, Clock, Globe, CheckCircle, ArrowRight, Star, Award, UserCheck, Zap, Target, Sparkles } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import Icon from "@/components/ui/icon"
-import { VerticalSquareFlow, LogoCarousel } from "@/components/animations"
+import { VerticalSquareFlow, LogoCarousel, TunnelShader } from "@/components/animations"
+import { Carousel, CarouselItem } from "@/components/ui/carousel"
 
 // Animated Text Carousel Component
 function AnimatedTextCarousel({ 
@@ -257,6 +259,23 @@ const expertCategories: ExpertCategory[] = [
   }
 ]
 
+// Transform expert categories to carousel items
+const expertCarouselItems: CarouselItem[] = expertCategories.map((category) => ({
+  id: category.id,
+  title: category.title,
+  description: category.description,
+  icon: category.icon,
+  content: (
+    <div className="flex flex-wrap gap-2">
+      {category.specialties.map((specialty) => (
+        <Badge key={specialty} variant="secondary" className="text-sm bg-blue-500/10 text-blue-500 border-blue-500/20">
+          {specialty}
+        </Badge>
+      ))}
+    </div>
+  )
+}))
+
 function ConciergeServiceCard({ service }: { service: ConciergeService }) {
   const IconComponent = service.icon
 
@@ -287,40 +306,6 @@ function ConciergeServiceCard({ service }: { service: ConciergeService }) {
   )
 }
 
-function ExpertCategoryCard({ category }: { category: ExpertCategory }) {
-  const IconComponent = category.icon
-
-  return (
-    <Card className="h-full bg-blue-500/5 border-blue-500/20">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-blue-500/10">
-            <IconComponent className="w-5 h-5 text-blue-500" />
-          </div>
-          {category.title}
-        </CardTitle>
-        <CardDescription className="text-sm leading-relaxed">
-          {category.description}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-blue-500" />
-            <span className="text-sm font-medium">{category.expertCount} Experts Available</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {category.specialties.map((specialty) => (
-              <Badge key={specialty} variant="secondary" className="text-xs bg-blue-500/10 text-blue-500 border-blue-500/20">
-                {specialty}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
 
 
 // Creative Hero Section Component
@@ -612,15 +597,23 @@ export default function PeoplePage() {
                             </div>
                           </div>
                           
-                          {/* Image Placeholder Container - Fills remaining height */}
-                          <div className="flex-1 w-full bg-muted/20 rounded-lg border-2 border-dashed border-muted-foreground/30 flex items-center justify-center mt-6">
-                            <div className="text-center">
-                              <div className="w-12 h-12 bg-muted-foreground/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                                <svg className="w-6 h-6 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                              </div>
-                              <p className="text-sm text-muted-foreground/70">Image placeholder</p>
+                          {/* Tunnel Shader Animation Container - Fills remaining height */}
+                          <div className="flex-1 w-full rounded-lg overflow-hidden mt-6 h-[400px] sm:h-auto flex flex-col items-center justify-center bg-muted/5 relative">
+                            {/* E-AI-Square Logo - Centered in container */}
+                            <div className="absolute inset-0 flex items-center justify-center z-10">
+                              <Image
+                                src="/images/branding/E-AI-Sqaure.svg"
+                                alt="Elevation AI Logo"
+                                width={123}
+                                height={123}
+                                className="w-[123px] h-[123px] dark:brightness-0 dark:invert"
+                                priority
+                              />
+                            </div>
+                            
+                            {/* Tunnel Shader Animation */}
+                            <div className="w-full h-full max-w-full max-h-full">
+                              <TunnelShader />
                             </div>
                           </div>
                         </div>
@@ -710,12 +703,22 @@ export default function PeoplePage() {
                       </BodyLarge>
                     </div>
 
-                    {/* Expert Categories Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {expertCategories.map((category) => (
-                        <ExpertCategoryCard key={category.id} category={category} />
-                      ))}
-                    </div>
+                    {/* Expert Categories Carousel */}
+                    <Carousel
+                      items={expertCarouselItems}
+                      autoPlay={true}
+                      autoPlayInterval={5000}
+                      showProgressIndicators={true}
+                      cardWidth={320}
+                      cardGap={24}
+                      cardStyle="blue"
+                      highlightActiveCard={true}
+                      responsive={{
+                        sm: { cardWidth: 280, cardGap: 16 },
+                        md: { cardWidth: 300, cardGap: 20 },
+                        lg: { cardWidth: 320, cardGap: 24 }
+                      }}
+                    />
 
                   </div>
                 </Container>

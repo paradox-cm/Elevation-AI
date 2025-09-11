@@ -606,7 +606,7 @@ function IndustrySolutionsSection() {
         if (cardElement) {
           const headerHeight = 64 // Height of the fixed header (4rem = 64px)
           const elementPosition = cardElement.offsetTop
-          const offsetPosition = elementPosition - headerHeight
+          const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
           
           window.scrollTo({
             top: offsetPosition,
@@ -628,7 +628,7 @@ function IndustrySolutionsSection() {
         if (cardElement) {
           const headerHeight = 64 // Height of the fixed header (4rem = 64px)
           const elementPosition = cardElement.offsetTop
-          const offsetPosition = elementPosition - headerHeight
+          const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
           
           window.scrollTo({
             top: offsetPosition,
@@ -692,7 +692,7 @@ function StageSolutionsSection() {
         if (cardElement) {
           const headerHeight = 64 // Height of the fixed header (4rem = 64px)
           const elementPosition = cardElement.offsetTop
-          const offsetPosition = elementPosition - headerHeight
+          const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
           
           window.scrollTo({
             top: offsetPosition,
@@ -714,7 +714,7 @@ function StageSolutionsSection() {
         if (cardElement) {
           const headerHeight = 64 // Height of the fixed header (4rem = 64px)
           const elementPosition = cardElement.offsetTop
-          const offsetPosition = elementPosition - headerHeight
+          const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
           
           window.scrollTo({
             top: offsetPosition,

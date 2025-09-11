@@ -23,7 +23,7 @@ export interface CarouselProps {
   onSlideChange?: (index: number) => void
   indicatorStyle?: 'progress' | 'thin-lines'
   highlightActiveCard?: boolean
-  cardStyle?: 'filled' | 'outline'
+  cardStyle?: 'filled' | 'outline' | 'blue'
   responsive?: {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
@@ -353,9 +353,13 @@ export function Carousel({
                 "flex-shrink-0 border rounded-lg transition-all duration-300",
                 cardStyle === 'outline' 
                   ? 'border-border bg-transparent' 
-                  : highlightActiveCard && index === currentSlide 
-                    ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
-                    : 'border-border bg-card'
+                  : cardStyle === 'blue'
+                    ? highlightActiveCard && index === currentSlide
+                      ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                      : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                    : highlightActiveCard && index === currentSlide 
+                      ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                      : 'border-border bg-card'
               )}
               style={{ 
                 minWidth: `${responsiveCardWidth}px`, 

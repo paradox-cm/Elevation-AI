@@ -11,6 +11,7 @@ export { PersonalCopilot } from './personal-copilot'
 export { RealTimeBusinessIntelligence } from './real-time-business-intelligence'
 export { RealTimeBusinessIntelligenceMobile } from './real-time-business-intelligence-mobile'
 export { UnifiedKnowledge } from './unified-knowledge'
+export { TunnelShader } from './tunnel-shader'
 export { VerticalSquareFlow } from './vertical-square-flow'
 export { WorkspacesCanvases } from './workspaces-canvases'
 
