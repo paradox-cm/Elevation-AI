@@ -10,7 +10,7 @@ import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Button } from "@/components/ui/button"
 import { H1, H2, P, BodyLarge } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
-import { StarFieldAnimationPlatform } from "@/components/animations/star-field-animation-platform"
+import { StarfieldAnimationHero } from "@/app/design-system/animations/starfield-animation"
 import React from "react"
 
 
@@ -26,22 +26,9 @@ export default function InvestorsPage() {
           <main>
             {/* Hero - centered with edge-to-edge border */}
             <div className="relative w-full flex items-center justify-center min-h-[300px] sm:min-h-[360px] lg:min-h-[420px] border-b border-border/50 overflow-hidden">
-              {/* Starfield Animation Background */}
-              <div 
-                className="absolute inset-0 w-full h-full z-0"
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  overflow: 'hidden',
-                  willChange: 'auto',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden'
-                }}
-              >
-                <StarFieldAnimationPlatform key="investors-hero" className="w-full h-full" />
+              {/* Background - Centralized Starfield */}
+              <div className="absolute inset-0 w-full h-full z-0">
+                <StarfieldAnimationHero className="w-full h-full" />
               </div>
               
               <Container size="2xl" className="relative z-10">

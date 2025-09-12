@@ -30,8 +30,7 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
 import { BusinessDataAnimationWithTimer } from "@/components/animations/business-data-animation-with-timer"
-import { StarFieldAnimation } from "@/components/animations/star-field-animation"
-import { StarFieldAnimationPlatform } from "@/components/animations/star-field-animation-platform"
+import { StarfieldAnimationPlatform } from "@/app/design-system/animations/starfield-animation"
 import { 
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
@@ -995,27 +994,10 @@ function PlatformSection() {
 
   return (
     <Section paddingY="lg" className="relative">
-      {/* Background Animation */}
+      {/* Background Animation - Centralized Starfield */}
       <div className="absolute inset-0 z-0">
-        <div 
-          className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-            willChange: 'auto',
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden',
-            pointerEvents: 'none'
-          }}
-        >
-          {/* Use screensaver version for mobile, platform version for desktop */}
-          {isDesktop ? (
-            <StarFieldAnimationPlatform key="platform-desktop" className="w-full h-full" />
-          ) : (
-            <StarFieldAnimation key="screensaver-mobile" className="w-full h-full" />
-          )}
+        <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
+          <StarfieldAnimationPlatform className="w-full h-full" />
         </div>
       </div>
       
