@@ -312,32 +312,35 @@ function PrinciplesSection() {
     <Section paddingY="xl" className="relative overflow-hidden">
       {/* Simplified Grid Background with Dark Blue Gradient */}
       <div className="absolute inset-0">
-        {/* Single Grid with Dark Blue Gradient Background */}
+        {/* Light Mode Grid Background */}
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 dark:hidden"
           style={{
             background: `
-              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.15) 0%, transparent 60%),
-              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.1) 0%, transparent 60%),
-              linear-gradient(135deg, rgba(15, 23, 42, 0.05) 0%, rgba(71, 85, 105, 0.05) 100%),
-              linear-gradient(to right, rgba(229, 231, 235, 0.1) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(229, 231, 235, 0.1) 1px, transparent 1px)
+              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.05) 0%, transparent 60%),
+              linear-gradient(135deg, rgba(15, 23, 42, 0.03) 0%, rgba(71, 85, 105, 0.03) 100%),
+              linear-gradient(to right, rgba(107, 114, 128, 0.15) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(107, 114, 128, 0.15) 1px, transparent 1px)
             `,
             backgroundSize: 'auto, auto, auto, 32px 32px, 32px 32px',
             backgroundPosition: '0 0, 0 0, 0 0, 0 0, 0 0'
           }}
         />
         
-        {/* Dark Mode Grid Lines */}
+        {/* Dark Mode Grid Background */}
         <div 
-          className="absolute inset-0 dark:block hidden"
+          className="absolute inset-0 hidden dark:block"
           style={{
-            backgroundImage: `
+            background: `
+              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.15) 0%, transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.1) 0%, transparent 60%),
+              linear-gradient(135deg, rgba(15, 23, 42, 0.05) 0%, rgba(71, 85, 105, 0.05) 100%),
               linear-gradient(to right, rgba(209, 213, 219, 0.1) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(209, 213, 219, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: '32px 32px',
-            backgroundPosition: '0 0'
+            backgroundSize: 'auto, auto, auto, 32px 32px, 32px 32px',
+            backgroundPosition: '0 0, 0 0, 0 0, 0 0, 0 0'
           }}
         />
       </div>
