@@ -109,9 +109,39 @@ export function UnifiedKnowledge({
 
   // Alternative approach: Use breakpoint reset hook
   useBreakpointReset(containerRef, () => {
+    console.log('UnifiedKnowledge: Breakpoint change detected, restarting animation')
     // Animation restart triggered by breakpoint change
     initializeAndStartAnimation()
   })
+
+  // Additional window resize listener for extra safety
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('UnifiedKnowledge: Window resize detected, checking if restart needed')
+      // Small delay to ensure CSS classes have been applied
+      setTimeout(() => {
+        const element = containerRef.current
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const computedStyle = window.getComputedStyle(element)
+          const isVisible = 
+            rect.width > 0 && 
+            rect.height > 0 && 
+            computedStyle.display !== 'none' && 
+            computedStyle.visibility !== 'hidden' &&
+            computedStyle.opacity !== '0'
+          
+          if (isVisible) {
+            console.log('UnifiedKnowledge: Element is visible after resize, restarting animation')
+            initializeAndStartAnimation()
+          }
+        }
+      }, 100)
+    }
+
+    window.addEventListener('resize', handleResize, { passive: true })
+    return () => window.removeEventListener('resize', handleResize)
+  }, [initializeAndStartAnimation])
 
   useEffect(() => {
     const canvasData = initializeCanvas()

@@ -31,10 +31,20 @@ export function useBreakpointReset(
       computedStyle.visibility !== 'hidden' &&
       computedStyle.opacity !== '0'
 
-    // Debug logging removed to prevent console spam
+    // Debug logging
+    console.log('BreakpointReset: Element visibility check', {
+      element: element.tagName,
+      rect: { width: rect.width, height: rect.height },
+      display: computedStyle.display,
+      visibility: computedStyle.visibility,
+      opacity: computedStyle.opacity,
+      isVisible,
+      wasVisible: isVisibleRef.current
+    })
 
     // If visibility changed from hidden to visible, trigger callback
     if (isVisible && !isVisibleRef.current) {
+      console.log('BreakpointReset: Element became visible, triggering callback')
       onBreakpointChange()
     }
 

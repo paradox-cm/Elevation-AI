@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
 import { useVisibilityReset } from "@/hooks/use-visibility-reset"
+import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
 
 interface TradeLine {
   x: number
@@ -291,11 +292,49 @@ export function IntelligentProcessAutomationMobile({
 
   // Use visibility reset hook to detect when component becomes visible again
   useVisibilityReset(containerRef, (isVisible) => {
+    console.log('IntelligentProcessAutomation visibility changed:', isVisible)
     if (isVisible) {
+      console.log('IntelligentProcessAutomation: Restarting animation due to visibility change')
       // Component became visible, force animation restart
       initializeAndStartAnimation()
     }
   })
+
+  // Alternative approach: Use breakpoint reset hook
+  useBreakpointReset(containerRef, () => {
+    console.log('IntelligentProcessAutomation: Breakpoint change detected, restarting animation')
+    // Animation restart triggered by breakpoint change
+    initializeAndStartAnimation()
+  })
+
+  // Additional window resize listener for extra safety
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('IntelligentProcessAutomation: Window resize detected, checking if restart needed')
+      // Small delay to ensure CSS classes have been applied
+      setTimeout(() => {
+        const element = containerRef.current
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const computedStyle = window.getComputedStyle(element)
+          const isVisible = 
+            rect.width > 0 && 
+            rect.height > 0 && 
+            computedStyle.display !== 'none' && 
+            computedStyle.visibility !== 'hidden' &&
+            computedStyle.opacity !== '0'
+          
+          if (isVisible) {
+            console.log('IntelligentProcessAutomation: Element is visible after resize, restarting animation')
+            initializeAndStartAnimation()
+          }
+        }
+      }, 100)
+    }
+
+    window.addEventListener('resize', handleResize, { passive: true })
+    return () => window.removeEventListener('resize', handleResize)
+  }, [initializeAndStartAnimation])
 
   const createTraffic = (canvas: HTMLCanvasElement) => {
     const traffic: TradeLine[] = []

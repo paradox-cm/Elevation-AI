@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useCallback } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
+import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
 
 interface RealTimeBusinessIntelligenceProps {
   width?: number
@@ -17,6 +19,7 @@ export function RealTimeBusinessIntelligence({
   showBorder = true 
 }: RealTimeBusinessIntelligenceProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
 
   const initializeCanvas = useCallback(() => {
@@ -58,6 +61,52 @@ export function RealTimeBusinessIntelligence({
     debounceDelay: 150,
     preserveAspectRatio: true
   })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    console.log('RealTimeBusinessIntelligence visibility changed:', isVisible)
+    if (isVisible) {
+      console.log('RealTimeBusinessIntelligence: Restarting animation due to visibility change')
+      // Component became visible, force animation restart
+      initializeAndStartAnimation()
+    }
+  })
+
+  // Alternative approach: Use breakpoint reset hook
+  useBreakpointReset(containerRef, () => {
+    console.log('RealTimeBusinessIntelligence: Breakpoint change detected, restarting animation')
+    // Animation restart triggered by breakpoint change
+    initializeAndStartAnimation()
+  })
+
+  // Additional window resize listener for extra safety
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('RealTimeBusinessIntelligence: Window resize detected, checking if restart needed')
+      // Small delay to ensure CSS classes have been applied
+      setTimeout(() => {
+        const element = containerRef.current
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const computedStyle = window.getComputedStyle(element)
+          const isVisible = 
+            rect.width > 0 && 
+            rect.height > 0 && 
+            computedStyle.display !== 'none' && 
+            computedStyle.visibility !== 'hidden' &&
+            computedStyle.opacity !== '0'
+          
+          if (isVisible) {
+            console.log('RealTimeBusinessIntelligence: Element is visible after resize, restarting animation')
+            initializeAndStartAnimation()
+          }
+        }
+      }, 100)
+    }
+
+    window.addEventListener('resize', handleResize, { passive: true })
+    return () => window.removeEventListener('resize', handleResize)
+  }, [initializeAndStartAnimation])
 
   useEffect(() => {
     const canvasData = initializeCanvas()
@@ -464,7 +513,7 @@ export function RealTimeBusinessIntelligence({
   }, [width, height, initializeAndStartAnimation])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
