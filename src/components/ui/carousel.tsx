@@ -26,6 +26,7 @@ export interface CarouselProps {
   indicatorStyle?: 'progress' | 'thin-lines'
   highlightActiveCard?: boolean
   cardStyle?: 'filled' | 'outline' | 'blue'
+  naturalScroll?: boolean
   responsive?: {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
@@ -46,6 +47,7 @@ export function Carousel({
   indicatorStyle = 'progress',
   highlightActiveCard = true,
   cardStyle = 'filled',
+  naturalScroll = false,
   responsive
 }: CarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
@@ -180,7 +182,21 @@ export function Carousel({
         return
       }
       
-      // Calculate which slide is currently in view based on scroll position
+      // If naturalScroll is enabled, don't snap to cards - just track the closest slide for indicators
+      if (naturalScroll) {
+        const totalCardWidth = responsiveCardWidth + responsiveCardGap
+        const currentSlideIndex = Math.floor(scrollLeft / totalCardWidth)
+        const clampedSlideIndex = Math.max(0, Math.min(currentSlideIndex, items.length - 1))
+        
+        // Only update if the slide has actually changed to avoid unnecessary re-renders
+        if (clampedSlideIndex !== currentSlide) {
+          setCurrentSlide(clampedSlideIndex)
+          setProgress(0) // Reset progress when manually scrolling
+        }
+        return
+      }
+      
+      // Calculate which slide is currently in view based on scroll position (with snapping)
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       const currentSlideIndex = Math.round(scrollLeft / totalCardWidth)
       const clampedSlideIndex = Math.max(0, Math.min(currentSlideIndex, items.length - 1))
@@ -191,7 +207,7 @@ export function Carousel({
         setProgress(0) // Reset progress when manually scrolling
       }
     }
-  }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide])
+  }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide, naturalScroll])
 
   // Detect manual interaction (all devices)
   const handleManualInteraction = React.useCallback(() => {
@@ -265,7 +281,7 @@ export function Carousel({
 
   // Auto-scroll carousel when currentSlide changes (all devices)
   React.useEffect(() => {
-    if (carouselRef.current) {
+    if (carouselRef.current && !naturalScroll) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
       console.log('Auto-scroll effect triggered, currentSlide:', currentSlide, 'scrollTo:', currentSlide * totalCardWidth)
@@ -283,7 +299,7 @@ export function Carousel({
         isProgrammaticScrollRef.current = false
       }, 500) // Wait for smooth scroll to complete
     }
-  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize])
+  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize, naturalScroll])
 
   // Add scroll event listener to check position and detect manual interaction
   React.useEffect(() => {

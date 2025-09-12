@@ -28,6 +28,7 @@ export function StarfieldAnimation({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationFrameId = useRef<number>(0)
   const starsRef = useRef<{ x: number; y: number; z: number }[]>([])
+  const lastCanvasSizeRef = useRef<{ width: number; height: number } | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -52,26 +53,58 @@ export function StarfieldAnimation({
     ctx.imageSmoothingEnabled = false
 
     // Function to set canvas buffer size and initialize/re-initialize stars
-    const initializeCanvasAndStars = () => {
+    const initializeCanvasAndStars = (forceRecreate = false) => {
       const dpr = window.devicePixelRatio || 1
       if (canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
-        animationFrameId.current = requestAnimationFrame(initializeCanvasAndStars)
+        animationFrameId.current = requestAnimationFrame(() => initializeCanvasAndStars(forceRecreate))
         return false
       }
 
-      canvas.width = canvas.offsetWidth * dpr
-      canvas.height = canvas.offsetHeight * dpr
+      const newWidth = canvas.offsetWidth * dpr
+      const newHeight = canvas.offsetHeight * dpr
+      
+      // Check if dimensions actually changed significantly (more than 1 pixel difference)
+      const lastSize = lastCanvasSizeRef.current
+      const dimensionsChanged = !lastSize || 
+        Math.abs(newWidth - lastSize.width) > 1 || 
+        Math.abs(newHeight - lastSize.height) > 1
 
-      ctx.imageSmoothingEnabled = false
-
-      starsRef.current.length = 0
-      for (let i = 0; i < starCount; i++) {
-        starsRef.current.push({
-          x: Math.random() * canvas.width - canvas.width / 2,
-          y: Math.random() * canvas.height - canvas.height / 2,
-          z: Math.random() * zMax,
+      // Debug logging (can be removed in production)
+      if (dimensionsChanged && lastSize) {
+        console.log('Starfield: Dimensions changed significantly', {
+          old: lastSize,
+          new: { width: newWidth, height: newHeight },
+          delta: { width: newWidth - lastSize.width, height: newHeight - lastSize.height }
         })
       }
+
+      // Only recreate stars if dimensions changed significantly or forced
+      if (dimensionsChanged || forceRecreate) {
+        canvas.width = newWidth
+        canvas.height = newHeight
+        ctx.imageSmoothingEnabled = false
+
+        // Update the tracked dimensions
+        lastCanvasSizeRef.current = { width: newWidth, height: newHeight }
+
+        // Only recreate stars if dimensions changed or forced
+        if (dimensionsChanged || forceRecreate) {
+          starsRef.current.length = 0
+          for (let i = 0; i < starCount; i++) {
+            starsRef.current.push({
+              x: Math.random() * canvas.width - canvas.width / 2,
+              y: Math.random() * canvas.height - canvas.height / 2,
+              z: Math.random() * zMax,
+            })
+          }
+        }
+      } else {
+        // Just update canvas size without recreating stars
+        canvas.width = newWidth
+        canvas.height = newHeight
+        ctx.imageSmoothingEnabled = false
+      }
+      
       return true
     }
 
@@ -111,10 +144,10 @@ export function StarfieldAnimation({
       animationFrameId.current = requestAnimationFrame(animate)
     }
 
-    // Resize handler
+    // Resize handler - only recreates stars when dimensions actually change
     const handleResize = () => {
       if (canvasRef.current) {
-        initializeCanvasAndStars()
+        initializeCanvasAndStars(false) // Don't force recreate, let it check dimensions
         if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0) {
           animationRunning = true
           animate()
@@ -122,8 +155,8 @@ export function StarfieldAnimation({
       }
     }
 
-    // Attempt initial setup
-    if (initializeCanvasAndStars()) {
+    // Attempt initial setup - force recreation on first load
+    if (initializeCanvasAndStars(true)) {
       animationRunning = true
       animate()
     }
@@ -136,6 +169,7 @@ export function StarfieldAnimation({
         cancelAnimationFrame(animationFrameId.current)
       }
       animationRunning = false
+      lastCanvasSizeRef.current = null
     }
   }, [mounted, starCount, speed, zMax, perspectiveFactor, backgroundColor, starColor])
 

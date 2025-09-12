@@ -1447,6 +1447,7 @@ function WhoWeServeSection() {
             className="w-full"
             highlightActiveCard={false}
             cardStyle="outline"
+            naturalScroll={true}
             responsive={{
               sm: { cardWidth: 200, cardGap: 12 },
               md: { cardWidth: 220, cardGap: 14 }
