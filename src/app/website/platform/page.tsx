@@ -527,12 +527,15 @@ function IntegrationsSection() {
           </div>
           
           {/* Masonry/Pinterest Style Layout */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-            {integrationCategories.map((category) => {
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 relative">
+            {/* Mobile connecting line - only visible on mobile */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border transform -translate-x-1/2 sm:hidden z-0"></div>
+            
+            {integrationCategories.map((category, index) => {
               return (
                 <div
                   key={category.id}
-                  className="group break-inside-avoid border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-transparent flex flex-col"
+                  className="group break-inside-avoid border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-background flex flex-col relative z-10"
                 >
                   <div className="flex flex-col">
                     <div className="flex items-center gap-3 mb-4">

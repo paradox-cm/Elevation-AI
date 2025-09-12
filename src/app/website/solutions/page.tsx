@@ -21,6 +21,7 @@ import { useSearchParams } from "next/navigation"
 import * as THREE from "three"
 import Icon from "@/components/ui/icon"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { SolutionsSubNav } from "@/components/ui/solutions-sub-nav"
 
 // Solutions Hero Section Component
 function SolutionsHeroSection() {
@@ -661,7 +662,7 @@ function IndustrySolutionsSection() {
   }, [searchParams])
 
   return (
-    <Section paddingY="lg">
+    <Section id="industry-solutions" paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Left Column - Content */}
@@ -768,7 +769,7 @@ function StageSolutionsSection() {
   }, [searchParams])
 
   return (
-    <Section paddingY="lg">
+    <Section id="stage-solutions" paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Left Column - Content */}
@@ -933,6 +934,9 @@ export default function WireframesSolutionsPage() {
         footer={<WebsiteFooter />}
         mobileMenu={<MobileMenuDrawer currentPage="solutions" />}
       >
+        {/* Solutions Sub Navigation */}
+        <SolutionsSubNav />
+        
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
             {/* Solutions Hero Section */}
