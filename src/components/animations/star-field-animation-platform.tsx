@@ -58,7 +58,9 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
   }, [mounted, isMobile])
 
   useEffect(() => {
-    if (!mounted || !isVisible || prefersReducedMotion) return
+    if (!mounted || prefersReducedMotion) return
+    // On mobile, always animate regardless of isVisible
+    if (!isMobile && !isVisible) return
 
     const canvas = canvasRef.current
     if (!canvas) return

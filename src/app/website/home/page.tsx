@@ -744,6 +744,15 @@ function ProblemSection() {
                             />
                           )}
                         </div>
+                        {/* Calculate Your Plan Link */}
+                        <div className="mt-4 text-left">
+                          <Link 
+                            href="/website/pricing" 
+                            className="text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
+                          >
+                            Calculate Your Plan →
+                          </Link>
+                        </div>
                       </CardContent>
                     </Card>
                   </div>
@@ -808,6 +817,15 @@ function ProblemSection() {
                               <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
                                 {problem.description}
                               </BodyLarge>
+                              {/* Calculate Your Plan Link */}
+                              <div className="pt-2">
+                                <Link 
+                                  href="/website/pricing" 
+                                  className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
+                                >
+                                  Calculate Your Plan →
+                                </Link>
+                              </div>
                             </div>
                             
                             {/* Animation Container */}
@@ -971,10 +989,15 @@ function PlatformSection() {
 
   return (
     <Section paddingY="lg" className="relative">
-      {/* Background Animation - Single instance with responsive behavior */}
+      {/* Background Animation */}
       <div className="absolute inset-0 z-0">
         <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
-          <StarFieldAnimationPlatform className="w-full h-full" />
+          {/* Use screensaver version for mobile, platform version for desktop */}
+          {isDesktop ? (
+            <StarFieldAnimationPlatform className="w-full h-full" />
+          ) : (
+            <StarFieldAnimation className="w-full h-full" />
+          )}
         </div>
       </div>
       
@@ -1054,6 +1077,15 @@ function PlatformSection() {
                             />
                           )}
                         </div>
+                        {/* Learn more Link */}
+                        <div className="mt-4 text-left">
+                          <Link 
+                            href="/website/platform" 
+                            className="text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
+                          >
+                            Learn more →
+                          </Link>
+                        </div>
                       </CardContent>
                     </Card>
                   </div>
@@ -1110,6 +1142,15 @@ function PlatformSection() {
                                 <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl leading-relaxed">
                                   {feature.description}
                                 </BodyLarge>
+                                {/* Learn more Link */}
+                                <div className="pt-2">
+                                  <Link 
+                                    href="/website/platform" 
+                                    className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
+                                  >
+                                    Learn more →
+                                  </Link>
+                                </div>
                               </div>
                               <div className="h-[320px] lg:h-[370px] xl:h-[420px] 2xl:h-[470px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
                                 {activeTab === 0 && (
