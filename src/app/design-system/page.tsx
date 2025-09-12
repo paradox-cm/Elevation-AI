@@ -60,6 +60,7 @@ export default function DesignSystemPage() {
         { name: "Motion & Animation", href: "/design-system/motion", icon: "play-circle-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Error States & Feedback", href: "/design-system/error-states", icon: "error-warning-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Sticky Sections", href: "/design-system/sticky-sections", icon: "arrow-up-down-line", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+        { name: "Typewriter", href: "/design-system/typewriter", icon: "text", color: "text-blue-500", bgColor: "bg-blue-500/10" },
         { name: "Animations", href: "/design-system/animations", icon: "play-circle-line", color: "text-blue-500", bgColor: "bg-blue-500/10" }
       ]
     },

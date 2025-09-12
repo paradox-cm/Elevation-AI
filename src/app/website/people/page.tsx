@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
@@ -417,6 +417,37 @@ function LogoCarouselSection() {
 }
 
 export default function PeoplePage() {
+  // Handle hash navigation with header offset
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = window.location.hash
+      if (hash === '#our-solution-section') {
+        const targetSection = document.getElementById('our-solution-section')
+        if (targetSection) {
+          const header = document.querySelector('header')
+          const headerHeight = header ? header.offsetHeight : 0
+          const sectionTop = targetSection.offsetTop
+          const scrollToPosition = sectionTop - headerHeight
+          
+          window.scrollTo({
+            top: scrollToPosition,
+            behavior: 'smooth'
+          })
+        }
+      }
+    }
+
+    // Handle initial load
+    handleHashNavigation()
+
+    // Handle hash changes
+    window.addEventListener('hashchange', handleHashNavigation)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashNavigation)
+    }
+  }, [])
+
   return (
             <PageWrapper>
               <MobileOnlyLayout
@@ -469,7 +500,7 @@ export default function PeoplePage() {
                   </div>
 
                   {/* Our Solution Section - Single Container */}
-                  <div className="relative">
+                  <div id="our-solution-section" className="relative">
                     <Card className="border-border bg-transparent">
                       <CardContent className="p-6">
                         <div className="space-y-12">
@@ -704,21 +735,24 @@ export default function PeoplePage() {
                     </div>
 
                     {/* Expert Categories Carousel */}
-                    <Carousel
-                      items={expertCarouselItems}
-                      autoPlay={true}
-                      autoPlayInterval={5000}
-                      showProgressIndicators={true}
-                      cardWidth={320}
-                      cardGap={24}
-                      cardStyle="blue"
-                      highlightActiveCard={true}
-                      responsive={{
-                        sm: { cardWidth: 280, cardGap: 16 },
-                        md: { cardWidth: 300, cardGap: 20 },
-                        lg: { cardWidth: 320, cardGap: 24 }
-                      }}
-                    />
+                    <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+                      <Carousel
+                        items={expertCarouselItems}
+                        autoPlay={true}
+                        autoPlayInterval={5000}
+                        showProgressIndicators={true}
+                        cardWidth={320}
+                        cardGap={24}
+                        cardStyle="blue"
+                        highlightActiveCard={true}
+                        className="w-full"
+                        responsive={{
+                          sm: { cardWidth: 280, cardGap: 16 },
+                          md: { cardWidth: 300, cardGap: 20 },
+                          lg: { cardWidth: 320, cardGap: 24 }
+                        }}
+                      />
+                    </div>
 
                   </div>
                 </Container>

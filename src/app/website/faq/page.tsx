@@ -9,6 +9,7 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
+import { H1, H3, P } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
 import React from "react"
@@ -59,17 +60,17 @@ export default function FAQPage() {
               {/* Page Header */}
               <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="text-center space-y-1">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                  <H1>
                     Frequently Asked Questions
-                  </h1>
-                  <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
+                  </H1>
+                  <P className="max-w-[42rem] mx-auto">
                     Your questions, answered. Here are some of the most common inquiries we receive about Elevation AI, our platform, and our partnership model.
-                  </p>
+                  </P>
                 </div>
               </div>
 
               {/* FAQ Section */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-4xl mx-auto">
                   <Accordion type="single" collapsible className="w-full space-y-4">
                     {faqs.map((faq, index) => (
@@ -100,12 +101,12 @@ export default function FAQPage() {
                           <Icon name="question-line" className="h-6 w-6 text-primary" />
                         </div>
                       </div>
-                      <h3 className="text-xl font-semibold text-foreground">
+                      <H3>
                         Still have questions?
-                      </h3>
-                      <p className="text-muted-foreground max-w-md mx-auto">
+                      </H3>
+                      <P className="max-w-md mx-auto">
                         Can't find what you're looking for? Our team is here to help. Reach out and we'll get back to you as soon as possible.
-                      </p>
+                      </P>
                       <div className="pt-2">
                         <Link href="/website/contact">
                           <Button size="lg" className="gap-2">

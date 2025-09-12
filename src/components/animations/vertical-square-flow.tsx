@@ -36,9 +36,8 @@ export function VerticalSquareFlow({
   const targetFPS = 60
   const frameInterval = 1000 / targetFPS
 
-  // Theme-aware colors
-  const isDarkRef = useRef(false)
-  const squareColorRef = useRef('#000000')
+  // Fixed blue color
+  const squareColorRef = useRef('#3b82f6') // Blue-500
   const observerRef = useRef<MutationObserver | null>(null)
 
   const createSquares = useCallback((canvas: HTMLCanvasElement) => {
@@ -47,9 +46,9 @@ export function VerticalSquareFlow({
     const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
     
     for (let i = 0; i < squareCount; i++) {
-      // 2% are 8x8, others between 2-5px (scaled for canvas size)
-      const baseSize = Math.random() < 0.02 ? 8 : Math.random() * 3 + 2
-      const size = Math.min(baseSize, Math.min(logicalWidth, logicalHeight) * 0.02) // Scale with canvas size
+      // 2% are 6x6, others between 1.5-3px (scaled for canvas size) - medium squares
+      const baseSize = Math.random() < 0.02 ? 6 : Math.random() * 1.5 + 1.5
+      const size = Math.min(baseSize, Math.min(logicalWidth, logicalHeight) * 0.015) // Scale with canvas size - medium multiplier
       const speed = Math.random() * maxSpeed + 0.2
       
       squares.push({
@@ -142,36 +141,12 @@ export function VerticalSquareFlow({
   })
 
   useEffect(() => {
-    // Theme-aware colors
-    const updateColors = () => {
-      const isDark = document.documentElement.classList.contains('dark')
-      isDarkRef.current = isDark
-      squareColorRef.current = isDark ? '#ffffff' : '#000000'
-    }
-
-    // Initial color update
-    updateColors()
-
-    // Observe theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          updateColors()
-        }
-      })
-    })
-    observerRef.current = observer
-    observer.observe(document.documentElement, { attributes: true })
-
     // Start initial animation
     initializeAndStartAnimation()
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
-      }
-      if (observerRef.current) {
-        observerRef.current.disconnect()
       }
     }
   }, [initializeAndStartAnimation])

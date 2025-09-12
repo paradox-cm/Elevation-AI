@@ -8,7 +8,7 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, H3, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H1, H2, H3, P, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
@@ -30,17 +30,17 @@ export default function ContactPage() {
               {/* Page Header */}
               <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="text-center space-y-1">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                  <H1>
                     Contact Us
-                  </h1>
-                  <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
+                  </H1>
+                  <P className="max-w-[42rem] mx-auto">
                     Get in touch with Elevation AI
-                  </p>
+                  </P>
                 </div>
               </div>
 
               {/* Contact Options Section */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-6xl mx-auto">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                     {/* Sales Card */}
@@ -50,7 +50,7 @@ export default function ContactPage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <Building className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Sales</CardTitle>
+                          <CardTitle><H2>Sales</H2></CardTitle>
                         </div>
                         <CardDescription>
                           We'd love to talk about how we can work together.
@@ -73,7 +73,7 @@ export default function ContactPage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <MessageSquare className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Help & Support</CardTitle>
+                          <CardTitle><H2>Help & Support</H2></CardTitle>
                         </div>
                         <CardDescription>
                           Get in touch and let us know how we can help.
@@ -96,7 +96,7 @@ export default function ContactPage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <FileText className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Media & Press</CardTitle>
+                          <CardTitle><H2>Media & Press</H2></CardTitle>
                         </div>
                         <CardDescription>
                           Get Elevation AI news, company info, and media resources.

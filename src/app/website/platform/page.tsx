@@ -8,6 +8,7 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
+import { PlatformSubNav } from "@/components/ui/platform-sub-nav"
 import { H1, H2, H3, P } from "@/components/ui/typography"
 import { CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -17,9 +18,11 @@ import Link from "next/link"
 import React from "react"
 import { FutureReadyColored } from "@/components/animations"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 // Platform Hero Section Component
 function PlatformHeroSection() {
+  const isDesktop = useMediaQuery("(min-width: 1024px)")
 
   return (
     <Section 
@@ -86,10 +89,10 @@ function PlatformHeroSection() {
               {/* Future Ready Colored Animation */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <FutureReadyColored 
-                  width={600} 
-                  height={400} 
+                  width={isDesktop ? 600 : 280} 
+                  height={isDesktop ? 400 : 187} 
                   showBorder={false}
-                  className="w-[200px] h-[133px] sm:w-[280px] sm:h-[187px] md:w-[320px] md:h-[213px] lg:w-[600px] lg:h-[400px]"
+                  className="w-[280px] h-[187px] sm:w-[320px] sm:h-[213px] md:w-[400px] md:h-[267px] lg:w-[600px] lg:h-[400px]"
                 />
               </div>
 
@@ -116,7 +119,7 @@ function PlatformFeaturesSection() {
           </div>
 
           {/* Knowledge Graph */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+          <div data-section="knowledge-graph" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
               <H2>Your Company's Private Brain</H2>
               <P className="text-muted-foreground">
@@ -147,7 +150,7 @@ function PlatformFeaturesSection() {
           </div>
 
           {/* Workspaces & Canvases */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+          <div data-section="workspace" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 h-[300px] lg:h-[845px]  rounded-3xl border border-border/50 flex items-center justify-center order-2 lg:order-1">
               <P className="text-muted-foreground text-lg">Workspace Interface</P>
             </div>
@@ -178,7 +181,7 @@ function PlatformFeaturesSection() {
           </div>
 
           {/* Agentic Engine */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+          <div data-section="integration-hub" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
               <H2>Connect to the World of AI, Securely</H2>
               <P className="text-muted-foreground">
@@ -209,7 +212,7 @@ function PlatformFeaturesSection() {
           </div>
 
           {/* Library */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+          <div data-section="library" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 h-[300px] lg:h-[845px]  rounded-3xl border border-border/50 flex items-center justify-center order-2 lg:order-1">
               <P className="text-muted-foreground text-lg">Library Interface</P>
             </div>
@@ -240,7 +243,7 @@ function PlatformFeaturesSection() {
           </div>
 
           {/* Primary Agent */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
+          <div data-section="co-pilot" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px]">
             <div className="lg:col-span-6 space-y-6 flex flex-col justify-center">
               <H2>Your Conversational Command Center</H2>
               <P className="text-muted-foreground">
@@ -778,6 +781,9 @@ export default function WireframesPlatformPage() {
         mobileMenu={<MobileMenuDrawer currentPage="platform" />}
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
+          {/* Sticky Sub Navigation */}
+          <PlatformSubNav />
+          
           <main>
             {/* Platform Hero Section */}
             <PlatformHeroSection />

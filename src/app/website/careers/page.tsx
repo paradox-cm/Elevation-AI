@@ -9,6 +9,7 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { H1, H2, H3, P } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import React from "react"
 
@@ -27,46 +28,46 @@ export default function CareersPage() {
               {/* Hero - centered */}
               <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="text-center space-y-1">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                  <H1>
                     Build the Future of Work
-                  </h1>
-                  <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
+                  </H1>
+                  <P className="max-w-[42rem] mx-auto">
                     We are a team of entrepreneurs, world-class engineers, and strategic thinkers on a mission to build the operating system for the agentic era. If you are driven by solving complex problems and want to be at the forefront of the AI revolution, we want to hear from you.
-                  </p>
+                  </P>
                 </div>
               </div>
 
               {/* Our Culture */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-4xl mx-auto space-y-6">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground text-center">
+                  <H2 className="text-center">
                     Our Culture
-                  </h2>
+                  </H2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">Solve Meaningful Problems</CardTitle>
+                        <CardTitle><H3>Solve Meaningful Problems</H3></CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        We're not just building software; we're helping our clients orchestrate their entire universe. The work you do here will have a tangible impact on how businesses operate and compete.
+                      <CardContent>
+                        <P className="text-sm">We're not just building software; we're helping our clients orchestrate their entire universe. The work you do here will have a tangible impact on how businesses operate and compete.</P>
                       </CardContent>
                     </Card>
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">A Team of Experts</CardTitle>
+                        <CardTitle><H3>A Team of Experts</H3></CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        You'll work alongside a diverse and talented team with experience from world-class organizations like Tesla, Visa, Accenture, and McKinsey, all backed by Google's highest-tier AI program.
+                      <CardContent>
+                        <P className="text-sm">You'll work alongside a diverse and talented team with experience from world-class organizations like Tesla, Visa, Accenture, and McKinsey, all backed by Google's highest-tier AI program.</P>
                       </CardContent>
                     </Card>
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">Ownership & Growth</CardTitle>
+                        <CardTitle><H3>Ownership & Growth</H3></CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        We are a culture of builders. We value ownership, curiosity, and a relentless drive to learn and grow. You will have the opportunity to make a significant impact from day one.
+                      <CardContent>
+                        <P className="text-sm">We are a culture of builders. We value ownership, curiosity, and a relentless drive to learn and grow. You will have the opportunity to make a significant impact from day one.</P>
                       </CardContent>
                     </Card>
                   </div>
@@ -74,61 +75,61 @@ export default function CareersPage() {
               </Section>
 
               {/* Open Roles */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-4xl mx-auto space-y-6">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground text-center">
+                  <H2 className="text-center">
                     Join Our Team
-                  </h2>
+                  </H2>
 
                   {/* Placeholder roles - replace with real job data or a CMS later */}
                   <div className="space-y-3">
                     <Card className="border-border">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-4">
-                          <CardTitle className="text-base sm:text-lg">Agentic AI Engineer</CardTitle>
+                          <CardTitle><H3>Agentic AI Engineer</H3></CardTitle>
                           <Button size="sm" asChild>
                             <a href="#apply-ai-engineer">Apply Now</a>
                           </Button>
                         </div>
                       </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        Design and build production-grade agentic systems that orchestrate tools, data, and workflows.
+                      <CardContent>
+                        <P className="text-sm">Design and build production-grade agentic systems that orchestrate tools, data, and workflows.</P>
                       </CardContent>
                     </Card>
 
                     <Card className="border-border">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-4">
-                          <CardTitle className="text-base sm:text-lg">Product Manager, Agentic Platform</CardTitle>
+                          <CardTitle><H3>Product Manager, Agentic Platform</H3></CardTitle>
                           <Button size="sm" asChild>
                             <a href="#apply-pm">Apply Now</a>
                           </Button>
                         </div>
                       </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        Drive roadmap and execution for platform capabilities that power mission-critical business workflows.
+                      <CardContent>
+                        <P className="text-sm">Drive roadmap and execution for platform capabilities that power mission-critical business workflows.</P>
                       </CardContent>
                     </Card>
 
                     <Card className="border-border">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-4">
-                          <CardTitle className="text-base sm:text-lg">Solutions Architect</CardTitle>
+                          <CardTitle><H3>Solutions Architect</H3></CardTitle>
                           <Button size="sm" asChild>
                             <a href="#apply-solutions">Apply Now</a>
                           </Button>
                         </div>
                       </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        Partner with clients to design and implement agentic solutions using Elevation AI's platform.
+                      <CardContent>
+                        <P className="text-sm">Partner with clients to design and implement agentic solutions using Elevation AI's platform.</P>
                       </CardContent>
                     </Card>
                   </div>
 
                   <div className="text-center pt-2">
-                    <p className="text-sm text-muted-foreground">
+                    <P className="text-sm">
                       Don't see your role? We're always looking for exceptional talent.
-                    </p>
+                    </P>
                     <Button variant="outline" className="mt-3" asChild>
                       <a href="/website/contact">Get in Touch</a>
                     </Button>

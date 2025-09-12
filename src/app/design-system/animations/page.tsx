@@ -17,6 +17,7 @@ import { DesignSystemNavigation } from "@/components/ui/design-system-navigation
 import Link from "next/link"
 
 export default function AnimationsPage() {
+  // Animation components used across the application
   const animations = [
     {
       name: "Perlin Logo Animation",
@@ -97,6 +98,30 @@ export default function AnimationsPage() {
       icon: "layout-grid-line",
       color: "text-amber-500",
       bgColor: "bg-amber-500/10"
+    },
+    {
+      name: "Solutions Hero Shader",
+      description: "Interactive Three.js shader animation with Perlin noise creating dynamic plasma effects in brand colors",
+      href: "/design-system/animations/solutions-hero-shader",
+      icon: "magic-line",
+      color: "text-blue-600",
+      bgColor: "bg-blue-600/10"
+    },
+    {
+      name: "Tunnel Shader",
+      description: "Immersive tunnel effect animation used in the 'Who this is for' section, creating depth and visual interest",
+      href: "/design-system/animations/tunnel-shader",
+      icon: "eye-line",
+      color: "text-purple-600",
+      bgColor: "bg-purple-600/10"
+    },
+    {
+      name: "Typewriter Effects",
+      description: "Animated text effects that type out words and cycle through multiple statements. Features both looping and non-looping versions for different use cases.",
+      href: "/design-system/typewriter",
+      icon: "text",
+      color: "text-green-600",
+      bgColor: "bg-green-600/10"
     }
   ]
 
@@ -111,7 +136,7 @@ export default function AnimationsPage() {
           <Section paddingY="xl">
             <PageHeader
               title="Animations"
-              description="Interactive code animations for the ProblemSection slides. These animations demonstrate key features and capabilities of Elevation AI's platform."
+              description="A comprehensive collection of interactive animations used throughout the Elevation AI application. These animations enhance user experience and demonstrate key platform capabilities across various sections and components."
               size="xl"
               centered
             />

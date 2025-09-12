@@ -9,6 +9,7 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { H1, H2, H3, P } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import React from "react"
 
@@ -27,24 +28,24 @@ export default function PartnersPage() {
               {/* Hero - centered */}
               <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="text-center space-y-1">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                  <H1>
                     Partner with Elevation AI
-                  </h1>
-                  <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
+                  </H1>
+                  <P className="max-w-[42rem] mx-auto">
                     Join our ecosystem of trusted ambassadors, consulting firms, and experts to help bring the power of agentic AI to businesses everywhere.
-                  </p>
+                  </P>
                 </div>
               </div>
 
               {/* For Ambassadors */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-4xl mx-auto space-y-4">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                  <H2>
                     Become an Ambassador
-                  </h2>
-                  <p className="text-muted-foreground">
+                  </H2>
+                  <P>
                     Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem.
-                  </p>
+                  </P>
                   <div className="pt-2">
                     <Button size="lg" asChild>
                       <a href="#ambassador">Inquire About Our Ambassador Program</a>
@@ -54,36 +55,36 @@ export default function PartnersPage() {
               </Section>
 
               {/* For Consulting Firms & Experts */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-4xl mx-auto space-y-4">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                  <H2>
                     Join Our Partner Network
-                  </h2>
+                  </H2>
                   <div className="space-y-3 text-muted-foreground">
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">Deliver AI-Powered Solutions</CardTitle>
+                        <CardTitle><H3>Deliver AI-Powered Solutions</H3></CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm">
-                        Use our platform as the agentic backbone to build and deliver scalable, high-margin solutions for your clients.
+                      <CardContent>
+                        <P className="text-sm">Use our platform as the agentic backbone to build and deliver scalable, high-margin solutions for your clients.</P>
                       </CardContent>
                     </Card>
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">Seamlessly Embed with Clients</CardTitle>
+                        <CardTitle><H3>Seamlessly Embed with Clients</H3></CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm">
-                        Collaborate directly within your clients' workspaces, giving you an unprecedented level of integration and partnership.
+                      <CardContent>
+                        <P className="text-sm">Collaborate directly within your clients' workspaces, giving you an unprecedented level of integration and partnership.</P>
                       </CardContent>
                     </Card>
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">Extend Your Capacity</CardTitle>
+                        <CardTitle><H3>Extend Your Capacity</H3></CardTitle>
                       </CardHeader>
-                      <CardContent className="text-sm">
-                        Leverage our library of agents and tools to augment your own expertise and take on more complex challenges.
+                      <CardContent>
+                        <P className="text-sm">Leverage our library of agents and tools to augment your own expertise and take on more complex challenges.</P>
                       </CardContent>
                     </Card>
                   </div>

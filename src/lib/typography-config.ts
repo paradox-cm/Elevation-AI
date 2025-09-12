@@ -32,7 +32,7 @@ export const typeScale: TypeScaleItem[] = [
   {
     name: "Hero Heading",
     class: "text-2xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-5xl",
-    weight: "font-semibold",
+    weight: "font-medium",
     lineHeight: "leading-tight",
     tracking: "tracking-normal",
     usage: "Hero headlines, page titles",

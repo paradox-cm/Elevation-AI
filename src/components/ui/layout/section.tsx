@@ -8,6 +8,7 @@ interface SectionProps {
   paddingY?: "none" | "sm" | "md" | "lg" | "xl" | "2xl"
   paddingX?: "none" | "sm" | "md" | "lg" | "xl" | "2xl"
   as?: keyof React.JSX.IntrinsicElements
+  id?: string
 }
 
 const paddingSizes = {
@@ -43,10 +44,12 @@ export function Section({
   padding,
   paddingY,
   paddingX,
-  as: Component = "section"
+  as: Component = "section",
+  id
 }: SectionProps) {
   return (
     <Component
+      id={id}
       className={cn(
         "w-full",
         padding && paddingSizes[padding],

@@ -40,43 +40,138 @@ import Icon from "@/components/ui/icon"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormFieldGroup } from "@/components/ui/form"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 
-// Typewriter Text Component
-function TypewriterText({ text, speed = 200, delay = 0 }: { text: string; speed?: number; delay?: number }) {
+// Looping Typewriter Text Component
+function LoopingTypewriterText({ 
+  text, 
+  speed = 200, 
+  delay = 0, 
+  skipAnimation = false,
+  cyclingWords = [],
+  cyclingSpeed = 200,
+  cyclingDelay = 3000
+}: { 
+  text: string; 
+  speed?: number; 
+  delay?: number; 
+  skipAnimation?: boolean;
+  cyclingWords?: string[];
+  cyclingSpeed?: number;
+  cyclingDelay?: number;
+}) {
   const [displayText, setDisplayText] = React.useState("")
   const [currentWordIndex, setCurrentWordIndex] = React.useState(0)
+  const [isTyping, setIsTyping] = React.useState(false)
+  const [isDeleting, setIsDeleting] = React.useState(false)
+  const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
+  const [phase, setPhase] = React.useState<'initial' | 'typing' | 'waiting' | 'deleting'>('initial')
 
+  // Get current text to display
+  const getCurrentText = () => {
+    if (phase === 'typing' || phase === 'waiting' || phase === 'deleting') {
+      return cyclingWords[currentCycleIndex] || text
+    }
+    return text
+  }
+
+  const currentText = getCurrentText()
+  const words = React.useMemo(() => currentText.split(" "), [currentText])
+
+  // Reset animation on mount
   React.useEffect(() => {
-    // Reset on mount
-    setDisplayText("")
-    setCurrentWordIndex(0)
+    if (skipAnimation) {
+      setDisplayText(text)
+      setCurrentWordIndex(text.split(" ").length)
+      setPhase('waiting')
+    } else {
+      setDisplayText("")
+      setCurrentWordIndex(0)
+      setPhase('initial')
+    }
+  }, [skipAnimation, text])
+
+  // Start typing after delay
+  React.useEffect(() => {
+    if (skipAnimation || phase !== 'initial') return
     
-    // Split text into words
-    const words = text.split(" ")
-    
-    // Start typing after delay
-    const startTimer = setTimeout(() => {
-      const interval = setInterval(() => {
-        setCurrentWordIndex(prev => {
-          if (prev >= words.length) {
-            clearInterval(interval)
-            return prev
-          }
-          setDisplayText(words.slice(0, prev + 1).join(" "))
-          return prev + 1
-        })
-      }, speed)
-      
-      return () => clearInterval(interval)
+    const timer = setTimeout(() => {
+      setPhase('typing')
+      setIsTyping(true)
     }, delay)
 
-    return () => clearTimeout(startTimer)
-  }, [text, speed, delay])
+    return () => clearTimeout(timer)
+  }, [delay, skipAnimation, phase])
+
+  // Typing animation - word by word
+  React.useEffect(() => {
+    if (skipAnimation || phase !== 'typing' || !isTyping || isDeleting) return
+
+    if (currentWordIndex < words.length) {
+      const timer = setTimeout(() => {
+        const newWordIndex = currentWordIndex + 1
+        setCurrentWordIndex(newWordIndex)
+        setDisplayText(words.slice(0, newWordIndex).join(" "))
+      }, speed)
+
+      return () => clearTimeout(timer)
+    } else if (currentWordIndex === words.length) {
+      // Finished typing, start waiting
+      setPhase('waiting')
+      setIsTyping(false)
+    }
+  }, [currentWordIndex, words.length, speed, phase, isTyping, isDeleting, skipAnimation])
+
+  // Waiting phase - show text for 3 seconds
+  React.useEffect(() => {
+    if (phase !== 'waiting') return
+
+    const timer = setTimeout(() => {
+      if (currentCycleIndex === 0 && cyclingWords.length > 0) {
+        // First statement finished, start cycling
+        setCurrentCycleIndex(1)
+        setPhase('deleting')
+        setIsDeleting(true)
+      } else if (currentCycleIndex > 0) {
+        // Already cycling, start deleting
+        setPhase('deleting')
+        setIsDeleting(true)
+      }
+    }, cyclingDelay)
+
+    return () => clearTimeout(timer)
+  }, [phase, currentCycleIndex, cyclingDelay, cyclingWords.length])
+
+  // Deleting animation - word by word
+  React.useEffect(() => {
+    if (phase !== 'deleting' || !isDeleting || currentWordIndex <= 0) return
+
+    const timer = setTimeout(() => {
+      const newWordIndex = currentWordIndex - 1
+      setCurrentWordIndex(newWordIndex)
+      setDisplayText(words.slice(0, newWordIndex).join(" "))
+    }, cyclingSpeed)
+
+    return () => clearTimeout(timer)
+  }, [phase, isDeleting, currentWordIndex, words, cyclingSpeed])
+
+  // Move to next cycle word
+  React.useEffect(() => {
+    if (phase !== 'deleting' || !isDeleting || currentWordIndex > 0) return
+
+    // Finished deleting, move to next word
+    const nextIndex = (currentCycleIndex + 1) % cyclingWords.length
+    setCurrentCycleIndex(nextIndex)
+    setIsDeleting(false)
+    setCurrentWordIndex(0)
+    setDisplayText("")
+    setPhase('typing')
+    setIsTyping(true)
+  }, [phase, isDeleting, currentWordIndex, cyclingWords.length, currentCycleIndex])
 
   return (
-    <span className="inline-block min-h-[1.2em] leading-tight">
+    <span className="inline-block leading-tight">
       {displayText}
-      {currentWordIndex < text.split(" ").length && (
-        <span className="animate-pulse">|</span>
+      {!skipAnimation && (
+        <span className="animate-pulse inline-block w-3 h-[0.8em] bg-current ml-1"></span>
       )}
     </span>
   )
@@ -603,7 +698,19 @@ function BenefitsSection() {
     <div className="space-y-6">
       <div>
         <H2 className="mb-3">
-          <TypewriterText text="Transform your organization." speed={150} delay={500} />
+          <LoopingTypewriterText 
+            text="Transform your organization."
+            speed={150}
+            delay={500}
+            cyclingWords={[
+              "Transform your organization.",
+              "Unify your data and workflows.",
+              "Accelerate with intelligent automation.",
+              "Scale with enterprise-grade security."
+            ]}
+            cyclingSpeed={80}
+            cyclingDelay={3000}
+          />
         </H2>
         <BodyLarge className="text-muted-foreground">
           A unified, agentic platform built to power your entire operation—securely and at scale.

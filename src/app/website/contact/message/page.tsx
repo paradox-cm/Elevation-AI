@@ -12,7 +12,7 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H1, P, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormFieldGroup } from "@/components/ui/form"
@@ -92,17 +92,17 @@ export default function ContactMessagePage() {
               {/* Page Header */}
               <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="text-center space-y-1">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                  <H1>
                     Send us a Message
-                  </h1>
-                  <p className="text-base sm:text-lg text-muted-foreground max-w-[42rem] mx-auto">
+                  </H1>
+                  <P className="max-w-[42rem] mx-auto">
                     Fill out the form below and we'll get back to you as soon as possible.
-                  </p>
+                  </P>
                 </div>
               </div>
 
               {/* Contact Form Section */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="max-w-4xl mx-auto">
                   <Card>
                     <CardHeader>

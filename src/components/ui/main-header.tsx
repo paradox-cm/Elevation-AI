@@ -79,7 +79,7 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
             {/* Dropdown menu for People */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-2 space-y-1">
-                <Link href="/website/people#concierge-team" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/people#our-solution-section" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Concierge Team
                 </Link>
                 <Link href="/website/people#expert-network" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">

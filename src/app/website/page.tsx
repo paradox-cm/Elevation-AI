@@ -75,7 +75,7 @@ const siteStructure: SiteStructureItem[] = [
     id: 'solutions',
     title: 'Solutions',
     description: 'Industry and stage-specific solutions',
-    status: 'dropdown',
+    status: 'completed',
     icon: Users,
     children: [
       {
@@ -193,116 +193,9 @@ const siteStructure: SiteStructureItem[] = [
     title: 'Pricing',
     description: 'Pricing plans and packages',
     pageNumber: 16,
-    status: 'wip',
+    status: 'pending',
     icon: CreditCard,
     href: '/pricing'
-  },
-  {
-    id: 'resources',
-    title: 'Resources',
-    description: 'Supporting resources and information',
-    status: 'dropdown',
-    icon: BookOpen,
-    children: [
-      {
-        id: 'security',
-        title: 'Security',
-        description: 'Security information and compliance',
-        status: 'pending',
-        icon: Shield,
-        href: '/resources/security'
-      },
-      {
-        id: 'careers',
-        title: 'Careers',
-        description: 'Career opportunities and job listings',
-        pageNumber: 17,
-        status: 'wip',
-        icon: Briefcase,
-        href: '/resources/careers'
-      },
-      {
-        id: 'partners',
-        title: 'Partners',
-        description: 'Partnership opportunities and programs',
-        pageNumber: 18,
-        status: 'wip',
-        icon: Handshake,
-        href: '/resources/partners'
-      },
-      {
-        id: 'investors',
-        title: 'Investors',
-        description: 'Information for investors and stakeholders',
-        pageNumber: 19,
-        status: 'wip',
-        icon: TrendingUp,
-        href: '/resources/investors'
-      },
-      {
-        id: 'developers',
-        title: 'For Developers & Platforms',
-        description: 'Developer resources and platform integrations',
-        pageNumber: 20,
-        status: 'wip',
-        icon: Code,
-        href: '/resources/developers'
-      },
-      {
-        id: 'blog-news',
-        title: 'Blog',
-        description: 'Latest insights, strategies, and thought leadership',
-        pageNumber: 21,
-        status: 'wip',
-        icon: Newspaper,
-        href: '/resources/blog'
-      },
-      {
-        id: 'faq',
-        title: 'FAQ',
-        description: 'Frequently asked questions and answers',
-        pageNumber: 22,
-        status: 'wip',
-        icon: MessageSquare,
-        href: '/resources/faq'
-      },
-      {
-        id: 'about',
-        title: 'About',
-        description: 'Company information and team details',
-        pageNumber: 23,
-        status: 'wip',
-        icon: Users,
-        href: '/resources/about'
-      },
-      {
-        id: 'people',
-        title: 'People',
-        description: 'Meet our team and leadership',
-        pageNumber: 24,
-        status: 'wip',
-        icon: Users,
-        href: '/resources/people'
-      },
-      {
-        id: 'contact',
-        title: 'Contact',
-        description: 'Get in touch with our team',
-        pageNumber: 25,
-        status: 'wip',
-        icon: MessageSquare,
-        href: '/resources/contact'
-      },
-      {
-        id: 'press',
-        title: 'Press',
-        description: 'Press releases and media resources',
-        pageNumber: 26,
-        status: 'wip',
-        icon: Newspaper,
-        href: '/resources/press'
-      }
-    ]
   }
 ]
 
@@ -450,6 +343,86 @@ export default function WebsitePage() {
 
           <Section paddingY="lg">
             <PageHeader
+              title="Resources & Company Pages"
+              description="Quick access to key pages organized by navigation sections"
+              size="md"
+            />
+            <Grid cols={{ base: 1, sm: 2 }} gap={6} className="mt-8">
+              {/* Resources Card - Updated */}
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    Resources
+                  </CardTitle>
+                  <CardDescription>
+                    Supporting resources and information from the Resources dropdown
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[
+                      { href: "/website/about", label: "About", icon: Users },
+                      { href: "/website/partners", label: "Partners", icon: Handshake },
+                      { href: "/website/investors", label: "Investors", icon: TrendingUp },
+                      { href: "/website/developers", label: "For Developers & Platforms", icon: Code },
+                      { href: "/website/blog", label: "Blog", icon: Newspaper },
+                      { href: "/website/faq", label: "FAQ", icon: MessageSquare }
+                    ].map((item) => (
+                      <div key={item.href} className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
+                        <item.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <a 
+                          href={item.href} 
+                          className="text-sm text-foreground hover:text-primary transition-colors flex-1"
+                        >
+                          {item.label}
+                        </a>
+                        <ChevronRight className="w-3 h-3 text-muted-foreground" />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Company Card - New */}
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-primary" />
+                    Company
+                  </CardTitle>
+                  <CardDescription>
+                    Company information and pages from the footer Company column
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[
+                      { href: "/website/about", label: "About", icon: Users },
+                      { href: "/website/pricing", label: "Pricing", icon: CreditCard },
+                      { href: "/website/careers", label: "Careers", icon: Briefcase },
+                      { href: "/website/press", label: "Press", icon: Newspaper },
+                      { href: "/website/contact", label: "Contact", icon: MessageSquare }
+                    ].map((item) => (
+                      <div key={item.href} className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
+                        <item.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <a 
+                          href={item.href} 
+                          className="text-sm text-foreground hover:text-primary transition-colors flex-1"
+                        >
+                          {item.label}
+                        </a>
+                        <ChevronRight className="w-3 h-3 text-muted-foreground" />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Section>
+
+          <Section paddingY="lg">
+            <PageHeader
               title="Navigation Statistics"
               description="Overview of our site structure and completion status"
               size="md"
@@ -463,8 +436,8 @@ export default function WebsitePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold">26</div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Main content pages</p>
+                  <div className="text-2xl sm:text-3xl font-bold">17</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Total pages</p>
                 </CardContent>
               </Card>
               
@@ -476,7 +449,7 @@ export default function WebsitePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold text-green-600">15</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-green-600">14</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Pages completed</p>
                 </CardContent>
               </Card>
@@ -489,7 +462,7 @@ export default function WebsitePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">11</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-orange-600">3</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Pages to be developed</p>
                 </CardContent>
               </Card>
@@ -502,7 +475,7 @@ export default function WebsitePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="text-2xl sm:text-3xl font-bold text-blue-600">58%</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-blue-600">82%</div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Completion rate</p>
                 </CardContent>
               </Card>

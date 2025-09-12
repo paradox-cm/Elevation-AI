@@ -131,7 +131,7 @@ export default function BlogPage() {
               </Section>
 
               {/* Category Filter */}
-              <Section paddingY="sm">
+              <Section paddingY="lg">
                 <div className="flex flex-wrap gap-2 justify-center">
                   {categories.map((category) => (
                     <Button

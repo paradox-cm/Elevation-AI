@@ -55,7 +55,7 @@ export function WebsiteFooter() {
                   <H3 className="text-base font-semibold hover:text-primary transition-colors">People</H3>
                 </Link>
                 <ul className="space-y-2">
-                  <li><Link href="/website/people#concierge-team" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
+                  <li><Link href="/website/people#our-solution-section" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
                   <li><Link href="/website/people#expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
                 </ul>
               </div>
