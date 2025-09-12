@@ -817,7 +817,7 @@ function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: {
     <Collapsible open={isOpen} onOpenChange={onToggle}>
       <Card className="w-full bg-transparent hover:bg-muted/20 transition-colors">
         <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer py-6">
+          <CardHeader className="cursor-pointer py-2 sm:py-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
           <div className="p-3 rounded-lg bg-primary/10">

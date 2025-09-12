@@ -150,6 +150,7 @@ export function SolutionsSubNav({ className }: SolutionsSubNavProps) {
     <div
       className={cn(
         "fixed top-14 sm:top-16 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border/50 transition-all duration-300",
+        "lg:hidden", // Hide on desktop breakpoints (lg and up)
         isScrolling ? "opacity-90" : "opacity-100",
         className
       )}
