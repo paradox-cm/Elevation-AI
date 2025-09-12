@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
 import { useScrollTimer } from '@/hooks/use-scroll-timer'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface StarFieldAnimationProps {
   className?: string
@@ -13,11 +14,21 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
   const animationRef = useRef<number | undefined>(undefined)
   const [mounted, setMounted] = useState(false)
   const { theme } = useThemeProvider()
-  const { elementRef, shouldAnimate, isFadingOut, fadeOutDuration } = useScrollTimer({ 
+  const isMobile = useMediaQuery("(max-width: 1023px)")
+  
+  // Performance optimizations for mobile
+  const lastFrameTimeRef = useRef(0)
+  const frameInterval = isMobile ? 1000 / 20 : 1000 / 30 // 20 FPS on mobile, 30 FPS on desktop
+  
+  // On mobile, always animate to prevent flashing during scroll
+  const { elementRef, shouldAnimate: scrollShouldAnimate, isFadingOut, fadeOutDuration } = useScrollTimer({ 
     duration: 3000,
     fadeInDuration: 0, // Immediate appearance
     fadeOutDuration: 2000 // 2 seconds fade out
   })
+  
+  // Use scroll timer on desktop, always animate on mobile
+  const shouldAnimate = isMobile ? true : scrollShouldAnimate
 
   useEffect(() => {
     setMounted(true)
@@ -35,14 +46,15 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
     ctx.imageSmoothingEnabled = false
 
     const stars: { x: number; y: number; z: number; originalX: number; originalY: number }[] = []
-    const starCount = 300
-    const speed = 0.5
+    const starCount = isMobile ? 150 : 300 // Fewer stars on mobile for better performance
+    const speed = isMobile ? 0.3 : 0.5 // Slower on mobile for stability
     const Z_MAX = 1000
     const Z_MIN = 0.1
 
     // Function to set canvas buffer size and initialize/re-initialize stars
     const initializeCanvasAndStars = () => {
-      const dpr = window.devicePixelRatio || 1
+      // Use lower DPR on mobile to reduce memory usage
+      const dpr = isMobile ? 1 : (window.devicePixelRatio || 1)
       if (canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
         animationRef.current = requestAnimationFrame(initializeCanvasAndStars)
         return false
@@ -71,6 +83,14 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
     let animationRunning = false
 
     const animate = () => {
+      // Frame rate limiting for better performance
+      const currentTime = performance.now()
+      if (currentTime - lastFrameTimeRef.current < frameInterval) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastFrameTimeRef.current = currentTime
+      
       if (canvas.width === 0 || canvas.height === 0) {
         if (!initializeCanvasAndStars()) {
           return
@@ -151,7 +171,7 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       }
       animationRunning = false
     }
-  }, [mounted, theme, shouldAnimate])
+  }, [mounted, theme, shouldAnimate, isMobile])
 
   if (!mounted) {
     return null

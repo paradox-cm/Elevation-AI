@@ -35,6 +35,12 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
     const canvas = canvasRef.current
     if (!canvas) return
 
+    // On mobile, always keep animation visible (like desktop)
+    if (isMobile) {
+      setIsVisible(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -49,7 +55,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
     return () => {
       observer.disconnect()
     }
-  }, [mounted])
+  }, [mounted, isMobile])
 
   useEffect(() => {
     if (!mounted || !isVisible || prefersReducedMotion) return

@@ -92,33 +92,40 @@ export function UnifiedKnowledge({
   }, [])
 
   // Use canvas resize hook
+  // On mobile, use longer debounce to prevent excessive restarts during scroll
   useCanvasResize(canvasRef, initializeAndStartAnimation, {
-    debounceDelay: 150,
+    debounceDelay: isMobile ? 300 : 150,
     preserveAspectRatio: true
   })
 
   // Use visibility reset hook to detect when component becomes visible again
+  // On mobile, disable visibility-based restarts to prevent flashing during scroll
   useVisibilityReset(containerRef, (isVisible) => {
     console.log('UnifiedKnowledge visibility changed:', isVisible)
-    if (isVisible) {
-      console.log('UnifiedKnowledge: Restarting animation due to visibility change')
-      // Component became visible, force animation restart
+    if (isVisible && !isMobile) {
+      console.log('UnifiedKnowledge: Restarting animation due to visibility change (desktop only)')
+      // Component became visible, force animation restart (desktop only)
       initializeAndStartAnimation()
     }
   })
 
   // Alternative approach: Use breakpoint reset hook
+  // On mobile, disable breakpoint-based restarts to prevent flashing during scroll
   useBreakpointReset(containerRef, () => {
     console.log('UnifiedKnowledge: Breakpoint change detected, restarting animation')
-    // Animation restart triggered by breakpoint change
-    initializeAndStartAnimation()
+    if (!isMobile) {
+      // Animation restart triggered by breakpoint change (desktop only)
+      initializeAndStartAnimation()
+    }
   })
 
   // Additional window resize listener for extra safety
+  // On mobile, use longer debounce to prevent excessive restarts during scroll
   useEffect(() => {
     const handleResize = () => {
       console.log('UnifiedKnowledge: Window resize detected, checking if restart needed')
-      // Small delay to ensure CSS classes have been applied
+      // Longer delay on mobile to prevent excessive restarts during scroll
+      const delay = isMobile ? 300 : 100
       setTimeout(() => {
         const element = containerRef.current
         if (element) {
@@ -136,12 +143,12 @@ export function UnifiedKnowledge({
             initializeAndStartAnimation()
           }
         }
-      }, 100)
+      }, delay)
     }
 
     window.addEventListener('resize', handleResize, { passive: true })
     return () => window.removeEventListener('resize', handleResize)
-  }, [initializeAndStartAnimation])
+  }, [initializeAndStartAnimation, isMobile])
 
   useEffect(() => {
     const canvasData = initializeCanvas()

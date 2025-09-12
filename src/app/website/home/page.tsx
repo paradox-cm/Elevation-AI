@@ -984,7 +984,7 @@ function PlatformSection() {
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
             <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-              <H1>The agentic platform</H1>
+              <H1>The Agentic Platform</H1>
               <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
               </P>
