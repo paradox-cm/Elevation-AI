@@ -206,7 +206,7 @@ export default function PressPage() {
                               })}
                             </span>
                           </div>
-                          <CardTitle className="text-base sm:text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                          <CardTitle className="text-base sm:text-base md:text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
                             {article.title}
                           </CardTitle>
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">

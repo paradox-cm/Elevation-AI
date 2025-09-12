@@ -335,7 +335,7 @@ function CreativeHeroSection() {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button 
                 size="lg" 
-                className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
+                className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
                 onClick={() => {
                   const element = document.getElementById('concierge-team')
                   if (element) {
@@ -352,7 +352,7 @@ function CreativeHeroSection() {
               >
                 Learn More
               </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/demo">
                   Request a Demo
                 </Link>

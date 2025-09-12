@@ -13,7 +13,6 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
   const [mounted, setMounted] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
   const { theme } = useThemeProvider()
   const prefersReducedMotion = useReducedMotion()
   const isMobile = useMediaQuery("(max-width: 1023px)")
@@ -28,11 +27,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
     setMounted(true)
   }, [])
 
-  // Always keep animation visible - no scroll interactions
-  useEffect(() => {
-    if (!mounted) return
-    setIsVisible(true)
-  }, [mounted])
+  // Animation always runs - no visibility checks needed
 
   useEffect(() => {
     if (!mounted || prefersReducedMotion) return
@@ -110,11 +105,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       }
       lastFrameTimeRef.current = currentTime
 
-      // Stop animation if not visible (desktop only - mobile runs indefinitely)
-      if (!isMobile && !isVisible) {
-        isAnimatingRef.current = false
-        return
-      }
+      // Always animate - no visibility checks needed
 
       if (canvas.width === 0 || canvas.height === 0) {
         if (!initializeCanvasAndStars()) {
@@ -191,20 +182,18 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       }, isMobile ? 300 : 100) // Longer debounce on mobile
     }
 
-    // Start animation if visible (or always on mobile)
-    if (isVisible || isMobile) {
-      if (initializeCanvasAndStars()) {
-        animationRunning = true
-        animate()
-      } else {
-        // Retry if canvas dimensions are zero
-        animationRef.current = requestAnimationFrame(() => {
-          if (initializeCanvasAndStars() && (isVisible || isMobile)) {
-            animationRunning = true
-            animate()
-          }
-        })
-      }
+    // Always start animation
+    if (initializeCanvasAndStars()) {
+      animationRunning = true
+      animate()
+    } else {
+      // Retry if canvas dimensions are zero
+      animationRef.current = requestAnimationFrame(() => {
+        if (initializeCanvasAndStars()) {
+          animationRunning = true
+          animate()
+        }
+      })
     }
 
     window.addEventListener('resize', handleResize)

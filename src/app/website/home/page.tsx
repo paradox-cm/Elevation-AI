@@ -457,17 +457,17 @@ function HeroSection() {
                     ]}
                   />
                               </HeroHeading>
-              <P className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-lg leading-relaxed">
+              <P className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-base md:text-lg leading-relaxed">
                 Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.
               </P>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+              <Button size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/sign-up">
                   Get Started
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/demo">
                   Request a Demo
                 </Link>
@@ -560,7 +560,7 @@ function IntroductionSection() {
                   <AccordionTrigger className="text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium leading-tight sm:leading-normal tracking-normal text-primary hover:no-underline py-4">
                     {item.title}
                   </AccordionTrigger>
-                  <AccordionContent className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-medium leading-tight sm:leading-normal tracking-normal text-muted-foreground pb-4">
+                  <AccordionContent className="text-base sm:text-base md:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-medium leading-tight sm:leading-normal tracking-normal text-muted-foreground pb-4">
                     {item.content}
                   </AccordionContent>
                 </AccordionItem>
@@ -682,7 +682,7 @@ function ProblemSection() {
               {/* Section Headline */}
               <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
                 <H1>Orchestrate Your Universe</H1>
-              <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+              <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </P>
             </div>
@@ -994,9 +994,9 @@ function PlatformSection() {
         <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
           {/* Use screensaver version for mobile, platform version for desktop */}
           {isDesktop ? (
-            <StarFieldAnimationPlatform className="w-full h-full" />
+            <StarFieldAnimationPlatform key={isDesktop ? "lg" : "sm"} className="w-full h-full" />
           ) : (
-            <StarFieldAnimation className="w-full h-full" />
+            <StarFieldAnimation key={isDesktop ? "lg" : "sm"} className="w-full h-full" />
           )}
         </div>
       </div>
@@ -1008,7 +1008,7 @@ function PlatformSection() {
             {/* Section Headline */}
             <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
               <H1>The Agentic Platform</H1>
-              <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+              <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
                 So your business moves faster, thinks smarter, and stays ahead.
               </P>
             </div>
@@ -1265,7 +1265,7 @@ function HowWeDoItSection() {
           {/* Section Header */}
           <div className="text-left space-y-3 lg:space-y-2 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1>More Than a Platform.</H1>
-            <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+            <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
               Your partner at every step.
             </P>
           </div>
@@ -1273,7 +1273,7 @@ function HowWeDoItSection() {
           {/* Modern Tech Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {approaches.map((approach, index) => (
-              <Link key={index} href="#" className="block">
+              <Link key={index} href="/website/people" className="block">
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden cursor-pointer h-full">
                   {/* Background Pattern */}
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1328,31 +1328,36 @@ function WhoWeServeSection() {
       id: "private-markets",
       title: "Private Market Organizations",
       description: "The agentic backbone for the entire private capital lifecycle.",
-      icon: ({ className }) => <Icon name="building-2-line" className={className} />
+      icon: ({ className }) => <Icon name="building-2-line" className={className} />,
+      href: "/website/solutions?open=private-markets"
     },
     {
       id: "public-markets",
       title: "Public Market Organizations",
       description: "A unified intelligence platform for modern investment management.",
-      icon: ({ className }) => <Icon name="store-line" className={className} />
+      icon: ({ className }) => <Icon name="store-line" className={className} />,
+      href: "/website/solutions?open=public-markets"
     },
     {
       id: "banks",
       title: "Banks",
       description: "Automate compliance, enhance risk management, and improve customer service.",
-      icon: ({ className }) => <Icon name="bank-line" className={className} />
+      icon: ({ className }) => <Icon name="bank-line" className={className} />,
+      href: "/website/solutions?open=banks"
     },
     {
       id: "enterprise",
       title: "Enterprise",
       description: "The secure control plane for growing and established organizations.",
-      icon: ({ className }) => <Icon name="briefcase-line" className={className} />
+      icon: ({ className }) => <Icon name="briefcase-line" className={className} />,
+      href: "/website/solutions?open=enterprise"
     },
     {
       id: "government",
       title: "Government",
       description: "A secure, compliant, and auditable platform for the public sector.",
-      icon: ({ className }) => <Icon name="government-line" className={className} />
+      icon: ({ className }) => <Icon name="government-line" className={className} />,
+      href: "/website/solutions?open=government"
     }
   ]
 
@@ -1365,18 +1370,40 @@ function WhoWeServeSection() {
   ]
 
   // Convert smallCards to CarouselItem format
-  const smallCardsCarouselItems = smallCards.map((card, index) => ({
-    id: index,
-    title: card,
-    description: "",
-    content: (
-      <div className="text-left">
-        <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-          →
-        </h4>
-      </div>
-    )
-  }))
+  const smallCardsCarouselItems = smallCards.map((card, index) => {
+    // Map card names to their corresponding stage solution IDs
+    const cardIdMap: { [key: string]: string } = {
+      "Creating a Venture": "creating-venture",
+      "Scaling a Venture": "scaling-venture", 
+      "Exiting a Venture": "exiting-venture",
+      "Post-IPO Growth": "post-ipo-growth",
+      "Post-Exit/Family Office": "family-office"
+    }
+    
+    const cardId = cardIdMap[card] || ""
+    
+    return {
+      id: index,
+      title: card,
+      description: "",
+      content: (
+        <Link href={`/website/solutions?open=${cardId}`} className="block h-full">
+          <div className="text-left h-full flex flex-col justify-between">
+            <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
+              {card}
+            </h3>
+            <div className="flex-1 flex items-end">
+              <div className="text-left">
+                <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                  →
+                </h4>
+              </div>
+            </div>
+          </div>
+        </Link>
+      )
+    }
+  })
 
 
 
@@ -1388,7 +1415,7 @@ function WhoWeServeSection() {
           {/* Section Header */}
           <div className="text-left space-y-3 lg:space-y-2 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
             <H1>Intelligent Solutions for Every Domain</H1>
-            <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
+            <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
               Powered by Elevation AI and guided by experts.
             </P>
           </div>
@@ -1438,25 +1465,39 @@ function WhoWeServeSection() {
         <div className="hidden lg:block">
           <Container size="2xl" >
             <div className="grid grid-cols-5 gap-4">
-              {smallCards.map((card, index) => (
-                <div
-                  key={index}
-                  className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent min-h-[320px] flex flex-col"
-                >
-                  <div className="flex flex-col flex-1">
-                    <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
-                      {card}
-                    </h3>
-                    <div className="flex-1 flex items-end">
-                      <div className="text-left">
-                        <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                          →
-                        </h4>
+              {smallCards.map((card, index) => {
+                // Map card names to their corresponding stage solution IDs
+                const cardIdMap: { [key: string]: string } = {
+                  "Creating a Venture": "creating-venture",
+                  "Scaling a Venture": "scaling-venture", 
+                  "Exiting a Venture": "exiting-venture",
+                  "Post-IPO Growth": "post-ipo-growth",
+                  "Post-Exit/Family Office": "family-office"
+                }
+                
+                const cardId = cardIdMap[card] || ""
+                
+                return (
+                  <Link
+                    key={index}
+                    href={`/website/solutions?open=${cardId}`}
+                    className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent min-h-[320px] flex flex-col"
+                  >
+                    <div className="flex flex-col flex-1">
+                      <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
+                        {card}
+                      </h3>
+                      <div className="flex-1 flex items-end">
+                        <div className="text-left">
+                          <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                            →
+                          </h4>
+                          </div>
                         </div>
-                      </div>
-              </div>
-            </div>
-            ))}
+                </div>
+              </Link>
+                )
+              })}
             </div>
           </Container>
           </div>
@@ -1475,18 +1516,18 @@ function ClosingCTASection() {
           <div className="text-left sm:text-center space-y-8 max-w-3xl mx-auto">
             <div className="space-y-6">
               <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">Orchestrate Your Universe</H1>
-              <P className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
+              <P className="text-muted-foreground text-base sm:text-base md:text-lg md:text-xl max-w-2xl mx-auto">
                 From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
               </P>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+              <Button size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
                 <Link href="/website/sign-up">
                   Get Started
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
                 <Link href="/website/demo">
                   Request a Demo
                 </Link>
@@ -1506,12 +1547,12 @@ function ClosingCTASection() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+              <Button size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
                 <Link href="/website/sign-up">
                   Get Started
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
+              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
                 <Link href="/website/demo">
                   Request a Demo
                 </Link>

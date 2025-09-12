@@ -76,7 +76,7 @@ export default function DevelopersPage() {
                   <div className="space-y-3">
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">1. Clients Receive Credits</CardTitle>
+                        <CardTitle className="text-base sm:text-base md:text-lg">1. Clients Receive Credits</CardTitle>
                       </CardHeader>
                       <CardContent className="text-sm text-muted-foreground">
                         Our clients subscribe to packages that include a monthly allotment of credits, which they can use for any resource in our ecosystem.
@@ -85,7 +85,7 @@ export default function DevelopersPage() {
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">2. Your Agent is Discoverable</CardTitle>
+                        <CardTitle className="text-base sm:text-base md:text-lg">2. Your Agent is Discoverable</CardTitle>
                       </CardHeader>
                       <CardContent className="text-sm text-muted-foreground">
                         Your agent or tool is listed in our central Library. Any agent available through standard protocols (like A2A or MCP) can be discovered and integrated.
@@ -94,7 +94,7 @@ export default function DevelopersPage() {
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle className="text-base sm:text-lg">3. Clients Deploy Your Agent</CardTitle>
+                        <CardTitle className="text-base sm:text-base md:text-lg">3. Clients Deploy Your Agent</CardTitle>
                       </CardHeader>
                       <CardContent className="text-sm text-muted-foreground">
                         When a client uses their credits to deploy your agent in one of their workflows, you get paid. These credits translate directly into revenue for you.
@@ -109,7 +109,7 @@ export default function DevelopersPage() {
                 <div className="max-w-4xl mx-auto">
                   <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
                     <CardHeader className="text-center pt-8 pb-2">
-                      <CardTitle className="text-base sm:text-lg">Let's Build the Future, Together</CardTitle>
+                      <CardTitle className="text-base sm:text-base md:text-lg">Let's Build the Future, Together</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center space-y-4 pt-2">
                       <P>

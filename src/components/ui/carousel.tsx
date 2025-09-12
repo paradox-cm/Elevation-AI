@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 export interface CarouselItem {
@@ -9,6 +10,7 @@ export interface CarouselItem {
   description: string
   icon?: React.ComponentType<{ className?: string }>
   content?: React.ReactNode
+  href?: string
 }
 
 export interface CarouselProps {
@@ -326,33 +328,8 @@ export function Carousel({
             gap: `${responsiveCardGap}px`
           }}
         >
-          {items.map((item, index) => (
-            <div 
-              key={item.id} 
-              ref={(el) => {
-                cardRefs.current[index] = el
-              }}
-              className={cn(
-                "flex-shrink-0 border rounded-lg transition-all duration-300",
-                cardStyle === 'outline' 
-                  ? 'border-border bg-transparent' 
-                  : cardStyle === 'blue'
-                    ? highlightActiveCard && index === currentSlide
-                      ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                      : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                    : highlightActiveCard && index === currentSlide 
-                      ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
-                      : 'border-border bg-card'
-              )}
-              style={{ 
-                minWidth: `${responsiveCardWidth}px`, 
-                maxWidth: `${responsiveCardWidth}px`,
-                height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
-                minHeight: '320px',
-                marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
-                marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
-              }}
-            >
+          {items.map((item, index) => {
+            const cardContent = (
               <div className="flex flex-col h-full p-6">
                 {item.icon && (
                   <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
@@ -369,8 +346,46 @@ export function Carousel({
                   )}
                 </div>
               </div>
-            </div>
-          ))}
+            )
+
+            return (
+              <div 
+                key={item.id} 
+                ref={(el) => {
+                  cardRefs.current[index] = el
+                }}
+                className={cn(
+                  "flex-shrink-0 border rounded-lg transition-all duration-300",
+                  cardStyle === 'outline' 
+                    ? 'border-border bg-transparent' 
+                    : cardStyle === 'blue'
+                      ? highlightActiveCard && index === currentSlide
+                        ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                        : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                      : highlightActiveCard && index === currentSlide 
+                        ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                        : 'border-border bg-card',
+                  item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
+                )}
+                style={{ 
+                  minWidth: `${responsiveCardWidth}px`, 
+                  maxWidth: `${responsiveCardWidth}px`,
+                  height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
+                  minHeight: '320px',
+                  marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
+                  marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                }}
+              >
+                {item.href ? (
+                  <Link href={item.href} className="block h-full">
+                    {cardContent}
+                  </Link>
+                ) : (
+                  cardContent
+                )}
+              </div>
+            )
+          })}
         </div>
         
         {/* Progress Indicators */}

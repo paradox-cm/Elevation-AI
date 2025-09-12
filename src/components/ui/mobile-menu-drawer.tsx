@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Icon from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
+import { useMobileMenu } from "@/components/ui/layout/mobile-only-layout"
 
 interface MobileMenuDrawerProps {
   currentPage?: string
@@ -13,11 +14,18 @@ interface MobileMenuDrawerProps {
 }
 
 export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps) {
-  const [expandedPlatform, setExpandedPlatform] = React.useState(false) // Platform closed by default
-  const [expandedPeople, setExpandedPeople] = React.useState(false)
-  const [expandedSolutions, setExpandedSolutions] = React.useState(false)
-  const [expandedResources, setExpandedResources] = React.useState(false)
-  const [expandedQuickLinks, setExpandedQuickLinks] = React.useState(false)
+  const {
+    expandedPlatform,
+    expandedPeople,
+    expandedSolutions,
+    expandedResources,
+    expandedQuickLinks,
+    setExpandedPlatform,
+    setExpandedPeople,
+    setExpandedSolutions,
+    setExpandedResources,
+    setExpandedQuickLinks
+  } = useMobileMenu()
 
   const mainNavigationLinks = [
     { href: "/", label: "Home", active: currentPage === "home" },

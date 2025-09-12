@@ -25,9 +25,9 @@ export default function InvestorsPage() {
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
             {/* Hero - centered with edge-to-edge border */}
-            <div className="relative w-full flex items-center justify-center min-h-[300px] sm:min-h-[360px] lg:min-h-[420px] border-b border-border overflow-hidden">
+            <div className="relative w-full flex items-center justify-center min-h-[300px] sm:min-h-[360px] lg:min-h-[420px] border-b border-border/50 overflow-hidden">
               {/* Starfield Animation Background */}
-              <StarFieldAnimationPlatform className="z-0" />
+              <StarFieldAnimationPlatform className="absolute inset-0 w-full h-full z-0" />
               
               <Container size="2xl" className="relative z-10">
                 <div className="text-center space-y-4">

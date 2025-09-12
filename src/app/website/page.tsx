@@ -430,7 +430,7 @@ export default function WebsitePage() {
             <Grid cols={{ base: 1, sm: 2, lg: 4 }} gap={6} className="mt-8">
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-base md:text-lg">
                     <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                     Total Pages
                   </CardTitle>
@@ -443,7 +443,7 @@ export default function WebsitePage() {
               
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-base md:text-lg">
                     <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     Completed
                   </CardTitle>
@@ -456,7 +456,7 @@ export default function WebsitePage() {
               
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-base md:text-lg">
                     <Code className="w-4 h-4 sm:w-5 sm:h-5" />
                     Pending
                   </CardTitle>
@@ -469,7 +469,7 @@ export default function WebsitePage() {
 
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-base md:text-lg">
                     <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                     Progress
                   </CardTitle>

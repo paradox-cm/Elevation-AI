@@ -312,20 +312,18 @@ function PrinciplesSection() {
     <Section paddingY="xl" className="relative overflow-hidden">
       {/* Design System Grid Background */}
       <div className="absolute inset-0">
-        {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness - Mobile */}
+        {/* Plasma Effect - Simplified for Mobile Performance */}
         <div 
           className="absolute inset-0 sm:hidden"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.3) 50%, transparent 90%),
-              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.6) 0%, rgba(71, 85, 105, 0.2) 50%, transparent 90%),
-              radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.5) 0%, rgba(15, 23, 42, 0.1) 60%, transparent 95%),
-              radial-gradient(circle at 30% 70%, rgba(71, 85, 105, 0.4) 0%, rgba(71, 85, 105, 0.1) 60%, transparent 95%)
+              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.1) 50%, transparent 90%),
+              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.3) 0%, rgba(71, 85, 105, 0.1) 50%, transparent 90%)
             `,
-            backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
-            backgroundPosition: '0% 0%, 100% 100%, 50% 50%, 25% 75%',
-            animation: 'plasma-flow 12s ease-in-out infinite',
-            filter: 'blur(16px)',
+            backgroundSize: '600px 600px, 800px 800px',
+            backgroundPosition: '0% 0%, 100% 100%',
+            animation: 'plasma-flow 20s ease-in-out infinite',
+            filter: 'blur(12px)',
             WebkitMask: `
               linear-gradient(to right, black 1px, transparent 1px),
               linear-gradient(to bottom, black 1px, transparent 1px)
@@ -370,20 +368,18 @@ function PrinciplesSection() {
           }}
         />
         
-        {/* Additional Soft Blur Layer - Mobile */}
+        {/* Additional Soft Blur Layer - Mobile (Simplified) */}
         <div 
           className="absolute inset-0 sm:hidden"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 60% 40%, rgba(15, 23, 42, 0.4) 0%, transparent 70%),
-              radial-gradient(circle at 40% 60%, rgba(71, 85, 105, 0.3) 0%, transparent 70%),
-              radial-gradient(circle at 70% 30%, rgba(15, 23, 42, 0.3) 0%, transparent 80%),
-              radial-gradient(circle at 10% 90%, rgba(71, 85, 105, 0.25) 0%, transparent 80%)
+              radial-gradient(circle at 60% 40%, rgba(15, 23, 42, 0.2) 0%, transparent 70%),
+              radial-gradient(circle at 40% 60%, rgba(71, 85, 105, 0.15) 0%, transparent 70%)
             `,
-            backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
-            backgroundPosition: '75% 25%, 10% 90%, 50% 50%, 90% 10%',
-            animation: 'plasma-flow 12s ease-in-out infinite reverse',
-            filter: 'blur(24px)',
+            backgroundSize: '600px 600px, 800px 800px',
+            backgroundPosition: '75% 25%, 10% 90%',
+            animation: 'plasma-flow 25s ease-in-out infinite reverse',
+            filter: 'blur(16px)',
             WebkitMask: `
               linear-gradient(to right, black 1px, transparent 1px),
               linear-gradient(to bottom, black 1px, transparent 1px)
@@ -428,18 +424,18 @@ function PrinciplesSection() {
           }}
         />
         
-        {/* Extra Softness Layer - Mobile */}
+        {/* Extra Softness Layer - Mobile (Simplified) */}
         <div 
           className="absolute inset-0 sm:hidden"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 25% 25%, rgba(15, 23, 42, 0.3) 0%, transparent 80%),
-              radial-gradient(circle at 75% 75%, rgba(71, 85, 105, 0.25) 0%, transparent 80%)
+              radial-gradient(circle at 25% 25%, rgba(15, 23, 42, 0.15) 0%, transparent 80%),
+              radial-gradient(circle at 75% 75%, rgba(71, 85, 105, 0.1) 0%, transparent 80%)
             `,
-            backgroundSize: '1000px 1000px, 1200px 1200px',
+            backgroundSize: '700px 700px, 900px 900px',
             backgroundPosition: '0% 0%, 100% 100%',
-            animation: 'plasma-flow 12s ease-in-out infinite',
-            filter: 'blur(32px)',
+            animation: 'plasma-flow 30s ease-in-out infinite',
+            filter: 'blur(20px)',
             WebkitMask: `
               linear-gradient(to right, black 1px, transparent 1px),
               linear-gradient(to bottom, black 1px, transparent 1px)
@@ -548,7 +544,7 @@ function PrinciplesSection() {
             {principles.map((principle, index) => (
                 <Card 
                   key={index} 
-                  className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-card/80 backdrop-blur-sm dark:bg-black/60 dark:backdrop-blur-md dark:border dark:border-white/10"
+                  className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-shadow duration-300 transition-transform duration-300 hover:-translate-y-2 bg-card/80 backdrop-blur-sm dark:bg-black/60 dark:backdrop-blur-md dark:border dark:border-white/10"
                 >
                 <CardContent className="p-8 relative z-10">
                   <div className="space-y-6">

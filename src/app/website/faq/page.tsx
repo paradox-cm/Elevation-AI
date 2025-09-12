@@ -326,7 +326,7 @@ export default function FAQPage() {
                                   value={`faq-${category.id}-${faqIndex}`}
                                   className="border border-border/50 rounded-lg bg-muted/30"
                                 >
-                                  <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4 px-4 text-base sm:text-lg">
+                                  <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4 px-4 text-base sm:text-base md:text-lg">
                                     {faq.question}
                                   </AccordionTrigger>
                                   <AccordionContent className="text-muted-foreground pb-4 px-4 text-sm sm:text-base leading-relaxed">

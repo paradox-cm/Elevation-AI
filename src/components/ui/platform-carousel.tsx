@@ -64,6 +64,13 @@ export function PlatformCarousel({
   const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
   const [maxCardHeight, setMaxCardHeight] = React.useState<number>(0)
   const [allCardsVisible, setAllCardsVisible] = React.useState(false)
+  
+  // Touch and drag state
+  const [isDragging, setIsDragging] = React.useState(false)
+  const [startX, setStartX] = React.useState(0)
+  const [currentX, setCurrentX] = React.useState(0)
+  const [dragOffset, setDragOffset] = React.useState(0)
+  const [isTouchDevice, setIsTouchDevice] = React.useState(false)
 
   // Responsive configuration
   const getResponsiveConfig = () => {
@@ -119,6 +126,14 @@ export function PlatformCarousel({
     updateScreenSize()
     window.addEventListener('resize', updateScreenSize)
     return () => window.removeEventListener('resize', updateScreenSize)
+  }, [])
+
+  // Touch device detection
+  React.useEffect(() => {
+    const checkTouchDevice = () => {
+      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    }
+    checkTouchDevice()
   }, [])
 
   // Check if all cards are visible
@@ -245,6 +260,95 @@ export function PlatformCarousel({
     if (autoPlay) setShowGradient(true)
   }
 
+  // Touch and drag handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isTouchDevice) return
+    setIsDragging(true)
+    setStartX(e.touches[0].clientX)
+    setCurrentX(e.touches[0].clientX)
+    setDragOffset(0)
+    // Pause auto-play during drag
+    if (autoPlay) setShowGradient(false)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !isTouchDevice) return
+    e.preventDefault()
+    const touch = e.touches[0]
+    setCurrentX(touch.clientX)
+    const offset = touch.clientX - startX
+    setDragOffset(offset)
+  }
+
+  const handleTouchEnd = () => {
+    if (!isDragging || !isTouchDevice) return
+    setIsDragging(false)
+    
+    const threshold = responsiveCardWidth * 0.3 // 30% of card width
+    const dragDistance = currentX - startX
+    
+    if (Math.abs(dragDistance) > threshold) {
+      if (dragDistance > 0) {
+        // Swipe right - go to previous slide
+        prevSlide()
+      } else {
+        // Swipe left - go to next slide
+        nextSlide()
+      }
+    }
+    
+    setDragOffset(0)
+    setStartX(0)
+    setCurrentX(0)
+    // Resume auto-play
+    if (autoPlay) setShowGradient(true)
+  }
+
+  // Mouse drag handlers for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isTouchDevice) return
+    setIsDragging(true)
+    setStartX(e.clientX)
+    setCurrentX(e.clientX)
+    setDragOffset(0)
+    if (autoPlay) setShowGradient(false)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || isTouchDevice) return
+    e.preventDefault()
+    setCurrentX(e.clientX)
+    const offset = e.clientX - startX
+    setDragOffset(offset)
+  }
+
+  const handleMouseUp = () => {
+    if (!isDragging || isTouchDevice) return
+    setIsDragging(false)
+    
+    const threshold = responsiveCardWidth * 0.3
+    const dragDistance = currentX - startX
+    
+    if (Math.abs(dragDistance) > threshold) {
+      if (dragDistance > 0) {
+        prevSlide()
+      } else {
+        nextSlide()
+      }
+    }
+    
+    setDragOffset(0)
+    setStartX(0)
+    setCurrentX(0)
+    if (autoPlay) setShowGradient(true)
+  }
+
+  const handleMouseLeaveDrag = () => {
+    if (isDragging) {
+      handleMouseUp()
+    }
+  }
+
   if (items.length === 0) return null
 
   return (
@@ -262,11 +366,21 @@ export function PlatformCarousel({
       )}
 
       {/* Carousel Container */}
-      <div className="overflow-hidden platform-carousel-container">
+      <div 
+        className="overflow-hidden platform-carousel-container"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeaveDrag}
+        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+      >
         <div 
-          className="flex transition-transform duration-500 ease-in-out"
+          className={`flex ${isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out'}`}
           style={{ 
-            transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap)}px)`,
+            transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap) + dragOffset}px)`,
             gap: `${responsiveCardGap}px`
           }}
         >

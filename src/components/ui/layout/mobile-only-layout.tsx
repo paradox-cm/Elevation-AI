@@ -11,6 +11,16 @@ import { Logo } from "@/components/ui/logo"
 interface MobileMenuContextType {
   mobileMenuOpen: boolean
   setMobileMenuOpen: (open: boolean) => void
+  expandedPlatform: boolean
+  expandedPeople: boolean
+  expandedSolutions: boolean
+  expandedResources: boolean
+  expandedQuickLinks: boolean
+  setExpandedPlatform: (expanded: boolean) => void
+  setExpandedPeople: (expanded: boolean) => void
+  setExpandedSolutions: (expanded: boolean) => void
+  setExpandedResources: (expanded: boolean) => void
+  setExpandedQuickLinks: (expanded: boolean) => void
 }
 
 export const MobileMenuContext = createContext<MobileMenuContextType | null>(null)
@@ -41,9 +51,29 @@ export function MobileOnlyLayout({
   mainClassName
 }: MobileOnlyLayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  
+  // Dropdown states - persist across drawer open/close cycles
+  const [expandedPlatform, setExpandedPlatform] = useState(false)
+  const [expandedPeople, setExpandedPeople] = useState(false)
+  const [expandedSolutions, setExpandedSolutions] = useState(false)
+  const [expandedResources, setExpandedResources] = useState(false)
+  const [expandedQuickLinks, setExpandedQuickLinks] = useState(false)
 
   return (
-    <MobileMenuContext.Provider value={{ mobileMenuOpen, setMobileMenuOpen }}>
+    <MobileMenuContext.Provider value={{ 
+      mobileMenuOpen, 
+      setMobileMenuOpen,
+      expandedPlatform,
+      expandedPeople,
+      expandedSolutions,
+      expandedResources,
+      expandedQuickLinks,
+      setExpandedPlatform,
+      setExpandedPeople,
+      setExpandedSolutions,
+      setExpandedResources,
+      setExpandedQuickLinks
+    }}>
       <div className={cn("min-h-screen", className)}>
         {header && (
           <header className={cn(
