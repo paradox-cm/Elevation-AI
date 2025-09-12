@@ -537,9 +537,6 @@ export default function AboutPage() {
                       cyclingSpeed={80}
                     />
                   </HeroHeading>
-                  <P className="max-w-3xl mx-auto mt-6 text-lg sm:text-xl text-muted-foreground">
-                    We are building the operating system for the agentic era. Our platform unifies your universe, provides intelligent workspaces, and connects you securely to the world of AI.
-                  </P>
                 </div>
                 
                 {/* Down Arrow Button */}
