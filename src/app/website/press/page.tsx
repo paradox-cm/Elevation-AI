@@ -11,7 +11,7 @@ import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { H2, H3, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H1, H2, H3, P, BodyLarge, BodySmall } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
 import React from "react"
@@ -128,14 +128,17 @@ export default function PressPage() {
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
             <Container size="2xl">
-              <Section paddingY="xl">
-                <PageHeader
-                  title="Press"
-                  description="Latest news, press releases, and media resources about Elevation AI"
-                  size="lg"
-                  centered
-                />
-              </Section>
+              {/* Page Header */}
+              <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
+                <div className="text-center space-y-1">
+                  <H1>
+                    Press
+                  </H1>
+                  <P className="max-w-[42rem] mx-auto">
+                    Latest news, press releases, and media resources about Elevation AI
+                  </P>
+                </div>
+              </div>
 
               {/* Press Releases Section */}
               <Section paddingY="lg">

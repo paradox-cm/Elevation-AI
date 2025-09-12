@@ -421,20 +421,49 @@ export default function PeoplePage() {
   useEffect(() => {
     const handleHashNavigation = () => {
       const hash = window.location.hash
-      if (hash === '#our-solution-section') {
-        const targetSection = document.getElementById('our-solution-section')
-        if (targetSection) {
-          const header = document.querySelector('header')
-          const headerHeight = header ? header.offsetHeight : 0
-          const sectionTop = targetSection.offsetTop
-          const scrollToPosition = sectionTop - headerHeight
-          
-          window.scrollTo({
-            top: scrollToPosition,
-            behavior: 'smooth'
-          })
+      if (hash === '#our-solution-section' || hash === '#expert-network') {
+        const targetId = hash.substring(1) // Remove the #
+        
+        // Function to attempt scrolling with retries
+        const attemptScroll = (retries = 0) => {
+          const targetSection = document.getElementById(targetId)
+          if (targetSection) {
+            // Get the header element and its height
+            const header = document.querySelector('header')
+            const headerHeight = header ? header.offsetHeight : 80
+            
+            // Get the target element's position relative to the document
+            const targetRect = targetSection.getBoundingClientRect()
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+            const targetTop = targetRect.top + scrollTop
+            
+            // Calculate the final scroll position with proper offset
+            const finalScrollPosition = targetTop - headerHeight - 20 // 20px extra spacing
+            
+            // Only scroll if we have a valid position and the element is visible
+            if (targetRect.height > 0 && finalScrollPosition > 0) {
+              window.scrollTo({
+                top: Math.max(0, finalScrollPosition),
+                behavior: 'smooth'
+              })
+            } else if (retries < 10) {
+              // Retry if element isn't ready yet
+              setTimeout(() => attemptScroll(retries + 1), 50)
+            }
+          } else if (retries < 10) {
+            // Retry if element doesn't exist yet
+            setTimeout(() => attemptScroll(retries + 1), 50)
+          }
         }
+        
+        // Start the scroll attempt after a short delay
+        setTimeout(() => attemptScroll(), 100)
       }
+    }
+
+    // Disable browser's scroll restoration to prevent conflicts
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
     }
 
     // Handle initial load
@@ -443,8 +472,22 @@ export default function PeoplePage() {
     // Handle hash changes
     window.addEventListener('hashchange', handleHashNavigation)
 
+    // Also handle when the page becomes visible (for back/forward navigation)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        handleHashNavigation()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     return () => {
       window.removeEventListener('hashchange', handleHashNavigation)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      
+      // Restore scroll restoration
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'auto'
+      }
     }
   }, [])
 

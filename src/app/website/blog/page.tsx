@@ -9,6 +9,7 @@ import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Button } from "@/components/ui/button"
+import { H1, P } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { H2, H3, BodyLarge, BodySmall } from "@/components/ui/typography"
 import Link from "next/link"
@@ -122,12 +123,17 @@ export default function BlogPage() {
           <main>
             <Container size="2xl">
               <Section paddingY="xl">
-                <PageHeader
-                  title="Blog"
-                  description="Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation"
-                  size="lg"
-                  centered
-                />
+                {/* Page Header */}
+                <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
+                  <div className="text-center space-y-1">
+                    <H1>
+                      Blog
+                    </H1>
+                    <P className="max-w-[42rem] mx-auto">
+                      Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation
+                    </P>
+                  </div>
+                </div>
               </Section>
 
               {/* Category Filter */}

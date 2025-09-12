@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
@@ -773,6 +774,42 @@ function CTASection() {
 }
 
 export default function WireframesPlatformPage() {
+  // Handle scroll to section on page load with hash
+  useEffect(() => {
+    const handleHashScroll = () => {
+      const hash = window.location.hash
+      if (hash) {
+        // Remove the # from the hash
+        const targetId = hash.substring(1)
+        const targetElement = document.getElementById(targetId)
+        
+        if (targetElement) {
+          // Add a small delay to ensure the page is fully rendered
+          setTimeout(() => {
+            const offset = 120 // Account for header height
+            const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY
+            const offsetPosition = elementPosition - offset
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+          }, 100)
+        }
+      }
+    }
+
+    // Handle initial load
+    handleHashScroll()
+
+    // Handle hash changes (in case user navigates with hash)
+    window.addEventListener('hashchange', handleHashScroll)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashScroll)
+    }
+  }, [])
+
   return (
     <PageWrapper>
       <MobileOnlyLayout

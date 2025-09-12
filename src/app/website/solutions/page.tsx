@@ -622,20 +622,41 @@ function IndustrySolutionsSection() {
     const openParam = searchParams.get('open')
     if (openParam && industrySolutions.some(s => s.id === openParam)) {
       setOpenCardId(openParam)
-      // Scroll to the card after a short delay to ensure it's rendered
-      setTimeout(() => {
+      
+      // Function to attempt scrolling with retries
+      const attemptScroll = (retries = 0) => {
         const cardElement = cardRefs.current[openParam]
         if (cardElement) {
-          const headerHeight = 64 // Height of the fixed header (4rem = 64px)
-          const elementPosition = cardElement.offsetTop
-          const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
+          // Get the header element and its height
+          const header = document.querySelector('header')
+          const headerHeight = header ? header.offsetHeight : 80 // Increased fallback to 80px
           
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          })
+          // Get the target element's position relative to the document
+          const targetRect = cardElement.getBoundingClientRect()
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+          const targetTop = targetRect.top + scrollTop
+          
+          // Calculate the final scroll position with proper offset
+          const finalScrollPosition = targetTop - headerHeight - 32 // 32px buffer for better positioning
+          
+          // Only scroll if we have a valid position and the element is visible
+          if (targetRect.height > 0 && finalScrollPosition > 0) {
+            window.scrollTo({
+              top: Math.max(0, finalScrollPosition),
+              behavior: 'smooth'
+            })
+          } else if (retries < 10) {
+            // Retry if element isn't ready yet
+            setTimeout(() => attemptScroll(retries + 1), 50)
+          }
+        } else if (retries < 10) {
+          // Retry if element doesn't exist yet
+          setTimeout(() => attemptScroll(retries + 1), 50)
         }
-      }, 100)
+      }
+      
+      // Start the scroll attempt after a short delay
+      setTimeout(() => attemptScroll(), 100)
     }
   }, [searchParams])
 
@@ -645,7 +666,7 @@ function IndustrySolutionsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Left Column - Content */}
           <div className="space-y-6 lg:col-span-1">
-            <div className="space-y-4">
+            <div className="space-y-4 lg:sticky lg:top-24">
               <H1>Industry Solutions</H1>
               <P className="text-muted-foreground">
                 Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results.
@@ -708,20 +729,41 @@ function StageSolutionsSection() {
     const openParam = searchParams.get('open')
     if (openParam && stageSolutions.some(s => s.id === openParam)) {
       setOpenCardId(openParam)
-      // Scroll to the card after a short delay to ensure it's rendered
-      setTimeout(() => {
+      
+      // Function to attempt scrolling with retries
+      const attemptScroll = (retries = 0) => {
         const cardElement = cardRefs.current[openParam]
         if (cardElement) {
-          const headerHeight = 64 // Height of the fixed header (4rem = 64px)
-          const elementPosition = cardElement.offsetTop
-          const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
+          // Get the header element and its height
+          const header = document.querySelector('header')
+          const headerHeight = header ? header.offsetHeight : 80 // Increased fallback to 80px
           
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          })
+          // Get the target element's position relative to the document
+          const targetRect = cardElement.getBoundingClientRect()
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+          const targetTop = targetRect.top + scrollTop
+          
+          // Calculate the final scroll position with proper offset
+          const finalScrollPosition = targetTop - headerHeight - 32 // 32px buffer for better positioning
+          
+          // Only scroll if we have a valid position and the element is visible
+          if (targetRect.height > 0 && finalScrollPosition > 0) {
+            window.scrollTo({
+              top: Math.max(0, finalScrollPosition),
+              behavior: 'smooth'
+            })
+          } else if (retries < 10) {
+            // Retry if element isn't ready yet
+            setTimeout(() => attemptScroll(retries + 1), 50)
+          }
+        } else if (retries < 10) {
+          // Retry if element doesn't exist yet
+          setTimeout(() => attemptScroll(retries + 1), 50)
         }
-      }, 100)
+      }
+      
+      // Start the scroll attempt after a short delay
+      setTimeout(() => attemptScroll(), 100)
     }
   }, [searchParams])
 
@@ -731,7 +773,7 @@ function StageSolutionsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Left Column - Content */}
           <div className="space-y-6 lg:col-span-1">
-            <div className="space-y-4">
+            <div className="space-y-4 lg:sticky lg:top-24">
               <H1>By Stage Solutions</H1>
               <P className="text-muted-foreground">
                 Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next.
@@ -870,6 +912,20 @@ function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: {
 
 
 export default function WireframesSolutionsPage() {
+  // Disable browser's scroll restoration to prevent conflicts with our custom scroll handling
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+
+    return () => {
+      // Restore scroll restoration on cleanup
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'auto'
+      }
+    }
+  }, [])
+
   return (
     <PageWrapper>
       <MobileOnlyLayout

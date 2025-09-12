@@ -9,6 +9,7 @@ import { Section } from "@/components/ui/layout/section"
 import { Grid } from "@/components/ui/layout/grid"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { H1, P } from "@/components/ui/typography"
 import { Badge } from "@/components/ui/badge"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { Shield, Briefcase, Handshake, TrendingUp, Code, Newspaper, ChevronRight } from "lucide-react"
@@ -122,12 +123,17 @@ export default function WireframesResourcesPage() {
       >
         <Container size="2xl">
           <Section paddingY="xl">
-            <PageHeader
-              title="Resources Wireframes"
-              description="Supporting resources and information for all stakeholders"
-              size="lg"
-              centered
-            />
+            {/* Page Header */}
+            <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
+              <div className="text-center space-y-1">
+                <H1>
+                  Resources
+                </H1>
+                <P className="max-w-[42rem] mx-auto">
+                  Supporting resources and information for all stakeholders
+                </P>
+              </div>
+            </div>
           </Section>
 
           <Section paddingY="lg">
