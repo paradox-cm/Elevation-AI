@@ -1405,17 +1405,10 @@ function WhoWeServeSection() {
       description: "",
       content: (
         <Link href={`/website/solutions?open=${cardId}`} className="block h-full">
-          <div className="text-left h-full flex flex-col justify-between">
-            <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
-              {card}
-            </h3>
-            <div className="flex-1 flex items-end">
-              <div className="text-left">
-                <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                  →
-                </h4>
-              </div>
-            </div>
+          <div className="text-left">
+            <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+              →
+            </h4>
           </div>
         </Link>
       )
