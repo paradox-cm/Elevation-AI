@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
 import { H1, H2, H3, P } from "@/components/ui/typography"
+import Image from "next/image"
 import React from "react"
 
 
@@ -26,10 +27,9 @@ export default function DevelopersPage() {
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
             <Container size="2xl">
-              {/* Hero - centered with balanced spacing and animation */}
-              <div className="relative w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px] overflow-hidden">
-                <BusinessDataAnimation />
-                <div className="relative z-10 text-center space-y-1">
+              {/* Hero - centered with balanced spacing */}
+              <div className="relative w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
+                <div className="text-center space-y-1">
                   <H1>
                     Build on the Operating System for the Agentic Era
                   </H1>
@@ -50,6 +50,21 @@ export default function DevelopersPage() {
                   </P>
                 </div>
               </Section>
+
+              {/* Full-width Animation Section */}
+              <div className="relative w-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] overflow-hidden">
+                <BusinessDataAnimation />
+                {/* E-Arrow Icon Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <Image
+                    src="/images/E-Arrow.svg"
+                    alt="Elevation AI Arrow"
+                    width={120}
+                    height={120}
+                    className="opacity-80"
+                  />
+                </div>
+              </div>
 
               {/* How It Works: Credit-Based Economy */}
               <Section paddingY="lg">

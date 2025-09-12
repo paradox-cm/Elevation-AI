@@ -1,0 +1,152 @@
+Platform & architecture
+
+How does Elevation AI fit into my stack (data lake, CRM, BI, workflow tools)?
+Elevation AI sits between your systems of record and your teams. We ingest from sources like data warehouses/lakes, CRMs, email, docs, and calendars; unify that into a governed Knowledge Graph; and expose it through secure agents, canvases, and APIs. Output actions push back into tools (e.g., Salesforce, Slack, Sheets, ticketing) so the work lands where your teams already operate.
+
+What’s the difference between a Knowledge Graph and a data warehouse/lake?
+A warehouse/lake stores raw tables/files. The Knowledge Graph is a semantic layer that resolves entities (people, companies, deals, assets), relationships, lineage, and policy. It references your data rather than duplicating it, making cross-tool reasoning, permissions, and traceable answers possible.
+
+What are Workspaces, Canvases, Agents, and the Library—and how do they relate?
+
+Workspaces: secure domains for a team or entity (e.g., a deal team, portfolio, or family branch).
+
+Canvases: collaborative surfaces for tasks/workflows with live context, citations, and approvals.
+
+Agents: governed automations that read from the graph and act in your tools.
+
+Library: shared, versioned assets—prompts, playbooks, datasets, and integrations—reused across workspaces.
+
+Which LLMs and agent frameworks do you support? Can we bring our own models/keys?
+We support leading commercial and open-source models via adapters (e.g., OpenAI, Anthropic, Azure OpenAI, Google, Mistral, Llama family). BYO keys are supported; you can route tasks per policy (by cost, latency, or compliance). Agents use our native orchestrator with tool-use/function-calling; SDKs let you extend it.
+
+Can Elevation AI run in our VPC or an air-gapped environment?
+Yes. Default is managed SaaS. For higher controls we offer private VPC deployments; fully isolated or “air-gapped” options are available for regulated environments on an enterprise plan.
+
+How do you handle data residency (US/EU/other regions)?
+Choose a primary region at the org or workspace level. Indexed content, embeddings, logs, and backups remain in-region. Cross-region processing is disabled unless explicitly allowed by policy.
+
+Security, privacy & compliance
+
+How do de-identification/re-identification and redaction actually work?
+We detect sensitive fields using pattern+ML entity recognition, replace them with reversible tokens, and store originals in a hardened vault. Re-identification requires explicit policy and role-based approval. Persistent redaction can be enforced on export and UI.
+
+Do you train models on our data? How do you prevent leakage to third parties?
+No customer data is used to train foundation models. BYO keys keep prompts/responses within your vendor account. Optional in-org fine-tuning or adapters are isolated to your tenant. We sign DPAs and restrict subprocessors to those listed in our policy.
+
+What controls exist for RBAC/ABAC, SSO (Okta/Azure AD), and SCIM provisioning?
+SAML/OIDC SSO, SCIM user lifecycle, role-based access (workspace, dataset, action), and attribute-based controls (labels like “MNPI,” “PII,” “deal-team-A”) are supported. Policies flow through agents, canvases, and APIs.
+
+What audit logs and retention controls are available?
+Immutable logs cover data access, prompts, model calls, tool actions, exports, and admin changes. Retention is configurable; exports stream to your SIEM. IP allowlists and session policies are available.
+
+Which certifications and frameworks do you support (SOC 2, ISO 27001, GDPR, HIPAA)? What’s on the roadmap?
+We align to SOC 2/ISO 27001 control families and undergo annual third-party penetration tests. GDPR-ready DPAs and SCCs are available. HIPAA/BAA and formal certifications are offered based on plan and deployment; roadmap timelines are provided under NDA.
+
+How are client/portfolio-company boundaries enforced in multi-org setups?
+Tenant isolation, workspace scoping, per-entity encryption keys, and policy labels prevent cross-entity access. “Deal-team walls”/information barriers enforce need-to-know by default; exceptions require auditable approvals.
+
+Governance & quality
+
+How do you ground agent outputs to our source of truth (RAG, citations, provenance)?
+All answers resolve back to the graph and indexed sources with inline citations. We use retrieval-augmented generation, entity resolution, and lineage tracking so users can verify “why this answer.”
+
+What safeguards reduce hallucinations? Can we require human-in-the-loop approvals?
+Safeguards include curated retrieval, tool-limited actions, model committees for high-risk tasks, and policy checks. For sensitive flows, require reviewer sign-off, dual-control, or multi-stage approvals before actions execute.
+
+How do you version and approve prompts, agents, and flows?
+Everything is versioned with draft → review → approved states, change logs, and rollback. Promotion to production requires assigned reviewers; diffs are visible.
+
+Integrations & extensibility
+
+Which native integrations are available?
+Common connectors include Salesforce, HubSpot, Microsoft/Google 365, Slack, Drive/SharePoint, Dropbox, Notion, Gmail/Outlook, databases (Postgres, MySQL), warehouses (Snowflake, BigQuery, Redshift), storage (S3/GCS/Azure), and finance/data providers (e.g., Plaid/Carta where applicable). Don’t see one? Build it with our SDK.
+
+Do you have APIs/SDKs and webhooks for custom integrations?
+Yes—REST APIs and JS/Python SDKs for ingestion, retrieval, and agent execution. Event/webhook subscriptions let you trigger external workflows on graph or agent events.
+
+How does Elevation work with no-code tools we already use (e.g., Zapier/Make)?
+Prebuilt Zapier/Make connectors expose triggers (new insight, approval needed, risk flag) and actions (run agent, write to canvas, update record). You can also hit our webhooks directly.
+
+Implementation & success
+
+What does a typical onboarding look like?
+A focused 2–6 week path:
+
+Discovery (goals, systems, policies)
+
+Connect & model (sources → graph, access controls)
+
+Pilot use cases (2–3 canvases/agents)
+
+Enablement (training, success metrics)
+
+Scale (governance, rollout plan)
+
+What exactly does the Concierge Team deliver vs. the product itself?
+The product is the platform your team uses daily. The Agentic Concierge Team accelerates value: integration setup, graph curation, playbook design, risk controls, and training. They are enablers—not a custom-dev crutch.
+
+What change-management and training resources are included?
+Role-based training, in-app guides, office hours, templates, security/approval playbooks, and a champion program to seed expertise internally.
+
+How do you measure ROI and success?
+We baseline current effort, then track time-to-insight, cycle-time reduction, error rates, compliance exceptions caught, and business outcomes (e.g., faster diligence, better pipeline hygiene). A shared dashboard monitors adoption and savings.
+
+Pricing & licensing
+
+How is pricing structured (platform fee, credits/usage, concierge hours)?
+Annual platform subscription by org/workspace tier plus metered usage for model/compute tasks. Concierge services are packaged by outcome (e.g., onboarding, new use-case rollout) or retainer.
+
+How do credits work and how can we forecast/limit spend?
+Credits meter LLM tokens, retrieval, vector storage, and job runtime. Real-time dashboards, budgets, alerts, and hard caps prevent overages; policies can route tasks to lower-cost models automatically.
+
+Do you offer platform-only vs. concierge packages? Seat vs. workspace pricing?
+Yes. Choose platform-only or platform+concierge. Pricing can be seat-based, workspace-based, or hybrid depending on your structure, with volume discounts for enterprise.
+
+Data lifecycle & portability
+
+How do we import existing documents, emails, and meeting transcripts?
+Use native connectors, secure bulk import (S3/GCS), or APIs. We normalize and deduplicate, then map entities/relationships into the graph with lineage preserved.
+
+Can we export our knowledge graph and all associated data if we leave?
+Yes. Full export via API/Admin in open formats (JSON-LD/CSV/Parquet), including entities, relationships, citations, and optional embeddings. We provide export runbooks.
+
+What is your data deletion process and timeline?
+Deletion requests tombstone records immediately, purge hot storage within 24 hours, and remove from backups within 30 days (or your policy). Cryptographic erasure applies to customer-managed keys.
+
+SLAs, support & reliability
+
+What uptime, response times, and incident processes do you offer?
+Standard SLA targets 99.9% uptime (higher available on private deployments). P1 incidents receive rapid acknowledgment and continuous updates until resolved. Post-incident RCAs are shared.
+
+What support tiers are available (hours, channels, dedicated manager)?
+Standard (business hours, email/portal), Priority (24×5 + chat), and Enterprise (24×7 + Slack Connect + named CSM/TAM). We tailor runbooks and escalation paths to your org.
+
+Do you provide disaster recovery and business continuity details?
+Yes—multi-AZ architecture, automated backups, periodic restore tests, and documented RTO/RPO targets. DR/BCP documentation and test summaries are available under NDA.
+
+Segment-specific
+
+Family offices: How do you handle multi-entity structures, beneficiaries, and sensitive records?
+Workspaces mirror legal/entity structure; policy labels (e.g., trust, beneficiary, medical/PII) gate access and re-identification. Sensitive vaults and approval flows keep human oversight where it matters.
+
+VC/PE/IB: Can you enforce deal-team walls and information barriers?
+Yes. Deal-team walls, MNPI tagging, pre-trade checks, and auditable approvals. Agents can be constrained to specific datasets/tools; all outputs carry provenance and retention policies.
+
+Banks/government: What compliance/audit features exist for regulated environments?
+Private VPC deployments, customer-managed keys, detailed audit/event exports, data-loss policies, and restricted model routing. We map controls to frameworks (e.g., NIST families) and support external audits.
+
+Legal & procurement
+
+Do you offer DPAs, MSAs, and third-party pen-test summaries for vendor reviews?
+Yes. Standard MSA/DPA (with SCCs where needed), security questionnaires (SIG Lite/CAIQ), and recent penetration-test summaries are available under NDA.
+
+What is your stance on IP ownership for custom agents/flows created on the platform?
+You own the IP for agents, prompts, and playbooks created for your org. We retain IP to the platform and grant you a license to use our components; you grant us a limited license to operate your assets within the service.
+
+Internationalization & accessibility
+
+Which languages and locales are supported?
+The product supports multilingual content understanding and generation via model routing. UI is English-first with additional locales rolling out; date/time/number formats respect workspace locale.
+
+Do you meet accessibility standards (WCAG) across the app?
+We design to WCAG 2.1 AA (keyboard nav, screen-reader labels, contrast modes) and actively close gaps as standards evolve.

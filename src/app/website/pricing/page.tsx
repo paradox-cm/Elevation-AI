@@ -8,40 +8,43 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, H2, BodyLarge, P } from "@/components/ui/typography"
+import { H1, H2, H3, H4, BodyLarge, P } from "@/components/ui/typography"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
 import React from "react"
 import Image from "next/image"
+import { GrowthAnimation } from "@/components/animations/growth-animation"
+import { PricingCalculatorModal } from "@/components/ui/pricing-calculator-modal"
 
 // Pricing Hero Section Component
-function PricingHeroSection() {
+function PricingHeroSection({ onOpenCalculator }: { onOpenCalculator: () => void }) {
   return (
     <Section 
-      paddingY="lg" 
-      className="flex items-center pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-12 lg:pb-16 relative overflow-hidden"
+      paddingY="md" 
+      className="flex items-center pt-8 sm:pt-10 lg:pt-12 pb-4 sm:pb-6 lg:pb-8 relative overflow-hidden"
     >
       <Container size="2xl" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Left Column - Content */}
           <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
-              <H1>
-                Transparent Pricing for
-                <span className="block">Every Organization</span>
+              <H1 className="lg:hidden">
+                Transparent Pricing for Every Organization
               </H1>
+              <H2 className="hidden lg:block">
+                Transparent Pricing for Every Organization
+              </H2>
               <BodyLarge className="text-muted-foreground max-w-2xl">
-                Choose the plan that fits your organization's needs. From startups to enterprises, we provide flexible pricing options to help you scale your agentic operations.
+                Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed. Use our dynamic calculator below to build your custom plan.
               </BodyLarge>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/website/sign-up">
-                  Get Started
-                </Link>
+              <Button size="lg" onClick={onOpenCalculator} className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+                Build Your Custom Plan
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/demo">
@@ -54,7 +57,7 @@ function PricingHeroSection() {
           {/* Right Column - Visual */}
           <div className="relative">
             {/* Main Visual Container */}
-            <div className="relative h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600px] rounded-3xl bg-gradient-to-br from-background/50 to-background/30 border border-border/50 overflow-hidden backdrop-blur-sm">
+              <div className="relative h-[132px] sm:h-[149px] md:h-[165px] lg:h-[198px] rounded-3xl bg-gradient-to-br from-background/50 to-background/30 border border-border/50 overflow-hidden backdrop-blur-sm">
               {/* Animated Grid Background */}
               <div className="absolute inset-0">
                 <div 
@@ -99,6 +102,100 @@ function PricingHeroSection() {
   )
 }
 
+// How It Works Section
+function HowItWorksSection() {
+  return (
+    <Section paddingY="lg" className="bg-muted/30">
+      <Container size="2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Left Column - Heading */}
+          <div className="lg:col-span-1 space-y-6">
+            <H2>How It Works</H2>
+          </div>
+
+          {/* Right Column - Three Cards */}
+          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
+            <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+              <CardContent className="p-6 h-full flex flex-col">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-semibold text-lg">1</span>
+                  </div>
+                  <H3 className="text-lg md:hidden">Tell Us About Your Universe</H3>
+                  <H4 className="hidden md:block">Tell Us About Your Universe</H4>
+                </div>
+                <P className="text-muted-foreground text-sm leading-relaxed">
+                  Share key details about your organization and core needs.
+                </P>
+              </CardContent>
+            </Card>
+
+            {/* Card 2 */}
+            <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+              <CardContent className="p-6 h-full flex flex-col">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-semibold text-lg">2</span>
+                  </div>
+                  <H3 className="text-lg md:hidden">Select Your Core Capabilities</H3>
+                  <H4 className="hidden md:block">Select Your Core Capabilities</H4>
+                </div>
+                <P className="text-muted-foreground text-sm leading-relaxed">
+                  Select platform features and support levels that match your goals.
+                </P>
+              </CardContent>
+            </Card>
+
+            {/* Card 3 */}
+            <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+              <CardContent className="p-6 h-full flex flex-col">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-semibold text-lg">3</span>
+                  </div>
+                  <H3 className="text-lg md:hidden">Receive Your Custom Plan</H3>
+                  <H4 className="hidden md:block">Receive Your Custom Plan</H4>
+                </div>
+                <P className="text-muted-foreground text-sm leading-relaxed">
+                  Get your custom plan and pricing estimate ready for review.
+                </P>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
+// Growth Animation Section
+function GrowthAnimationSection({ onOpenCalculator }: { onOpenCalculator: () => void }) {
+  return (
+    <Section 
+      paddingY="lg" 
+      className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]"
+    >
+      {/* Background Animation */}
+      <div className="absolute inset-0">
+        <GrowthAnimation className="w-full h-full" />
+      </div>
+      
+      {/* Content Overlay */}
+      <div className="relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+        <Container size="2xl">
+          <div className="text-center group">
+            <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto">
+              Calculate Your Plan
+              <Icon name="arrow-right-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </Container>
+      </div>
+    </Section>
+  )
+}
+
 // CTA Section
 function CTASection() {
   return (
@@ -131,6 +228,16 @@ function CTASection() {
 }
 
 export default function PricingPage() {
+  const [isCalculatorOpen, setIsCalculatorOpen] = React.useState(false)
+
+  const handleOpenCalculator = () => {
+    setIsCalculatorOpen(true)
+  }
+
+  const handleCloseCalculator = () => {
+    setIsCalculatorOpen(false)
+  }
+
   return (
     <PageWrapper>
       <MobileOnlyLayout
@@ -141,10 +248,23 @@ export default function PricingPage() {
         <div className="bg-background transition-colors duration-300">
           <main>
             {/* Pricing Hero Section */}
-            <PricingHeroSection />
+            <PricingHeroSection onOpenCalculator={handleOpenCalculator} />
+            
+            {/* How It Works Section */}
+            <HowItWorksSection />
+            
+            {/* Growth Animation Section */}
+            <GrowthAnimationSection onOpenCalculator={handleOpenCalculator} />
+            
             <CTASection />
           </main>
         </div>
+
+        {/* Pricing Calculator Modal */}
+        <PricingCalculatorModal 
+          isOpen={isCalculatorOpen} 
+          onClose={handleCloseCalculator} 
+        />
       </MobileOnlyLayout>
     </PageWrapper>
   )

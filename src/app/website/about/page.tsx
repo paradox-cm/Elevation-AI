@@ -310,6 +310,231 @@ function PrinciplesSection() {
 
   return (
     <Section paddingY="xl" className="relative overflow-hidden">
+      {/* Design System Grid Background */}
+      <div className="absolute inset-0">
+        {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness - Mobile */}
+        <div 
+          className="absolute inset-0 sm:hidden"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.3) 50%, transparent 90%),
+              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.6) 0%, rgba(71, 85, 105, 0.2) 50%, transparent 90%),
+              radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.5) 0%, rgba(15, 23, 42, 0.1) 60%, transparent 95%),
+              radial-gradient(circle at 30% 70%, rgba(71, 85, 105, 0.4) 0%, rgba(71, 85, 105, 0.1) 60%, transparent 95%)
+            `,
+            backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
+            backgroundPosition: '0% 0%, 100% 100%, 50% 50%, 25% 75%',
+            animation: 'plasma-flow 12s ease-in-out infinite',
+            filter: 'blur(16px)',
+            WebkitMask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            WebkitMaskSize: '16px 16px',
+            WebkitMaskPosition: '0 0',
+            mask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            maskSize: '16px 16px',
+            maskPosition: '0 0'
+          }}
+        />
+        
+        {/* Plasma Effect - Multiple Overlapping Gradients for Maximum Softness - Desktop */}
+        <div 
+          className="absolute inset-0 hidden sm:block"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.3) 50%, transparent 90%),
+              radial-gradient(circle at 80% 80%, rgba(71, 85, 105, 0.6) 0%, rgba(71, 85, 105, 0.2) 50%, transparent 90%),
+              radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.5) 0%, rgba(15, 23, 42, 0.1) 60%, transparent 95%),
+              radial-gradient(circle at 30% 70%, rgba(71, 85, 105, 0.4) 0%, rgba(71, 85, 105, 0.1) 60%, transparent 95%)
+            `,
+            backgroundSize: '700px 700px, 1050px 1050px, 875px 875px, 1225px 1225px',
+            backgroundPosition: '0% 0%, 100% 100%, 50% 50%, 25% 75%',
+            animation: 'plasma-flow 12s ease-in-out infinite',
+            filter: 'blur(16px)',
+            WebkitMask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            WebkitMaskSize: '32px 32px',
+            WebkitMaskPosition: '0 0',
+            mask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            maskSize: '32px 32px',
+            maskPosition: '0 0'
+          }}
+        />
+        
+        {/* Additional Soft Blur Layer - Mobile */}
+        <div 
+          className="absolute inset-0 sm:hidden"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 60% 40%, rgba(15, 23, 42, 0.4) 0%, transparent 70%),
+              radial-gradient(circle at 40% 60%, rgba(71, 85, 105, 0.3) 0%, transparent 70%),
+              radial-gradient(circle at 70% 30%, rgba(15, 23, 42, 0.3) 0%, transparent 80%),
+              radial-gradient(circle at 10% 90%, rgba(71, 85, 105, 0.25) 0%, transparent 80%)
+            `,
+            backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
+            backgroundPosition: '75% 25%, 10% 90%, 50% 50%, 90% 10%',
+            animation: 'plasma-flow 12s ease-in-out infinite reverse',
+            filter: 'blur(24px)',
+            WebkitMask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            WebkitMaskSize: '16px 16px',
+            WebkitMaskPosition: '0 0',
+            mask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            maskSize: '16px 16px',
+            maskPosition: '0 0'
+          }}
+        />
+        
+        {/* Additional Soft Blur Layer - Desktop */}
+        <div 
+          className="absolute inset-0 hidden sm:block"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 60% 40%, rgba(15, 23, 42, 0.4) 0%, transparent 70%),
+              radial-gradient(circle at 40% 60%, rgba(71, 85, 105, 0.3) 0%, transparent 70%),
+              radial-gradient(circle at 70% 30%, rgba(15, 23, 42, 0.3) 0%, transparent 80%),
+              radial-gradient(circle at 10% 90%, rgba(71, 85, 105, 0.25) 0%, transparent 80%)
+            `,
+            backgroundSize: '787px 787px, 875px 875px, 962px 962px, 1400px 1400px',
+            backgroundPosition: '75% 25%, 10% 90%, 50% 50%, 90% 10%',
+            animation: 'plasma-flow 12s ease-in-out infinite reverse',
+            filter: 'blur(24px)',
+            WebkitMask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            WebkitMaskSize: '32px 32px',
+            WebkitMaskPosition: '0 0',
+            mask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            maskSize: '32px 32px',
+            maskPosition: '0 0'
+          }}
+        />
+        
+        {/* Extra Softness Layer - Mobile */}
+        <div 
+          className="absolute inset-0 sm:hidden"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 25% 25%, rgba(15, 23, 42, 0.3) 0%, transparent 80%),
+              radial-gradient(circle at 75% 75%, rgba(71, 85, 105, 0.25) 0%, transparent 80%)
+            `,
+            backgroundSize: '1000px 1000px, 1200px 1200px',
+            backgroundPosition: '0% 0%, 100% 100%',
+            animation: 'plasma-flow 12s ease-in-out infinite',
+            filter: 'blur(32px)',
+            WebkitMask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            WebkitMaskSize: '16px 16px',
+            WebkitMaskPosition: '0 0',
+            mask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            maskSize: '16px 16px',
+            maskPosition: '0 0'
+          }}
+        />
+        
+        {/* Extra Softness Layer - Desktop */}
+        <div 
+          className="absolute inset-0 hidden sm:block"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 25% 25%, rgba(15, 23, 42, 0.3) 0%, transparent 80%),
+              radial-gradient(circle at 75% 75%, rgba(71, 85, 105, 0.25) 0%, transparent 80%)
+            `,
+            backgroundSize: '1000px 1000px, 1200px 1200px',
+            backgroundPosition: '0% 0%, 100% 100%',
+            animation: 'plasma-flow 12s ease-in-out infinite',
+            filter: 'blur(32px)',
+            WebkitMask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            WebkitMaskSize: '32px 32px',
+            WebkitMaskPosition: '0 0',
+            mask: `
+              linear-gradient(to right, black 1px, transparent 1px),
+              linear-gradient(to bottom, black 1px, transparent 1px)
+            `,
+            maskSize: '32px 32px',
+            maskPosition: '0 0'
+          }}
+        />
+        
+        {/* Base Grid Structure - Subtle for reference */}
+        <div 
+          className="absolute inset-0 sm:hidden"
+          style={{
+            backgroundImage: `
+          linear-gradient(to right, rgba(229, 231, 235, 0.008) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(229, 231, 235, 0.008) 1px, transparent 1px)
+            `,
+            backgroundSize: '16px 16px',
+            backgroundPosition: '0 0'
+          }}
+        />
+        
+        {/* Base Grid Structure - Desktop */}
+        <div 
+          className="absolute inset-0 hidden sm:block"
+          style={{
+            backgroundImage: `
+          linear-gradient(to right, rgba(229, 231, 235, 0.015) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(229, 231, 235, 0.015) 1px, transparent 1px)
+            `,
+            backgroundSize: '32px 32px',
+            backgroundPosition: '0 0'
+          }}
+        />
+        
+        {/* Dark mode grid lines - Mobile */}
+        <div 
+          className="absolute inset-0 dark:hidden sm:hidden"
+          style={{
+            backgroundImage: `
+          linear-gradient(to right, rgba(209, 213, 219, 0.015) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(209, 213, 219, 0.015) 1px, transparent 1px)
+            `,
+            backgroundSize: '16px 16px',
+            backgroundPosition: '0 0'
+          }}
+        />
+        
+        {/* Dark mode grid lines - Desktop */}
+        <div 
+          className="absolute inset-0 dark:hidden hidden sm:block"
+          style={{
+            backgroundImage: `
+          linear-gradient(to right, rgba(209, 213, 219, 0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(209, 213, 219, 0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: '32px 32px',
+            backgroundPosition: '0 0'
+          }}
+        />
+      </div>
+      
       <Container size="2xl" className="relative z-10">
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center space-y-6">
@@ -321,10 +546,10 @@ function PrinciplesSection() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {principles.map((principle, index) => (
-              <Card 
-                key={index} 
-                className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-card/50 backdrop-blur-sm"
-              >
+                <Card 
+                  key={index} 
+                  className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-card/80 backdrop-blur-sm dark:bg-black/60 dark:backdrop-blur-md dark:border dark:border-white/10"
+                >
                 <CardContent className="p-8 relative z-10">
                   <div className="space-y-6">
                     {/* Icon with enhanced styling */}
@@ -334,10 +559,10 @@ function PrinciplesSection() {
                     
                     {/* Content */}
                     <div className="space-y-3">
-                      <H3 className="text-foreground group-hover:text-primary transition-colors duration-300">
+                      <H3 className="text-foreground group-hover:text-primary transition-colors duration-300 dark:text-white dark:group-hover:text-primary">
                         {principle.title}
                       </H3>
-                      <P className="text-muted-foreground leading-relaxed text-base">
+                      <P className="text-muted-foreground leading-relaxed text-base dark:text-gray-300">
                         {principle.description}
                       </P>
                     </div>
@@ -349,6 +574,27 @@ function PrinciplesSection() {
           </div>
         </div>
       </Container>
+      
+      {/* CSS Animation for Plasma Effect */}
+      <style jsx>{`
+        @keyframes plasma-flow {
+          0% {
+            background-position: 0% 0%, 100% 100%, 50% 50%, 25% 75%;
+          }
+          25% {
+            background-position: 100% 0%, 0% 100%, 75% 25%, 50% 50%;
+          }
+          50% {
+            background-position: 100% 100%, 0% 0%, 25% 75%, 75% 25%;
+          }
+          75% {
+            background-position: 0% 100%, 100% 0%, 50% 50%, 25% 25%;
+          }
+          100% {
+            background-position: 0% 0%, 100% 100%, 50% 50%, 25% 75%;
+          }
+        }
+      `}</style>
     </Section>
   )
 }

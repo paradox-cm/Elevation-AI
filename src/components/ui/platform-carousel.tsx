@@ -1,0 +1,347 @@
+"use client"
+
+import React from "react"
+import { cn } from "@/lib/utils"
+
+export interface PlatformCarouselItem {
+  id: string | number
+  title: string
+  description: string
+  icon?: React.ComponentType<{ className?: string }>
+  content?: React.ReactNode
+}
+
+export interface PlatformCarouselProps {
+  items: PlatformCarouselItem[]
+  autoPlay?: boolean
+  autoPlayInterval?: number
+  showProgressIndicators?: boolean
+  showGradients?: boolean
+  cardWidth?: number
+  cardGap?: number
+  className?: string
+  onSlideChange?: (index: number) => void
+  indicatorStyle?: 'progress' | 'thin-lines'
+  highlightActiveCard?: boolean
+  cardStyle?: 'filled' | 'outline' | 'blue'
+  minHeight?: string
+  responsiveMinHeight?: {
+    sm?: string
+    md?: string
+    lg?: string
+  }
+  hugContent?: boolean
+  stopWhenAllVisible?: boolean
+  responsive?: {
+    sm?: { cardWidth: number; cardGap: number }
+    md?: { cardWidth: number; cardGap: number }
+    lg?: { cardWidth: number; cardGap: number }
+  }
+}
+
+export function PlatformCarousel({
+  items,
+  autoPlay = true,
+  autoPlayInterval = 4000,
+  showProgressIndicators = true,
+  showGradients = true,
+  cardWidth = 260,
+  cardGap = 16,
+  className,
+  onSlideChange,
+  indicatorStyle = 'progress',
+  highlightActiveCard = true,
+  cardStyle = 'filled',
+  minHeight = '320px',
+  responsiveMinHeight,
+  hugContent = false,
+  stopWhenAllVisible = false,
+  responsive
+}: PlatformCarouselProps) {
+  const [currentSlide, setCurrentSlide] = React.useState(0)
+  const [progress, setProgress] = React.useState(0)
+  const [showGradient, setShowGradient] = React.useState(true)
+  const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
+  const [maxCardHeight, setMaxCardHeight] = React.useState<number>(0)
+  const [allCardsVisible, setAllCardsVisible] = React.useState(false)
+
+  // Responsive configuration
+  const getResponsiveConfig = () => {
+    if (!responsive) return { cardWidth, cardGap }
+    
+    switch (screenSize) {
+      case 'sm': return responsive.sm || { cardWidth, cardGap }
+      case 'md': return responsive.md || { cardWidth, cardGap }
+      case 'lg': return responsive.lg || { cardWidth, cardGap }
+      default: return { cardWidth, cardGap }
+    }
+  }
+
+  const { cardWidth: responsiveCardWidth, cardGap: responsiveCardGap } = getResponsiveConfig()
+
+  // Get responsive minHeight
+  const getResponsiveMinHeight = () => {
+    if (!responsiveMinHeight) return minHeight
+    
+    switch (screenSize) {
+      case 'sm': return responsiveMinHeight.sm || minHeight
+      case 'md': return responsiveMinHeight.md || minHeight
+      case 'lg': return responsiveMinHeight.lg || minHeight
+      default: return minHeight
+    }
+  }
+
+  const responsiveMinHeightValue = getResponsiveMinHeight()
+
+  // Responsive padding calculation
+  const getResponsivePadding = () => {
+    const basePadding = 16
+    switch (screenSize) {
+      case 'sm': return { paddingLeft: basePadding, paddingRight: basePadding }
+      case 'md': return { paddingLeft: basePadding * 1.5, paddingRight: basePadding * 1.5 }
+      case 'lg': return { paddingLeft: basePadding * 2, paddingRight: basePadding * 2 }
+      default: return { paddingLeft: basePadding * 2, paddingRight: basePadding * 2 }
+    }
+  }
+
+  const responsivePadding = getResponsivePadding()
+
+  // Screen size detection
+  React.useEffect(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth
+      if (width < 640) setScreenSize('sm')
+      else if (width < 768) setScreenSize('md')
+      else if (width < 1024) setScreenSize('lg')
+      else setScreenSize('xl')
+    }
+
+    updateScreenSize()
+    window.addEventListener('resize', updateScreenSize)
+    return () => window.removeEventListener('resize', updateScreenSize)
+  }, [])
+
+  // Check if all cards are visible
+  React.useEffect(() => {
+    const checkAllCardsVisible = () => {
+      if (!stopWhenAllVisible) return
+      
+      const container = document.querySelector('.platform-carousel-container')
+      if (!container) return
+      
+      // Get the actual available width (accounting for parent margins)
+      const containerRect = container.getBoundingClientRect()
+      const parentContainer = container.closest('.container, [class*="container"]')
+      const parentRect = parentContainer?.getBoundingClientRect()
+      
+      // Use the smaller of container width or parent width minus margins
+      const availableWidth = parentRect ? 
+        Math.min(containerRect.width, parentRect.width - 32) : // Account for container padding
+        containerRect.width
+      
+      const totalCardsWidth = items.length * (responsiveCardWidth + responsiveCardGap) - responsiveCardGap
+      const padding = responsivePadding.paddingLeft + responsivePadding.paddingRight
+      
+      const allVisible = totalCardsWidth + padding <= availableWidth
+      console.log('Checking visibility:', { 
+        containerWidth: containerRect.width, 
+        availableWidth, 
+        totalCardsWidth, 
+        padding, 
+        allVisible,
+        itemsLength: items.length,
+        cardWidth: responsiveCardWidth,
+        cardGap: responsiveCardGap
+      })
+      setAllCardsVisible(allVisible)
+    }
+
+    // Use setTimeout to ensure DOM is ready
+    const timeoutId = setTimeout(checkAllCardsVisible, 100)
+    window.addEventListener('resize', checkAllCardsVisible)
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('resize', checkAllCardsVisible)
+    }
+  }, [stopWhenAllVisible, items.length, responsiveCardWidth, responsiveCardGap, responsivePadding, screenSize])
+
+  // Auto-play functionality
+  React.useEffect(() => {
+    if (!autoPlay) return
+    if (stopWhenAllVisible && allCardsVisible) {
+      console.log('Auto-play stopped: all cards visible')
+      return
+    }
+
+    console.log('Auto-play active:', { stopWhenAllVisible, allCardsVisible, currentSlide })
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => {
+        // If all cards are visible and we're at the last card, stay at the last card
+        if (stopWhenAllVisible && allCardsVisible && prev === items.length - 1) {
+          console.log('Staying at last slide - all cards visible')
+          return prev
+        }
+        const nextSlide = (prev + 1) % items.length
+        console.log('Moving to next slide:', nextSlide)
+        return nextSlide
+      })
+      setProgress(0)
+    }, autoPlayInterval)
+
+    return () => clearInterval(interval)
+  }, [autoPlay, autoPlayInterval, items.length, stopWhenAllVisible, allCardsVisible, currentSlide])
+
+  // Progress tracking
+  React.useEffect(() => {
+    if (!autoPlay) return
+
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        const increment = 100 / (autoPlayInterval / 100)
+        return prev + increment >= 100 ? 0 : prev + increment
+      })
+    }, 100)
+
+    return () => clearInterval(progressInterval)
+  }, [autoPlay, autoPlayInterval])
+
+  // Card height calculation
+  React.useEffect(() => {
+    const calculateMaxHeight = () => {
+      const cards = document.querySelectorAll('.platform-carousel-card')
+      let maxHeight = 0
+      cards.forEach((card) => {
+        const height = card.getBoundingClientRect().height
+        if (height > maxHeight) maxHeight = height
+      })
+      setMaxCardHeight(maxHeight)
+    }
+
+    calculateMaxHeight()
+    window.addEventListener('resize', calculateMaxHeight)
+    return () => window.removeEventListener('resize', calculateMaxHeight)
+  }, [items])
+
+  const handleSlideChange = (index: number) => {
+    setCurrentSlide(index)
+    setProgress(0)
+    onSlideChange?.(index)
+  }
+
+  const nextSlide = () => {
+    handleSlideChange((currentSlide + 1) % items.length)
+  }
+
+  const prevSlide = () => {
+    handleSlideChange((currentSlide - 1 + items.length) % items.length)
+  }
+
+  const handleMouseEnter = () => {
+    if (autoPlay) setShowGradient(false)
+  }
+
+  const handleMouseLeave = () => {
+    if (autoPlay) setShowGradient(true)
+  }
+
+  if (items.length === 0) return null
+
+  return (
+    <div 
+      className={cn("relative w-full", className)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Gradient Overlays */}
+      {showGradients && (
+        <>
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        </>
+      )}
+
+      {/* Carousel Container */}
+      <div className="overflow-hidden platform-carousel-container">
+        <div 
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ 
+            transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap)}px)`,
+            gap: `${responsiveCardGap}px`
+          }}
+        >
+          {items.map((item, index) => (
+            <div
+              key={item.id}
+              className="platform-carousel-card flex-shrink-0"
+              style={{ 
+                minWidth: `${responsiveCardWidth}px`, 
+                maxWidth: `${responsiveCardWidth}px`,
+                height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
+                minHeight: responsiveMinHeightValue,
+                marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
+                marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+              }}
+            >
+              <div className={cn(
+                "w-full h-full rounded-lg border transition-all duration-300",
+                cardStyle === 'filled' 
+                  ? 'bg-card border-border' 
+                  : cardStyle === 'outline'
+                    ? 'bg-transparent border-border'
+                    : cardStyle === 'blue'
+                      ? highlightActiveCard && index === currentSlide
+                        ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                        : 'border-border bg-card hover:bg-card/80'
+                      : highlightActiveCard && index === currentSlide 
+                        ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                        : 'border-border bg-card'
+              )}>
+                <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
+                  <div className={hugContent ? "p-6" : "p-6 pb-4"}>
+                    {item.icon && (
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                        <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
+                      </div>
+                    )}
+                    <div className="flex flex-col flex-1">
+                      <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
+                      <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+                    </div>
+                  </div>
+                  {item.content && (
+                    <div className="flex-shrink-0 mt-auto">
+                      {item.content}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Progress Indicators */}
+      {showProgressIndicators && (
+        <div className="flex justify-center mt-6 space-x-2">
+          {items.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleSlideChange(index)}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all duration-300",
+                indicatorStyle === 'progress'
+                  ? index === currentSlide 
+                    ? "bg-primary w-8" 
+                    : "bg-muted-foreground/30"
+                  : index === currentSlide
+                    ? "bg-primary h-1 w-6"
+                    : "bg-muted-foreground/30 h-1 w-2"
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

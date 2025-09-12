@@ -1,0 +1,4 @@
+body {
+  pading: 0;
+  margin: 0;
+}

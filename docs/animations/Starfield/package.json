@@ -1,0 +1,53 @@
+{
+  "name": "starfield-hero-animation",
+  "version": "1.0.0",
+  "description": "A complete package for recreating the animated hero section from the Señor Papas play page with 3D starfield animation and rainbow text effects",
+  "main": "starfield-animation.js",
+  "types": "useStarfield.ts",
+  "files": [
+    "StarfieldHero.tsx",
+    "useStarfield.ts",
+    "starfield-hero.html",
+    "starfield-animations.css",
+    "starfield-animation.js",
+    "example-usage.tsx",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "echo 'No build step required - this is a collection of ready-to-use files'",
+    "demo": "open starfield-hero.html"
+  },
+  "keywords": [
+    "animation",
+    "starfield",
+    "hero",
+    "rainbow",
+    "text",
+    "canvas",
+    "react",
+    "typescript",
+    "javascript",
+    "css",
+    "3d",
+    "perspective"
+  ],
+  "author": "Señor Papas Development Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^4.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/starfield-hero-animation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/starfield-hero-animation/issues"
+  },
+  "homepage": "https://github.com/your-username/starfield-hero-animation#readme"
+}

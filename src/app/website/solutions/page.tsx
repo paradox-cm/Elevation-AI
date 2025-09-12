@@ -11,7 +11,7 @@ import { MainHeader } from "@/components/ui/main-header"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, H2, H3, P } from "@/components/ui/typography"
+import { H1, H2, H3, P, BodyLarge } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Building2, TrendingUp, ChevronRight, ChevronDown } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -247,10 +247,24 @@ function SolutionsHeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/website/sign-up">
-                  Get Started
-                </Link>
+              <Button 
+                size="lg" 
+                className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
+                onClick={() => {
+                  const element = document.getElementById('industry-solutions')
+                  if (element) {
+                    const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+                    const elementPosition = element.offsetTop
+                    const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer
+                    
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    })
+                  }
+                }}
+              >
+                View Solutions
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/demo">
@@ -618,6 +632,48 @@ function IndustrySolutionsSection() {
     }
   }
 
+  const handleNavigateUp = () => {
+    const currentIndex = industrySolutions.findIndex(sol => sol.id === openCardId)
+    if (currentIndex > 0) {
+      const prevCardId = industrySolutions[currentIndex - 1].id
+      setOpenCardId(prevCardId)
+      setTimeout(() => {
+        const cardElement = cardRefs.current[prevCardId]
+        if (cardElement) {
+          const headerHeight = 64
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight - 32
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
+  }
+
+  const handleNavigateDown = () => {
+    const currentIndex = industrySolutions.findIndex(sol => sol.id === openCardId)
+    if (currentIndex < industrySolutions.length - 1) {
+      const nextCardId = industrySolutions[currentIndex + 1].id
+      setOpenCardId(nextCardId)
+      setTimeout(() => {
+        const cardElement = cardRefs.current[nextCardId]
+        if (cardElement) {
+          const headerHeight = 64
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight - 32
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
+  }
+
   // Handle URL parameters on mount
   useEffect(() => {
     const openParam = searchParams.get('open')
@@ -661,6 +717,25 @@ function IndustrySolutionsSection() {
     }
   }, [searchParams])
 
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (openCardId && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
+        event.preventDefault()
+        if (event.key === 'ArrowUp') {
+          handleNavigateUp()
+        } else if (event.key === 'ArrowDown') {
+          handleNavigateDown()
+        }
+      }
+    }
+
+    if (openCardId) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [openCardId])
+
   return (
     <Section id="industry-solutions" paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
@@ -677,7 +752,7 @@ function IndustrySolutionsSection() {
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {industrySolutions.map((solution) => (
+            {industrySolutions.map((solution, index) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -687,6 +762,10 @@ function IndustrySolutionsSection() {
                   type="industry"
                   isOpen={openCardId === solution.id}
                   onToggle={() => handleToggle(solution.id)}
+                  currentIndex={index}
+                  totalCards={industrySolutions.length}
+                  onNavigateUp={handleNavigateUp}
+                  onNavigateDown={handleNavigateDown}
                 />
               </div>
             ))}
@@ -715,6 +794,48 @@ function StageSolutionsSection() {
           const headerHeight = 64 // Height of the fixed header (4rem = 64px)
           const elementPosition = cardElement.offsetTop
           const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer for better positioning
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
+  }
+
+  const handleNavigateUp = () => {
+    const currentIndex = stageSolutions.findIndex(sol => sol.id === openCardId)
+    if (currentIndex > 0) {
+      const prevCardId = stageSolutions[currentIndex - 1].id
+      setOpenCardId(prevCardId)
+      setTimeout(() => {
+        const cardElement = cardRefs.current[prevCardId]
+        if (cardElement) {
+          const headerHeight = 64
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight - 32
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
+  }
+
+  const handleNavigateDown = () => {
+    const currentIndex = stageSolutions.findIndex(sol => sol.id === openCardId)
+    if (currentIndex < stageSolutions.length - 1) {
+      const nextCardId = stageSolutions[currentIndex + 1].id
+      setOpenCardId(nextCardId)
+      setTimeout(() => {
+        const cardElement = cardRefs.current[nextCardId]
+        if (cardElement) {
+          const headerHeight = 64
+          const elementPosition = cardElement.offsetTop
+          const offsetPosition = elementPosition - headerHeight - 32
           
           window.scrollTo({
             top: offsetPosition,
@@ -768,6 +889,25 @@ function StageSolutionsSection() {
     }
   }, [searchParams])
 
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (openCardId && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
+        event.preventDefault()
+        if (event.key === 'ArrowUp') {
+          handleNavigateUp()
+        } else if (event.key === 'ArrowDown') {
+          handleNavigateDown()
+        }
+      }
+    }
+
+    if (openCardId) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [openCardId])
+
   return (
     <Section id="stage-solutions" paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
@@ -784,7 +924,7 @@ function StageSolutionsSection() {
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {stageSolutions.map((solution) => (
+            {stageSolutions.map((solution, index) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -794,6 +934,10 @@ function StageSolutionsSection() {
                   type="stage"
                   isOpen={openCardId === solution.id}
                   onToggle={() => handleToggle(solution.id)}
+                  currentIndex={index}
+                  totalCards={stageSolutions.length}
+                  onNavigateUp={handleNavigateUp}
+                  onNavigateDown={handleNavigateDown}
                 />
               </div>
             ))}
@@ -805,11 +949,24 @@ function StageSolutionsSection() {
 }
 
 // Expandable Solution Card Component
-function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: { 
+function ExpandableSolutionCard({ 
+  solution, 
+  type, 
+  isOpen, 
+  onToggle, 
+  currentIndex, 
+  totalCards, 
+  onNavigateUp, 
+  onNavigateDown 
+}: { 
   solution: Solution, 
   type: 'industry' | 'stage',
   isOpen: boolean,
-  onToggle: () => void
+  onToggle: () => void,
+  currentIndex: number,
+  totalCards: number,
+  onNavigateUp: () => void,
+  onNavigateDown: () => void
 }) {
   const iconName = type === 'industry' ? getIndustryIcon(solution.id) : getStageIcon(solution.id)
 
@@ -829,7 +986,9 @@ function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: {
           </div>
                <div className="space-y-1 flex-1">
                    <CardTitle className="text-left text-base lg:text-xl">{solution.title}</CardTitle>
-                   <CardDescription className="text-left lg:text-base">{solution.subtitle}</CardDescription>
+                   <CardDescription className="text-left">
+                     <BodyLarge>{solution.subtitle}</BodyLarge>
+                   </CardDescription>
                  </div>
               </div>
               {isOpen ? (
@@ -847,7 +1006,7 @@ function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: {
             
             <div className="space-y-4">
               <H3 className="text-lg font-semibold">{solution.challenge.title}</H3>
-              <P className="text-muted-foreground">{solution.challenge.content}</P>
+              <H3 className="text-muted-foreground">{solution.challenge.content}</H3>
             </div>
 
             <div className="space-y-4">
@@ -891,17 +1050,43 @@ function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: {
             </div>
 
             <div className="pt-4 border-t">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button size="sm" asChild>
-                  <Link href="/website/demo">
-                    Schedule Consultation
-                  </Link>
-                </Button>
-                <Button variant="outline" size="sm" asChild>
-                  <Link href="/website/contact">
-                    Contact Sales
-                  </Link>
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button size="sm" asChild>
+                    <Link href="/website/demo">
+                      Schedule Consultation
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href="/website/contact">
+                      Contact Sales
+                    </Link>
+                  </Button>
+                </div>
+                
+                {/* Navigation Buttons */}
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onNavigateUp}
+                    disabled={currentIndex === 0}
+                    className="p-2"
+                    title="Previous card (↑)"
+                  >
+                    <Icon name="arrow-up-s-line" className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onNavigateDown}
+                    disabled={currentIndex === totalCards - 1}
+                    className="p-2"
+                    title="Next card (↓)"
+                  >
+                    <Icon name="arrow-down-s-line" className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
         </div>
       </CardContent>

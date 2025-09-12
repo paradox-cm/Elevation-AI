@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Growth Animation</title>
+    <style>
+        body {
+            margin: 0;
+            background: #101032;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+            width: 600px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="marketCanvas" width="600" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById("marketCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+
+        let dots = [];
+        let gridSize = 20;
+        let maxGrowth = 15;
+        let cycleTime = 20000 / 2; // 10 seconds for growth, 10 seconds for shrink
+
+        class Dot {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.baseSize = Math.random() * 2 + 2;
+                this.size = this.baseSize;
+                this.growthSpeed = (maxGrowth - this.baseSize) / (cycleTime / 60);
+                this.shrinkSpeed = this.growthSpeed;
+                this.growing = Math.random() > 0.5; // Random initial state
+                this.growthDelay = Math.random() * 5000; // Random delay before growing
+                this.timeElapsed = 0;
+            }
+            update(deltaTime) {
+                this.timeElapsed += deltaTime;
+                if (this.timeElapsed < this.growthDelay) return;
+                
+                if (this.growing) {
+                    this.size += this.growthSpeed;
+                    if (this.size >= maxGrowth) {
+                        this.growing = false;
+                    }
+                } else {
+                    this.size -= this.shrinkSpeed;
+                    if (this.size <= this.baseSize) {
+                        this.growing = true;
+                        this.growthDelay = Math.random() * 5000;
+                        this.timeElapsed = 0;
+                    }
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = "#D5D6D2";
+                ctx.fill();
+            }
+        }
+
+        function createGrid() {
+            dots = [];
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                for (let y = canvas.height; y > 0; y -= gridSize) {
+                    dots.push(new Dot(x, y));
+                }
+            }
+        }
+
+        let lastTimestamp = 0;
+        function animate(timestamp) {
+            let deltaTime = timestamp - lastTimestamp;
+            lastTimestamp = timestamp;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            dots.forEach(dot => {
+                dot.update(deltaTime);
+                dot.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        createGrid();
+        requestAnimationFrame(animate);
+    </script>
+</body>
+</html>

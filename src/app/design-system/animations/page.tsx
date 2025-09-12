@@ -122,6 +122,46 @@ export default function AnimationsPage() {
       icon: "text",
       color: "text-green-600",
       bgColor: "bg-green-600/10"
+    },
+    {
+      name: "Shader Card",
+      description: "Dynamic WebGL shader animation with Perlin noise creating fluid, organic patterns. Used in platform cards with customizable color palettes for different categories.",
+      href: "/design-system/animations/shader-card",
+      icon: "palette-line",
+      color: "text-violet-600",
+      bgColor: "bg-violet-600/10"
+    },
+    {
+      name: "Shader Card Light",
+      description: "Light mode optimized version of the shader animation designed for white backgrounds. Features softer colors, subtle transparency, and enhanced visibility in light themes.",
+      href: "/design-system/animations/shader-card-light",
+      icon: "sun-line",
+      color: "text-amber-600",
+      bgColor: "bg-amber-600/10"
+    },
+    {
+      name: "Growth Animation",
+      description: "Dynamic dot growth animation that adapts to light and dark themes. Features expanding and contracting dots in a grid pattern, perfect for illustrating business growth and scaling concepts.",
+      href: "/design-system/animations/growth-animation",
+      icon: "bar-chart-line",
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-600/10"
+    },
+    {
+      name: "Starfield Animation",
+      description: "Cinematic 3D starfield animation with perspective projection creating a 'flying through space' effect. Features 300 stars with fade trails, variable opacity, and theme adaptation for immersive backgrounds.",
+      href: "/design-system/animations/starfield-animation",
+      icon: "star-line",
+      color: "text-purple-600",
+      bgColor: "bg-purple-600/10"
+    },
+    {
+      name: "Business Data Animation",
+      description: "Dynamic vertical line animation simulating data flow and business metrics. Features 192 animated lines in a grid pattern with oscillating movement, perfect for illustrating data processing and business intelligence concepts.",
+      href: "/design-system/animations/business-data-animation",
+      icon: "bar-chart-2-line",
+      color: "text-blue-600",
+      bgColor: "bg-blue-600/10"
     }
   ]
 

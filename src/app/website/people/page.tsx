@@ -333,10 +333,24 @@ function CreativeHeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/website/sign-up">
-                  Get Started
-                </Link>
+              <Button 
+                size="lg" 
+                className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
+                onClick={() => {
+                  const element = document.getElementById('concierge-team')
+                  if (element) {
+                    const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+                    const elementPosition = element.offsetTop
+                    const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer
+                    
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    })
+                  }
+                }}
+              >
+                Learn More
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/demo">

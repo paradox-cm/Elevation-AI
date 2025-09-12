@@ -1,0 +1,163 @@
+/* Starfield Hero Animation Styles */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Young+Serif&family=Patrick+Hand&display=swap');
+
+/* Rainbow text animation keyframes */
+@keyframes rainbow {
+  0% { color: #ff0000; }
+  14% { color: #ff7f00; }
+  28% { color: #ffff00; }
+  42% { color: #00ff00; }
+  57% { color: #0000ff; }
+  71% { color: #4b0082; }
+  85% { color: #9400d3; }
+  100% { color: #ff0000; }
+}
+
+/* Bounce animation keyframes */
+@keyframes bounce {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+/* Shadow glow animation keyframes */
+@keyframes shadow-glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(255, 204, 0, 0.5); 
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8); 
+  }
+}
+
+/* Rainbow text class - combines rainbow and bounce animations */
+.rainbow-text {
+  font-family: 'Bungee', cursive;
+  animation: rainbow 5s linear infinite, bounce 2s ease-in-out infinite;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: 1px;
+}
+
+/* Shadow glow class */
+.shadow-glow {
+  animation: shadow-glow 2s ease-in-out infinite;
+}
+
+/* Hero container styles */
+.starfield-hero-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Canvas styles */
+.starfield-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Hero content styles */
+.starfield-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  color: #fff;
+}
+
+/* Title styles */
+.starfield-hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+}
+
+/* Subtitle styles */
+.starfield-hero-subtitle {
+  font-size: 1.25rem;
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .starfield-hero-title {
+    font-size: 2rem;
+  }
+  
+  .starfield-hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .starfield-hero-title {
+    font-size: 1.5rem;
+  }
+  
+  .starfield-hero-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* Additional utility classes */
+.starfield-text-center {
+  text-align: center;
+}
+
+.starfield-text-left {
+  text-align: left;
+}
+
+.starfield-text-right {
+  text-align: right;
+}
+
+/* Custom color variations */
+.rainbow-text-red {
+  animation: rainbow 5s linear infinite, bounce 2s ease-in-out infinite;
+  color: #ff0000;
+}
+
+.rainbow-text-blue {
+  animation: rainbow 5s linear infinite, bounce 2s ease-in-out infinite;
+  color: #0000ff;
+}
+
+.rainbow-text-green {
+  animation: rainbow 5s linear infinite, bounce 2s ease-in-out infinite;
+  color: #00ff00;
+}
+
+/* Animation speed variations */
+.rainbow-text-slow {
+  animation: rainbow 10s linear infinite, bounce 4s ease-in-out infinite;
+}
+
+.rainbow-text-fast {
+  animation: rainbow 2.5s linear infinite, bounce 1s ease-in-out infinite;
+}
+
+/* Bounce only (no rainbow) */
+.bounce-text {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+/* Rainbow only (no bounce) */
+.rainbow-only-text {
+  animation: rainbow 5s linear infinite;
+}

@@ -68,7 +68,7 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
           line.direction *= -1
         }
 
-        ctx.fillRect(line.x + line.offset, line.y, 1, 6)
+        ctx.fillRect(line.x + line.offset, line.y, 0.5, 3)
       })
 
       animationRef.current = requestAnimationFrame(animateLines)

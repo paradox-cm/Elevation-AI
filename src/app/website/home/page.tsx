@@ -28,6 +28,8 @@ import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
+import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
+import { StarFieldAnimation } from "@/components/animations/star-field-animation"
 import { 
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
@@ -662,15 +664,22 @@ function ProblemSection() {
   }, [problems.length])
 
     return (
-    <Section paddingY="lg" className="bg-muted/30">
-      <Container size="2xl" >
+    <Section paddingY="lg" className="relative">
+      {/* Background Animation */}
+      <div className="absolute inset-0 z-0">
+        <div className="sticky top-0 h-screen">
+          <BusinessDataAnimation className="w-full h-full" />
+        </div>
+      </div>
+      
+      <Container size="2xl" className="relative z-10">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           {!isDesktop && (
             <div key="mobile-layout" className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
               {/* Section Headline */}
               <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-                <H1>Unify your systems</H1>
+                <H1>Orchestrate Your Universe</H1>
               <P className="text-muted-foreground max-w-4xl text-base sm:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </P>
@@ -751,7 +760,7 @@ function ProblemSection() {
                 <div className="w-full flex flex-col items-center justify-center min-h-0">
                   {/* Section Headline */}
                   <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
-                    <H1>Unify your systems</H1>
+                    <H1>Orchestrate Your Universe</H1>
                     <P className="text-muted-foreground max-w-4xl mx-auto">
                       Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
                     </P>
@@ -761,7 +770,7 @@ function ProblemSection() {
                     {problems.map((problem, index) => (
                     <div
                       key={index}
-                      className={`transition-opacity duration-150 ease-out absolute inset-0 will-change-opacity ${
+                      className={`absolute inset-0 ${
                         index === activeStep
                           ? 'opacity-100'
                           : 'opacity-0 pointer-events-none'
@@ -959,8 +968,15 @@ function PlatformSection() {
   }
 
   return (
-    <Section paddingY="lg">
-      <Container size="2xl" >
+    <Section paddingY="lg" className="relative">
+      {/* Background Animation */}
+      <div className="absolute inset-0 z-0">
+        <div className="sticky top-0 h-screen">
+          <StarFieldAnimation className="w-full h-full" />
+        </div>
+      </div>
+      
+      <Container size="2xl" className="relative z-10">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
@@ -1052,7 +1068,7 @@ function PlatformSection() {
                                   <div className="w-full flex flex-col items-center justify-center">
                   {/* Section Headline */}
                   <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
-                    <H1>The agentic platform</H1>
+                    <H1>The Agentic Platform</H1>
                     <P className="text-muted-foreground max-w-4xl mx-auto">
                       So your business moves faster, thinks smarter, and stays ahead.
                     </P>
@@ -1062,7 +1078,7 @@ function PlatformSection() {
                     {features.map((feature, index) => (
                       <div
                         key={index}
-                        className={`transition-opacity duration-75 absolute inset-0 pb-6 ${
+                        className={`absolute inset-0 pb-6 ${
                           activeTab === index
                             ? 'opacity-100'
                             : 'opacity-0 pointer-events-none'

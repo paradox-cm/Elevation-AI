@@ -1,0 +1,38 @@
+Pricing Page
+
+Headline: Pricing That Scales With Your Ambition
+Sub-headline: Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed. Use our dynamic calculator below to build your custom plan.
+[How It Works Section]
+(Three simple icon/column layout)
+1. Tell Us About Your Universe Provide a few high-level details about your organization so we can understand your core needs.
+2. Select Your Core Capabilities Choose the specific platform features and level of support that align with your strategic goals.
+3. Receive Your Custom Plan Our system will generate a tailored plan and pricing estimate, ready for you to review with our team.
+[Dynamic Pricing Calculator Section]
+Headline: Build Your Custom Elevation AI Plan
+Step 1: Tell Us About Your Universe
+What is your primary industry?
+[Dropdown Menu: Private Market Organization, Enterprise, Government, Bank, etc.]
+How many team members need access?
+[Slider: 1-10, 11-50, 51-250, 250+]
+How many distinct entities do you manage? (e.g., Portfolio Companies, Funds, SPVs)
+[Slider: 1-5, 6-25, 26-100, 100+]
+Step 2: Select Your Core Capabilities
+(Based on your selections, our system will recommend a starting point. Please select any additional capabilities you require.)
+The Core Platform (Included in all plans) A summary of foundational features that create your secure knowledge and work orchestration layer.
+Team & Data Management
+Secure Knowledge Base
+Collaborative Workspaces
+Core Agent Library & Co-Pilot
+Secure Middleware & Data De-identification
+Add-On Capabilities (Select all that apply)
+[Checkbox] Advanced Investment Management: For organizations that source and manage equity deals. Includes features for deal flow management, SPV & LP management, and portfolio monitoring.
+[Checkbox] Advanced Private Credit: For organizations that originate and service debt. Includes features for application management, automated diligence support, and vendor management.
+[Checkbox] Advanced Consulting Firm Management: For firms that manage external clients. Includes features for client project management, client workspaces, and team management.
+Step 3: Choose Your Level of Support
+[Radio Button] Platform & Community Support: For self-sufficient organizations ready to build their own agentic solutions, backed by our comprehensive documentation and community resources.
+[Radio Button] Concierge Support: For organizations who want a full-service partnership. Includes a dedicated allotment of AI Engineer hours each month, strategic guidance, and custom agent development.
+[Results Section]
+Headline: Your Custom Plan is Ready
+Content: Thank you. Based on your selections, we have generated a custom plan tailored to the unique needs of your organization. The next step is a brief, 15-minute call with our team to review your plan, discuss the specific pricing, and answer any questions you may have.
+Primary CTA: Schedule a Call to Review Your Plan
+
