@@ -1000,13 +1000,16 @@ function PlatformSection() {
         <div 
           className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}
           style={{
-            position: 'relative',
+            position: 'absolute',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
             overflow: 'hidden',
             willChange: 'auto',
             transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden'
+            backfaceVisibility: 'hidden',
+            pointerEvents: 'none'
           }}
         >
           {/* Use screensaver version for mobile, platform version for desktop */}
