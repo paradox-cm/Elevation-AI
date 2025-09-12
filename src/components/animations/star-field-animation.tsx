@@ -11,6 +11,7 @@ interface StarFieldAnimationProps {
 export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [mounted, setMounted] = useState(false)
   const { theme } = useThemeProvider()
   const isMobile = useMediaQuery("(max-width: 1023px)")
@@ -129,15 +130,22 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       animationRef.current = requestAnimationFrame(animate)
     }
 
-    // Resize handler
+    // Resize handler - only respond to actual window resize, not scroll events
     const handleResize = () => {
-      if (canvasRef.current) {
-        initializeCanvasAndStars()
-        if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0) {
-          animationRunning = true
-          animate()
-        }
+      // Debounce resize events to prevent scroll-related triggers
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current)
       }
+      
+      resizeTimeoutRef.current = setTimeout(() => {
+        if (canvasRef.current) {
+          initializeCanvasAndStars()
+          if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0) {
+            animationRunning = true
+            animate()
+          }
+        }
+      }, 100)
     }
 
     // Attempt initial setup
@@ -160,6 +168,9 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       window.removeEventListener('resize', handleResize)
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
+      }
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current)
       }
       animationRunning = false
     }
