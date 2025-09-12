@@ -715,6 +715,7 @@ function ProblemSection() {
                               height={220} 
                               showBorder={false}
                               className=""
+                              scrollTriggered={true}
                             />
                           )}
                           {index === 1 && (
@@ -815,6 +816,7 @@ function ProblemSection() {
                                   width={440} 
                                   height={440} 
                                   showBorder={false}
+                                  scrollTriggered={true}
                                 />
                               )}
                               {index === 1 && (
@@ -972,14 +974,14 @@ function PlatformSection() {
       {/* Background Animation - Desktop Sticky */}
       <div className="absolute inset-0 z-0 hidden lg:block">
         <div className="sticky top-0 h-screen">
-          <StarFieldAnimation className="w-full h-full" />
+          <StarFieldAnimation className="w-full h-full" scrollTriggered={true} />
         </div>
       </div>
       
       {/* Background Animation - Mobile Fixed Height */}
       <div className="absolute inset-0 z-0 block lg:hidden">
         <div className="h-full">
-          <StarFieldAnimation className="w-full h-full" />
+          <StarFieldAnimation className="w-full h-full" scrollTriggered={true} />
         </div>
       </div>
       

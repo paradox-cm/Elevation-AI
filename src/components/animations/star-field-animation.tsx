@@ -2,16 +2,24 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
+import { useScrollTriggeredAnimation } from '@/hooks/use-scroll-triggered-animation'
 
 interface StarFieldAnimationProps {
   className?: string
+  scrollTriggered?: boolean // New prop to enable scroll-triggered behavior
 }
 
-export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) {
+export function StarFieldAnimation({ className = "", scrollTriggered = false }: StarFieldAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
   const [mounted, setMounted] = useState(false)
   const { theme } = useThemeProvider()
+  
+  // Scroll-triggered animation hook
+  const { containerRef, isPlaying } = useScrollTriggeredAnimation({
+    duration: 3000, // 3 seconds
+    threshold: 0.1
+  })
 
   useEffect(() => {
     setMounted(true)
@@ -33,6 +41,11 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
     const speed = 0.5
     const Z_MAX = 1000
     const Z_MIN = 0.1
+
+    // If scroll-triggered and not playing, don't start animation
+    if (scrollTriggered && !isPlaying) {
+      return
+    }
 
     // Function to set canvas buffer size and initialize/re-initialize stars
     const initializeCanvasAndStars = () => {
@@ -145,12 +158,26 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       }
       animationRunning = false
     }
-  }, [mounted, theme])
+  }, [mounted, theme, scrollTriggered, isPlaying])
 
   if (!mounted) {
     return null
   }
 
+  // If scroll-triggered, wrap in container div
+  if (scrollTriggered) {
+    return (
+      <div ref={containerRef} className={`absolute inset-0 w-full h-full ${className}`}>
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ pointerEvents: 'none' }}
+        />
+      </div>
+    )
+  }
+
+  // Default behavior (always playing)
   return (
     <canvas
       ref={canvasRef}
