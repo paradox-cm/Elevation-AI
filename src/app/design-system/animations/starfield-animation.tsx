@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { cn } from "@/lib/utils"
+import { useThemeProvider } from "@/hooks/use-theme"
 
 interface StarfieldAnimationProps {
   className?: string
@@ -191,6 +192,8 @@ export function StarfieldAnimationPlatform({
   className = "",
   ...props 
 }: Omit<StarfieldAnimationProps, 'variant'>) {
+  const { isDark } = useThemeProvider()
+  
   return (
     <StarfieldAnimation
       {...props}
@@ -199,8 +202,8 @@ export function StarfieldAnimationPlatform({
       speed={0.3}
       zMax={1200}
       perspectiveFactor={350}
-      backgroundColor="rgba(0, 0, 0, 0.1)"
-      starColor="#FFFFFF"
+      backgroundColor={isDark ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"}
+      starColor={isDark ? "#FFFFFF" : "#000000"}
     />
   )
 }
@@ -210,6 +213,8 @@ export function StarfieldAnimationHero({
   className = "",
   ...props 
 }: Omit<StarfieldAnimationProps, 'variant'>) {
+  const { isDark } = useThemeProvider()
+  
   return (
     <StarfieldAnimation
       {...props}
@@ -218,8 +223,8 @@ export function StarfieldAnimationHero({
       speed={0.8}
       zMax={800}
       perspectiveFactor={250}
-      backgroundColor="rgba(0, 0, 0, 0.3)"
-      starColor="#FFFFFF"
+      backgroundColor={isDark ? "rgba(0, 0, 0, 0.3)" : "rgba(255, 255, 255, 0.3)"}
+      starColor={isDark ? "#FFFFFF" : "#000000"}
     />
   )
 }
