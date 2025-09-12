@@ -8,11 +8,75 @@ import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { Button } from "@/components/ui/button"
-import { H1, H2, P, BodyLarge } from "@/components/ui/typography"
+import { H1, H2, H3, P, BodyLarge } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import { StarfieldAnimationHero } from "@/app/design-system/animations/starfield-animation"
 import React from "react"
 
+// Logo Grid Section
+function LogoGridSection() {
+  const logos = [
+    { name: "Accenture", filename: "Accenture.svg", showText: true },
+    { name: "Apple", filename: "Apple.svg", showText: false },
+    { name: "Bank of America", filename: "Bank-of-America.svg", showText: true },
+    { name: "BCG Consulting", filename: "BCG-Consulting.svg", showText: true },
+    { name: "Capital One", filename: "Capital-One.svg", showText: true },
+    { name: "Deutsche Bank", filename: "Deutsche-Bank.svg", showText: true },
+    { name: "eBay", filename: "ebay.svg", showText: false },
+    { name: "Google", filename: "Google.svg", showText: true },
+    { name: "Indeed", filename: "Indeed.svg", showText: true },
+    { name: "JPM", filename: "JPM.svg", showText: true },
+    { name: "McKinsey", filename: "McKinsey.svg", showText: true },
+    { name: "Meta", filename: "Meta.svg", showText: true },
+    { name: "Tesla", filename: "Tesla.svg", showText: true },
+    { name: "Visa", filename: "Visa.svg", showText: true },
+    { name: "Microsoft", filename: "Windows.svg", showText: true }
+  ]
+
+  return (
+    <Section paddingY="lg" className="bg-muted/20">
+      <Container size="2xl">
+        <div className="space-y-6 sm:space-y-8">
+          {/* Section Header */}
+          <div className="text-center space-y-2">
+            <H3 className="text-muted-foreground">
+              Led by industry veterans from:
+            </H3>
+          </div>
+          
+          {/* Logo Grid */}
+          <div className="py-4 sm:py-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-10">
+              {logos.map((logo, index) => (
+                <div
+                  key={`${logo.filename}-${index}`}
+                  className="flex flex-col items-center justify-center space-y-2 p-4 rounded-lg hover:bg-muted/40 transition-colors duration-200"
+                >
+                  {/* Logo */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center">
+                    <img
+                      src={`/images/logos/${logo.filename}`}
+                      alt={`${logo.name} logo`}
+                      className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80 hover:opacity-100 transition-opacity duration-200"
+                      loading="lazy"
+                    />
+                  </div>
+                  
+                  {/* Company name - only show if showText is true */}
+                  {logo.showText && (
+                    <span className="text-xs sm:text-sm font-medium text-muted-foreground text-center leading-tight">
+                      {logo.name}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
 
 export default function InvestorsPage() {
   return (
@@ -53,6 +117,9 @@ export default function InvestorsPage() {
                 </div>
               </Container>
             </div>
+
+            {/* Logo Grid Section */}
+            <LogoGridSection />
 
             <Container size="2xl">
 
