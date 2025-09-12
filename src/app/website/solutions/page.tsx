@@ -1202,10 +1202,14 @@ export default function WireframesSolutionsPage() {
             <SolutionsHeroSection />
 
             {/* Industry Solutions Section */}
-            <IndustrySolutionsSection />
+            <Suspense fallback={<div>Loading...</div>}>
+              <IndustrySolutionsSection />
+            </Suspense>
 
             {/* Stage Solutions Section */}
-            <StageSolutionsSection />
+            <Suspense fallback={<div>Loading...</div>}>
+              <StageSolutionsSection />
+            </Suspense>
 
             {/* Solution Features Section */}
             <Section paddingY="lg" className="bg-primary/5">
