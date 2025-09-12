@@ -994,9 +994,9 @@ function PlatformSection() {
         <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
           {/* Use screensaver version for mobile, platform version for desktop */}
           {isDesktop ? (
-            <StarFieldAnimationPlatform key={isDesktop ? "lg" : "sm"} className="w-full h-full" />
+            <StarFieldAnimationPlatform key="platform-desktop" className="w-full h-full" />
           ) : (
-            <StarFieldAnimation key={isDesktop ? "lg" : "sm"} className="w-full h-full" />
+            <StarFieldAnimation key="screensaver-mobile" className="w-full h-full" />
           )}
         </div>
       </div>
