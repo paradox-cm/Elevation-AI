@@ -158,16 +158,13 @@ export function PlatformCarousel({
       const padding = responsivePadding.paddingLeft + responsivePadding.paddingRight
       
       const allVisible = totalCardsWidth + padding <= availableWidth
-      console.log('Checking visibility:', { 
-        containerWidth: containerRect.width, 
-        availableWidth, 
-        totalCardsWidth, 
-        padding, 
-        allVisible,
-        itemsLength: items.length,
-        cardWidth: responsiveCardWidth,
-        cardGap: responsiveCardGap
-      })
+      // Only log when visibility state changes
+      if (allVisible !== allCardsVisible) {
+        console.log('Platform carousel visibility changed:', { 
+          allVisible,
+          wasVisible: allCardsVisible
+        })
+      }
       setAllCardsVisible(allVisible)
     }
 
@@ -184,21 +181,16 @@ export function PlatformCarousel({
   React.useEffect(() => {
     if (!autoPlay) return
     if (stopWhenAllVisible && allCardsVisible) {
-      console.log('Auto-play stopped: all cards visible')
       return
     }
-
-    console.log('Auto-play active:', { stopWhenAllVisible, allCardsVisible, currentSlide })
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => {
         // If all cards are visible and we're at the last card, stay at the last card
         if (stopWhenAllVisible && allCardsVisible && prev === items.length - 1) {
-          console.log('Staying at last slide - all cards visible')
           return prev
         }
         const nextSlide = (prev + 1) % items.length
-        console.log('Moving to next slide:', nextSlide)
         return nextSlide
       })
       setProgress(0)

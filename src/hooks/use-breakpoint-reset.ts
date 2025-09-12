@@ -12,7 +12,7 @@ export function useBreakpointReset(
     checkInterval?: number
   } = {}
 ) {
-  const { debounceDelay = 100, checkInterval = 100 } = options
+  const { debounceDelay = 100, checkInterval = 500 } = options
   const isVisibleRef = useRef(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
@@ -31,16 +31,14 @@ export function useBreakpointReset(
       computedStyle.visibility !== 'hidden' &&
       computedStyle.opacity !== '0'
 
-    // Debug logging
-    console.log('BreakpointReset: Element visibility check', {
-      element: element.tagName,
-      rect: { width: rect.width, height: rect.height },
-      display: computedStyle.display,
-      visibility: computedStyle.visibility,
-      opacity: computedStyle.opacity,
-      isVisible,
-      wasVisible: isVisibleRef.current
-    })
+    // Only log when visibility state actually changes to reduce noise
+    if (isVisible !== isVisibleRef.current) {
+      console.log('BreakpointReset: Element visibility changed', {
+        element: element.tagName,
+        isVisible,
+        wasVisible: isVisibleRef.current
+      })
+    }
 
     // If visibility changed from hidden to visible, trigger callback
     if (isVisible && !isVisibleRef.current) {

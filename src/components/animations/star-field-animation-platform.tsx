@@ -174,7 +174,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
           }
           
           initializeCanvasAndStars()
-          if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0 && (isVisible || isMobile)) {
+          if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0) {
             animationRunning = true
             animate()
           }

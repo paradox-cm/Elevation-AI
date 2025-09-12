@@ -28,7 +28,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
     constructor(x: number, y: number, maxGrowth: number, cycleTime: number) {
       this.x = x
       this.y = y
-      this.baseSize = Math.random() * 2 + 2
+      this.baseSize = Math.random() * 1 + 1
       this.size = this.baseSize
       this.growthSpeed = (maxGrowth - this.baseSize) / (cycleTime / 60)
       this.shrinkSpeed = this.growthSpeed
@@ -67,7 +67,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
   const createGrid = (canvas: HTMLCanvasElement) => {
     const dots: Dot[] = []
     const gridSize = 20
-    const maxGrowth = 15
+    const maxGrowth = 8
     const cycleTime = (20000 / 2) * 5 // 5x slower (20% of original speed)
 
     for (let x = 0; x < canvas.width; x += gridSize) {
@@ -95,7 +95,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
     const dotColor = theme === 'dark' ? '#ffffff' : '#000000'
     
     dotsRef.current.forEach(dot => {
-      dot.update(deltaTime, 15, 50000) // 5x slower (20% of original speed)
+      dot.update(deltaTime, 8, 50000) // 5x slower (20% of original speed)
       dot.draw(ctx, dotColor)
     })
     

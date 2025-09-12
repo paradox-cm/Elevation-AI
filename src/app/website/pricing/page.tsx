@@ -37,13 +37,13 @@ function PricingHeroSection({ onOpenCalculator }: { onOpenCalculator: () => void
                 Transparent Pricing for Every Organization
               </H2>
               <BodyLarge className="text-muted-foreground max-w-2xl">
-                Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed. Use our dynamic calculator below to build your custom plan.
+                Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed.
               </BodyLarge>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" onClick={onOpenCalculator} className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
+              <Button size="lg" onClick={onOpenCalculator} className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto cursor-pointer">
                 Build Your Custom Plan
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
@@ -185,10 +185,12 @@ function GrowthAnimationSection({ onOpenCalculator }: { onOpenCalculator: () => 
       <div className="relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
         <Container size="2xl">
           <div className="text-center group">
-            <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto">
-              Calculate Your Plan
-              <Icon name="arrow-right-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
-            </Button>
+            <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+              <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto cursor-pointer">
+                Calculate Your Plan
+                <Icon name="arrow-right-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
+              </Button>
+            </div>
           </div>
         </Container>
       </div>

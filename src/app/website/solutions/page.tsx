@@ -678,11 +678,14 @@ function IndustrySolutionsSection() {
   useEffect(() => {
     const openParam = searchParams.get('open')
     if (openParam && industrySolutions.some(s => s.id === openParam)) {
+      console.log('Setting open card ID:', openParam)
       setOpenCardId(openParam)
       
       // Function to attempt scrolling with retries
       const attemptScroll = (retries = 0) => {
         const cardElement = cardRefs.current[openParam]
+        console.log('Attempting scroll, retry:', retries, 'Element found:', !!cardElement)
+        
         if (cardElement) {
           // Get the header element and its height
           const header = document.querySelector('header')
@@ -696,24 +699,58 @@ function IndustrySolutionsSection() {
           // Calculate the final scroll position with proper offset
           const finalScrollPosition = targetTop - headerHeight - 32 // 32px buffer for better positioning
           
+          console.log('Scroll details:', {
+            elementHeight: targetRect.height,
+            targetTop,
+            finalScrollPosition,
+            headerHeight
+          })
+          
           // Only scroll if we have a valid position and the element is visible
           if (targetRect.height > 0 && finalScrollPosition > 0) {
+            console.log('Scrolling to element:', openParam, 'Position:', finalScrollPosition)
             window.scrollTo({
               top: Math.max(0, finalScrollPosition),
               behavior: 'smooth'
             })
-          } else if (retries < 10) {
-            // Retry if element isn't ready yet
-            setTimeout(() => attemptScroll(retries + 1), 50)
+          } else if (retries < 20) {
+            // Retry if element isn't ready yet - increased retries and delay
+            console.log('Retrying scroll attempt:', retries + 1, 'Element height:', targetRect.height)
+            setTimeout(() => attemptScroll(retries + 1), 100)
           }
-        } else if (retries < 10) {
-          // Retry if element doesn't exist yet
-          setTimeout(() => attemptScroll(retries + 1), 50)
+        } else if (retries < 20) {
+          // Retry if element doesn't exist yet - increased retries and delay
+          console.log('Element not found, retrying:', retries + 1)
+          setTimeout(() => attemptScroll(retries + 1), 100)
         }
       }
       
-      // Start the scroll attempt after a short delay
-      setTimeout(() => attemptScroll(), 100)
+      // Wait for the page to be fully loaded and then start the scroll attempt
+      const startScroll = () => {
+        if (document.readyState === 'complete') {
+          // Use a longer delay to ensure all components are rendered
+          setTimeout(() => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                attemptScroll()
+              })
+            })
+          }, 300)
+        } else {
+          // Wait for the page to finish loading
+          window.addEventListener('load', () => {
+            setTimeout(() => {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  attemptScroll()
+                })
+              })
+            }, 300)
+          }, { once: true })
+        }
+      }
+      
+      startScroll()
     }
   }, [searchParams])
 
@@ -850,11 +887,14 @@ function StageSolutionsSection() {
   useEffect(() => {
     const openParam = searchParams.get('open')
     if (openParam && stageSolutions.some(s => s.id === openParam)) {
+      console.log('Setting open stage card ID:', openParam)
       setOpenCardId(openParam)
       
       // Function to attempt scrolling with retries
       const attemptScroll = (retries = 0) => {
         const cardElement = cardRefs.current[openParam]
+        console.log('Attempting stage scroll, retry:', retries, 'Element found:', !!cardElement)
+        
         if (cardElement) {
           // Get the header element and its height
           const header = document.querySelector('header')
@@ -868,24 +908,58 @@ function StageSolutionsSection() {
           // Calculate the final scroll position with proper offset
           const finalScrollPosition = targetTop - headerHeight - 32 // 32px buffer for better positioning
           
+          console.log('Stage scroll details:', {
+            elementHeight: targetRect.height,
+            targetTop,
+            finalScrollPosition,
+            headerHeight
+          })
+          
           // Only scroll if we have a valid position and the element is visible
           if (targetRect.height > 0 && finalScrollPosition > 0) {
+            console.log('Scrolling to stage element:', openParam, 'Position:', finalScrollPosition)
             window.scrollTo({
               top: Math.max(0, finalScrollPosition),
               behavior: 'smooth'
             })
-          } else if (retries < 10) {
-            // Retry if element isn't ready yet
-            setTimeout(() => attemptScroll(retries + 1), 50)
+          } else if (retries < 20) {
+            // Retry if element isn't ready yet - increased retries and delay
+            console.log('Retrying stage scroll attempt:', retries + 1, 'Element height:', targetRect.height)
+            setTimeout(() => attemptScroll(retries + 1), 100)
           }
-        } else if (retries < 10) {
-          // Retry if element doesn't exist yet
-          setTimeout(() => attemptScroll(retries + 1), 50)
+        } else if (retries < 20) {
+          // Retry if element doesn't exist yet - increased retries and delay
+          console.log('Stage element not found, retrying:', retries + 1)
+          setTimeout(() => attemptScroll(retries + 1), 100)
         }
       }
       
-      // Start the scroll attempt after a short delay
-      setTimeout(() => attemptScroll(), 100)
+      // Wait for the page to be fully loaded and then start the scroll attempt
+      const startScroll = () => {
+        if (document.readyState === 'complete') {
+          // Use a longer delay to ensure all components are rendered
+          setTimeout(() => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                attemptScroll()
+              })
+            })
+          }, 300)
+        } else {
+          // Wait for the page to finish loading
+          window.addEventListener('load', () => {
+            setTimeout(() => {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  attemptScroll()
+                })
+              })
+            }, 300)
+          }, { once: true })
+        }
+      }
+      
+      startScroll()
     }
   }, [searchParams])
 
@@ -1128,14 +1202,10 @@ export default function WireframesSolutionsPage() {
             <SolutionsHeroSection />
 
             {/* Industry Solutions Section */}
-            <Suspense fallback={<div>Loading...</div>}>
-              <IndustrySolutionsSection />
-            </Suspense>
+            <IndustrySolutionsSection />
 
             {/* Stage Solutions Section */}
-            <Suspense fallback={<div>Loading...</div>}>
-              <StageSolutionsSection />
-            </Suspense>
+            <StageSolutionsSection />
 
             {/* Solution Features Section */}
             <Section paddingY="lg" className="bg-primary/5">
@@ -1144,7 +1214,7 @@ export default function WireframesSolutionsPage() {
                   <div className="text-center space-y-4 max-w-4xl mx-auto">
                     <H1>Built for Every Industry, Every Scale</H1>
                     <P className="text-muted-foreground">
-                      Our solutions adapt to your unique industry requirements with flexible deployment options, comprehensive integrations, and enterprise-grade security.
+                      Our platform adapts to your environment with flexible deployment options, comprehensive integrations, and enterprise-grade governance.
                     </P>
                   </div>
                   
@@ -1155,8 +1225,8 @@ export default function WireframesSolutionsPage() {
                           <Icon name="shield-check-line" size="lg" className="text-primary" />
                         </div>
                         <div>
-                          <H3 className="text-lg font-semibold mb-2">Industry-Specific Compliance</H3>
-                          <P className="text-sm text-muted-foreground">Built-in compliance frameworks for each industry</P>
+                          <H3 className="text-lg font-semibold mb-2">Industry-Ready Compliance</H3>
+                          <P className="text-sm text-muted-foreground">Policy packs and guardrails mapped to leading frameworks (e.g., SOC 2/ISO control families, GDPR). Data residency by region and information-barrier controls for regulated workflows.</P>
                         </div>
                       </div>
                     </Card>
@@ -1168,7 +1238,7 @@ export default function WireframesSolutionsPage() {
                         </div>
                         <div>
                           <H3 className="text-lg font-semibold mb-2">Flexible Deployment</H3>
-                          <P className="text-sm text-muted-foreground">Cloud, on-premise, or hybrid options</P>
+                          <P className="text-sm text-muted-foreground">Run as managed cloud, in your private VPC, or on-prem. Choose model routing and data residency per workspace to meet security and latency needs.</P>
                         </div>
                       </div>
                     </Card>
@@ -1180,7 +1250,7 @@ export default function WireframesSolutionsPage() {
                         </div>
                         <div>
                           <H3 className="text-lg font-semibold mb-2">Comprehensive Integrations</H3>
-                          <P className="text-sm text-muted-foreground">Connect with your existing industry tools and systems</P>
+                          <P className="text-sm text-muted-foreground">Native connectors for Salesforce, Google/Microsoft 365, Slack, cloud storage, databases/warehouses (Snowflake, BigQuery, Redshift), plus open APIs/SDKs for anything custom.</P>
                         </div>
                       </div>
                     </Card>
@@ -1191,8 +1261,8 @@ export default function WireframesSolutionsPage() {
                           <Icon name="lock-line" size="lg" className="text-primary" />
                         </div>
                         <div>
-                          <H3 className="text-lg font-semibold mb-2">Enterprise Security</H3>
-                          <P className="text-sm text-muted-foreground">Bank-grade security and compliance</P>
+                          <H3 className="text-lg font-semibold mb-2">Enterprise-Grade Security</H3>
+                          <P className="text-sm text-muted-foreground">Tenant isolation, SSO (SAML/OIDC), RBAC/ABAC, encryption in transit and at rest, fine-grained audit logs, and approval workflows for sensitive actions.</P>
                         </div>
                       </div>
                     </Card>
@@ -1204,7 +1274,7 @@ export default function WireframesSolutionsPage() {
                         </div>
                         <div>
                           <H3 className="text-lg font-semibold mb-2">Scalable Architecture</H3>
-                          <P className="text-sm text-muted-foreground">Grows with your organization</P>
+                          <P className="text-sm text-muted-foreground">Multi-workspace, multi-entity design that scales horizontally as your data and teams grow—with budgets, routing, and usage controls to keep costs predictable.</P>
                         </div>
                       </div>
                     </Card>
@@ -1215,8 +1285,8 @@ export default function WireframesSolutionsPage() {
                           <Icon name="customer-service-line" size="lg" className="text-primary" />
                         </div>
                         <div>
-                          <H3 className="text-lg font-semibold mb-2">24/7 Support</H3>
-                          <P className="text-sm text-muted-foreground">Dedicated support and concierge services</P>
+                          <H3 className="text-lg font-semibold mb-2">Support & Concierge</H3>
+                          <P className="text-sm text-muted-foreground">Tiered support and an Agentic Concierge Team to accelerate onboarding and new use cases. 24×7 incident response is available on Enterprise and private deployments.</P>
                         </div>
                       </div>
                     </Card>

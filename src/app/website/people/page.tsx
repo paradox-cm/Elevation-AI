@@ -833,10 +833,10 @@ export default function PeoplePage() {
                     
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <Button size="lg" asChild>
-                        <Link href="/website/contact">Connect with Experts</Link>
+                        <Link href="/website/demo">Request a Demo</Link>
                       </Button>
                       <Button variant="outline" size="lg" asChild>
-                        <Link href="/website/demo">Schedule a Demo</Link>
+                        <Link href="/website/about">About Us</Link>
                       </Button>
                     </div>
                   </div>

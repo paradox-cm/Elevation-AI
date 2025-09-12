@@ -1142,13 +1142,13 @@ function PlatformSection() {
                                 <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl leading-relaxed">
                                   {feature.description}
                                 </BodyLarge>
-                                {/* Learn more Link */}
+                                {/* View Platform Link */}
                                 <div className="pt-2">
                                   <Link 
                                     href="/website/platform" 
                                     className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
                                   >
-                                    Learn more →
+                                    View Platform →
                                   </Link>
                                 </div>
                               </div>
@@ -1301,10 +1301,10 @@ function HowWeDoItSection() {
                         {approach.description}
                       </P>
                       
-                      {/* Learn More Link */}
+                      {/* View People Link */}
                       <div className="pt-2">
                         <span className="inline-flex items-center text-primary group">
-                          <span className="group-hover:translate-x-1 transition-transform duration-200">Learn more →</span>
+                          <span className="group-hover:translate-x-1 transition-transform duration-200">View People →</span>
                         </span>
                       </div>
                     </div>
