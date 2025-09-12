@@ -192,7 +192,7 @@ function TypewriterText({
 // Mission Section
 function MissionSection() {
   return (
-    <Section id="mission-section" paddingY="lg" className="relative overflow-hidden pt-20">
+    <Section id="mission-section" paddingY="lg" className="relative overflow-hidden pt-20 min-h-[60vh] flex items-center">
       {/* Background Animation */}
       <VerticalSquareFlow 
         className="opacity-20"
