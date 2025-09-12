@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
+import { BusinessDataAnimationWithTimer } from "@/components/animations/business-data-animation-with-timer"
 import { Badge } from "@/components/ui/badge"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
@@ -59,6 +60,72 @@ export default function BusinessDataAnimationPage() {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          </Section>
+
+          {/* Animation Variants Section */}
+          <Section paddingY="lg">
+            <div className="space-y-8">
+              <div className="text-center space-y-4">
+                <H2>Animation Variants</H2>
+                <P className="text-muted-foreground max-w-2xl mx-auto">
+                  Two versions of the Business Data Animation are available for different use cases.
+                </P>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Always Running Version */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Icon name="play-circle-line" className="h-5 w-5 text-primary" />
+                      <span>Always Running</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <P className="text-sm text-muted-foreground">
+                      Continuously animates when visible. Perfect for design system demos and background effects.
+                    </P>
+                    <div className="relative h-[200px] border border-border/50 rounded-lg overflow-hidden">
+                      <BusinessDataAnimation className="w-full h-full" />
+                    </div>
+                    <div className="space-y-2">
+                      <H4 className="text-sm font-medium">Use Cases:</H4>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li>• Design system demonstrations</li>
+                        <li>• Developers page background</li>
+                        <li>• Always-visible animations</li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Timer Version */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <Icon name="timer-line" className="h-5 w-5 text-primary" />
+                      <span>With Timer (3s + Fade)</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <P className="text-sm text-muted-foreground">
+                      Plays for 3 seconds when entering viewport, then fades out over 6 seconds. Perfect for scroll-triggered effects.
+                    </P>
+                    <div className="relative h-[200px] border border-border/50 rounded-lg overflow-hidden">
+                      <BusinessDataAnimationWithTimer className="w-full h-full" />
+                    </div>
+                    <div className="space-y-2">
+                      <H4 className="text-sm font-medium">Use Cases:</H4>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li>• Home page problem section</li>
+                        <li>• Scroll-triggered animations</li>
+                        <li>• Performance-optimized effects</li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </Section>
 

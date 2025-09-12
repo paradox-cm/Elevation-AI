@@ -29,6 +29,7 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
+import { BusinessDataAnimationWithTimer } from "@/components/animations/business-data-animation-with-timer"
 import { StarFieldAnimation } from "@/components/animations/star-field-animation"
 import { StarFieldAnimationPlatform } from "@/components/animations/star-field-animation-platform"
 import { 
@@ -669,7 +670,7 @@ function ProblemSection() {
       {/* Background Animation */}
       <div className="absolute inset-0 z-0">
         <div className="sticky top-0 h-screen">
-          <BusinessDataAnimation className="w-full h-full" />
+          <BusinessDataAnimationWithTimer className="w-full h-full" />
         </div>
       </div>
       
