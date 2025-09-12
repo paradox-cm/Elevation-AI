@@ -195,7 +195,7 @@ function MissionSection() {
     <Section id="mission-section" paddingY="lg" className="relative overflow-hidden pt-20 min-h-[60vh] flex items-center">
       {/* Background Animation */}
       <VerticalSquareFlow 
-        className="opacity-20"
+        className="opacity-20 absolute inset-0 w-full h-full"
         squareCount={800}
         maxSpeed={0.08}
       />
@@ -310,9 +310,6 @@ function PrinciplesSection() {
 
   return (
     <Section paddingY="xl" className="relative overflow-hidden">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-muted/20 via-transparent to-muted/10" />
-      
       <Container size="2xl" className="relative z-10">
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center space-y-6">
@@ -328,9 +325,6 @@ function PrinciplesSection() {
                 key={index} 
                 className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 bg-card/50 backdrop-blur-sm"
               >
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
                 <CardContent className="p-8 relative z-10">
                   <div className="space-y-6">
                     {/* Icon with enhanced styling */}
