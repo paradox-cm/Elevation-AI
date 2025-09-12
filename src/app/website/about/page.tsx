@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { H1, H2, H3, H4, P, BodySmall, BodyLarge } from "@/components/ui/typography"
+import { H1, H2, H3, H4, P, BodySmall, BodyLarge, HeroHeading } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import { VerticalSquareFlow } from "@/components/animations"
 import Link from "next/link"
@@ -521,28 +521,25 @@ export default function AboutPage() {
           <main>
             <Container size="2xl">
               <Section paddingY="xl" className="min-h-screen flex flex-col items-center justify-between relative">
-                {/* Page Header */}
-                <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
-                  <div className="text-center space-y-1">
-                    <H1>
-                      <TypewriterText 
-                        text="Transforming business orchestration."
-                        cyclingWords={[
-                          "Transforming business orchestration.",
-                          "Unifying knowledge across organizations.",
-                          "Orchestrating secure, agentic AI.",
-                          "Building the future of intelligent operations.",
-                          "Welcome to Elevation AI"
-                        ]}
-                        speed={100}
-                        cyclingDelay={3000}
-                        cyclingSpeed={80}
-                      />
-                    </H1>
-                    <P className="max-w-[42rem] mx-auto">
-                      We are building the operating system for the agentic era. Our platform unifies your universe, provides intelligent workspaces, and connects you securely to the world of AI.
-                    </P>
-                  </div>
+                <div className="text-center flex-1 flex items-center justify-center">
+                  <HeroHeading>
+                    <TypewriterText 
+                      text="Transforming business orchestration."
+                      cyclingWords={[
+                        "Transforming business orchestration.",
+                        "Unifying knowledge across organizations.",
+                        "Orchestrating secure, agentic AI.",
+                        "Building the future of intelligent operations.",
+                        "Welcome to Elevation AI"
+                      ]}
+                      speed={100}
+                      cyclingDelay={3000}
+                      cyclingSpeed={80}
+                    />
+                  </HeroHeading>
+                  <P className="max-w-3xl mx-auto mt-6 text-lg sm:text-xl text-muted-foreground">
+                    We are building the operating system for the agentic era. Our platform unifies your universe, provides intelligent workspaces, and connects you securely to the world of AI.
+                  </P>
                 </div>
                 
                 {/* Down Arrow Button */}
