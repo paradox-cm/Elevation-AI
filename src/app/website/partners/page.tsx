@@ -63,7 +63,7 @@ export default function PartnersPage() {
                   <div className="space-y-3 text-muted-foreground">
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle><H3>Deliver AI-Powered Solutions</H3></CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Deliver AI-Powered Solutions</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <P className="text-sm">Use our platform as the agentic backbone to build and deliver scalable, high-margin solutions for your clients.</P>
@@ -72,7 +72,7 @@ export default function PartnersPage() {
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle><H3>Seamlessly Embed with Clients</H3></CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Seamlessly Embed with Clients</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <P className="text-sm">Collaborate directly within your clients' workspaces, giving you an unprecedented level of integration and partnership.</P>
@@ -81,7 +81,7 @@ export default function PartnersPage() {
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle><H3>Extend Your Capacity</H3></CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Extend Your Capacity</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <P className="text-sm">Leverage our library of agents and tools to augment your own expertise and take on more complex challenges.</P>

@@ -46,7 +46,7 @@ export default function CareersPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle><H3>Solve Meaningful Problems</H3></CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Solve Meaningful Problems</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <P className="text-sm">We're not just building software; we're helping our clients orchestrate their entire universe. The work you do here will have a tangible impact on how businesses operate and compete.</P>
@@ -55,7 +55,7 @@ export default function CareersPage() {
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle><H3>A Team of Experts</H3></CardTitle>
+                        <CardTitle className="text-base sm:text-lg">A Team of Experts</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <P className="text-sm">You'll work alongside a diverse and talented team with experience from world-class organizations like Tesla, Visa, Accenture, and McKinsey, all backed by Google's highest-tier AI program.</P>
@@ -64,7 +64,7 @@ export default function CareersPage() {
 
                     <Card className="border-border">
                       <CardHeader>
-                        <CardTitle><H3>Ownership & Growth</H3></CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Ownership & Growth</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <P className="text-sm">We are a culture of builders. We value ownership, curiosity, and a relentless drive to learn and grow. You will have the opportunity to make a significant impact from day one.</P>
@@ -86,7 +86,7 @@ export default function CareersPage() {
                     <Card className="border-border">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-4">
-                          <CardTitle><H3>Agentic AI Engineer</H3></CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Agentic AI Engineer</CardTitle>
                           <Button size="sm" asChild>
                             <a href="#apply-ai-engineer">Apply Now</a>
                           </Button>
@@ -100,7 +100,7 @@ export default function CareersPage() {
                     <Card className="border-border">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-4">
-                          <CardTitle><H3>Product Manager, Agentic Platform</H3></CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Product Manager, Agentic Platform</CardTitle>
                           <Button size="sm" asChild>
                             <a href="#apply-pm">Apply Now</a>
                           </Button>
@@ -114,7 +114,7 @@ export default function CareersPage() {
                     <Card className="border-border">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-4">
-                          <CardTitle><H3>Solutions Architect</H3></CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Solutions Architect</CardTitle>
                           <Button size="sm" asChild>
                             <a href="#apply-solutions">Apply Now</a>
                           </Button>

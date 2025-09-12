@@ -433,7 +433,7 @@ export default function UserManagementPage() {
                       <div className="grid md:grid-cols-2 gap-6">
                         <Card>
                           <CardHeader>
-                            <CardTitle className="text-lg">User Roles</CardTitle>
+                            <CardTitle className="text-base">User Roles</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="space-y-3">
@@ -456,7 +456,7 @@ export default function UserManagementPage() {
                         </Card>
                         <Card>
                           <CardHeader>
-                            <CardTitle className="text-lg">Departments</CardTitle>
+                            <CardTitle className="text-base">Departments</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="space-y-3">

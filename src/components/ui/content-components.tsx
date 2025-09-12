@@ -175,7 +175,7 @@ export function MediaCard({
       )}
       
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <CardTitle className="text-base">{title}</CardTitle>
         {description && (
           <CardDescription className="mt-2">{description}</CardDescription>
         )}
@@ -364,7 +364,7 @@ export function FAQ({ items, title, description, className }: FAQProps) {
               onClick={() => toggleItem(index)}
             >
               <div className="flex items-center justify-between">
-                <CardTitle className="text-left text-lg">{item.question}</CardTitle>
+                <CardTitle className="text-left text-base">{item.question}</CardTitle>
                 <Icon
                   name={openItems.has(index) ? "arrow-up-s-line" : "arrow-down-s-line"}
                   className={`h-5 w-5 text-muted-foreground flex-shrink-0 ml-4 transition-transform duration-200 ${

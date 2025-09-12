@@ -156,7 +156,7 @@ export default function PrinciplesPage() {
                           <Icon name={principle.icon} className={`h-6 w-6 ${principle.color}`} />
                         </div>
                         <div>
-                          <CardTitle className="text-xl">{principle.title}</CardTitle>
+                          <CardTitle className="text-base sm:text-xl">{principle.title}</CardTitle>
                         </div>
                       </div>
                     </CardHeader>
@@ -192,7 +192,7 @@ export default function PrinciplesPage() {
                       <div className={`w-16 h-16 ${value.bgColor} rounded-lg flex items-center justify-center mx-auto mb-4`}>
                         <Icon name={value.icon} className={`h-8 w-8 ${value.color}`} />
                       </div>
-                      <CardTitle className="text-lg">{value.title}</CardTitle>
+                      <CardTitle className="text-base">{value.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <BodySmall className="text-muted-foreground">{value.description}</BodySmall>

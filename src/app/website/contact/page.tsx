@@ -50,7 +50,7 @@ export default function ContactPage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <Building className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle><H2>Sales</H2></CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Sales</CardTitle>
                         </div>
                         <CardDescription>
                           We'd love to talk about how we can work together.
@@ -73,7 +73,7 @@ export default function ContactPage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <MessageSquare className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle><H2>Help & Support</H2></CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Help & Support</CardTitle>
                         </div>
                         <CardDescription>
                           Get in touch and let us know how we can help.
@@ -96,7 +96,7 @@ export default function ContactPage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <FileText className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle><H2>Media & Press</H2></CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Media & Press</CardTitle>
                         </div>
                         <CardDescription>
                           Get Elevation AI news, company info, and media resources.

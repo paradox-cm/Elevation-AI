@@ -274,7 +274,7 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
               <IconComponent className="w-5 h-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">
-              <CardTitle className="text-lg leading-tight">{item.title}</CardTitle>
+              <CardTitle className="text-base leading-tight">{item.title}</CardTitle>
               {item.pageNumber && (
                 <p className="text-sm text-muted-foreground mt-1">Page {item.pageNumber}</p>
               )}

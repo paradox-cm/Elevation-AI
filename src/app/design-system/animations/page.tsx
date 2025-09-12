@@ -153,7 +153,7 @@ export default function AnimationsPage() {
                         <Icon name={animation.icon} className={`h-6 w-6 ${animation.color}`} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <CardTitle className="text-lg leading-tight">{animation.name}</CardTitle>
+                        <CardTitle className="text-base leading-tight">{animation.name}</CardTitle>
                       </div>
                     </div>
                   </CardHeader>

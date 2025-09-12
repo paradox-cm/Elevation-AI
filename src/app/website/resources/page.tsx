@@ -101,7 +101,7 @@ function ResourceCard({ item }: { item: ResourceItem }) {
               <IconComponent className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <CardTitle className="text-lg">{item.title}</CardTitle>
+              <CardTitle className="text-base">{item.title}</CardTitle>
             </div>
           </div>
           {getStatusBadge(item.status)}

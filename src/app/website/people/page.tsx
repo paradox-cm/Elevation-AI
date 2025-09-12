@@ -532,7 +532,7 @@ export default function PeoplePage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                             <Target className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Design & Strategize</CardTitle>
+                          <CardTitle className="text-base">Design & Strategize</CardTitle>
                         </div>
                       </CardHeader>
                       <CardContent className="relative z-10">
@@ -551,7 +551,7 @@ export default function PeoplePage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                             <Zap className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Build & Implement</CardTitle>
+                          <CardTitle className="text-base">Build & Implement</CardTitle>
                         </div>
                       </CardHeader>
                       <CardContent className="relative z-10">
@@ -570,7 +570,7 @@ export default function PeoplePage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                             <Shield className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Integrate & Orchestrate</CardTitle>
+                          <CardTitle className="text-base">Integrate & Orchestrate</CardTitle>
                         </div>
                       </CardHeader>
                       <CardContent className="relative z-10">
@@ -589,7 +589,7 @@ export default function PeoplePage() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                             <Sparkles className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-lg">Support & Iterate</CardTitle>
+                          <CardTitle className="text-base">Support & Iterate</CardTitle>
                         </div>
                       </CardHeader>
                       <CardContent className="relative z-10">
@@ -653,7 +653,7 @@ export default function PeoplePage() {
                         <div className="space-y-6">
                           <Card className="border-border/50 bg-transparent">
                             <CardHeader className="pb-3">
-                              <CardTitle className="text-lg font-semibold flex items-center gap-3">
+                              <CardTitle className="text-base font-semibold flex items-center gap-3">
                                 <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">1</span>
                                 First-Mover Advantage
                               </CardTitle>
@@ -667,7 +667,7 @@ export default function PeoplePage() {
 
                           <Card className="border-border/50 bg-transparent">
                             <CardHeader className="pb-3">
-                              <CardTitle className="text-lg font-semibold flex items-center gap-3">
+                              <CardTitle className="text-base font-semibold flex items-center gap-3">
                                 <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">2</span>
                                 Complex Workflows
                               </CardTitle>
@@ -681,7 +681,7 @@ export default function PeoplePage() {
 
                           <Card className="border-border/50 bg-transparent">
                             <CardHeader className="pb-3">
-                              <CardTitle className="text-lg font-semibold flex items-center gap-3">
+                              <CardTitle className="text-base font-semibold flex items-center gap-3">
                                 <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">3</span>
                                 Strategic Partnership
                               </CardTitle>
@@ -695,7 +695,7 @@ export default function PeoplePage() {
 
                           <Card className="border-border/50 bg-transparent">
                             <CardHeader className="pb-3">
-                              <CardTitle className="text-lg font-semibold flex items-center gap-3">
+                              <CardTitle className="text-base font-semibold flex items-center gap-3">
                                 <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">4</span>
                                 Specialized Talent
                               </CardTitle>

@@ -203,7 +203,7 @@ export function FeatureGrid({ features, columns = 3, className }: FeatureGridPro
             <div className="p-3 bg-primary/10 rounded-lg w-fit mb-4">
               <Icon name={feature.icon} className="h-6 w-6 text-primary" />
             </div>
-            <CardTitle className="text-lg">{feature.title}</CardTitle>
+            <CardTitle className="text-base">{feature.title}</CardTitle>
           </CardHeader>
           <CardContent>
             <BodySmall className="text-muted-foreground mb-4">

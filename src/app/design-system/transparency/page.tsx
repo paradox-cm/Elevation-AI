@@ -285,7 +285,7 @@ export default function TransparencyPage() {
                           {level.value}
                         </Badge>
                       </div>
-                      <CardTitle className="text-lg">{level.name} Transparency</CardTitle>
+                      <CardTitle className="text-base">{level.name} Transparency</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <BodyLarge className="text-muted-foreground mb-4">{level.description}</BodyLarge>
@@ -321,7 +321,7 @@ export default function TransparencyPage() {
                           <Icon name={guideline.icon} className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <CardTitle className="text-xl">{guideline.title}</CardTitle>
+                          <CardTitle className="text-base sm:text-xl">{guideline.title}</CardTitle>
                         </div>
                       </div>
                     </CardHeader>
@@ -354,7 +354,7 @@ export default function TransparencyPage() {
                 {implementationExamples.map((example) => (
                   <Card key={example.title} className="group hover:shadow-md transition-shadow">
                     <CardHeader>
-                      <CardTitle className="text-lg">{example.title}</CardTitle>
+                      <CardTitle className="text-base">{example.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <BodyLarge className="text-muted-foreground">{example.description}</BodyLarge>

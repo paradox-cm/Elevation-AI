@@ -170,7 +170,7 @@ export default function App() {
                             <Icon name="check-line" className="h-5 w-5 text-primary" />
                           </div>
                           <div>
-                            <CardTitle className="text-lg">{req.name}</CardTitle>
+                            <CardTitle className="text-base">{req.name}</CardTitle>
                             <BodySmall className="text-muted-foreground">{req.version}</BodySmall>
                           </div>
                         </div>
@@ -208,7 +208,7 @@ export default function App() {
                           {framework.difficulty}
                         </Badge>
                       </div>
-                      <CardTitle className="text-lg">{framework.name}</CardTitle>
+                      <CardTitle className="text-base">{framework.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <BodySmall className="text-muted-foreground mb-4">{framework.description}</BodySmall>

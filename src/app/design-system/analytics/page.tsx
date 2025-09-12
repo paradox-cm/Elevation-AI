@@ -541,7 +541,7 @@ export default function AnalyticsPage() {
                       <div className="grid md:grid-cols-2 gap-6">
                         <Card>
                           <CardHeader>
-                            <CardTitle className="text-lg">Date Range Filter</CardTitle>
+                            <CardTitle className="text-base">Date Range Filter</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="space-y-3">
@@ -556,7 +556,7 @@ export default function AnalyticsPage() {
                         </Card>
                         <Card>
                           <CardHeader>
-                            <CardTitle className="text-lg">Category Filter</CardTitle>
+                            <CardTitle className="text-base">Category Filter</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="space-y-3">

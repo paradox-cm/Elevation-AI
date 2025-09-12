@@ -785,7 +785,7 @@ function ExpandableSolutionCard({ solution, type, isOpen, onToggle }: {
                   />
           </div>
                <div className="space-y-1 flex-1">
-                   <CardTitle className="text-left lg:text-xl">{solution.title}</CardTitle>
+                   <CardTitle className="text-left text-base lg:text-xl">{solution.title}</CardTitle>
                    <CardDescription className="text-left lg:text-base">{solution.subtitle}</CardDescription>
                  </div>
               </div>

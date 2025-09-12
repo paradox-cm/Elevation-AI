@@ -689,7 +689,7 @@ function ProblemSection() {
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Icon name={problem.icon} size="lg" className="text-primary" />
                           </div>
-                          <CardTitle className="text-lg font-semibold">{problem.title}</CardTitle>
+                          <CardTitle className="text-base font-semibold">{problem.title}</CardTitle>
                         </div>
                         <BodyLarge className="text-muted-foreground text-sm leading-relaxed">
                           {problem.description}
@@ -985,7 +985,7 @@ function PlatformSection() {
                           <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Icon name={feature.icon} className="text-blue-600" />
                           </div>
-                          <CardTitle className="text-lg font-semibold">{feature.title}</CardTitle>
+                          <CardTitle className="text-base font-semibold">{feature.title}</CardTitle>
                         </div>
                         <BodyLarge className="text-muted-foreground text-sm leading-relaxed">
                           {feature.description}
@@ -1234,7 +1234,7 @@ function HowWeDoItSection() {
                             <Icon name={approach.icon} size="2xl" className="text-primary" />
                           )}
                         </div>
-                        <CardTitle className="text-lg font-semibold">{approach.title}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{approach.title}</CardTitle>
                       </div>
                       
                       {/* Description */}

@@ -159,7 +159,7 @@ export default function PressPage() {
                                   })}
                                 </span>
                               </div>
-                              <CardTitle className="text-lg sm:text-xl mb-3 group-hover:text-primary transition-colors">
+                              <CardTitle className="text-base sm:text-xl mb-3 group-hover:text-primary transition-colors">
                                 {release.title}
                               </CardTitle>
                             </div>
@@ -271,7 +271,7 @@ export default function PressPage() {
                 <div className="max-w-4xl mx-auto">
                   <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
                     <CardHeader className="text-center">
-                      <CardTitle className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                      <CardTitle className="text-base sm:text-2xl font-semibold tracking-tight text-foreground">
                         Media Inquiries
                       </CardTitle>
                     </CardHeader>

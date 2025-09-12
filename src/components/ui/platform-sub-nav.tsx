@@ -158,8 +158,11 @@ export function PlatformSubNav({ className }: PlatformSubNavProps) {
     if (selector) {
       const element = document.querySelector(selector) as HTMLElement
       if (element) {
-        // Account for main header (64px) + sub-nav height (approximately 60px) + extra spacing
-        const offset = 160
+        // Account for main header + sub-nav height + extra spacing
+        // Mobile: top-14 (56px) + sub-nav height (~60px) + extra spacing = 140px
+        // Desktop: top-16 (64px) + sub-nav height (~60px) + extra spacing = 160px
+        const isMobile = window.innerWidth < 640 // sm breakpoint
+        const offset = isMobile ? 140 : 160
         const elementPosition = element.getBoundingClientRect().top + window.scrollY
         const offsetPosition = elementPosition - offset
 
@@ -176,13 +179,13 @@ export function PlatformSubNav({ className }: PlatformSubNavProps) {
   return (
     <div
       className={cn(
-        "fixed top-14 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border/50 transition-all duration-300",
+        "fixed top-14 sm:top-16 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border/50 transition-all duration-300",
         isScrolling ? "opacity-90" : "opacity-100",
         className
       )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center pt-3 pb-2">
+          <div className="flex items-center justify-center pt-2 sm:pt-4 pb-2">
           <nav ref={navRef} className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide h-10">
             {platformSections.map((section) => (
               <Button
