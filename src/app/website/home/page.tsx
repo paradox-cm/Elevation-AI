@@ -968,10 +968,10 @@ function PlatformSection() {
   }
 
   return (
-    <Section paddingY="lg" className="relative">
+    <Section paddingY="lg" className="relative overflow-hidden">
       {/* Background Animation */}
       <div className="absolute inset-0 z-0">
-        <div className="sticky top-0 h-screen">
+        <div className="h-full lg:h-screen">
           <StarFieldAnimation className="w-full h-full" />
         </div>
       </div>

@@ -28,10 +28,11 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
 
     ctx.imageSmoothingEnabled = false
 
-    const stars: { x: number; y: number; z: number }[] = []
+    const stars: { x: number; y: number; z: number; originalX: number; originalY: number }[] = []
     const starCount = 300
     const speed = 0.5
     const Z_MAX = 1000
+    const Z_MIN = 0.1
 
     // Function to set canvas buffer size and initialize/re-initialize stars
     const initializeCanvasAndStars = () => {
@@ -48,10 +49,14 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
 
       stars.length = 0
       for (let i = 0; i < starCount; i++) {
+        const x = Math.random() * canvas.width - canvas.width / 2
+        const y = Math.random() * canvas.height - canvas.height / 2
         stars.push({
-          x: Math.random() * canvas.width - canvas.width / 2,
-          y: Math.random() * canvas.height - canvas.height / 2,
+          x: x,
+          y: y,
           z: Math.random() * Z_MAX,
+          originalX: x,
+          originalY: y,
         })
       }
       return true
@@ -83,20 +88,25 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       for (let i = 0; i < stars.length; i++) {
         const star = stars[i]
         star.z -= speed
-        if (star.z <= 0) {
+        
+        // Reset star to create seamless loop
+        if (star.z <= Z_MIN) {
           star.z = Z_MAX
-          star.x = Math.random() * canvas.width - canvas.width / 2
-          star.y = Math.random() * canvas.height - canvas.height / 2
+          star.x = star.originalX
+          star.y = star.originalY
         }
 
         const projectedX = (star.x / star.z) * perspectiveFactor + centerX
         const projectedY = (star.y / star.z) * perspectiveFactor + centerY
-        const opacity = 1 - star.z / Z_MAX
+        const opacity = Math.max(0, Math.min(1, 1 - star.z / Z_MAX))
 
-        ctx.fillStyle = starColor
-        ctx.globalAlpha = opacity
-        ctx.fillRect(Math.floor(projectedX), Math.floor(projectedY), 1, 1)
-        ctx.globalAlpha = 1
+        // Only draw stars that are within canvas bounds
+        if (projectedX >= 0 && projectedX < canvas.width && projectedY >= 0 && projectedY < canvas.height) {
+          ctx.fillStyle = starColor
+          ctx.globalAlpha = opacity
+          ctx.fillRect(Math.floor(projectedX), Math.floor(projectedY), 1, 1)
+          ctx.globalAlpha = 1
+        }
       }
       animationRef.current = requestAnimationFrame(animate)
     }
