@@ -30,6 +30,7 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
 import { StarFieldAnimation } from "@/components/animations/star-field-animation"
+import { StarFieldAnimationPlatform } from "@/components/animations/star-field-animation-platform"
 import { 
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
@@ -715,7 +716,6 @@ function ProblemSection() {
                               height={220} 
                               showBorder={false}
                               className=""
-                              scrollTriggered={true}
                             />
                           )}
                           {index === 1 && (
@@ -816,7 +816,6 @@ function ProblemSection() {
                                   width={440} 
                                   height={440} 
                                   showBorder={false}
-                                  scrollTriggered={true}
                                 />
                               )}
                               {index === 1 && (
@@ -974,14 +973,14 @@ function PlatformSection() {
       {/* Background Animation - Desktop Sticky */}
       <div className="absolute inset-0 z-0 hidden lg:block">
         <div className="sticky top-0 h-screen">
-          <StarFieldAnimation className="w-full h-full" scrollTriggered={true} />
+          <StarFieldAnimationPlatform className="w-full h-full" />
         </div>
       </div>
       
       {/* Background Animation - Mobile Fixed Height */}
       <div className="absolute inset-0 z-0 block lg:hidden">
         <div className="h-full">
-          <StarFieldAnimation className="w-full h-full" scrollTriggered={true} />
+          <StarFieldAnimationPlatform className="w-full h-full" />
         </div>
       </div>
       

@@ -4,33 +4,24 @@ import { useEffect, useRef, useCallback, useState } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
 import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
-import { useScrollTriggeredAnimation } from "@/hooks/use-scroll-triggered-animation"
 
 interface UnifiedKnowledgeProps {
   width?: number
   height?: number
   className?: string
   showBorder?: boolean
-  scrollTriggered?: boolean
 }
 
 export function UnifiedKnowledge({ 
   width = 600, 
   height = 400, 
   className = "",
-  showBorder = true,
-  scrollTriggered = false
+  showBorder = true 
 }: UnifiedKnowledgeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const [animationKey, setAnimationKey] = useState(0)
-  
-  // Scroll-triggered animation hook
-  const { containerRef: scrollContainerRef, isPlaying } = useScrollTriggeredAnimation({
-    duration: 3000, // 3 seconds
-    threshold: 0.1
-  })
   
   // Performance optimization: frame rate limiting
   const lastFrameTimeRef = useRef(0)
@@ -156,11 +147,6 @@ export function UnifiedKnowledge({
     const canvasData = initializeCanvas()
     if (!canvasData || !canvasData.canvas || !canvasData.ctx) return
     const { canvas, ctx } = canvasData
-
-    // If scroll-triggered and not playing, don't start animation
-    if (scrollTriggered && !isPlaying) {
-      return
-    }
 
     // Theme-aware colors
     let isDark = document.documentElement.classList.contains('dark')
@@ -426,13 +412,10 @@ export function UnifiedKnowledge({
       }
       observer.disconnect()
     }
-  }, [width, height, animationKey, scrollTriggered, isPlaying])
-
-  // If scroll-triggered, use scroll container ref
-  const containerRefToUse = scrollTriggered ? scrollContainerRef : containerRef
+  }, [width, height, animationKey])
 
   return (
-    <div ref={containerRefToUse} className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

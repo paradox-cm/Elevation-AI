@@ -2,29 +2,23 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
-import { useScrollTimer } from '@/hooks/use-scroll-timer'
 
-interface StarFieldAnimationProps {
+interface StarFieldAnimationPlatformProps {
   className?: string
 }
 
-export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) {
+export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimationPlatformProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
   const [mounted, setMounted] = useState(false)
   const { theme } = useThemeProvider()
-  const { elementRef, shouldAnimate, isFadingOut, fadeOutDuration } = useScrollTimer({ 
-    duration: 3000,
-    fadeInDuration: 0, // Immediate appearance
-    fadeOutDuration: 2000 // 2 seconds fade out
-  })
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   useEffect(() => {
-    if (!mounted || !shouldAnimate) return
+    if (!mounted) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -151,24 +145,17 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       }
       animationRunning = false
     }
-  }, [mounted, theme, shouldAnimate])
+  }, [mounted, theme])
 
   if (!mounted) {
     return null
   }
 
   return (
-    <div ref={elementRef} className="relative w-full h-full">
-      <canvas
-        ref={canvasRef}
-        className={`absolute inset-0 w-full h-full transition-opacity ${className} ${
-          shouldAnimate ? (isFadingOut ? 'opacity-0' : 'opacity-100') : 'opacity-0'
-        }`}
-        style={{ 
-          pointerEvents: 'none',
-          transitionDuration: isFadingOut ? `${fadeOutDuration}ms` : '0ms'
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className={`absolute inset-0 w-full h-full ${className}`}
+      style={{ pointerEvents: 'none' }}
+    />
   )
 }

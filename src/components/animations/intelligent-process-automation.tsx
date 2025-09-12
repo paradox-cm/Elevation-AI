@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
 import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
-import { useScrollTriggeredAnimation } from "@/hooks/use-scroll-triggered-animation"
 
 interface TradeLine {
   x: number
@@ -20,27 +19,19 @@ interface IntelligentProcessAutomationProps {
   height?: number
   className?: string
   showBorder?: boolean
-  scrollTriggered?: boolean
 }
 
 export function IntelligentProcessAutomation({ 
   width = 600, 
   height = 400, 
   className = "",
-  showBorder = true,
-  scrollTriggered = false
+  showBorder = true 
 }: IntelligentProcessAutomationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
   const trafficRef = useRef<TradeLine[]>([])
   const [isPlaying, _setIsPlaying] = useState(true)
   const [animationKey, setAnimationKey] = useState(0)
-  
-  // Scroll-triggered animation hook
-  const { containerRef: scrollContainerRef, isPlaying: scrollIsPlaying } = useScrollTriggeredAnimation({
-    duration: 3000, // 3 seconds
-    threshold: 0.1
-  })
 
   // Define wider boundary area for grid and traffic (closer to 16:9 aspect ratio)
   const gridBoundary = {
@@ -198,11 +189,6 @@ export function IntelligentProcessAutomation({
     observerRef.current = observer;
     observer.observe(document.documentElement, { attributes: true });
 
-    // If scroll-triggered and not playing, don't start animation
-    if (scrollTriggered && !scrollIsPlaying) {
-      return
-    }
-
     // Create initial traffic
     trafficRef.current = createTraffic(canvas)
     
@@ -218,13 +204,10 @@ export function IntelligentProcessAutomation({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animate, createTraffic, animationKey, scrollTriggered, scrollIsPlaying])
-
-  // If scroll-triggered, use scroll container ref
-  const containerRefToUse = scrollTriggered ? scrollContainerRef : null
+  }, [width, height, isPlaying, animate, createTraffic, animationKey])
 
   return (
-    <div ref={containerRefToUse} className={`flex justify-center ${className}`}>
+    <div className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
@@ -496,11 +479,6 @@ export function IntelligentProcessAutomationMobile({
     observerRef.current = observer;
     observer.observe(document.documentElement, { attributes: true });
 
-    // If scroll-triggered and not playing, don't start animation
-    if (scrollTriggered && !scrollIsPlaying) {
-      return
-    }
-
     // Create initial traffic
     trafficRef.current = createTraffic(canvas)
     
@@ -516,13 +494,10 @@ export function IntelligentProcessAutomationMobile({
         observerRef.current.disconnect()
       }
     }
-  }, [width, height, isPlaying, animate, createTraffic, animationKey, scrollTriggered, scrollIsPlaying])
-
-  // If scroll-triggered, use scroll container ref
-  const containerRefToUse = scrollTriggered ? scrollContainerRef : null
+  }, [width, height, isPlaying, animate, createTraffic, animationKey])
 
   return (
-    <div ref={containerRefToUse} className={`flex justify-center ${className}`}>
+    <div className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

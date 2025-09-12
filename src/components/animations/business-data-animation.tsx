@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
+import { useScrollTimer } from '@/hooks/use-scroll-timer'
 
 interface BusinessDataAnimationProps {
   className?: string
@@ -18,11 +19,18 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
     speed: number
   }>>([])
   const { theme } = useThemeProvider()
+  const { elementRef, shouldAnimate, isFadingOut, fadeOutDuration } = useScrollTimer({ 
+    duration: 3000,
+    fadeInDuration: 0, // Immediate appearance
+    fadeOutDuration: 6000 // 6 seconds fade out
+  })
 
   const cols = 8
   const rows = 24
 
   useEffect(() => {
+    if (!shouldAnimate) return
+    
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -91,13 +99,20 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
       }
       window.removeEventListener('resize', handleResize)
     }
-  }, [theme])
+  }, [theme, shouldAnimate])
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={`absolute inset-0 w-full h-full ${className}`}
-      style={{ pointerEvents: 'none' }}
-    />
+    <div ref={elementRef} className="relative w-full h-full">
+      <canvas
+        ref={canvasRef}
+        className={`absolute inset-0 w-full h-full transition-opacity ${className} ${
+          shouldAnimate ? (isFadingOut ? 'opacity-0' : 'opacity-100') : 'opacity-0'
+        }`}
+        style={{ 
+          pointerEvents: 'none',
+          transitionDuration: isFadingOut ? `${fadeOutDuration}ms` : '0ms'
+        }}
+      />
+    </div>
   )
 }
