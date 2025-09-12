@@ -37,8 +37,8 @@ export function MobilePerformanceDebug({ enabled = false }: MobilePerformanceDeb
         const frameTime = deltaTime / 60
         
         // Check memory usage if available
-        const memoryUsage = (performance as any).memory 
-          ? Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024)
+        const memoryUsage = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory 
+          ? Math.round((performance as Performance & { memory?: { usedJSHeapSize: number } }).memory!.usedJSHeapSize / 1024 / 1024)
           : 0
 
         setMetrics({
