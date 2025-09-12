@@ -607,8 +607,11 @@ function ProblemSection() {
 
   // Desktop scroll-triggered carousel with standardized behavior
   React.useEffect(() => {
+    // Only run on desktop - use a more reliable check
+    if (typeof window === 'undefined' || window.innerWidth < 1024) return
+    
     const handleScroll = () => {
-      if (!sectionRef.current || window.innerWidth < 1024) return
+      if (!sectionRef.current) return
       
       const rect = sectionRef.current.getBoundingClientRect()
       // Responsive container height calculation matching actual container heights
@@ -920,8 +923,11 @@ function PlatformSection() {
 
   // Desktop scroll-triggered tab interface with standardized behavior (matching ProblemSection)
   React.useEffect(() => {
+    // Only run on desktop - use a more reliable check
+    if (typeof window === 'undefined' || window.innerWidth < 1024) return
+    
     const handleScroll = () => {
-      if (!sectionRef.current || window.innerWidth < 1024) return
+      if (!sectionRef.current) return
       
       const rect = sectionRef.current.getBoundingClientRect()
       // Responsive container height calculation matching actual container heights
@@ -991,7 +997,18 @@ function PlatformSection() {
     <Section paddingY="lg" className="relative">
       {/* Background Animation */}
       <div className="absolute inset-0 z-0">
-        <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
+        <div 
+          className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            willChange: 'auto',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
+        >
           {/* Use screensaver version for mobile, platform version for desktop */}
           {isDesktop ? (
             <StarFieldAnimationPlatform key="platform-desktop" className="w-full h-full" />

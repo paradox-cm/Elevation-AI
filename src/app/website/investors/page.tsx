@@ -27,7 +27,22 @@ export default function InvestorsPage() {
             {/* Hero - centered with edge-to-edge border */}
             <div className="relative w-full flex items-center justify-center min-h-[300px] sm:min-h-[360px] lg:min-h-[420px] border-b border-border/50 overflow-hidden">
               {/* Starfield Animation Background */}
-              <StarFieldAnimationPlatform key="investors-hero" className="absolute inset-0 w-full h-full z-0" />
+              <div 
+                className="absolute inset-0 w-full h-full z-0"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  overflow: 'hidden',
+                  willChange: 'auto',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden'
+                }}
+              >
+                <StarFieldAnimationPlatform key="investors-hero" className="w-full h-full" />
+              </div>
               
               <Container size="2xl" className="relative z-10">
                 <div className="text-center space-y-4">

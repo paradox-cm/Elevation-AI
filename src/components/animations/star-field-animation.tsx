@@ -175,7 +175,16 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
         ref={canvasRef}
         className={`absolute inset-0 w-full h-full ${className}`}
         style={{ 
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          willChange: 'auto',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          perspective: '1000px'
         }}
       />
     </div>
