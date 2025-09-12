@@ -1197,19 +1197,16 @@ export default function WireframesSolutionsPage() {
         <SolutionsSubNav />
         
         <div className="min-h-screen bg-background transition-colors duration-300">
-          <main>
-            {/* Solutions Hero Section */}
-            <SolutionsHeroSection />
+          <Suspense fallback={<div>Loading...</div>}>
+            <main>
+              {/* Solutions Hero Section */}
+              <SolutionsHeroSection />
 
-            {/* Industry Solutions Section */}
-            <Suspense fallback={<div>Loading...</div>}>
+              {/* Industry Solutions Section */}
               <IndustrySolutionsSection />
-            </Suspense>
 
-            {/* Stage Solutions Section */}
-            <Suspense fallback={<div>Loading...</div>}>
+              {/* Stage Solutions Section */}
               <StageSolutionsSection />
-            </Suspense>
 
             {/* Solution Features Section */}
             <Section paddingY="lg" className="bg-primary/5">
@@ -1325,7 +1322,8 @@ export default function WireframesSolutionsPage() {
                 </div>
                 </Container>
               </Section>
-          </main>
+            </main>
+          </Suspense>
         </div>
       </MobileOnlyLayout>
     </PageWrapper>
