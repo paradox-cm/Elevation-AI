@@ -28,39 +28,15 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
     setMounted(true)
   }, [])
 
-  // Intersection Observer for visibility-based animation control
+  // Always keep animation visible - no scroll interactions
   useEffect(() => {
     if (!mounted) return
-
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    // On mobile, always keep animation visible (like desktop)
-    if (isMobile) {
-      setIsVisible(true)
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsVisible(entry.isIntersecting)
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    observer.observe(canvas)
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [mounted, isMobile])
+    setIsVisible(true)
+  }, [mounted])
 
   useEffect(() => {
     if (!mounted || prefersReducedMotion) return
-    // On mobile, always animate regardless of isVisible
-    if (!isMobile && !isVisible) return
+    // Always animate - no scroll interactions
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -244,7 +220,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       animationRunning = false
       isAnimatingRef.current = false
     }
-  }, [mounted, theme, isVisible, prefersReducedMotion, isMobile])
+  }, [mounted, theme, prefersReducedMotion, isMobile])
 
   if (!mounted) {
     return null

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
-import { useScrollTimer } from '@/hooks/use-scroll-timer'
 import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface StarFieldAnimationProps {
@@ -20,16 +19,8 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
   const lastFrameTimeRef = useRef(0)
   const frameInterval = isMobile ? 1000 / 20 : 1000 / 30 // 20 FPS on mobile, 30 FPS on desktop
   
-  // On mobile, always animate indefinitely like a screensaver
-  // On desktop, use scroll timer for timed animation
-  const { elementRef, shouldAnimate: scrollShouldAnimate, isFadingOut, fadeOutDuration } = useScrollTimer({ 
-    duration: 3000,
-    fadeInDuration: 0, // Immediate appearance
-    fadeOutDuration: 2000 // 2 seconds fade out
-  })
-  
-  // Mobile: always animate indefinitely, Desktop: use scroll timer
-  const shouldAnimate = isMobile ? true : scrollShouldAnimate
+  // Always animate indefinitely like a screensaver - no scroll interactions
+  const shouldAnimate = true
 
   useEffect(() => {
     setMounted(true)
@@ -179,15 +170,12 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
   }
 
   return (
-    <div ref={elementRef} className="relative w-full h-full">
+    <div className="relative w-full h-full">
       <canvas
         ref={canvasRef}
-        className={`absolute inset-0 w-full h-full transition-opacity ${className} ${
-          shouldAnimate ? (isFadingOut ? 'opacity-0' : 'opacity-100') : 'opacity-0'
-        }`}
+        className={`absolute inset-0 w-full h-full ${className}`}
         style={{ 
-          pointerEvents: 'none',
-          transitionDuration: isFadingOut ? `${fadeOutDuration}ms` : '0ms'
+          pointerEvents: 'none'
         }}
       />
     </div>
