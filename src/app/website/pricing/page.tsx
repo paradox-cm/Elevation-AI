@@ -43,8 +43,9 @@ function PricingHeroSection({ onOpenCalculator }: { onOpenCalculator: () => void
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" onClick={onOpenCalculator} className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto cursor-pointer">
+              <Button size="lg" onClick={onOpenCalculator} className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto cursor-pointer group">
                 Build Your Custom Plan
+                <Icon name="calculator-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
               </Button>
               <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 <Link href="/website/demo">
@@ -186,9 +187,9 @@ function GrowthAnimationSection({ onOpenCalculator }: { onOpenCalculator: () => 
         <Container size="2xl">
           <div className="text-center group">
             <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-              <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto cursor-pointer">
+              <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto cursor-pointer group">
                 Calculate Your Plan
-                <Icon name="arrow-right-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
+                <Icon name="calculator-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
               </Button>
             </div>
           </div>

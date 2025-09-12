@@ -29,7 +29,6 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { CollapsibleCard } from "@/components/ui/collapsible-card"
 import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
-import { BusinessDataAnimationWithTimer } from "@/components/animations/business-data-animation-with-timer"
 import { StarfieldAnimationPlatform } from "@/app/design-system/animations/starfield-animation"
 import { 
   UnifiedKnowledge, 
@@ -668,15 +667,8 @@ function ProblemSection() {
   }, [problems.length])
 
     return (
-    <Section paddingY="lg" className="relative">
-      {/* Background Animation */}
-      <div className="absolute inset-0 z-0">
-        <div className="sticky top-0 h-screen">
-          <BusinessDataAnimationWithTimer className="w-full h-full" />
-        </div>
-      </div>
-      
-      <Container size="2xl" className="relative z-10">
+    <Section paddingY="lg">
+      <Container size="2xl">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Mobile Layout */}
           {!isDesktop && (

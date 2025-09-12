@@ -413,7 +413,7 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogPortal>
         <DialogOverlay className="backdrop-blur-md bg-black/20 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto backdrop-blur-md bg-background/95 border border-border/50">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto backdrop-blur-md bg-background/95 border border-border/50 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] md:w-[calc(100vw-4rem)] lg:w-full">
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-3">
               <span>Build Your Custom Plan</span>

@@ -19,7 +19,7 @@ function LogoGridSection() {
     { name: "Accenture", filename: "Accenture.svg", showText: true },
     { name: "Apple", filename: "Apple.svg", showText: false },
     { name: "Bank of America", filename: "Bank-of-America.svg", showText: true },
-    { name: "BCG Consulting", filename: "BCG-Consulting.svg", showText: true },
+    { name: "BCG Consulting", filename: "BCG-Consulting.svg", showText: false },
     { name: "Capital One", filename: "Capital-One.svg", showText: true },
     { name: "Deutsche Bank", filename: "Deutsche-Bank.svg", showText: true },
     { name: "eBay", filename: "ebay.svg", showText: false },
