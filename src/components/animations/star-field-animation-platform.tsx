@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface StarFieldAnimationPlatformProps {
   className?: string
@@ -15,11 +16,13 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
   const [isVisible, setIsVisible] = useState(false)
   const { theme } = useThemeProvider()
   const prefersReducedMotion = useReducedMotion()
+  const isMobile = useMediaQuery("(max-width: 1023px)")
 
-  // Performance optimizations
+  // Performance optimizations - more aggressive on mobile
   const lastFrameTimeRef = useRef(0)
-  const frameInterval = 1000 / 30 // 30 FPS instead of 60 FPS
+  const frameInterval = isMobile ? 1000 / 20 : 1000 / 30 // 20 FPS on mobile, 30 FPS on desktop
   const isAnimatingRef = useRef(false)
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -63,28 +66,44 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
     ctx.imageSmoothingEnabled = false
 
     const stars: { x: number; y: number; z: number; originalX: number; originalY: number }[] = []
-    const starCount = 200 // Reduced from 300 for better performance
-    const speed = 0.3 // Reduced speed for smoother animation
+    const starCount = isMobile ? 80 : 200 // Much fewer stars on mobile
+    const speed = isMobile ? 0.2 : 0.3 // Slower on mobile for stability
     const Z_MAX = 1000
     const Z_MIN = 0.1
 
     // Function to set canvas buffer size and initialize/re-initialize stars
     const initializeCanvasAndStars = () => {
-      const dpr = window.devicePixelRatio || 1
+      // Use lower DPR on mobile to reduce memory usage
+      const dpr = isMobile ? 1 : (window.devicePixelRatio || 1)
+      
       if (canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
-        animationRef.current = requestAnimationFrame(initializeCanvasAndStars)
+        // More aggressive retry on mobile
+        if (isMobile) {
+          setTimeout(() => {
+            if (canvas.offsetWidth > 0 && canvas.offsetHeight > 0) {
+              initializeCanvasAndStars()
+            }
+          }, 100)
+        } else {
+          animationRef.current = requestAnimationFrame(initializeCanvasAndStars)
+        }
         return false
       }
 
+      // Set canvas size with proper scaling
       canvas.width = canvas.offsetWidth * dpr
       canvas.height = canvas.offsetHeight * dpr
+      
+      // Scale context for proper rendering
+      ctx.scale(dpr, dpr)
 
       ctx.imageSmoothingEnabled = false
 
+      // Clear and reinitialize stars
       stars.length = 0
       for (let i = 0; i < starCount; i++) {
-        const x = Math.random() * canvas.width - canvas.width / 2
-        const y = Math.random() * canvas.height - canvas.height / 2
+        const x = Math.random() * canvas.offsetWidth - canvas.offsetWidth / 2
+        const y = Math.random() * canvas.offsetHeight - canvas.offsetHeight / 2
         stars.push({
           x: x,
           y: y,
@@ -124,11 +143,11 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
         ? 'rgba(0, 0, 0, 0.2)' 
         : 'rgba(255, 255, 255, 0.1)'
       ctx.fillStyle = backgroundColor
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
 
       const perspectiveFactor = 300
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
+      const centerX = canvas.offsetWidth / 2
+      const centerY = canvas.offsetHeight / 2
 
       // Use theme-aware star color
       const starColor = theme === 'dark' ? '#FFFFFF' : '#000000'
@@ -153,8 +172,8 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
         const opacity = Math.max(0, Math.min(1, 1 - star.z / Z_MAX))
 
         // Only draw stars that are within canvas bounds and have sufficient opacity
-        if (projectedX >= 0 && projectedX < canvas.width && 
-            projectedY >= 0 && projectedY < canvas.height && 
+        if (projectedX >= 0 && projectedX < canvas.offsetWidth && 
+            projectedY >= 0 && projectedY < canvas.offsetHeight && 
             opacity > 0.1) {
           ctx.globalAlpha = opacity
           ctx.fillRect(Math.floor(projectedX), Math.floor(projectedY), 1, 1)
@@ -166,15 +185,26 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       animationRef.current = requestAnimationFrame(animate)
     }
 
-    // Resize handler
+    // Resize handler with debouncing for mobile
     const handleResize = () => {
-      if (canvasRef.current) {
-        initializeCanvasAndStars()
-        if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0 && isVisible) {
-          animationRunning = true
-          animate()
-        }
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current)
       }
+      
+      resizeTimeoutRef.current = setTimeout(() => {
+        if (canvasRef.current) {
+          // Cancel current animation before reinitializing
+          if (animationRef.current) {
+            cancelAnimationFrame(animationRef.current)
+          }
+          
+          initializeCanvasAndStars()
+          if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0 && isVisible) {
+            animationRunning = true
+            animate()
+          }
+        }
+      }, isMobile ? 300 : 100) // Longer debounce on mobile
     }
 
     // Start animation if visible
@@ -200,10 +230,13 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current)
+      }
       animationRunning = false
       isAnimatingRef.current = false
     }
-  }, [mounted, theme, isVisible, prefersReducedMotion])
+  }, [mounted, theme, isVisible, prefersReducedMotion, isMobile])
 
   if (!mounted) {
     return null
