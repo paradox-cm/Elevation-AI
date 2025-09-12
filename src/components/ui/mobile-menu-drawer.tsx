@@ -82,19 +82,35 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
               {link.hasDropdown ? (
                 <div className="space-y-1">
                   <div className="flex items-center">
-                    {/* Main clickable link */}
-                    <Link
-                      href={link.href}
-                      className={cn(
-                        "flex-1 px-3 py-2 text-sm rounded-l-md transition-colors",
-                        link.active 
-                          ? "bg-primary text-primary-foreground" 
-                          : "text-foreground hover:bg-muted"
-                      )}
-                      onClick={onClose}
-                    >
-                      {link.label}
-                    </Link>
+                    {/* Main clickable area - for Resources, only toggle dropdown */}
+                    {link.label === "Resources" ? (
+                      <button
+                        className={cn(
+                          "flex-1 px-3 py-2 text-sm rounded-l-md transition-colors text-left",
+                          link.active 
+                            ? "bg-primary text-primary-foreground" 
+                            : "text-foreground hover:bg-muted"
+                        )}
+                        onClick={() => {
+                          setExpandedResources(!expandedResources)
+                        }}
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className={cn(
+                          "flex-1 px-3 py-2 text-sm rounded-l-md transition-colors",
+                          link.active 
+                            ? "bg-primary text-primary-foreground" 
+                            : "text-foreground hover:bg-muted"
+                        )}
+                        onClick={onClose}
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                     
                     {/* Separate expand/collapse button */}
                     <button

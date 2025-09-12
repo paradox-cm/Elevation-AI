@@ -20,14 +20,15 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
   const lastFrameTimeRef = useRef(0)
   const frameInterval = isMobile ? 1000 / 20 : 1000 / 30 // 20 FPS on mobile, 30 FPS on desktop
   
-  // On mobile, always animate to prevent flashing during scroll
+  // On mobile, always animate indefinitely like a screensaver
+  // On desktop, use scroll timer for timed animation
   const { elementRef, shouldAnimate: scrollShouldAnimate, isFadingOut, fadeOutDuration } = useScrollTimer({ 
     duration: 3000,
     fadeInDuration: 0, // Immediate appearance
     fadeOutDuration: 2000 // 2 seconds fade out
   })
   
-  // Use scroll timer on desktop, always animate on mobile
+  // Mobile: always animate indefinitely, Desktop: use scroll timer
   const shouldAnimate = isMobile ? true : scrollShouldAnimate
 
   useEffect(() => {

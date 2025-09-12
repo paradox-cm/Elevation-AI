@@ -92,9 +92,10 @@ export function UnifiedKnowledge({
   }, [])
 
   // Use canvas resize hook
-  // On mobile, use longer debounce to prevent excessive restarts during scroll
-  useCanvasResize(canvasRef, initializeAndStartAnimation, {
-    debounceDelay: isMobile ? 300 : 150,
+  // On mobile, use a no-op callback to prevent restarts during scroll
+  const canvasResizeCallback = isMobile ? () => {} : initializeAndStartAnimation
+  useCanvasResize(canvasRef, canvasResizeCallback, {
+    debounceDelay: isMobile ? 1000 : 150, // Very long delay on mobile to effectively disable
     preserveAspectRatio: true
   })
 
@@ -109,23 +110,24 @@ export function UnifiedKnowledge({
     }
   })
 
-  // Alternative approach: Use breakpoint reset hook
-  // On mobile, disable breakpoint-based restarts to prevent flashing during scroll
+  // Use breakpoint reset hook to detect breakpoint changes
+  // This should work on both mobile and desktop to handle layout changes
   useBreakpointReset(containerRef, () => {
     console.log('UnifiedKnowledge: Breakpoint change detected, restarting animation')
-    if (!isMobile) {
-      // Animation restart triggered by breakpoint change (desktop only)
-      initializeAndStartAnimation()
-    }
+    // Animation restart triggered by breakpoint change (both mobile and desktop)
+    initializeAndStartAnimation()
   })
 
   // Additional window resize listener for extra safety
-  // On mobile, use longer debounce to prevent excessive restarts during scroll
+  // On mobile, disable resize-based restarts to prevent flashing during scroll
   useEffect(() => {
+    // Skip resize listener on mobile to prevent flashing
+    if (isMobile) return
+
     const handleResize = () => {
       console.log('UnifiedKnowledge: Window resize detected, checking if restart needed')
-      // Longer delay on mobile to prevent excessive restarts during scroll
-      const delay = isMobile ? 300 : 100
+      // Desktop only - use shorter delay
+      const delay = 100
       setTimeout(() => {
         const element = containerRef.current
         if (element) {

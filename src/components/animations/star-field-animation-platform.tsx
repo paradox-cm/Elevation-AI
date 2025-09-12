@@ -132,8 +132,8 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       }
       lastFrameTimeRef.current = currentTime
 
-      // Stop animation if not visible
-      if (!isVisible) {
+      // Stop animation if not visible (desktop only - mobile runs indefinitely)
+      if (!isMobile && !isVisible) {
         isAnimatingRef.current = false
         return
       }
@@ -205,7 +205,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
           }
           
           initializeCanvasAndStars()
-          if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0 && isVisible) {
+          if (!animationRunning && canvasRef.current.width > 0 && canvasRef.current.height > 0 && (isVisible || isMobile)) {
             animationRunning = true
             animate()
           }
@@ -213,15 +213,15 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       }, isMobile ? 300 : 100) // Longer debounce on mobile
     }
 
-    // Start animation if visible
-    if (isVisible) {
+    // Start animation if visible (or always on mobile)
+    if (isVisible || isMobile) {
       if (initializeCanvasAndStars()) {
         animationRunning = true
         animate()
       } else {
         // Retry if canvas dimensions are zero
         animationRef.current = requestAnimationFrame(() => {
-          if (initializeCanvasAndStars() && isVisible) {
+          if (initializeCanvasAndStars() && (isVisible || isMobile)) {
             animationRunning = true
             animate()
           }
