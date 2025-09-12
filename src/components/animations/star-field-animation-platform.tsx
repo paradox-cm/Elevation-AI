@@ -56,8 +56,16 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
       const dpr = isMobile ? 1 : (window.devicePixelRatio || 1)
       
       if (canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
-        // Use requestAnimationFrame for both mobile and desktop to prevent timing issues
-        animationRef.current = requestAnimationFrame(initializeCanvasAndStars)
+        // More aggressive retry on mobile
+        if (isMobile) {
+          setTimeout(() => {
+            if (canvas.offsetWidth > 0 && canvas.offsetHeight > 0) {
+              initializeCanvasAndStars()
+            }
+          }, 100)
+        } else {
+          animationRef.current = requestAnimationFrame(initializeCanvasAndStars)
+        }
         return false
       }
 
@@ -158,27 +166,8 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
         clearTimeout(resizeTimeoutRef.current)
       }
       
-      // Much longer debounce on mobile to prevent scroll-related triggers
-      const debounceTime = isMobile ? 500 : 200
-      
       resizeTimeoutRef.current = setTimeout(() => {
         if (canvasRef.current) {
-          // On mobile, only reinitialize if dimensions actually changed significantly
-          if (isMobile) {
-            const currentWidth = canvasRef.current.offsetWidth
-            const currentHeight = canvasRef.current.offsetHeight
-            const lastWidth = canvasRef.current.width / (window.devicePixelRatio || 1)
-            const lastHeight = canvasRef.current.height / (window.devicePixelRatio || 1)
-            
-            // Only reinitialize if dimensions changed by more than 10%
-            const widthChanged = Math.abs(currentWidth - lastWidth) > lastWidth * 0.1
-            const heightChanged = Math.abs(currentHeight - lastHeight) > lastHeight * 0.1
-            
-            if (!widthChanged && !heightChanged) {
-              return // Skip reinitialization on mobile if dimensions haven't changed significantly
-            }
-          }
-          
           // Cancel current animation before reinitializing
           if (animationRef.current) {
             cancelAnimationFrame(animationRef.current)
@@ -190,7 +179,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
             animate()
           }
         }
-      }, debounceTime)
+      }, 200) // Longer debounce to prevent scroll-related triggers
     }
 
     // Always start animation
@@ -255,15 +244,7 @@ export function StarFieldAnimationPlatform({ className = "" }: StarFieldAnimatio
         willChange: 'auto',
         transform: 'translateZ(0)',
         backfaceVisibility: 'hidden',
-        perspective: '1000px',
-        // Additional mobile-specific optimizations
-        ...(isMobile && {
-          touchAction: 'none',
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          WebkitTouchCallout: 'none',
-          WebkitTapHighlightColor: 'transparent'
-        })
+        perspective: '1000px'
       }}
     />
   )

@@ -995,10 +995,29 @@ function PlatformSection() {
 
   return (
     <Section paddingY="lg" className="relative">
-      {/* Background Animation - Single instance with responsive behavior */}
+      {/* Background Animation */}
       <div className="absolute inset-0 z-0">
-        <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
-          <StarFieldAnimationPlatform className="w-full h-full" />
+        <div 
+          className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            willChange: 'auto',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            pointerEvents: 'none'
+          }}
+        >
+          {/* Use screensaver version for mobile, platform version for desktop */}
+          {isDesktop ? (
+            <StarFieldAnimationPlatform key="platform-desktop" className="w-full h-full" />
+          ) : (
+            <StarFieldAnimation key="screensaver-mobile" className="w-full h-full" />
+          )}
         </div>
       </div>
       
