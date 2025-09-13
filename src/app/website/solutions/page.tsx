@@ -1125,13 +1125,13 @@ function ExpandableSolutionCard({
 
             <div className="pt-4 border-t">
               <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button size="sm" asChild>
+                <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                  <Button size="sm" asChild className="w-full sm:w-auto">
                     <Link href="/website/demo">
                       Schedule Consultation
                     </Link>
                   </Button>
-                  <Button variant="outline" size="sm" asChild>
+                  <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
                     <Link href="/website/contact">
                       Contact Sales
                     </Link>
