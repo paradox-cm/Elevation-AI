@@ -235,10 +235,10 @@ export function Carousel({
       clearTimeout(manualInteractionTimeoutRef.current)
     }
     
-    // Set 5-second timer for auto-play resume
+    // Set 3-second timer for auto-play resume
     manualInteractionTimeoutRef.current = setTimeout(() => {
       setHasManualInteraction(false)
-    }, 5000)
+    }, 3000)
   }, [])
 
   // Scroll to specific slide
@@ -297,17 +297,25 @@ export function Carousel({
 
   // Auto-scroll carousel when currentSlide changes (all devices)
   React.useEffect(() => {
-    if (carouselRef.current && !naturalScroll) {
+    if (carouselRef.current) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
-      
       
       // Set flag to indicate this is a programmatic scroll
       isProgrammaticScrollRef.current = true
       
-      carouselRef.current.scrollTo({
-        left: currentSlide * totalCardWidth,
-        behavior: 'smooth'
-      })
+      if (naturalScroll) {
+        // For natural scroll, scroll to the card position
+        carouselRef.current.scrollTo({
+          left: currentSlide * totalCardWidth,
+          behavior: 'smooth'
+        })
+      } else {
+        // For snapping scroll, use the original logic
+        carouselRef.current.scrollTo({
+          left: currentSlide * totalCardWidth,
+          behavior: 'smooth'
+        })
+      }
       
       // Reset flag after scroll completes
       setTimeout(() => {
@@ -327,7 +335,10 @@ export function Carousel({
         clearTimeout(scrollTimeout)
         scrollTimeout = setTimeout(() => {
           checkScrollPosition()
-          handleManualInteraction()
+          // Only detect manual interaction if this is not a programmatic scroll
+          if (!isProgrammaticScrollRef.current) {
+            handleManualInteraction()
+          }
         }, 16) // ~60fps throttling
       }
       
