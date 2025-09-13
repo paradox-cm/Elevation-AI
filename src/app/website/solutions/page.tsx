@@ -678,13 +678,11 @@ function IndustrySolutionsSection() {
   useEffect(() => {
     const openParam = searchParams.get('open')
     if (openParam && industrySolutions.some(s => s.id === openParam)) {
-      console.log('Setting open card ID:', openParam)
       setOpenCardId(openParam)
       
       // Function to attempt scrolling with retries
       const attemptScroll = (retries = 0) => {
         const cardElement = cardRefs.current[openParam]
-        console.log('Attempting scroll, retry:', retries, 'Element found:', !!cardElement)
         
         if (cardElement) {
           // Get the header element and its height
@@ -699,28 +697,19 @@ function IndustrySolutionsSection() {
           // Calculate the final scroll position with proper offset
           const finalScrollPosition = targetTop - headerHeight - 32 // 32px buffer for better positioning
           
-          console.log('Scroll details:', {
-            elementHeight: targetRect.height,
-            targetTop,
-            finalScrollPosition,
-            headerHeight
-          })
           
           // Only scroll if we have a valid position and the element is visible
           if (targetRect.height > 0 && finalScrollPosition > 0) {
-            console.log('Scrolling to element:', openParam, 'Position:', finalScrollPosition)
             window.scrollTo({
               top: Math.max(0, finalScrollPosition),
               behavior: 'smooth'
             })
           } else if (retries < 20) {
             // Retry if element isn't ready yet - increased retries and delay
-            console.log('Retrying scroll attempt:', retries + 1, 'Element height:', targetRect.height)
             setTimeout(() => attemptScroll(retries + 1), 100)
           }
         } else if (retries < 20) {
           // Retry if element doesn't exist yet - increased retries and delay
-          console.log('Element not found, retrying:', retries + 1)
           setTimeout(() => attemptScroll(retries + 1), 100)
         }
       }
@@ -887,13 +876,11 @@ function StageSolutionsSection() {
   useEffect(() => {
     const openParam = searchParams.get('open')
     if (openParam && stageSolutions.some(s => s.id === openParam)) {
-      console.log('Setting open stage card ID:', openParam)
       setOpenCardId(openParam)
       
       // Function to attempt scrolling with retries
       const attemptScroll = (retries = 0) => {
         const cardElement = cardRefs.current[openParam]
-        console.log('Attempting stage scroll, retry:', retries, 'Element found:', !!cardElement)
         
         if (cardElement) {
           // Get the header element and its height
@@ -908,28 +895,19 @@ function StageSolutionsSection() {
           // Calculate the final scroll position with proper offset
           const finalScrollPosition = targetTop - headerHeight - 32 // 32px buffer for better positioning
           
-          console.log('Stage scroll details:', {
-            elementHeight: targetRect.height,
-            targetTop,
-            finalScrollPosition,
-            headerHeight
-          })
           
           // Only scroll if we have a valid position and the element is visible
           if (targetRect.height > 0 && finalScrollPosition > 0) {
-            console.log('Scrolling to stage element:', openParam, 'Position:', finalScrollPosition)
             window.scrollTo({
               top: Math.max(0, finalScrollPosition),
               behavior: 'smooth'
             })
           } else if (retries < 20) {
             // Retry if element isn't ready yet - increased retries and delay
-            console.log('Retrying stage scroll attempt:', retries + 1, 'Element height:', targetRect.height)
             setTimeout(() => attemptScroll(retries + 1), 100)
           }
         } else if (retries < 20) {
           // Retry if element doesn't exist yet - increased retries and delay
-          console.log('Stage element not found, retrying:', retries + 1)
           setTimeout(() => attemptScroll(retries + 1), 100)
         }
       }

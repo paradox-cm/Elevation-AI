@@ -41,7 +41,6 @@ export function useScrollEventManager(
 
     // Create scroll event manager
     scrollManagerRef.current = new ScrollEventManager(totalSlides, (slideIndex) => {
-      console.log(`Slide changed to: ${slideIndex}`)
       setActiveSlide(slideIndex)
     })
 
@@ -54,7 +53,6 @@ export function useScrollEventManager(
       // Handle wheel event
       const changed = scrollManagerRef.current.handleWheel(event.deltaY, rect)
       if (changed) {
-        console.log(`Wheel event triggered slide change to: ${scrollManagerRef.current.getCurrentSlide()}`)
         // Prevent default scroll behavior when we handle the wheel event
         event.preventDefault()
       }
@@ -70,7 +68,6 @@ export function useScrollEventManager(
       // Handle scroll event
       const changed = scrollManagerRef.current.handleScroll(scrollY, rect)
       if (changed) {
-        console.log(`Scroll event triggered slide change to: ${scrollManagerRef.current.getCurrentSlide()}`)
       }
       
       lastScrollYRef.current = scrollY

@@ -265,7 +265,7 @@ export default function KnowledgeBasePage() {
     )
   }, [knowledgeCategories])
 
-  const handleSearch = (query: string, results: any[]) => {
+  const handleSearch = (query: string, results: KnowledgeItem[]) => {
     setSearchQuery(query)
     setSearchResults(results)
   }

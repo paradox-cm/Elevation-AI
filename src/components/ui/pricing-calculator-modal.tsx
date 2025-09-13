@@ -103,7 +103,6 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
   })
 
   const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data)
     setShowResults(true)
   }
 

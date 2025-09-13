@@ -292,9 +292,7 @@ export function IntelligentProcessAutomationMobile({
 
   // Use visibility reset hook to detect when component becomes visible again
   useVisibilityReset(containerRef, (isVisible) => {
-    console.log('IntelligentProcessAutomation visibility changed:', isVisible)
     if (isVisible) {
-      console.log('IntelligentProcessAutomation: Restarting animation due to visibility change')
       // Component became visible, force animation restart
       initializeAndStartAnimation()
     }
@@ -302,7 +300,6 @@ export function IntelligentProcessAutomationMobile({
 
   // Alternative approach: Use breakpoint reset hook
   useBreakpointReset(containerRef, () => {
-    console.log('IntelligentProcessAutomation: Breakpoint change detected, restarting animation')
     // Animation restart triggered by breakpoint change
     initializeAndStartAnimation()
   })
@@ -310,7 +307,6 @@ export function IntelligentProcessAutomationMobile({
   // Additional window resize listener for extra safety
   useEffect(() => {
     const handleResize = () => {
-      console.log('IntelligentProcessAutomation: Window resize detected, checking if restart needed')
       // Small delay to ensure CSS classes have been applied
       setTimeout(() => {
         const element = containerRef.current
@@ -325,7 +321,6 @@ export function IntelligentProcessAutomationMobile({
             computedStyle.opacity !== '0'
           
           if (isVisible) {
-            console.log('IntelligentProcessAutomation: Element is visible after resize, restarting animation')
             initializeAndStartAnimation()
           }
         }

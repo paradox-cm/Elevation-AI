@@ -22,11 +22,6 @@ export function useVisibilityReset(
       
       // Only trigger callback when visibility state actually changes
       if (isVisible !== isVisibleRef.current) {
-        console.log('VisibilityReset: Visibility state changed', {
-          isVisible,
-          wasVisible: isVisibleRef.current,
-          intersectionRatio: entry.intersectionRatio
-        })
         isVisibleRef.current = isVisible
         onVisibilityChange(isVisible)
       }

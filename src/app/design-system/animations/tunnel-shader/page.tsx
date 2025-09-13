@@ -20,154 +20,179 @@ export default function TunnelShaderPage() {
         header={<DesignSystemNavigation currentPage="animations" />}
         sidebar={<DesignSystemSidebar />}
       >
-        <div className="min-h-screen bg-background">
-          <main>
-            {/* Header */}
-            <Section paddingY="lg" className="border-b">
-              <Container size="2xl">
-                <div className="max-w-4xl mx-auto text-center space-y-6">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                    <Icon name="eye-line" size="sm" />
-                    Animation Components
-                  </div>
-                  <H1>Tunnel Shader</H1>
-                  <P className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                    Immersive tunnel effect animation that creates depth and visual interest. Used in the "Who this is for" section of the people page.
-                  </P>
+        <div className="flex-1 overflow-auto">
+          <Container size="2xl" className="py-8">
+            <div className="space-y-8">
+              {/* Header */}
+              <div className="space-y-4">
+                <H1>Tunnel Shader Animation</H1>
+                <P className="text-muted-foreground">
+                  A mesmerizing tunnel effect with animated rings and particles that creates depth and movement.
+                </P>
+                <div className="flex gap-2">
+                  <Badge variant="secondary">Animation</Badge>
+                  <Badge variant="secondary">Canvas</Badge>
+                  <Badge variant="secondary">Shader</Badge>
                 </div>
-              </Container>
-            </Section>
+              </div>
 
-          {/* Live Demo */}
-          <Section paddingY="lg">
-            <Container size="2xl">
-              <div className="max-w-4xl mx-auto space-y-8">
-                <div className="space-y-4">
-                  <H2>Live Demo</H2>
-                  <P className="text-muted-foreground">
-                    The tunnel shader creates an immersive 3D tunnel effect that draws the viewer's attention and creates a sense of depth and movement.
-                  </P>
-                </div>
-
+              {/* Live Demo */}
+              <Section>
                 <Card>
-                  <CardContent className="p-8">
-                    <div className="relative h-[400px] rounded-lg border border-border/50 overflow-hidden bg-gradient-to-br from-background/50 to-background/30">
-                      <div className="w-full h-full flex items-center justify-center">
-                        <TunnelShader />
+                  <CardHeader>
+                    <CardTitle>Live Demo</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <H3>Default Size</H3>
+                          <div className="border border-border rounded-lg p-4 bg-muted/20">
+                            <TunnelShader />
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <H3>Custom Size</H3>
+                          <div className="border border-border rounded-lg p-4 bg-muted/20">
+                            <div className="w-[300px] h-[200px]">
+                              <TunnelShader />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <H3>With Border</H3>
+                        <div className="border border-border rounded-lg p-4 bg-muted/20">
+                          <TunnelShader />
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
+              </Section>
 
-                <div className="space-y-6">
-                  <div className="space-y-4">
-                    <H3>Usage</H3>
-                    <div className="bg-muted/50 rounded-lg p-4">
-                      <Code className="text-sm">
+              {/* Usage */}
+              <Section>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Usage</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <H3>Basic Usage</H3>
+                      <Code className="block mt-2 p-4">
 {`import { TunnelShader } from "@/components/animations"
 
-// Basic usage
-<TunnelShader />
-
-// With custom styling
-<div className="w-full h-full flex items-center justify-center">
-  <TunnelShader />
-</div>`}
+<TunnelShader />`}
                       </Code>
                     </div>
-                  </div>
+                    
+                    <div>
+                      <H3>With Custom Props</H3>
+                      <Code className="block mt-2 p-4">
+{`import { TunnelShader } from "@/components/animations"
 
-                  <div className="space-y-4">
-                    <H3>Component Details</H3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <P className="font-medium">Type</P>
-                        <P className="text-muted-foreground">React component with WebGL shader</P>
-                      </div>
-                      <div>
-                        <P className="font-medium">Performance</P>
-                        <P className="text-muted-foreground">Optimized for smooth 60fps animation</P>
-                      </div>
-                      <div>
-                        <P className="font-medium">Responsive</P>
-                        <P className="text-muted-foreground">Automatically adapts to container size</P>
-                      </div>
-                      <div>
-                        <P className="font-medium">Browser Support</P>
-                        <P className="text-muted-foreground">WebGL compatible browsers</P>
-                      </div>
+<TunnelShader 
+  width={400}
+  height={300}
+  className="my-custom-class"
+  showBorder={true}
+/>`}
+                      </Code>
                     </div>
-                  </div>
+                  </CardContent>
+                </Card>
+              </Section>
 
-                  <div className="space-y-4">
-                    <H3>Features</H3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-start gap-3">
-                        <Icon name="check-line" size="sm" className="text-green-600 mt-0.5" />
-                        <P>3D tunnel perspective effect</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="check-line" size="sm" className="text-green-600 mt-0.5" />
-                        <P>Smooth continuous animation</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="check-line" size="sm" className="text-green-600 mt-0.5" />
-                        <P>High performance WebGL rendering</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="check-line" size="sm" className="text-green-600 mt-0.5" />
-                        <P>Automatic cleanup on unmount</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="check-line" size="sm" className="text-green-600 mt-0.5" />
-                        <P>Responsive design support</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="check-line" size="sm" className="text-green-600 mt-0.5" />
-                        <P>Memory efficient</P>
-                      </div>
+              {/* Props */}
+              <Section>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Props</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left p-2">Prop</th>
+                            <th className="text-left p-2">Type</th>
+                            <th className="text-left p-2">Default</th>
+                            <th className="text-left p-2">Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b">
+                            <td className="p-2 font-mono">width</td>
+                            <td className="p-2">number</td>
+                            <td className="p-2">400</td>
+                            <td className="p-2">Width of the canvas in pixels</td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-2 font-mono">height</td>
+                            <td className="p-2">number</td>
+                            <td className="p-2">300</td>
+                            <td className="p-2">Height of the canvas in pixels</td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-2 font-mono">className</td>
+                            <td className="p-2">string</td>
+                            <td className="p-2">""</td>
+                            <td className="p-2">Additional CSS classes</td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-2 font-mono">showBorder</td>
+                            <td className="p-2">boolean</td>
+                            <td className="p-2">false</td>
+                            <td className="p-2">Whether to show a border around the canvas</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
-                  </div>
+                  </CardContent>
+                </Card>
+              </Section>
 
-                  <div className="space-y-4">
-                    <H3>Use Cases</H3>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex items-start gap-3">
-                        <Icon name="arrow-right-line" size="sm" className="text-primary mt-0.5" />
-                        <P>Hero sections requiring visual impact</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="arrow-right-line" size="sm" className="text-primary mt-0.5" />
-                        <P>Background animations for content sections</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="arrow-right-line" size="sm" className="text-primary mt-0.5" />
-                        <P>Loading states and transitions</P>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Icon name="arrow-right-line" size="sm" className="text-primary mt-0.5" />
-                        <P>Interactive elements requiring depth</P>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <H3>Implementation Notes</H3>
-                    <div className="bg-muted/50 rounded-lg p-4 space-y-3 text-sm">
-                      <P className="font-medium">Performance Considerations:</P>
-                      <ul className="space-y-2 ml-4">
-                        <li>• The component automatically handles WebGL context creation and cleanup</li>
-                        <li>• Animation frame rate is optimized for smooth performance</li>
-                        <li>• Memory usage is minimal with proper resource management</li>
-                        <li>• Compatible with React's strict mode and development tools</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Container>
-          </Section>
-          </main>
+              {/* Features */}
+              <Section>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Features</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      <li className="flex items-center gap-2">
+                        <Icon name="check" className="h-4 w-4 text-green-500" />
+                        <span>Animated tunnel rings with depth</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Icon name="check" className="h-4 w-4 text-green-500" />
+                        <span>Particle effects for enhanced visual appeal</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Icon name="check" className="h-4 w-4 text-green-500" />
+                        <span>Theme-aware colors (light/dark mode)</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Icon name="check" className="h-4 w-4 text-green-500" />
+                        <span>Customizable dimensions</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Icon name="check" className="h-4 w-4 text-green-500" />
+                        <span>Responsive design</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Icon name="check" className="h-4 w-4 text-green-500" />
+                        <span>Performance optimized with requestAnimationFrame</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </Section>
+            </div>
+          </Container>
         </div>
       </AppShell>
     </PageWrapper>

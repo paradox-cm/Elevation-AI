@@ -70,14 +70,6 @@ export function StarfieldAnimation({
         Math.abs(newWidth - lastSize.width) > 1 || 
         Math.abs(newHeight - lastSize.height) > 1
 
-      // Debug logging (can be removed in production)
-      if (dimensionsChanged && lastSize) {
-        console.log('Starfield: Dimensions changed significantly', {
-          old: lastSize,
-          new: { width: newWidth, height: newHeight },
-          delta: { width: newWidth - lastSize.width, height: newHeight - lastSize.height }
-        })
-      }
 
       // Only recreate stars if dimensions changed significantly or forced
       if (dimensionsChanged || forceRecreate) {

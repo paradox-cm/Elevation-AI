@@ -31,18 +31,8 @@ export function useBreakpointReset(
       computedStyle.visibility !== 'hidden' &&
       computedStyle.opacity !== '0'
 
-    // Only log when visibility state actually changes to reduce noise
-    if (isVisible !== isVisibleRef.current) {
-      console.log('BreakpointReset: Element visibility changed', {
-        element: element.tagName,
-        isVisible,
-        wasVisible: isVisibleRef.current
-      })
-    }
-
     // If visibility changed from hidden to visible, trigger callback
     if (isVisible && !isVisibleRef.current) {
-      console.log('BreakpointReset: Element became visible, triggering callback')
       onBreakpointChange()
     }
 

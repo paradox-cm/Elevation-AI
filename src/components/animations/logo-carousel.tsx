@@ -212,12 +212,6 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     const currentFirstRowPosition = firstRowPositionRef.current
     const currentSecondRowPosition = secondRowPositionRef.current
     
-    console.log(`Mouse enter ${side}:`, {
-      currentFirstRowPosition,
-      currentSecondRowPosition,
-      currentDirection: directionRef.current,
-      currentSpeed: speedRef.current
-    })
     
     if (side === 'left') {
       // For reverse direction
@@ -249,10 +243,6 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
       // Set start time for fast animation from current position
       startTimeRef.current = performance.now() - (currentProgress * 29714) // ~29.7s for fast forward
       
-      console.log('Right hover - fast forward:', {
-        currentProgress,
-        newStartTime: startTimeRef.current
-      })
     }
   }
 
@@ -265,12 +255,6 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     const currentFirstRowPosition = firstRowPositionRef.current
     const currentSecondRowPosition = secondRowPositionRef.current
     
-    console.log('Mouse leave:', {
-      currentFirstRowPosition,
-      currentSecondRowPosition,
-      previousDirection: directionRef.current,
-      previousSpeed: speedRef.current
-    })
     
     // Reset to normal speed and forward direction
     directionRef.current = 1 // Forward direction
@@ -283,10 +267,6 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
     // Set start time to continue from current position at normal speed
     startTimeRef.current = performance.now() - (currentProgress * 62400) // 62.4s for normal speed
     
-    console.log('Mouse leave - reset to normal:', {
-      currentProgress,
-      newStartTime: startTimeRef.current
-    })
   }
 
   return (

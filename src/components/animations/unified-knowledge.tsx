@@ -102,9 +102,7 @@ export function UnifiedKnowledge({
   // Use visibility reset hook to detect when component becomes visible again
   // On mobile, disable visibility-based restarts to prevent flashing during scroll
   useVisibilityReset(containerRef, (isVisible) => {
-    console.log('UnifiedKnowledge visibility changed:', isVisible)
     if (isVisible && !isMobile) {
-      console.log('UnifiedKnowledge: Restarting animation due to visibility change (desktop only)')
       // Component became visible, force animation restart (desktop only)
       initializeAndStartAnimation()
     }
@@ -113,7 +111,6 @@ export function UnifiedKnowledge({
   // Use breakpoint reset hook to detect breakpoint changes
   // This should work on both mobile and desktop to handle layout changes
   useBreakpointReset(containerRef, () => {
-    console.log('UnifiedKnowledge: Breakpoint change detected, restarting animation')
     // Animation restart triggered by breakpoint change (both mobile and desktop)
     initializeAndStartAnimation()
   })
@@ -125,7 +122,6 @@ export function UnifiedKnowledge({
     if (isMobile) return
 
     const handleResize = () => {
-      console.log('UnifiedKnowledge: Window resize detected, checking if restart needed')
       // Desktop only - use shorter delay
       const delay = 100
       setTimeout(() => {
@@ -141,7 +137,6 @@ export function UnifiedKnowledge({
             computedStyle.opacity !== '0'
           
           if (isVisible) {
-            console.log('UnifiedKnowledge: Element is visible after resize, restarting animation')
             initializeAndStartAnimation()
           }
         }

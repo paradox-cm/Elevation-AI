@@ -226,7 +226,6 @@ export function Carousel({
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
-    console.log('scrollToSlide called with index:', index)
     setCurrentSlide(index)
     setProgress(0)
     
@@ -284,7 +283,6 @@ export function Carousel({
     if (carouselRef.current && !naturalScroll) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
-      console.log('Auto-scroll effect triggered, currentSlide:', currentSlide, 'scrollTo:', currentSlide * totalCardWidth)
       
       // Set flag to indicate this is a programmatic scroll
       isProgrammaticScrollRef.current = true

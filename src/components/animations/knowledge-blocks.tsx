@@ -104,9 +104,7 @@ export function KnowledgeBlocks({
 
   // Use visibility reset hook to detect when component becomes visible again
   useVisibilityReset(containerRef, (isVisible) => {
-    console.log('KnowledgeBlocks visibility changed:', isVisible)
     if (isVisible) {
-      console.log('KnowledgeBlocks: Restarting animation due to visibility change')
       initializeAndStartAnimation()
     }
   })
@@ -416,9 +414,7 @@ export function KnowledgeBlocksMobile({
 
   // Use visibility reset hook to detect when component becomes visible again
   useVisibilityReset(containerRef, (isVisible) => {
-    console.log('KnowledgeBlocksMobile visibility changed:', isVisible)
     if (isVisible) {
-      console.log('KnowledgeBlocksMobile: Restarting animation due to visibility change')
       initializeAndStartAnimation()
     }
   })

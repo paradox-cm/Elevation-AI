@@ -69,7 +69,6 @@ export default function ContactMessagePage() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000))
-      console.log("Form submitted:", data)
       // Reset form on success
       form.reset()
     } catch (error) {

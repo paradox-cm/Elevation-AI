@@ -8,10 +8,10 @@ import { cn } from "@/lib/utils"
 
 interface SearchableItem {
   id: string
-  title: string
-  content: string
+  question: string
+  answer: string
   category: string
-  tags?: string[]
+  tags: string[]
 }
 
 interface KnowledgeBaseSearchProps {
@@ -39,8 +39,8 @@ export function KnowledgeBaseSearch({
     
     return items.filter(item => {
       const searchableText = [
-        item.title,
-        item.content,
+        item.question,
+        item.answer,
         item.category,
         ...(item.tags || [])
       ].join(" ").toLowerCase()

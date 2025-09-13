@@ -5,10 +5,8 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { Grid } from "@/components/ui/layout/grid"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Logo } from "@/components/ui/logo"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
@@ -19,7 +17,6 @@ import { MainHeader } from "@/components/ui/main-header"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
-import { PlasmaBackground } from "@/components/ui/plasma-background"
 import { CookiesBanner } from "@/components/ui/cookies-banner"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -27,8 +24,6 @@ import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standa
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { CollapsibleCard } from "@/components/ui/collapsible-card"
-import { BusinessDataAnimation } from "@/components/animations/business-data-animation"
 import { StarfieldAnimationPlatform } from "@/app/design-system/animations/starfield-animation"
 import { 
   UnifiedKnowledge, 
@@ -422,7 +417,6 @@ function TypewriterText({
     </span>
   )
 }
-
 
 // Hero Section
 function HeroSection() {

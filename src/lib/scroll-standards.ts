@@ -53,7 +53,6 @@ export class ScrollEventManager {
       this.sectionStartY = window.scrollY + rect.top - 20 // Account for top-20
       this.sectionEndY = this.sectionStartY + rect.height
       this.isInitialized = true
-      console.log(`Section initialized: ${this.sectionStartY} to ${this.sectionEndY}`)
     }
   }
 
@@ -77,7 +76,6 @@ export class ScrollEventManager {
 
     // Section just became sticky
     if (!wasSticky && this.isSectionSticky) {
-      console.log('Section became sticky - starting slide progression')
       this.currentSlide = 0
       this.eventCount = 0
       this.onSlideChange(0)
@@ -87,7 +85,6 @@ export class ScrollEventManager {
 
     // Section just became unsticky
     if (wasSticky && !this.isSectionSticky) {
-      console.log('Section became unsticky - ending slide progression')
       return false
     }
 
@@ -119,7 +116,6 @@ export class ScrollEventManager {
       this.onSlideChange(newSlide)
       this.startCooldown()
       
-      console.log(`Slide changed: ${this.currentSlide} (${direction}, event #${this.eventCount})`)
       this.lastEventTime = now
       return true
     }
@@ -148,7 +144,6 @@ export class ScrollEventManager {
 
     // Section just became sticky
     if (!wasSticky && this.isSectionSticky) {
-      console.log('Section became sticky via scroll - starting slide progression')
       this.currentSlide = 0
       this.eventCount = 0
       this.onSlideChange(0)
@@ -158,7 +153,6 @@ export class ScrollEventManager {
 
     // Section just became unsticky
     if (wasSticky && !this.isSectionSticky) {
-      console.log('Section became unsticky via scroll - ending slide progression')
       return false
     }
 
@@ -191,7 +185,6 @@ export class ScrollEventManager {
       this.onSlideChange(newSlide)
       this.startCooldown()
       
-      console.log(`Slide changed via scroll: ${this.currentSlide} (${direction}, event #${this.eventCount})`)
       this.lastEventTime = now
       return true
     }

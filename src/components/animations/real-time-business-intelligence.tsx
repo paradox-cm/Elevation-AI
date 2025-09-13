@@ -64,9 +64,7 @@ export function RealTimeBusinessIntelligence({
 
   // Use visibility reset hook to detect when component becomes visible again
   useVisibilityReset(containerRef, (isVisible) => {
-    console.log('RealTimeBusinessIntelligence visibility changed:', isVisible)
     if (isVisible) {
-      console.log('RealTimeBusinessIntelligence: Restarting animation due to visibility change')
       // Component became visible, force animation restart
       initializeAndStartAnimation()
     }
@@ -74,7 +72,6 @@ export function RealTimeBusinessIntelligence({
 
   // Alternative approach: Use breakpoint reset hook
   useBreakpointReset(containerRef, () => {
-    console.log('RealTimeBusinessIntelligence: Breakpoint change detected, restarting animation')
     // Animation restart triggered by breakpoint change
     initializeAndStartAnimation()
   })
@@ -82,7 +79,6 @@ export function RealTimeBusinessIntelligence({
   // Additional window resize listener for extra safety
   useEffect(() => {
     const handleResize = () => {
-      console.log('RealTimeBusinessIntelligence: Window resize detected, checking if restart needed')
       // Small delay to ensure CSS classes have been applied
       setTimeout(() => {
         const element = containerRef.current
@@ -97,7 +93,6 @@ export function RealTimeBusinessIntelligence({
             computedStyle.opacity !== '0'
           
           if (isVisible) {
-            console.log('RealTimeBusinessIntelligence: Element is visible after resize, restarting animation')
             initializeAndStartAnimation()
           }
         }

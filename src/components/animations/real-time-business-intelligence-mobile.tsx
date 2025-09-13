@@ -67,9 +67,7 @@ export function RealTimeBusinessIntelligenceMobile({
 
   // Use visibility reset hook to detect when component becomes visible again
   useVisibilityReset(containerRef, (isVisible) => {
-    console.log('RealTimeBusinessIntelligenceMobile visibility changed:', isVisible)
     if (isVisible) {
-      console.log('RealTimeBusinessIntelligenceMobile: Restarting animation due to visibility change')
       initializeAndStartAnimation()
     }
   })

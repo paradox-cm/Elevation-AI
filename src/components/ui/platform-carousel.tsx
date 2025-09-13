@@ -158,13 +158,6 @@ export function PlatformCarousel({
       const padding = responsivePadding.paddingLeft + responsivePadding.paddingRight
       
       const allVisible = totalCardsWidth + padding <= availableWidth
-      // Only log when visibility state changes
-      if (allVisible !== allCardsVisible) {
-        console.log('Platform carousel visibility changed:', { 
-          allVisible,
-          wasVisible: allCardsVisible
-        })
-      }
       setAllCardsVisible(allVisible)
     }
 
