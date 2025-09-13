@@ -185,8 +185,25 @@ export function Carousel({
       // If naturalScroll is enabled, don't snap to cards - just track the closest slide for indicators
       if (naturalScroll) {
         const totalCardWidth = responsiveCardWidth + responsiveCardGap
-        const currentSlideIndex = Math.floor(scrollLeft / totalCardWidth)
-        const clampedSlideIndex = Math.max(0, Math.min(currentSlideIndex, items.length - 1))
+        const containerWidth = carouselRef.current.clientWidth
+        
+        // Find which card is most centered in the viewport
+        let bestMatchIndex = 0
+        let minDistance = Infinity
+        
+        for (let i = 0; i < items.length; i++) {
+          const cardStart = i * totalCardWidth
+          const cardCenter = cardStart + (responsiveCardWidth / 2)
+          const viewportCenter = scrollLeft + (containerWidth / 2)
+          const distance = Math.abs(cardCenter - viewportCenter)
+          
+          if (distance < minDistance) {
+            minDistance = distance
+            bestMatchIndex = i
+          }
+        }
+        
+        const clampedSlideIndex = Math.max(0, Math.min(bestMatchIndex, items.length - 1))
         
         // Only update if the slide has actually changed to avoid unnecessary re-renders
         if (clampedSlideIndex !== currentSlide) {
