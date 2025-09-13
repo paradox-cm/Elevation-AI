@@ -898,7 +898,7 @@ function UseCasesSection() {
                         />
                         <div className={`absolute inset-0 ${isDarkMode ? 'bg-black/20' : 'bg-white/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
                         <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10">
-                          <Icon name="arrow-right-line" size="lg" className={isDarkMode ? 'text-white' : 'text-gray-700'} />
+                          <Icon name="arrow-right-line" size="lg" className={isDarkMode ? 'text-white' : 'text-black'} />
                         </div>
                       </div>
                     </Link>

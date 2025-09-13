@@ -245,7 +245,7 @@ function SiteStructureCard({ item }: { item: SiteStructureItem }) {
       'investors': '/website/investors',
       'developers': '/website/developers',
       'blog-news': '/website/blog',
-      'faq': '/website/faq',
+      'faq': '/website/knowledge-base',
       'about': '/website/about',
       'people': '/website/people',
       'contact': '/website/contact',
@@ -367,7 +367,7 @@ export default function WebsitePage() {
                       { href: "/website/investors", label: "Investors", icon: TrendingUp },
                       { href: "/website/developers", label: "For Developers & Platforms", icon: Code },
                       { href: "/website/blog", label: "Blog", icon: Newspaper },
-                      { href: "/website/faq", label: "FAQ", icon: MessageSquare }
+                      { href: "/website/knowledge-base", label: "Knowledge Base", icon: MessageSquare }
                     ].map((item) => (
                       <div key={item.href} className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
                         <item.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />

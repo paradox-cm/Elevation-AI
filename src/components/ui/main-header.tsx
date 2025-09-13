@@ -259,7 +259,7 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
                 <Link href="/website/investors" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Investors</Link>
                 <Link href="/website/developers" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">For Developers & Platforms</Link>
                 <Link href="/website/blog" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Blog</Link>
-                <Link href="/website/faq" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">FAQ</Link>
+                <Link href="/website/knowledge-base" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">Knowledge Base</Link>
               </div>
             </div>
           </div>

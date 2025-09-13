@@ -98,7 +98,7 @@ export function WebsiteFooter() {
                 <li><Link href="/website/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
                 <li><Link href="/website/developers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">For Developers & Platforms</Link></li>
                 <li><Link href="/website/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
-                <li><Link href="/website/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">FAQ</Link></li>
+                <li><Link href="/website/knowledge-base" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Knowledge Base</Link></li>
               </ul>
             </div>
             
