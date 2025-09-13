@@ -1402,7 +1402,7 @@ function WhoWeServeSection() {
           <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
             <Carousel 
               items={solutions}
-              autoPlay={true}
+              autoPlay={false}
               autoPlayInterval={5000}
               showProgressIndicators={true}
               showGradients={false}

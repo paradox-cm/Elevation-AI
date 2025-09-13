@@ -255,10 +255,10 @@ export function Carousel({
     onSlideChange?.(index)
   }
 
-  // Auto-play functionality with synchronized progress
+  // Auto-play functionality with synchronized progress (only for snapping behavior)
   React.useEffect(() => {
-    // Don't auto-play if user has manually interacted
-    if (!autoPlay || hasManualInteraction) return
+    // Don't auto-play if user has manually interacted or if natural scroll is enabled
+    if (!autoPlay || hasManualInteraction || naturalScroll) return
     
     // Reset progress when starting
     setProgress(0)
@@ -284,7 +284,7 @@ export function Carousel({
     return () => {
       clearInterval(progressTimer)
     }
-  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, currentSlide])
+  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, currentSlide, naturalScroll])
 
   // Cleanup timeout on unmount
   React.useEffect(() => {
@@ -295,27 +295,16 @@ export function Carousel({
     }
   }, [])
 
-  // Auto-scroll carousel when currentSlide changes (all devices)
+  // Auto-scroll carousel when currentSlide changes (only for snapping behavior)
   React.useEffect(() => {
-    if (carouselRef.current) {
+    if (carouselRef.current && !naturalScroll) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
       // Set flag to indicate this is a programmatic scroll
       isProgrammaticScrollRef.current = true
       
-      if (naturalScroll) {
-        // For natural scroll, scroll to the card position
-        carouselRef.current.scrollTo({
-          left: currentSlide * totalCardWidth,
-          behavior: 'smooth'
-        })
-      } else {
-        // For snapping scroll, use the original logic
-        carouselRef.current.scrollTo({
-          left: currentSlide * totalCardWidth,
-          behavior: 'smooth'
-        })
-      }
+      // For snapping scroll, use transform-based movement
+      // This effect only runs when naturalScroll is false
       
       // Reset flag after scroll completes
       setTimeout(() => {
@@ -363,72 +352,146 @@ export function Carousel({
   return (
     <div className={cn("space-y-6", className)}>
       <div className="relative">
-        <div 
-          className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide" 
-          ref={carouselRef}
-          style={{ 
-            gap: `${responsiveCardGap}px`
-          }}
-        >
-          {items.map((item, index) => {
-            const cardContent = (
-              <div className="flex flex-col h-full p-6">
-                {item.icon && (
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
-                    <item.icon className="text-4xl sm:text-5xl md:text-6xl text-primary" />
-                  </div>
-                )}
-                <div className="flex flex-col flex-1">
-                  <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
-                  <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
-                  {item.content && (
-                    <div className="mt-4 flex-shrink-0">
-                      {item.content}
+        {naturalScroll ? (
+          <div 
+            className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide" 
+            ref={carouselRef}
+            style={{ 
+              gap: `${responsiveCardGap}px`
+            }}
+          >
+            {items.map((item, index) => {
+              const cardContent = (
+                <div className="flex flex-col h-full p-6">
+                  {item.icon && (
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                      <item.icon className="text-4xl sm:text-5xl md:text-6xl text-primary" />
                     </div>
                   )}
+                  <div className="flex flex-col flex-1">
+                    <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
+                    <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+                    {item.content && (
+                      <div className="mt-4 flex-shrink-0">
+                        {item.content}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )
+              )
 
-            return (
-              <div 
-                key={item.id} 
-                ref={(el) => {
-                  cardRefs.current[index] = el
-                }}
-                className={cn(
-                  "flex-shrink-0 border rounded-lg transition-all duration-300",
-                  cardStyle === 'outline' 
-                    ? 'border-border bg-transparent' 
-                    : cardStyle === 'blue'
-                      ? highlightActiveCard && index === currentSlide
-                        ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                        : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                      : highlightActiveCard && index === currentSlide 
-                        ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
-                        : 'border-border bg-card',
-                  item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
-                )}
-                style={{ 
-                  minWidth: `${responsiveCardWidth}px`, 
-                  maxWidth: `${responsiveCardWidth}px`,
-                  height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
-                  minHeight: '320px',
-                  marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
-                  marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
-                }}
-              >
-                {item.href ? (
-                  <Link href={item.href} className="block h-full">
-                    {cardContent}
-                  </Link>
-                ) : (
-                  cardContent
-                )}
-              </div>
-            )
-          })}
-        </div>
+              return (
+                <div 
+                  key={item.id} 
+                  ref={(el) => {
+                    cardRefs.current[index] = el
+                  }}
+                  className={cn(
+                    "flex-shrink-0 border rounded-lg transition-all duration-300",
+                    cardStyle === 'outline' 
+                      ? 'border-border bg-transparent' 
+                      : cardStyle === 'blue'
+                        ? highlightActiveCard && index === currentSlide
+                          ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                          : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                        : highlightActiveCard && index === currentSlide 
+                          ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                          : 'border-border bg-card',
+                    item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
+                  )}
+                  style={{ 
+                    minWidth: `${responsiveCardWidth}px`, 
+                    maxWidth: `${responsiveCardWidth}px`,
+                    height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
+                    minHeight: '320px',
+                    marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
+                    marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                  }}
+                >
+                  {item.href ? (
+                    <Link href={item.href} className="block h-full">
+                      {cardContent}
+                    </Link>
+                  ) : (
+                    cardContent
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div 
+            className="overflow-hidden"
+            ref={carouselRef}
+          >
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ 
+                transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap)}px)`,
+                gap: `${responsiveCardGap}px`
+              }}
+            >
+              {items.map((item, index) => {
+                const cardContent = (
+                  <div className="flex flex-col h-full p-6">
+                    {item.icon && (
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                        <item.icon className="text-4xl sm:text-5xl md:text-6xl text-primary" />
+                      </div>
+                    )}
+                    <div className="flex flex-col flex-1">
+                      <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
+                      <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+                      {item.content && (
+                        <div className="mt-4 flex-shrink-0">
+                          {item.content}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+
+                return (
+                  <div 
+                    key={item.id} 
+                    ref={(el) => {
+                      cardRefs.current[index] = el
+                    }}
+                    className={cn(
+                      "flex-shrink-0 border rounded-lg transition-all duration-300",
+                      cardStyle === 'outline' 
+                        ? 'border-border bg-transparent' 
+                        : cardStyle === 'blue'
+                          ? highlightActiveCard && index === currentSlide
+                            ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                            : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                          : highlightActiveCard && index === currentSlide 
+                            ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                            : 'border-border bg-card',
+                      item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
+                    )}
+                    style={{ 
+                      minWidth: `${responsiveCardWidth}px`, 
+                      maxWidth: `${responsiveCardWidth}px`,
+                      height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
+                      minHeight: '320px',
+                      marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
+                      marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                    }}
+                  >
+                    {item.href ? (
+                      <Link href={item.href} className="block h-full">
+                        {cardContent}
+                      </Link>
+                    ) : (
+                      cardContent
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
         
         {/* Progress Indicators */}
         {showProgressIndicators && (
