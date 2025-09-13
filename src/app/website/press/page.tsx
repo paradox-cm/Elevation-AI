@@ -279,9 +279,9 @@ export default function PressPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="text-center space-y-4">
-                      <BodyLarge className="text-muted-foreground">
+                      <P className="text-muted-foreground text-sm sm:text-base">
                         For media inquiries, interview requests, or additional information about Elevation AI, please contact our press team.
-                      </BodyLarge>
+                      </P>
                       <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <Button size="lg" asChild>
                           <Link href="/website/contact">

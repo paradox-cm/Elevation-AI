@@ -170,9 +170,9 @@ export default function BlogPage() {
                         {featuredArticle.title}
                       </H2>
                       
-                      <BodyLarge className="text-muted-foreground leading-relaxed">
+                      <P className="text-muted-foreground leading-relaxed text-sm sm:text-base">
                         {featuredArticle.excerpt}
-                      </BodyLarge>
+                      </P>
                       
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
@@ -281,9 +281,9 @@ export default function BlogPage() {
                 <div className="bg-gradient-to-r from-primary/5 to-blue-50 dark:to-blue-950/20 rounded-2xl p-8 lg:p-12 text-center border border-primary/10">
                   <div className="max-w-2xl mx-auto space-y-6">
                     <H3 className="text-2xl font-semibold">Stay Updated</H3>
-                    <BodyLarge className="text-muted-foreground">
+                    <P className="text-muted-foreground text-sm sm:text-base">
                       Get the latest insights on AI, business orchestration, and industry trends delivered to your inbox.
-                    </BodyLarge>
+                    </P>
                     <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                       <input
                         type="email"

@@ -1061,7 +1061,7 @@ function ExpandableSolutionCard({
                <div className="space-y-1 flex-1">
                    <CardTitle className="text-left text-base lg:text-xl">{solution.title}</CardTitle>
                    <CardDescription className="text-left">
-                     <BodyLarge>{solution.subtitle}</BodyLarge>
+                     <P className="text-sm sm:text-base">{solution.subtitle}</P>
                    </CardDescription>
                  </div>
               </div>
@@ -1139,13 +1139,13 @@ function ExpandableSolutionCard({
                 </div>
                 
                 {/* Navigation Buttons */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={onNavigateUp}
                     disabled={currentIndex === 0}
-                    className="p-2"
+                    className="flex-1 sm:flex-none sm:p-2"
                     title="Previous card (↑)"
                   >
                     <Icon name="arrow-up-s-line" className="h-4 w-4" />
@@ -1155,7 +1155,7 @@ function ExpandableSolutionCard({
                     size="sm"
                     onClick={onNavigateDown}
                     disabled={currentIndex === totalCards - 1}
-                    className="p-2"
+                    className="flex-1 sm:flex-none sm:p-2"
                     title="Next card (↓)"
                   >
                     <Icon name="arrow-down-s-line" className="h-4 w-4" />

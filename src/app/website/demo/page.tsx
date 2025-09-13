@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
-import { H1, H2, H3, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H1, H2, H3, P, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { GlobalHeader } from "@/components/ui/global-header"
@@ -528,9 +528,9 @@ function DemoRequestForm() {
           <h2 className="text-xl font-semibold text-foreground sm:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">Request a Demo</h2>
         </CardTitle>
         <CardDescription>
-          <BodyLarge className="text-muted-foreground">
+          <P className="text-muted-foreground text-sm sm:text-base">
             See how Elevation AI can transform your organization's decision-making
-          </BodyLarge>
+          </P>
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
