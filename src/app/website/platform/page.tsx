@@ -390,6 +390,7 @@ function SecuritySection() {
                hugContent={true}
                minHeight="320px"
                stopWhenAllVisible={true}
+               naturalScroll={true}
                responsive={{
                  sm: { cardWidth: 320, cardGap: 16 },
                  md: { cardWidth: 320, cardGap: 20 },
@@ -590,6 +591,12 @@ function IntegrationsSection() {
 // Use Cases Section
 function UseCasesSection() {
   const { theme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+  
+  // Ensure component is mounted before accessing theme to prevent hydration mismatch
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
   
   // Dark mode color mappings for each category (RGB values 0-1)
   const darkModeCategoryColors = {
@@ -650,7 +657,8 @@ function UseCasesSection() {
   }
 
   // Determine which colors and component to use based on theme
-  const isDarkMode = theme === 'dark'
+  // Use default light mode during SSR to prevent hydration mismatch
+  const isDarkMode = mounted ? theme === 'dark' : false
   const categoryColors = isDarkMode ? darkModeCategoryColors : lightModeCategoryColors
   const ShaderComponent = isDarkMode ? ShaderAnimation : ShaderAnimationLight
 

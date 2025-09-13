@@ -32,6 +32,7 @@ export interface PlatformCarouselProps {
   }
   hugContent?: boolean
   stopWhenAllVisible?: boolean
+  naturalScroll?: boolean
   responsive?: {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
@@ -56,6 +57,7 @@ export function PlatformCarousel({
   responsiveMinHeight,
   hugContent = false,
   stopWhenAllVisible = false,
+  naturalScroll = false,
   responsive
 }: PlatformCarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
@@ -64,8 +66,16 @@ export function PlatformCarousel({
   const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
   const [maxCardHeight, setMaxCardHeight] = React.useState<number>(0)
   const [allCardsVisible, setAllCardsVisible] = React.useState(false)
+  const [hasManualInteraction, setHasManualInteraction] = React.useState(false)
   
-  // Touch and drag state
+  // Refs for natural scroll
+  const carouselRef = React.useRef<HTMLDivElement>(null)
+  const cardRefs = React.useRef<(HTMLDivElement | null)[]>([])
+  const autoPlayIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
+  const manualInteractionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const isProgrammaticScrollRef = React.useRef<boolean>(false)
+  
+  // Touch and drag state (for non-natural scroll)
   const [isDragging, setIsDragging] = React.useState(false)
   const [startX, setStartX] = React.useState(0)
   const [currentX, setCurrentX] = React.useState(0)
@@ -170,10 +180,102 @@ export function PlatformCarousel({
     }
   }, [stopWhenAllVisible, items.length, responsiveCardWidth, responsiveCardGap, responsivePadding, screenSize])
 
+  // Check scroll position for natural scroll
+  const checkScrollPosition = React.useCallback(() => {
+    if (!carouselRef.current || !naturalScroll) return
+    
+    const scrollLeft = carouselRef.current.scrollLeft
+    const containerWidth = carouselRef.current.clientWidth
+    
+    // Don't update slide position if this is a programmatic scroll (from indicator click)
+    if (isProgrammaticScrollRef.current) {
+      return
+    }
+    
+    // If naturalScroll is enabled, don't snap to cards - just track the closest slide for indicators
+    if (naturalScroll) {
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      
+      // Find which card is most centered in the viewport
+      let bestMatchIndex = 0
+      let minDistance = Infinity
+      
+      for (let i = 0; i < items.length; i++) {
+        // Calculate card position accounting for padding
+        let cardStart = i * totalCardWidth
+        if (i === 0) {
+          cardStart += responsivePadding.paddingLeft
+        }
+        
+        const cardCenter = cardStart + (responsiveCardWidth / 2)
+        const viewportCenter = scrollLeft + (containerWidth / 2)
+        const distance = Math.abs(cardCenter - viewportCenter)
+        
+        if (distance < minDistance) {
+          minDistance = distance
+          bestMatchIndex = i
+        }
+      }
+      
+      const clampedSlideIndex = Math.max(0, Math.min(bestMatchIndex, items.length - 1))
+      
+      // Only update if the slide has actually changed to avoid unnecessary re-renders
+      if (clampedSlideIndex !== currentSlide) {
+        setCurrentSlide(clampedSlideIndex)
+        setProgress(0) // Reset progress when manually scrolling
+      }
+      return
+    }
+  }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide, naturalScroll, responsivePadding.paddingLeft])
+
+  // Detect manual interaction (all devices)
+  const handleManualInteraction = React.useCallback(() => {
+    setHasManualInteraction(true)
+    
+    // Clear existing timeout
+    if (manualInteractionTimeoutRef.current) {
+      clearTimeout(manualInteractionTimeoutRef.current)
+    }
+    
+    // Set 5-second timer for auto-play resume
+    manualInteractionTimeoutRef.current = setTimeout(() => {
+      setHasManualInteraction(false)
+    }, 5000)
+  }, [])
+
+  // Scroll to specific slide
+  const scrollToSlide = (index: number) => {
+    setCurrentSlide(index)
+    setProgress(0)
+    onSlideChange?.(index)
+    
+    if (naturalScroll && carouselRef.current) {
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      
+      // Set flag to indicate this is a programmatic scroll
+      isProgrammaticScrollRef.current = true
+      
+      carouselRef.current.scrollTo({
+        left: index * totalCardWidth,
+        behavior: 'smooth'
+      })
+      
+      // Reset flag after scroll completes
+      setTimeout(() => {
+        isProgrammaticScrollRef.current = false
+      }, 500) // Wait for smooth scroll to complete
+    }
+  }
+
   // Auto-play functionality
+  // Disable auto-play when natural scroll is enabled to prevent snapping
   React.useEffect(() => {
     if (!autoPlay) return
+    if (naturalScroll) return // Disable auto-play for natural scroll
     if (stopWhenAllVisible && allCardsVisible) {
+      return
+    }
+    if (hasManualInteraction) {
       return
     }
 
@@ -190,11 +292,65 @@ export function PlatformCarousel({
     }, autoPlayInterval)
 
     return () => clearInterval(interval)
-  }, [autoPlay, autoPlayInterval, items.length, stopWhenAllVisible, allCardsVisible, currentSlide])
+  }, [autoPlay, autoPlayInterval, items.length, stopWhenAllVisible, allCardsVisible, currentSlide, naturalScroll, hasManualInteraction])
+
+  // Auto-scroll carousel when currentSlide changes (for natural scroll)
+  // Only auto-scroll if naturalScroll is disabled
+  React.useEffect(() => {
+    if (carouselRef.current && !naturalScroll) {
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      
+      // Set flag to indicate this is a programmatic scroll
+      isProgrammaticScrollRef.current = true
+      
+      carouselRef.current.scrollTo({
+        left: currentSlide * totalCardWidth,
+        behavior: 'smooth'
+      })
+      
+      // Reset flag after scroll completes
+      setTimeout(() => {
+        isProgrammaticScrollRef.current = false
+      }, 500) // Wait for smooth scroll to complete
+    }
+  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize, naturalScroll])
+
+  // Add scroll event listener to check position and detect manual interaction
+  React.useEffect(() => {
+    const carousel = carouselRef.current
+    if (carousel && naturalScroll) {
+      let scrollTimeout: ReturnType<typeof setTimeout>
+      
+      const handleScroll = () => {
+        // Throttle scroll events for better performance
+        clearTimeout(scrollTimeout)
+        scrollTimeout = setTimeout(() => {
+          checkScrollPosition()
+          handleManualInteraction()
+        }, 16) // ~60fps throttling
+      }
+      
+      const handleTouchStart = () => {
+        handleManualInteraction()
+      }
+      
+      carousel.addEventListener('scroll', handleScroll)
+      carousel.addEventListener('touchstart', handleTouchStart, { passive: true })
+      // Check initial position
+      checkScrollPosition()
+      
+      return () => {
+        clearTimeout(scrollTimeout)
+        carousel.removeEventListener('scroll', handleScroll)
+        carousel.removeEventListener('touchstart', handleTouchStart)
+      }
+    }
+  }, [checkScrollPosition, handleManualInteraction, naturalScroll])
 
   // Progress tracking
   React.useEffect(() => {
     if (!autoPlay) return
+    if (naturalScroll) return // Disable progress tracking for natural scroll
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
@@ -204,7 +360,7 @@ export function PlatformCarousel({
     }, 100)
 
     return () => clearInterval(progressInterval)
-  }, [autoPlay, autoPlayInterval])
+  }, [autoPlay, autoPlayInterval, naturalScroll])
 
   // Card height calculation
   React.useEffect(() => {
@@ -224,9 +380,13 @@ export function PlatformCarousel({
   }, [items])
 
   const handleSlideChange = (index: number) => {
-    setCurrentSlide(index)
-    setProgress(0)
-    onSlideChange?.(index)
+    if (naturalScroll) {
+      scrollToSlide(index)
+    } else {
+      setCurrentSlide(index)
+      setProgress(0)
+      onSlideChange?.(index)
+    }
   }
 
   const nextSlide = () => {
@@ -351,27 +511,20 @@ export function PlatformCarousel({
       )}
 
       {/* Carousel Container */}
-      <div 
-        className="overflow-hidden platform-carousel-container"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeaveDrag}
-        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-      >
+      {naturalScroll ? (
         <div 
-          className={`flex ${isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out'}`}
+          className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide platform-carousel-container"
+          ref={carouselRef}
           style={{ 
-            transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap) + dragOffset}px)`,
             gap: `${responsiveCardGap}px`
           }}
         >
           {items.map((item, index) => (
             <div
               key={item.id}
+              ref={(el) => {
+                cardRefs.current[index] = el
+              }}
               className="platform-carousel-card flex-shrink-0"
               style={{ 
                 minWidth: `${responsiveCardWidth}px`, 
@@ -418,7 +571,79 @@ export function PlatformCarousel({
             </div>
           ))}
         </div>
-      </div>
+      ) : (
+        <div 
+          className="overflow-hidden platform-carousel-container"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeaveDrag}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        >
+          <div 
+            className={`flex ${isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out'}`}
+            style={{ 
+              transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap) + dragOffset}px)`,
+              gap: `${responsiveCardGap}px`
+            }}
+          >
+            {items.map((item, index) => (
+              <div
+                key={item.id}
+                ref={(el) => {
+                  cardRefs.current[index] = el
+                }}
+                className="platform-carousel-card flex-shrink-0"
+                style={{ 
+                  minWidth: `${responsiveCardWidth}px`, 
+                  maxWidth: `${responsiveCardWidth}px`,
+                  height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
+                  minHeight: responsiveMinHeightValue,
+                  marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
+                  marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                }}
+              >
+                <div className={cn(
+                  "w-full h-full rounded-lg border transition-all duration-300",
+                  cardStyle === 'filled' 
+                    ? 'bg-card border-border' 
+                    : cardStyle === 'outline'
+                      ? 'bg-transparent border-border'
+                      : cardStyle === 'blue'
+                        ? highlightActiveCard && index === currentSlide
+                          ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                          : 'border-border bg-card hover:bg-card/80'
+                        : highlightActiveCard && index === currentSlide 
+                          ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                          : 'border-border bg-card'
+                )}>
+                  <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
+                    <div className={hugContent ? "p-6" : "p-6 pb-4"}>
+                      {item.icon && (
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                          <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
+                        </div>
+                      )}
+                      <div className="flex flex-col flex-1">
+                        <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
+                        <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+                      </div>
+                    </div>
+                    {item.content && (
+                      <div className="flex-shrink-0 mt-auto">
+                        {item.content}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       
       {/* Progress Indicators */}
       {showProgressIndicators && (
