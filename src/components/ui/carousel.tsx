@@ -177,12 +177,12 @@ export function Carousel({
       const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1 // -1 for rounding errors
       setShowGradient(!isAtEnd)
       
-      // Don't update slide position if this is a programmatic scroll (from indicator click)
+      // Don't update slide position if this is a programmatic scroll (from auto-play or indicator click)
       if (isProgrammaticScrollRef.current) {
         return
       }
       
-      // If naturalScroll is enabled, don't snap to cards - just track the closest slide for indicators
+      // If naturalScroll is enabled, track the closest slide for indicators and highlighting
       if (naturalScroll) {
         const totalCardWidth = responsiveCardWidth + responsiveCardGap
         const containerWidth = carouselRef.current.clientWidth
@@ -208,7 +208,7 @@ export function Carousel({
         // Only update if the slide has actually changed to avoid unnecessary re-renders
         if (clampedSlideIndex !== currentSlide) {
           setCurrentSlide(clampedSlideIndex)
-          setProgress(0) // Reset progress when manually scrolling
+          // Don't reset progress when manually scrolling - let auto-play continue
         }
         return
       }
@@ -255,10 +255,10 @@ export function Carousel({
     onSlideChange?.(index)
   }
 
-  // Auto-play functionality with synchronized progress (only for snapping behavior)
+  // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
   React.useEffect(() => {
-    // Don't auto-play if user has manually interacted or if natural scroll is enabled
-    if (!autoPlay || hasManualInteraction || naturalScroll) return
+    // Don't auto-play if user has manually interacted
+    if (!autoPlay || hasManualInteraction) return
     
     // Reset progress when starting
     setProgress(0)
@@ -284,7 +284,7 @@ export function Carousel({
     return () => {
       clearInterval(progressTimer)
     }
-  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, currentSlide, naturalScroll])
+  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, currentSlide])
 
   // Cleanup timeout on unmount
   React.useEffect(() => {
@@ -295,16 +295,24 @@ export function Carousel({
     }
   }, [])
 
-  // Auto-scroll carousel when currentSlide changes (only for snapping behavior)
+  // Auto-scroll carousel when currentSlide changes (hybrid behavior)
   React.useEffect(() => {
-    if (carouselRef.current && !naturalScroll) {
+    if (carouselRef.current) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
       // Set flag to indicate this is a programmatic scroll
       isProgrammaticScrollRef.current = true
       
-      // For snapping scroll, use transform-based movement
-      // This effect only runs when naturalScroll is false
+      if (naturalScroll) {
+        // For natural scroll, smoothly scroll to center the card
+        carouselRef.current.scrollTo({
+          left: currentSlide * totalCardWidth,
+          behavior: 'smooth'
+        })
+      } else {
+        // For snapping scroll, use transform-based movement
+        // This is handled by the transform in the render
+      }
       
       // Reset flag after scroll completes
       setTimeout(() => {
