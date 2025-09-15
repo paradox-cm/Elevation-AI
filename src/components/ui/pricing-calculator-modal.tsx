@@ -25,21 +25,21 @@ interface PricingCalculatorModalProps {
 const formSchema = z.object({
   industry: z.string().min(1, "Please select an industry"),
   teamSize: z.array(z.number()).length(1),
-  entities: z.array(z.number()).length(1),
+  operatingEntities: z.array(z.number()).length(1),
+  nonOperatingEntities: z.array(z.number()).length(1),
   addOns: z.array(z.string()).optional(),
   supportLevel: z.string().min(1, "Please select a support level"),
+  planType: z.string().default("paid"),
 })
 
 type FormData = z.infer<typeof formSchema>
 
 const industries = [
-  "Private Market Organization",
+  "Family Office",
   "Enterprise", 
-  "Government",
-  "Bank",
-  "Investment Firm",
+  "Investment Firms",
   "Consulting Firm",
-  "Other"
+  "Individual Account"
 ]
 
 const teamSizeOptions = [
@@ -49,28 +49,54 @@ const teamSizeOptions = [
   { value: [251, 1000], label: "250+" }
 ]
 
-const entitiesOptions = [
+const operatingEntitiesOptions = [
   { value: [1, 5], label: "1-5" },
   { value: [6, 25], label: "6-25" },
   { value: [26, 100], label: "26-100" },
   { value: [101, 500], label: "100+" }
 ]
 
+const nonOperatingEntitiesOptions = [
+  { value: [0, 10], label: "0-10" },
+  { value: [11, 50], label: "11-50" },
+  { value: [51, 200], label: "51-200" },
+  { value: [201, 1000], label: "200+" }
+]
+
+const planTypes = [
+  { value: "paid", label: "Paid Plan", description: "Full features and support" }
+]
+
 const addOnCapabilities = [
   {
-    id: "investment-management",
-    title: "Advanced Investment Management",
-    description: "For organizations that source and manage equity deals. Includes features for deal flow management, SPV & LP management, and portfolio monitoring."
+    id: "investment-management-equity",
+    title: "Investment Management - Equity",
+    description: "Sourcing & deal flow management, SPV management, LP management, deal pages for equity investments."
   },
   {
-    id: "private-credit",
-    title: "Advanced Private Credit", 
-    description: "For organizations that originate and service debt. Includes features for application management, automated diligence support, and vendor management."
+    id: "investment-management-credit",
+    title: "Investment Management - Private Credit", 
+    description: "Application management, applicant data integration, scoring and diligence support, vendor management, invoice management."
   },
   {
     id: "consulting-management",
-    title: "Advanced Consulting Firm Management",
-    description: "For firms that manage external clients. Includes features for client project management, client workspaces, and team management."
+    title: "Consulting Firm Management",
+    description: "Client management, client projects and tasks, client workspaces, consulting firm team management."
+  },
+  {
+    id: "portfolio-management",
+    title: "Portfolio Management",
+    description: "Private market assets, public market assets, currency assets, liabilities management."
+  },
+  {
+    id: "mobile-app",
+    title: "Mobile App Features",
+    description: "Voice chat, quick actions for notes and tasks, mobile access to all platform features."
+  },
+  {
+    id: "embedded-experts",
+    title: "Embedded Experts",
+    description: "Access to embedded experts and partner network for specialized support."
   }
 ]
 
@@ -78,12 +104,16 @@ const supportLevels = [
   {
     id: "platform-support",
     title: "Platform & Community Support",
-    description: "For self-sufficient organizations ready to build their own agentic solutions, backed by our comprehensive documentation and community resources."
+    description: "For self-sufficient organizations ready to build their own agentic solutions, backed by our comprehensive documentation and community resources.",
+    credits: "Standard credits included",
+    conciergeHours: 0
   },
   {
     id: "concierge-support", 
     title: "Concierge Support",
-    description: "For organizations who want a full-service partnership. Includes a dedicated allotment of AI Engineer hours each month, strategic guidance, and custom agent development."
+    description: "For organizations who want a full-service partnership. Includes a dedicated allotment of AI Engineer hours each month, strategic guidance, and custom agent development.",
+    credits: "Enhanced credits included",
+    conciergeHours: "Based on package"
   }
 ]
 
@@ -96,11 +126,101 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
     defaultValues: {
       industry: "",
       teamSize: [1],
-      entities: [1],
+      operatingEntities: [1],
+      nonOperatingEntities: [1],
       addOns: [],
-      supportLevel: ""
+      supportLevel: "",
+      planType: "paid"
     }
   })
+
+  // Pricing calculation logic based on CSV structure
+  const calculatePricing = (data: FormData) => {
+    const teamSize = teamSizeOptions[data.teamSize[0] - 1]?.value || [1, 10]
+    const operatingEntities = operatingEntitiesOptions[data.operatingEntities[0] - 1]?.value || [1, 5]
+    const nonOperatingEntities = nonOperatingEntitiesOptions[data.nonOperatingEntities[0] - 1]?.value || [0, 10]
+    const addOns = data.addOns || []
+    
+    // Base pricing structure (these would be actual prices in production)
+    let basePrice = 0
+    let monthlyPrice = 0
+    let credits = 0
+    let conciergeHours = 0
+    
+    // Industry-based pricing (paid plans only)
+    switch (data.industry) {
+      case "Family Office":
+        basePrice = 2500
+        monthlyPrice = 500
+        credits = 1000
+        conciergeHours = 20
+        break
+      case "Enterprise":
+        basePrice = 5000
+        monthlyPrice = 1000
+        credits = 2500
+        conciergeHours = 40
+        break
+      case "Investment Firms":
+        basePrice = 3500
+        monthlyPrice = 750
+        credits = 1500
+        conciergeHours = 30
+        break
+      case "Consulting Firm":
+        basePrice = 2000
+        monthlyPrice = 400
+        credits = 800
+        conciergeHours = 15
+        break
+      case "Individual Account":
+        basePrice = 500
+        monthlyPrice = 100
+        credits = 200
+        conciergeHours = 5
+        break
+    }
+    
+    // Add-on pricing
+    const addOnPricing = {
+      "investment-management-equity": { monthly: 200, credits: 300 },
+      "investment-management-credit": { monthly: 200, credits: 300 },
+      "consulting-management": { monthly: 150, credits: 200 },
+      "portfolio-management": { monthly: 100, credits: 150 },
+      "mobile-app": { monthly: 50, credits: 100 },
+      "embedded-experts": { monthly: 300, credits: 500 }
+    }
+    
+    let addOnMonthly = 0
+    let addOnCredits = 0
+    
+    addOns.forEach(addOn => {
+      const pricing = addOnPricing[addOn as keyof typeof addOnPricing]
+      if (pricing) {
+        addOnMonthly += pricing.monthly
+        addOnCredits += pricing.credits
+      }
+    })
+    
+    // Entity scaling
+    const entityMultiplier = Math.max(1, (operatingEntities[1] + nonOperatingEntities[1]) / 10)
+    const teamMultiplier = Math.max(1, teamSize[1] / 10)
+    
+    const finalMonthlyPrice = Math.round((monthlyPrice + addOnMonthly) * entityMultiplier * teamMultiplier)
+    const finalCredits = Math.round((credits + addOnCredits) * entityMultiplier)
+    const finalConciergeHours = Math.round(conciergeHours * entityMultiplier)
+    
+    return {
+      basePrice,
+      monthlyPrice: finalMonthlyPrice,
+      credits: finalCredits,
+      conciergeHours: finalConciergeHours,
+      addOns: addOns.length,
+      teamSize: teamSize,
+      operatingEntities: operatingEntities,
+      nonOperatingEntities: nonOperatingEntities
+    }
+  }
 
   const onSubmit = (data: FormData) => {
     setShowResults(true)
@@ -154,6 +274,7 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
         />
       </div>
 
+
       <div className="space-y-4">
         <H3>How many team members need access?</H3>
         <FormField
@@ -187,11 +308,11 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
       </div>
 
       <div className="space-y-4">
-        <H3>How many distinct entities do you manage?</H3>
-        <P className="text-sm text-muted-foreground">e.g., Portfolio Companies, Funds, SPVs</P>
+        <H3>How many operating entities do you manage?</H3>
+        <P className="text-sm text-muted-foreground">e.g., Family Offices, Businesses, Investment Firms, Consulting Firms</P>
         <FormField
           control={form.control}
-          name="entities"
+          name="operatingEntities"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -205,7 +326,40 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    {entitiesOptions.map((option, index) => (
+                    {operatingEntitiesOptions.map((option, index) => (
+                      <span key={index} className={field.value[0] === index + 1 ? "text-primary font-medium" : ""}>
+                        {option.label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="space-y-4">
+        <H3>How many non-operating entities do you manage?</H3>
+        <P className="text-sm text-muted-foreground">e.g., SPVs, Funds, HoldCos</P>
+        <FormField
+          control={form.control}
+          name="nonOperatingEntities"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="space-y-4">
+                  <Slider
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    min={1}
+                    max={4}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    {nonOperatingEntitiesOptions.map((option, index) => (
                       <span key={index} className={field.value[0] === index + 1 ? "text-primary font-medium" : ""}>
                         {option.label}
                       </span>
@@ -353,60 +507,100 @@ export function PricingCalculatorModal({ isOpen, onClose }: PricingCalculatorMod
     </div>
   )
 
-  const renderResults = () => (
-    <div className="space-y-6">
-      <div className="text-center space-y-4">
-        <H2>Your Custom Plan is Ready</H2>
-        <P className="text-muted-foreground">
-          Thank you. Based on your selections, we have generated a custom plan tailored to the unique needs of your organization. The next step is a brief, 15-minute call with our team to review your plan, discuss the specific pricing, and answer any questions you may have.
-        </P>
-      </div>
+  const renderResults = () => {
+    const formData = form.getValues()
+    const pricing = calculatePricing(formData)
+    
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-4">
+          <H2>Your Custom Plan is Ready</H2>
+          <P className="text-muted-foreground">
+            Thank you. Based on your selections, we have generated a custom plan tailored to the unique needs of your organization. The next step is a brief, 15-minute call with our team to review your plan, discuss the specific pricing, and answer any questions you may have.
+          </P>
+        </div>
 
-      <div className="space-y-4">
-        <H3>Your Selections Summary</H3>
-        <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Industry:</span>
-            <span className="text-sm font-medium">{form.getValues("industry")}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Team Size:</span>
-            <span className="text-sm font-medium">{teamSizeOptions[form.getValues("teamSize")[0] - 1]?.label}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Entities:</span>
-            <span className="text-sm font-medium">{entitiesOptions[form.getValues("entities")[0] - 1]?.label}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Add-ons:</span>
-            <span className="text-sm font-medium">
-              {form.getValues("addOns")?.length || 0} selected
-            </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Support:</span>
-            <span className="text-sm font-medium">
-              {supportLevels.find(l => l.id === form.getValues("supportLevel"))?.title}
-            </span>
+        {/* Pricing Summary Card */}
+        <Card className="border-primary/20 bg-primary/5">
+          <CardHeader>
+            <CardTitle className="text-lg">Your Custom Pricing</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Monthly Price:</span>
+              <span className="text-2xl font-bold text-primary">${pricing.monthlyPrice.toLocaleString()}</span>
+            </div>
+            {pricing.basePrice > 0 && (
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Setup Fee:</span>
+                <span className="text-lg font-semibold">${pricing.basePrice.toLocaleString()}</span>
+              </div>
+            )}
+            
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Credits Included:</span>
+              <span className="text-lg font-semibold">{pricing.credits.toLocaleString()}</span>
+            </div>
+            
+            {pricing.conciergeHours > 0 && (
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">Concierge Hours:</span>
+                <span className="text-lg font-semibold">{pricing.conciergeHours} hours/month</span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          <H3>Your Selections Summary</H3>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Industry:</span>
+              <span className="text-sm font-medium">{formData.industry}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Team Size:</span>
+              <span className="text-sm font-medium">{teamSizeOptions[formData.teamSize[0] - 1]?.label}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Operating Entities:</span>
+              <span className="text-sm font-medium">{operatingEntitiesOptions[formData.operatingEntities[0] - 1]?.label}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Non-Operating Entities:</span>
+              <span className="text-sm font-medium">{nonOperatingEntitiesOptions[formData.nonOperatingEntities[0] - 1]?.label}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Add-ons:</span>
+              <span className="text-sm font-medium">
+                {formData.addOns?.length || 0} selected
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Support:</span>
+              <span className="text-sm font-medium">
+                {supportLevels.find(l => l.id === formData.supportLevel)?.title}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <Separator />
+        <Separator />
 
-      <div className="space-y-4">
-        <Button size="lg" className="w-full" asChild>
-          <a href="mailto:sales@elevationai.com?subject=Custom Plan Review Request">
-            Schedule a Call to Review Your Plan
-            <Icon name="arrow-right-line" className="h-4 w-4 ml-2" />
-          </a>
-        </Button>
-        <Button variant="outline" size="lg" className="w-full" onClick={handleClose}>
-          Close
-        </Button>
+        <div className="space-y-4">
+          <Button size="lg" className="w-full" asChild>
+            <a href="mailto:sales@elevationai.com?subject=Custom Plan Review Request">
+              Schedule a Call to Review Your Plan
+              <Icon name="arrow-right-line" className="h-4 w-4 ml-2" />
+            </a>
+          </Button>
+          <Button variant="outline" size="lg" className="w-full" onClick={handleClose}>
+            Close
+          </Button>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
