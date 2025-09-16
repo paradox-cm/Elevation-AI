@@ -27,6 +27,7 @@ export interface CarouselProps {
   highlightActiveCard?: boolean
   cardStyle?: 'filled' | 'outline' | 'blue'
   naturalScroll?: boolean
+  staticMode?: boolean
   responsive?: {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
@@ -48,6 +49,7 @@ export function Carousel({
   highlightActiveCard = true,
   cardStyle = 'filled',
   naturalScroll = false,
+  staticMode = false,
   responsive
 }: CarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
@@ -326,7 +328,69 @@ export function Carousel({
   return (
     <div className={cn("space-y-6", className)}>
       <div className="relative">
-        {naturalScroll ? (
+        {staticMode ? (
+          <div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-6 px-4 sm:px-6 lg:px-8"
+            style={{ 
+              gap: `${responsiveCardGap}px`
+            }}
+          >
+            {items.map((item, index) => {
+              const cardContent = (
+                <div className="flex flex-col h-full p-6">
+                  {item.icon && (
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                      <item.icon className="text-4xl sm:text-5xl md:text-6xl text-primary" />
+                    </div>
+                  )}
+                  <div className="flex flex-col flex-1">
+                    <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
+                    <p className="text-base text-muted-foreground leading-relaxed mb-4">{item.description}</p>
+                    <div className="flex-1"></div>
+                    {item.content && (
+                      <div className="mt-4 flex-shrink-0">
+                        {item.content}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+
+              return (
+                <div 
+                  key={item.id} 
+                  ref={(el) => {
+                    cardRefs.current[index] = el
+                  }}
+                  className={cn(
+                    "border rounded-lg transition-all duration-300",
+                    cardStyle === 'outline' 
+                      ? 'border-border bg-transparent' 
+                      : cardStyle === 'blue'
+                        ? highlightActiveCard && index === currentSlide
+                          ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                          : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                        : highlightActiveCard && index === currentSlide 
+                          ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                          : 'border-border bg-card',
+                    item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
+                  )}
+                  style={{ 
+                    minHeight: '320px'
+                  }}
+                >
+                  {item.href ? (
+                    <Link href={item.href} className="block h-full">
+                      {cardContent}
+                    </Link>
+                  ) : (
+                    cardContent
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        ) : naturalScroll ? (
           <div 
             className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide" 
             ref={carouselRef}

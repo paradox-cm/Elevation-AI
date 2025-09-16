@@ -1292,24 +1292,47 @@ function WhoWeServeSection() {
           </div>
           {/* Carousel Layout */}
           <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
-            <Carousel 
-              items={solutions}
-              autoPlay={true}
-              autoPlayInterval={5000}
-              showProgressIndicators={true}
-              showGradients={false}
-              cardWidth={400}
-              cardGap={32}
-              className="w-full"
-              naturalScroll={true}
-              cardStyle="blue"
-              highlightActiveCard={true}
-              responsive={{
-                sm: { cardWidth: 288, cardGap: 12 },
-                md: { cardWidth: 336, cardGap: 16 },
-                lg: { cardWidth: 320, cardGap: 24 }
-              }}
-            />
+            {/* Mobile & Tablet Carousel - Scrolls horizontally with auto-play */}
+            <div className="block lg:hidden">
+              <Carousel 
+                items={solutions}
+                autoPlay={true}
+                autoPlayInterval={5000}
+                showProgressIndicators={true}
+                showGradients={false}
+                cardWidth={400}
+                cardGap={32}
+                className="w-full"
+                naturalScroll={false}
+                cardStyle="blue"
+                highlightActiveCard={true}
+                responsive={{
+                  sm: { cardWidth: 288, cardGap: 12 },
+                  md: { cardWidth: 336, cardGap: 16 }
+                }}
+              />
+            </div>
+
+            {/* Desktop Carousel - Stays in place, highlights active */}
+            <div className="hidden lg:block">
+              <Carousel 
+                items={solutions}
+                autoPlay={true}
+                autoPlayInterval={5000}
+                showProgressIndicators={true}
+                showGradients={false}
+                cardWidth={400}
+                cardGap={32}
+                className="w-full"
+                naturalScroll={false}
+                staticMode={true}
+                cardStyle="blue"
+                highlightActiveCard={true}
+                responsive={{
+                  lg: { cardWidth: 320, cardGap: 24 }
+                }}
+              />
+            </div>
           </div>
         </div>
       </Container>
