@@ -29,7 +29,7 @@ const formSchema = z.object({
   nonOperatingEntities: z.array(z.number()).length(1),
   addOns: z.array(z.string()).optional(),
   supportLevel: z.string().min(1, "Please select a support level"),
-  planType: z.string().default("paid"),
+  planType: z.string().min(1, "Plan type is required"),
 })
 
 type FormData = z.infer<typeof formSchema>
