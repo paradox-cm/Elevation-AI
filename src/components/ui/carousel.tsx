@@ -346,7 +346,9 @@ export function Carousel({
                   )}
                   <div className="flex flex-col flex-1">
                     <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
-                    <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+                    <div className="flex-1 flex items-end">
+                      <p className="text-base text-muted-foreground leading-relaxed">{item.description}</p>
+                    </div>
                     {item.content && (
                       <div className="mt-4 flex-shrink-0">
                         {item.content}

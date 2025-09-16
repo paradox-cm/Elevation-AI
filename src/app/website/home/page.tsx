@@ -616,7 +616,7 @@ function ProblemSection() {
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
                     <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
-                      <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
+                      <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0 h-[200px] sm:h-[220px] md:h-[240px]">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Icon name={problem.icon} size="lg" className="text-primary" />
@@ -628,38 +628,36 @@ function ProblemSection() {
                         </BodyLarge>
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col pb-6 px-4 min-h-0">
-                        {/* Spacer to push animation to bottom */}
-                        <div className="flex-1"></div>
-                        {/* Animation Container */}
+                        {/* Animation Container - Fixed position */}
                         <div className="h-[220px] sm:h-[260px] md:h-[300px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
                           {index === 0 && (
                             <UnifiedKnowledge 
-                              width={220} 
-                              height={220} 
+                              width={154} 
+                              height={154} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 1 && (
                             <IntelligentProcessAutomationMobile 
-                              width={280} 
-                              height={160} 
+                              width={196} 
+                              height={112} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 2 && (
                             <RealTimeBusinessIntelligenceMobile 
-                              width={200} 
-                              height={200} 
+                              width={140} 
+                              height={140} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 3 && (
                             <FutureReadyMobile 
-                              width={200} 
-                              height={160} 
+                              width={140} 
+                              height={112} 
                               showBorder={false}
                               className=""
                             />
@@ -703,7 +701,7 @@ function ProblemSection() {
                       className="w-[480px] lg:w-[520px] xl:w-[560px] 2xl:w-[600px] flex-shrink-0"
                     >
                       <Card className="h-[500px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
-                        <CardHeader className="pt-6 pb-4 px-6 flex-shrink-0">
+                        <CardHeader className="pt-6 pb-4 px-6 flex-shrink-0 h-[240px] lg:h-[260px] xl:h-[280px] 2xl:h-[300px]">
                           <div className="space-y-4">
                             <div className="flex items-center gap-3">
                               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -717,35 +715,33 @@ function ProblemSection() {
                           </div>
                         </CardHeader>
                         <CardContent className="flex-1 flex flex-col pb-6 px-6 min-h-0">
-                          {/* Spacer to push animation to bottom */}
-                          <div className="flex-1"></div>
-                          {/* Animation Container */}
+                          {/* Animation Container - Fixed position */}
                           <div className="h-[280px] lg:h-[320px] xl:h-[360px] 2xl:h-[400px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
                             {index === 0 && (
                               <UnifiedKnowledge 
-                                width={440} 
-                                height={440} 
+                                width={308} 
+                                height={308} 
                                 showBorder={false}
                               />
                             )}
                             {index === 1 && (
                               <IntelligentProcessAutomation 
-                                width={600} 
-                                height={400} 
+                                width={420} 
+                                height={280} 
                                 showBorder={false}
                               />
                             )}
                             {index === 2 && (
                               <RealTimeBusinessIntelligence 
-                                width={440} 
-                                height={440} 
+                                width={308} 
+                                height={308} 
                                 showBorder={false}
                               />
                             )}
                             {index === 3 && (
                               <FutureReady 
-                                width={600} 
-                                height={400} 
+                                width={420} 
+                                height={280} 
                                 showBorder={false}
                               />
                             )}
@@ -1277,16 +1273,8 @@ function WhoWeServeSection() {
     return {
       id: index,
       title: card,
-      description: "",
-      content: (
-        <Link href={`/website/solutions?open=${cardId}`} className="block h-full">
-          <div className="text-left">
-            <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-              →
-            </h4>
-          </div>
-        </Link>
-      )
+      description: "→",
+      href: `/website/solutions?open=${cardId}`
     }
   })
 
@@ -1328,26 +1316,68 @@ function WhoWeServeSection() {
         </div>
       </Container>
 
-      {/* Small Cards - Natural Scrolling Carousel for All Breakpoints */}
+      {/* Small Cards - Carousel for Small Breakpoints / Grid for Large */}
       <div className="w-full mt-8 lg:mt-12">
-        <Carousel 
-          items={smallCardsCarouselItems}
-          autoPlay={false}
-          showProgressIndicators={false}
-          showGradients={false}
-          cardWidth={200}
-          cardGap={16}
-          className="w-full"
-          highlightActiveCard={false}
-          cardStyle="outline"
-          naturalScroll={true}
-          responsive={{
-            sm: { cardWidth: 200, cardGap: 12 },
-            md: { cardWidth: 220, cardGap: 14 },
-            lg: { cardWidth: 240, cardGap: 16 },
-            xl: { cardWidth: 260, cardGap: 18 }
-          }}
-        />
+        {/* Carousel for Small Breakpoints */}
+        <div className="lg:hidden">
+          <Carousel 
+            items={smallCardsCarouselItems}
+            autoPlay={false}
+            showProgressIndicators={false}
+            showGradients={false}
+            cardWidth={200}
+            cardGap={16}
+            className="w-full"
+            highlightActiveCard={false}
+            cardStyle="outline"
+            naturalScroll={true}
+            responsive={{
+              sm: { cardWidth: 200, cardGap: 12 },
+              md: { cardWidth: 220, cardGap: 14 }
+            }}
+          />
+        </div>
+
+        {/* Grid Layout for Large Breakpoints */}
+        <div className="hidden lg:block">
+          <Container size="2xl">
+            <div className="grid grid-cols-5 gap-4">
+              {smallCards.map((card, index) => {
+                // Map card names to their corresponding stage solution IDs
+                const cardIdMap: { [key: string]: string } = {
+                  "Creating a Venture": "creating-venture",
+                  "Scaling a Venture": "scaling-venture", 
+                  "Exiting a Venture": "exiting-venture",
+                  "Post-IPO Growth": "post-ipo-growth",
+                  "Post-Exit/Family Office": "family-office"
+                }
+                
+                const cardId = cardIdMap[card] || ""
+                
+                return (
+                  <Link
+                    key={index}
+                    href={`/website/solutions?open=${cardId}`}
+                    className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent min-h-[320px] flex flex-col"
+                  >
+                    <div className="flex flex-col flex-1">
+                      <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
+                        {card}
+                      </h3>
+                      <div className="flex-1 flex items-end">
+                        <div className="text-left">
+                          <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                            →
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </Container>
+        </div>
       </div>
     </Section>
   )
