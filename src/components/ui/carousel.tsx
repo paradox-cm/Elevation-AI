@@ -464,7 +464,7 @@ export function Carousel({
           </div>
         ) : (
           <div 
-            className="overflow-hidden"
+            className="overflow-hidden pt-4"
             ref={carouselRef}
           >
             <div 
