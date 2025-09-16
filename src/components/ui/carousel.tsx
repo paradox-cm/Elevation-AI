@@ -182,34 +182,8 @@ export function Carousel({
         return
       }
       
-      // If naturalScroll is enabled, track the closest slide for indicators and highlighting
+      // If naturalScroll is enabled, don't track slide position - let it scroll naturally
       if (naturalScroll) {
-        const totalCardWidth = responsiveCardWidth + responsiveCardGap
-        const containerWidth = carouselRef.current.clientWidth
-        
-        // Find which card is most centered in the viewport
-        let bestMatchIndex = 0
-        let minDistance = Infinity
-        
-        for (let i = 0; i < items.length; i++) {
-          const cardStart = i * totalCardWidth
-          const cardCenter = cardStart + (responsiveCardWidth / 2)
-          const viewportCenter = scrollLeft + (containerWidth / 2)
-          const distance = Math.abs(cardCenter - viewportCenter)
-          
-          if (distance < minDistance) {
-            minDistance = distance
-            bestMatchIndex = i
-          }
-        }
-        
-        const clampedSlideIndex = Math.max(0, Math.min(bestMatchIndex, items.length - 1))
-        
-        // Only update if the slide has actually changed to avoid unnecessary re-renders
-        if (clampedSlideIndex !== currentSlide) {
-          setCurrentSlide(clampedSlideIndex)
-          // Don't reset progress when manually scrolling - let auto-play continue
-        }
         return
       }
       
@@ -257,8 +231,8 @@ export function Carousel({
 
   // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
   React.useEffect(() => {
-    // Don't auto-play if user has manually interacted
-    if (!autoPlay || hasManualInteraction) return
+    // Don't auto-play if user has manually interacted or if natural scroll is enabled
+    if (!autoPlay || hasManualInteraction || naturalScroll) return
     
     // Reset progress when starting
     setProgress(0)
@@ -295,24 +269,16 @@ export function Carousel({
     }
   }, [])
 
-  // Auto-scroll carousel when currentSlide changes (hybrid behavior)
+  // Auto-scroll carousel when currentSlide changes (only for non-natural scroll)
   React.useEffect(() => {
-    if (carouselRef.current) {
+    if (carouselRef.current && !naturalScroll) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
       // Set flag to indicate this is a programmatic scroll
       isProgrammaticScrollRef.current = true
       
-      if (naturalScroll) {
-        // For natural scroll, smoothly scroll to center the card
-        carouselRef.current.scrollTo({
-          left: currentSlide * totalCardWidth,
-          behavior: 'smooth'
-        })
-      } else {
-        // For snapping scroll, use transform-based movement
-        // This is handled by the transform in the render
-      }
+      // For snapping scroll, use transform-based movement
+      // This is handled by the transform in the render
       
       // Reset flag after scroll completes
       setTimeout(() => {
@@ -365,7 +331,9 @@ export function Carousel({
             className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide" 
             ref={carouselRef}
             style={{ 
-              gap: `${responsiveCardGap}px`
+              gap: `${responsiveCardGap}px`,
+              scrollBehavior: 'auto',
+              scrollSnapType: 'none'
             }}
           >
             {items.map((item, index) => {
@@ -413,7 +381,8 @@ export function Carousel({
                     height: maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto',
                     minHeight: '320px',
                     marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
-                    marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                    marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0',
+                    scrollSnapAlign: 'none'
                   }}
                 >
                   {item.href ? (

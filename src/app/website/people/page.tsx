@@ -803,6 +803,7 @@ export default function PeoplePage() {
                         cardStyle="blue"
                         highlightActiveCard={true}
                         className="w-full"
+                        naturalScroll={true}
                         responsive={{
                           sm: { cardWidth: 280, cardGap: 16 },
                           md: { cardWidth: 300, cardGap: 20 },

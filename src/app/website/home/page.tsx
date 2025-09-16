@@ -567,8 +567,6 @@ function IntroductionSection() {
 
 // Problem We Solve Section
 function ProblemSection() {
-  const [activeStep, setActiveStep] = React.useState(0)
-  const sectionRef = React.useRef<HTMLDivElement>(null)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
   const problems = [
@@ -594,71 +592,6 @@ function ProblemSection() {
     }
   ]
 
-  // Mobile scroll-based card activation - REMOVED for normal scrolling
-  // Cards now expand/collapse normally without scroll interference
-
-  // Desktop scroll-triggered carousel with standardized behavior
-  React.useEffect(() => {
-    // Only run on desktop - use a more reliable check
-    if (typeof window === 'undefined' || window.innerWidth < 1024) return
-    
-    const handleScroll = () => {
-      if (!sectionRef.current) return
-      
-      const rect = sectionRef.current.getBoundingClientRect()
-      // Responsive container height calculation matching actual container heights
-      let containerHeight
-      if (window.innerWidth >= 1536) { // 2XL
-        containerHeight = 550 // matches h-[550px]
-      } else if (window.innerWidth >= 1400) { // XL (adjusted for 14" MacBook Pro)
-        containerHeight = 500 // matches h-[500px]
-      } else { // LG
-        containerHeight = 450 // matches h-[450px]
-      }
-      
-      // Calculate which step should be active based on scroll position
-      if (rect.top <= 0 && rect.bottom >= containerHeight) {
-        // Section is in viewport, use custom calculation for ProblemSection
-        const scrollProgress = Math.abs(rect.top) / containerHeight
-        
-        // Custom logic: All slides get 400px more scroll space, third slide gets additional 100px (500px total), fourth slide gets additional 100px (500px total)
-        const baseSlideHeight = containerHeight
-        const firstSlideHeight = baseSlideHeight + 400 // 400px extra for first slide
-        const secondSlideHeight = baseSlideHeight + 400 // 400px extra for second slide
-        const thirdSlideHeight = baseSlideHeight + 500 // 500px extra for third slide (400px + 100px additional)
-        const fourthSlideHeight = baseSlideHeight + 500 // 500px extra for fourth slide (400px + 100px additional)
-        
-        let activeStep = 0
-        if (scrollProgress < (firstSlideHeight / containerHeight)) {
-          // First slide
-          activeStep = 0
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight) / containerHeight)) {
-          // Second slide with extra scroll space
-          activeStep = 1
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight) / containerHeight)) {
-          // Third slide with extra scroll space
-          activeStep = 2
-        } else if (scrollProgress < ((firstSlideHeight + secondSlideHeight + thirdSlideHeight + fourthSlideHeight) / containerHeight)) {
-          // Fourth slide
-          activeStep = 3
-        } else {
-          // Section complete, stay on last slide
-          activeStep = problems.length - 1
-        }
-        
-        setActiveStep(activeStep)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setActiveStep(0)
-      } else {
-        // Section is below viewport
-        setActiveStep(problems.length - 1)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [problems.length])
 
     return (
     <Section paddingY="lg">
@@ -750,115 +683,88 @@ function ProblemSection() {
             </div>
           )}
 
-          {/* Desktop Layout - Scroll-triggered Carousel */}
+          {/* Desktop Layout - Natural Scrolling Carousel */}
           {isDesktop && (
-            <div key="desktop-layout" className="relative" ref={sectionRef}>
-            {/* Carousel Container */}
-            <div className="sticky top-20 h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-7rem)] 2xl:h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
-              <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
-                <div className="w-full flex flex-col items-center justify-center min-h-0">
-                  {/* Section Headline */}
-                  <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
-                    <H1>Orchestrate Your Universe</H1>
-                    <P className="text-muted-foreground max-w-4xl mx-auto">
-                      Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
-                    </P>
-                  </div>
-                  {/* Carousel Container */}
-                  <div className="relative w-full h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]">
-                    {problems.map((problem, index) => (
+            <div key="desktop-layout" className="relative">
+              {/* Section Headline */}
+              <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
+                <H1>Orchestrate Your Universe</H1>
+                <P className="text-muted-foreground max-w-4xl mx-auto">
+                  Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+                </P>
+              </div>
+
+              {/* Natural Scrolling Container */}
+              <div className="overflow-x-auto overflow-y-hidden pb-4 scrollbar-hide">
+                <div className="flex gap-6 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
+                  {problems.map((problem, index) => (
                     <div
                       key={index}
-                      className={`absolute inset-0 ${
-                        index === activeStep
-                          ? 'opacity-100'
-                          : 'opacity-0 pointer-events-none'
-                      }`}
+                      className="w-[480px] lg:w-[520px] xl:w-[560px] 2xl:w-[600px] flex-shrink-0"
                     >
-                      {/* Card Content */}
-                      <Card className="group transition-colors duration-200 ease-out border-border/50 h-full rounded-lg relative overflow-hidden">
-                        {/* Step Indicators - Positioned inside card on the left */}
-                        <div className="absolute left-0 top-0 bottom-0 flex flex-col w-20 z-10">
-                          {problems.map((_, stepIndex) => (
-                            <button
-                              key={stepIndex}
-                              onClick={() => setActiveStep(stepIndex)}
-                              className={`flex-1 border-r border-border/50 flex items-center justify-center text-lg font-medium transition-colors duration-200 ease-out ${
-                                stepIndex === activeStep
-                                  ? 'bg-primary border-primary text-white shadow-lg border-b border-primary'
-                                  : stepIndex < activeStep
-                                  ? 'bg-primary/20 border-primary/30 text-primary border-b border-primary/30'
-                                  : stepIndex < 3
-                                  ? 'bg-background/80 border-border/50 text-muted-foreground hover:bg-background/60 border-b border-border/50'
-                                  : 'bg-background/80 border-border/50 text-muted-foreground hover:bg-background/60'
-                              }`}
-                            >
-                              {stepIndex + 1}
-                            </button>
-                          ))}
-                        </div>
-                        <CardHeader className="h-full flex flex-col justify-center pl-24 pr-6 lg:pl-28 lg:pr-8 xl:pl-32 xl:pr-10 2xl:pl-36 2xl:pr-12">
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center h-full w-full">
-                            {/* Content */}
-                            <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
-                              <H1>{problem.title}</H1>
-                              <BodyLarge className="text-muted-foreground leading-relaxed text-sm lg:text-base xl:text-lg 2xl:text-xl">
-                                {problem.description}
-                              </BodyLarge>
-                              {/* Calculate Your Plan Link */}
-                              <div className="pt-2">
-                                <Link 
-                                  href="/website/pricing" 
-                                  className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
-                                >
-                                  Calculate Your Plan →
-                                </Link>
+                      <Card className="h-[500px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
+                        <CardHeader className="pt-6 pb-4 px-6 flex-shrink-0">
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <Icon name={problem.icon} size="xl" className="text-primary" />
                               </div>
+                              <CardTitle className="text-xl font-semibold">{problem.title}</CardTitle>
                             </div>
-                            
-                            {/* Animation Container */}
-                            <div className="h-full rounded-lg flex items-center justify-center border border-border/50 overflow-hidden">
-                              {index === 0 && (
-                                <UnifiedKnowledge 
-                                  width={440} 
-                                  height={440} 
-                                  showBorder={false}
-                                />
-                              )}
-                              {index === 1 && (
-                                <IntelligentProcessAutomation 
-                                  width={600} 
-                                  height={400} 
-                                  showBorder={false}
-                                />
-                              )}
-                              {index === 2 && (
-                                <RealTimeBusinessIntelligence 
-                                  width={440} 
-                                  height={440} 
-                                  showBorder={false}
-                                />
-                              )}
-                              {index === 3 && (
-                                <FutureReady 
-                                  width={600} 
-                                  height={400} 
-                                  showBorder={false}
-                                />
-                              )}
-                            </div>
+                            <BodyLarge className="text-muted-foreground text-base leading-relaxed">
+                              {problem.description}
+                            </BodyLarge>
                           </div>
                         </CardHeader>
+                        <CardContent className="flex-1 flex flex-col pb-6 px-6 min-h-0">
+                          {/* Spacer to push animation to bottom */}
+                          <div className="flex-1"></div>
+                          {/* Animation Container */}
+                          <div className="h-[280px] lg:h-[320px] xl:h-[360px] 2xl:h-[400px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
+                            {index === 0 && (
+                              <UnifiedKnowledge 
+                                width={440} 
+                                height={440} 
+                                showBorder={false}
+                              />
+                            )}
+                            {index === 1 && (
+                              <IntelligentProcessAutomation 
+                                width={600} 
+                                height={400} 
+                                showBorder={false}
+                              />
+                            )}
+                            {index === 2 && (
+                              <RealTimeBusinessIntelligence 
+                                width={440} 
+                                height={440} 
+                                showBorder={false}
+                              />
+                            )}
+                            {index === 3 && (
+                              <FutureReady 
+                                width={600} 
+                                height={400} 
+                                showBorder={false}
+                              />
+                            )}
+                          </div>
+                          {/* Calculate Your Plan Link */}
+                          <div className="mt-4 text-left">
+                            <Link 
+                              href="/website/pricing" 
+                              className="text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
+                            >
+                              Calculate Your Plan →
+                            </Link>
+                          </div>
+                        </CardContent>
                       </Card>
                     </div>
-                ))}
-                  </div>
+                  ))}
                 </div>
               </div>
-            </div>
-            
-            {/* Scroll Spacer */}
-            <div style={{ height: `${650 + 650 + 750 + 750 + 750 + 200}px` }}></div>
             </div>
           )}
         </div>
@@ -1422,69 +1328,27 @@ function WhoWeServeSection() {
         </div>
       </Container>
 
-      {/* Small Cards - Carousel for Small Breakpoints / Grid for Large */}
+      {/* Small Cards - Natural Scrolling Carousel for All Breakpoints */}
       <div className="w-full mt-8 lg:mt-12">
-        {/* Carousel for Small Breakpoints */}
-            <div className="lg:hidden">
-          <Carousel 
-            items={smallCardsCarouselItems}
-            autoPlay={false}
-            showProgressIndicators={false}
-            showGradients={false}
-            cardWidth={200}
-            cardGap={16}
-            className="w-full"
-            highlightActiveCard={false}
-            cardStyle="outline"
-            naturalScroll={true}
-            responsive={{
-              sm: { cardWidth: 200, cardGap: 12 },
-              md: { cardWidth: 220, cardGap: 14 }
-            }}
-          />
-                      </div>
-
-        {/* Grid Layout for Large Breakpoints */}
-        <div className="hidden lg:block">
-          <Container size="2xl" >
-            <div className="grid grid-cols-5 gap-4">
-              {smallCards.map((card, index) => {
-                // Map card names to their corresponding stage solution IDs
-                const cardIdMap: { [key: string]: string } = {
-                  "Creating a Venture": "creating-venture",
-                  "Scaling a Venture": "scaling-venture", 
-                  "Exiting a Venture": "exiting-venture",
-                  "Post-IPO Growth": "post-ipo-growth",
-                  "Post-Exit/Family Office": "family-office"
-                }
-                
-                const cardId = cardIdMap[card] || ""
-                
-                return (
-                  <Link
-                    key={index}
-                    href={`/website/solutions?open=${cardId}`}
-                    className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer bg-transparent min-h-[320px] flex flex-col"
-                  >
-                    <div className="flex flex-col flex-1">
-                      <h3 className="text-lg font-semibold text-foreground mb-2 flex-shrink-0">
-                        {card}
-                      </h3>
-                      <div className="flex-1 flex items-end">
-                        <div className="text-left">
-                          <h4 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                            →
-                          </h4>
-                          </div>
-                        </div>
-                </div>
-              </Link>
-                )
-              })}
-            </div>
-          </Container>
-          </div>
-        </div>
+        <Carousel 
+          items={smallCardsCarouselItems}
+          autoPlay={false}
+          showProgressIndicators={false}
+          showGradients={false}
+          cardWidth={200}
+          cardGap={16}
+          className="w-full"
+          highlightActiveCard={false}
+          cardStyle="outline"
+          naturalScroll={true}
+          responsive={{
+            sm: { cardWidth: 200, cardGap: 12 },
+            md: { cardWidth: 220, cardGap: 14 },
+            lg: { cardWidth: 240, cardGap: 16 },
+            xl: { cardWidth: 260, cardGap: 18 }
+          }}
+        />
+      </div>
     </Section>
   )
 }
