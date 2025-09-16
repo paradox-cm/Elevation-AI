@@ -21,7 +21,7 @@ function LogoGridSection() {
     { name: "Bank of America", filename: "Bank-of-America.svg", showText: true },
     { name: "BCG Consulting", filename: "BCG-Consulting.svg", showText: false },
     { name: "Capital One", filename: "Capital-One.svg", showText: true },
-    { name: "Barclays", filename: "Barclays.svg", showText: false },
+    { name: "Barclays", filename: "Barclays.svg", showText: true },
     { name: "eBay", filename: "ebay.svg", showText: false },
     { name: "Google", filename: "Google.svg", showText: true },
     { name: "Indeed", filename: "Indeed.svg", showText: true },
