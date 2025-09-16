@@ -595,14 +595,13 @@ function ProblemSection() {
 
     return (
     <Section paddingY="lg">
-      <Container size="2xl">
-        <div className="space-y-6 sm:space-y-8 lg:space-y-12">
-          {/* Mobile Layout */}
-          {!isDesktop && (
-            <div key="mobile-layout" className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
-              {/* Section Headline */}
-              <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-                <H1>Orchestrate Your Universe</H1>
+      <div className="space-y-6 sm:space-y-8 lg:space-y-12">
+        {/* Mobile Layout */}
+        {!isDesktop && (
+          <div key="mobile-layout" className="mb-0">
+            {/* Section Headline */}
+            <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 px-4 sm:px-6 lg:px-8">
+              <H1>Orchestrate Your Universe</H1>
               <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
                 Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
               </P>
@@ -685,14 +684,14 @@ function ProblemSection() {
           {isDesktop && (
             <div key="desktop-layout" className="relative">
               {/* Section Headline */}
-              <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
+              <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8 px-4 sm:px-6 lg:px-8">
                 <H1>Orchestrate Your Universe</H1>
                 <P className="text-muted-foreground max-w-4xl mx-auto">
                   Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
                 </P>
               </div>
 
-              {/* Natural Scrolling Container */}
+              {/* Natural Scrolling Container - Full Width */}
               <div className="overflow-x-auto overflow-y-hidden pb-4 scrollbar-hide">
                 <div className="flex gap-6 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
                   {problems.map((problem, index) => (
@@ -764,7 +763,6 @@ function ProblemSection() {
             </div>
           )}
         </div>
-      </Container>
     </Section>
   )
 }
