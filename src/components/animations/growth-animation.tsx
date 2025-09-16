@@ -68,7 +68,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
     const dots: Dot[] = []
     const gridSize = 20
     const maxGrowth = 8
-    const cycleTime = (20000 / 2) * 5 // 5x slower (20% of original speed)
+    const cycleTime = (20000 / 2) * 40 // 40x slower (2.5% of original speed)
 
     for (let x = 0; x < canvas.width; x += gridSize) {
       for (let y = canvas.height; y > 0; y -= gridSize) {
@@ -95,7 +95,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
     const dotColor = theme === 'dark' ? '#ffffff' : '#000000'
     
     dotsRef.current.forEach(dot => {
-      dot.update(deltaTime, 8, 50000) // 5x slower (20% of original speed)
+      dot.update(deltaTime, 8, 400000) // 40x slower (2.5% of original speed)
       dot.draw(ctx, dotColor)
     })
     

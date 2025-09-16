@@ -103,28 +103,26 @@ function PricingHeroSection({ onOpenCalculator }: { onOpenCalculator: () => void
   )
 }
 
-// How It Works Section
+// How It Works Section (Mobile: Full width, Desktop: Left column)
 function HowItWorksSection() {
   return (
-    <Section paddingY="lg" className="bg-muted/30">
-      <Container size="2xl">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Left Column - Heading */}
-          <div className="lg:col-span-1 space-y-6">
+    <Section paddingY="none" className="bg-muted/30 pb-0 lg:hidden">
+      <Container size="2xl" className="py-8 lg:py-16">
+        <div className="space-y-8">
+          <div className="space-y-6">
             <H2>How It Works</H2>
           </div>
 
-          {/* Right Column - Three Cards */}
-          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1 */}
+          {/* Three Steps */}
+          <div className="space-y-6">
+            {/* Step 1 */}
             <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
               <CardContent className="p-6 h-full flex flex-col">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <span className="text-primary font-semibold text-lg">1</span>
                   </div>
-                  <H3 className="text-lg md:hidden">Tell Us About Your Universe</H3>
-                  <H4 className="hidden md:block">Tell Us About Your Universe</H4>
+                  <H4 className="text-base">Tell Us About Your Universe</H4>
                 </div>
                 <P className="text-muted-foreground text-sm leading-relaxed">
                   Share key details about your organization and core needs.
@@ -132,15 +130,14 @@ function HowItWorksSection() {
               </CardContent>
             </Card>
 
-            {/* Card 2 */}
+            {/* Step 2 */}
             <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
               <CardContent className="p-6 h-full flex flex-col">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <span className="text-primary font-semibold text-lg">2</span>
                   </div>
-                  <H3 className="text-lg md:hidden">Select Your Core Capabilities</H3>
-                  <H4 className="hidden md:block">Select Your Core Capabilities</H4>
+                  <H4 className="text-base">Select Your Core Capabilities</H4>
                 </div>
                 <P className="text-muted-foreground text-sm leading-relaxed">
                   Select platform features and support levels that match your goals.
@@ -148,15 +145,14 @@ function HowItWorksSection() {
               </CardContent>
             </Card>
 
-            {/* Card 3 */}
+            {/* Step 3 */}
             <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
               <CardContent className="p-6 h-full flex flex-col">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <span className="text-primary font-semibold text-lg">3</span>
                   </div>
-                  <H3 className="text-lg md:hidden">Receive Your Custom Plan</H3>
-                  <H4 className="hidden md:block">Receive Your Custom Plan</H4>
+                  <H4 className="text-base">Receive Your Custom Plan</H4>
                 </div>
                 <P className="text-muted-foreground text-sm leading-relaxed">
                   Get your custom plan and pricing estimate ready for review.
@@ -170,21 +166,18 @@ function HowItWorksSection() {
   )
 }
 
-// Growth Animation Section
-function GrowthAnimationSection({ onOpenCalculator }: { onOpenCalculator: () => void }) {
+// Calculate Your Plan Section (Mobile: Full width with animation, Desktop: Right column)
+function CalculateYourPlanSection({ onOpenCalculator }: { onOpenCalculator: () => void }) {
   return (
-    <Section 
-      paddingY="lg" 
-      className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]"
-    >
+    <div className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] pb-0 lg:hidden">
       {/* Background Animation */}
       <div className="absolute inset-0">
         <GrowthAnimation className="w-full h-full" />
       </div>
       
       {/* Content Overlay */}
-      <div className="relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
-        <Container size="2xl">
+      <div className="relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] w-full px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-2xl mx-auto">
           <div className="text-center group">
             <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
               <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto cursor-pointer group">
@@ -193,8 +186,103 @@ function GrowthAnimationSection({ onOpenCalculator }: { onOpenCalculator: () => 
               </Button>
             </div>
           </div>
-        </Container>
+        </div>
       </div>
+    </div>
+  )
+}
+
+// Desktop Combined Section (Side-by-side layout)
+function DesktopCombinedSection({ onOpenCalculator }: { onOpenCalculator: () => void }) {
+  return (
+    <Section 
+      paddingY="none"
+      className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] flex items-center pb-0 hidden lg:flex"
+    >
+      {/* Left Column - How It Works */}
+      <div className="absolute inset-y-0 left-0 w-1/4 bg-muted/30"></div>
+      {/* Right Column - Background Animation */}
+      <div className="absolute inset-y-0 right-0 w-3/4">
+        <div className="w-full h-full flex items-center justify-center overflow-hidden">
+          <div className="w-full h-full aspect-square max-w-none">
+            <GrowthAnimation className="w-full h-full" />
+          </div>
+        </div>
+      </div>
+
+      {/* Content Overlay */}
+      <Container size="2xl" className="relative z-10 h-full py-8 lg:py-16 pb-0">
+        <div className="grid grid-cols-4 gap-0 h-full">
+          {/* Left Column - How It Works (1 column) */}
+          <div className="col-span-1 flex items-center pl-1 pr-12 py-12 pb-0">
+            <div className="w-full space-y-8">
+              <div className="space-y-6">
+                <H2>How It Works</H2>
+              </div>
+
+              {/* Three Steps */}
+              <div className="space-y-6">
+                {/* Step 1 */}
+                <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+                  <CardContent className="p-6 h-full flex flex-col">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary font-semibold text-lg">1</span>
+                      </div>
+                      <H4 className="text-base">Tell Us About Your Universe</H4>
+                    </div>
+                    <P className="text-muted-foreground text-sm leading-relaxed">
+                      Share key details about your organization and core needs.
+                    </P>
+                  </CardContent>
+                </Card>
+
+                {/* Step 2 */}
+                <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+                  <CardContent className="p-6 h-full flex flex-col">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary font-semibold text-lg">2</span>
+                      </div>
+                      <H4 className="text-base">Select Your Core Capabilities</H4>
+                    </div>
+                    <P className="text-muted-foreground text-sm leading-relaxed">
+                      Select platform features and support levels that match your goals.
+                    </P>
+                  </CardContent>
+                </Card>
+
+                {/* Step 3 */}
+                <Card className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
+                  <CardContent className="p-6 h-full flex flex-col">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary font-semibold text-lg">3</span>
+                      </div>
+                      <H4 className="text-base">Receive Your Custom Plan</H4>
+                    </div>
+                    <P className="text-muted-foreground text-sm leading-relaxed">
+                      Get your custom plan and pricing estimate ready for review.
+                    </P>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Calculate Your Plan (3 columns) */}
+          <div className="col-span-3 flex items-center justify-center p-12 pb-0">
+            <div className="text-center group">
+              <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                <Button size="lg" onClick={onOpenCalculator} className="flex items-center mx-auto cursor-pointer group">
+                  Calculate Your Plan
+                  <Icon name="calculator-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
     </Section>
   )
 }
@@ -202,8 +290,8 @@ function GrowthAnimationSection({ onOpenCalculator }: { onOpenCalculator: () => 
 // CTA Section
 function CTASection() {
   return (
-    <Section paddingY="lg" className="bg-muted/30">
-      <Container size="2xl">
+    <div className="bg-muted/30 -mt-px">
+      <Container size="2xl" className="py-16">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <H2>Ready to Transform Your Operations?</H2>
@@ -226,7 +314,7 @@ function CTASection() {
           </div>
         </div>
       </Container>
-    </Section>
+    </div>
   )
 }
 
@@ -253,11 +341,12 @@ export default function PricingPage() {
             {/* Pricing Hero Section */}
             <PricingHeroSection onOpenCalculator={handleOpenCalculator} />
             
-            {/* How It Works Section */}
+            {/* Mobile Layout - Stacked Sections */}
             <HowItWorksSection />
+            <CalculateYourPlanSection onOpenCalculator={handleOpenCalculator} />
             
-            {/* Growth Animation Section */}
-            <GrowthAnimationSection onOpenCalculator={handleOpenCalculator} />
+            {/* Desktop Layout - Side-by-Side Section */}
+            <DesktopCombinedSection onOpenCalculator={handleOpenCalculator} />
             
             <CTASection />
           </main>
