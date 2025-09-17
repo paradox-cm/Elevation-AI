@@ -291,7 +291,7 @@ function SecuritySection() {
       title: "Data Protection",
       description: "",
       content: (
-        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+        <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
             <Icon name="shield-check-line" size="2xl" className="text-primary text-4xl" />
           </div>
@@ -306,7 +306,7 @@ function SecuritySection() {
       title: "Compliance",
       description: "",
       content: (
-        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+        <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
             <Icon name="file-shield-line" size="2xl" className="text-primary text-4xl" />
           </div>
@@ -321,7 +321,7 @@ function SecuritySection() {
       title: "Access Control",
       description: "",
       content: (
-        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+        <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
             <Icon name="key-line" size="2xl" className="text-primary text-4xl" />
           </div>
@@ -336,7 +336,7 @@ function SecuritySection() {
       title: "Audit Trail",
       description: "",
       content: (
-        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+        <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
             <Icon name="history-line" size="2xl" className="text-primary text-4xl" />
           </div>
@@ -351,7 +351,7 @@ function SecuritySection() {
       title: "Data Residency",
       description: "",
       content: (
-        <div className="p-6 bg-background/50 rounded-2xl border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
+        <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
             <Icon name="database-2-line" size="2xl" className="text-primary text-4xl" />
           </div>
@@ -391,6 +391,7 @@ function SecuritySection() {
               minHeight="320px"
               stopWhenAllVisible={false}
               naturalScroll={false}
+              flexibleWidth={true}
               responsive={{
                 sm: { cardWidth: 320, cardGap: 16 },
                 md: { cardWidth: 320, cardGap: 20 },

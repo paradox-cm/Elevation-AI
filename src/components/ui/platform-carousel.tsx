@@ -33,6 +33,7 @@ export interface PlatformCarouselProps {
   hugContent?: boolean
   stopWhenAllVisible?: boolean
   naturalScroll?: boolean
+  flexibleWidth?: boolean
   responsive?: {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
@@ -60,6 +61,7 @@ export function PlatformCarousel({
   hugContent = false,
   stopWhenAllVisible = false,
   naturalScroll = false,
+  flexibleWidth = false,
   responsive
 }: PlatformCarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
@@ -97,6 +99,42 @@ export function PlatformCarousel({
       case '2xl': return responsive['2xl'] || responsive.xl || responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
       default: return { cardWidth, cardGap }
     }
+  }
+
+  // Check if flexible width should be applied
+  const shouldUseFlexibleWidth = () => {
+    if (!flexibleWidth) return false
+    
+    // Only apply flexible width on XL/2XL breakpoints
+    if (screenSize !== 'xl' && screenSize !== '2xl') return false
+    
+    // Calculate if cards would be smaller than 248px minimum width
+    const calculateCardWidth = () => {
+      if (typeof window === 'undefined') return responsiveCardWidth
+      
+      const viewportWidth = window.innerWidth
+      const containerPadding = responsivePadding.paddingLeft + responsivePadding.paddingRight
+      const availableWidth = viewportWidth - containerPadding
+      const totalGapWidth = (items.length - 1) * responsiveCardGap
+      const cardWidth = (availableWidth - totalGapWidth) / items.length
+      
+      return cardWidth
+    }
+    
+    const calculatedCardWidth = calculateCardWidth()
+    const minCardWidth = 300
+    
+    // Only use flexible width if cards would be at least 300px wide
+    return calculatedCardWidth >= minCardWidth
+  }
+
+  // Check if all cards are visible and should disable scrolling
+  const shouldDisableScrolling = () => {
+    if (!shouldUseFlexibleWidth()) return false
+    
+    // When using flexible width on XL/2XL, assume all cards are visible
+    // since they will flex to fill the available space
+    return true
   }
 
   const { cardWidth: responsiveCardWidth, cardGap: responsiveCardGap } = getResponsiveConfig()
@@ -141,7 +179,7 @@ export function PlatformCarousel({
         newScreenSize = 'md'
       } else if (width < 1024) {
         newScreenSize = 'lg'
-      } else if (width < 1536) {
+      } else if (width < 1600) {
         newScreenSize = 'xl'
       } else {
         newScreenSize = '2xl'
@@ -153,7 +191,8 @@ export function PlatformCarousel({
       if (carouselRef.current && !naturalScroll) {
         const calculateVisibleCards = () => {
           const viewportWidth = window.innerWidth
-          const totalCardWidth = responsiveCardWidth + responsiveCardGap
+          const actualCardWidth = Math.max(responsiveCardWidth, 300)
+          const totalCardWidth = actualCardWidth + responsiveCardGap
           return Math.floor(viewportWidth / totalCardWidth)
         }
         
@@ -235,7 +274,8 @@ export function PlatformCarousel({
     
     // If naturalScroll is enabled, don't snap to cards - just track the closest slide for indicators
     if (naturalScroll) {
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      const actualCardWidth = Math.max(responsiveCardWidth, 248)
+      const totalCardWidth = actualCardWidth + responsiveCardGap
       
       // Find which card is most centered in the viewport
       let bestMatchIndex = 0
@@ -286,44 +326,53 @@ export function PlatformCarousel({
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
-    // Calculate how many cards can fit in the viewport
-    const calculateVisibleCards = () => {
-      if (typeof window === 'undefined') return 0
-      const viewportWidth = window.innerWidth
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
-      return Math.floor(viewportWidth / totalCardWidth)
-    }
-    
-    const visibleCards = calculateVisibleCards()
-    const maxSlide = Math.max(0, items.length - visibleCards)
-    
-    // Clamp the index to the maximum slide for scrolling
-    const clampedIndex = Math.min(index, maxSlide)
-    
-    setCurrentSlide(clampedIndex)
-    setActiveCardIndex(index) // Update active card highlighting
+    // Always update active card highlighting
+    setActiveCardIndex(index)
     setProgress(0)
     
     // Detect manual interaction when user clicks indicators
     handleManualInteraction()
     
-    onSlideChange?.(clampedIndex)
-    
-    if (naturalScroll && carouselRef.current) {
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+    // Only update slide position if scrolling is not disabled
+    if (!shouldDisableScrolling()) {
+      // Calculate how many cards can fit in the viewport
+      const calculateVisibleCards = () => {
+        if (typeof window === 'undefined') return 0
+        const viewportWidth = window.innerWidth
+        const actualCardWidth = Math.max(responsiveCardWidth, 248)
+        const totalCardWidth = actualCardWidth + responsiveCardGap
+        return Math.floor(viewportWidth / totalCardWidth)
+      }
       
-      // Set flag to indicate this is a programmatic scroll
-      isProgrammaticScrollRef.current = true
+      const visibleCards = calculateVisibleCards()
+      const maxSlide = Math.max(0, items.length - visibleCards)
       
-      carouselRef.current.scrollTo({
-        left: clampedIndex * totalCardWidth,
-        behavior: 'smooth'
-      })
+      // Clamp the index to the maximum slide for scrolling
+      const clampedIndex = Math.min(index, maxSlide)
       
-      // Reset flag after scroll completes
-      setTimeout(() => {
-        isProgrammaticScrollRef.current = false
-      }, 500) // Wait for smooth scroll to complete
+      setCurrentSlide(clampedIndex)
+      onSlideChange?.(clampedIndex)
+      
+      if (naturalScroll && carouselRef.current) {
+        const actualCardWidth = Math.max(responsiveCardWidth, 248)
+        const totalCardWidth = actualCardWidth + responsiveCardGap
+        
+        // Set flag to indicate this is a programmatic scroll
+        isProgrammaticScrollRef.current = true
+        
+        carouselRef.current.scrollTo({
+          left: clampedIndex * totalCardWidth,
+          behavior: 'smooth'
+        })
+        
+        // Reset flag after scroll completes
+        setTimeout(() => {
+          isProgrammaticScrollRef.current = false
+        }, 500) // Wait for smooth scroll to complete
+      }
+    } else {
+      // When scrolling is disabled, just update the active card
+      onSlideChange?.(index)
     }
   }
 
@@ -336,7 +385,8 @@ export function PlatformCarousel({
     const calculateVisibleCards = () => {
       if (typeof window === 'undefined') return 0
       const viewportWidth = window.innerWidth
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      const actualCardWidth = Math.max(responsiveCardWidth, 248)
+      const totalCardWidth = actualCardWidth + responsiveCardGap
       return Math.floor(viewportWidth / totalCardWidth)
     }
     
@@ -370,20 +420,23 @@ export function PlatformCarousel({
         currentActiveIndex = (currentActiveIndex + 1) % items.length
         setActiveCardIndex(currentActiveIndex)
         
-        // Reset scroll position when cycling back to the first card
-        if (currentActiveIndex === 0) {
-          currentSlidePosition = 0
-          setCurrentSlide(0)
-        } else {
-          // Only move scroll position until all cards are visible
-          const nextSlide = currentSlidePosition + 1
-          // If we've reached the point where all cards are visible, stay there
-          if (nextSlide >= maxSlide) {
-            currentSlidePosition = maxSlide
+        // Only update slide position if scrolling is not disabled
+        if (!shouldDisableScrolling()) {
+          // Reset scroll position when cycling back to the first card
+          if (currentActiveIndex === 0) {
+            currentSlidePosition = 0
+            setCurrentSlide(0)
           } else {
-            currentSlidePosition = nextSlide
+            // Only move scroll position until all cards are visible
+            const nextSlide = currentSlidePosition + 1
+            // If we've reached the point where all cards are visible, stay there
+            if (nextSlide >= maxSlide) {
+              currentSlidePosition = maxSlide
+            } else {
+              currentSlidePosition = nextSlide
+            }
+            setCurrentSlide(currentSlidePosition)
           }
-          setCurrentSlide(currentSlidePosition)
         }
       }
     }, progressInterval)
@@ -394,10 +447,11 @@ export function PlatformCarousel({
   }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, responsiveCardWidth, responsiveCardGap])
 
   // Auto-scroll carousel when currentSlide changes (for natural scroll)
-  // Only auto-scroll if naturalScroll is disabled
+  // Only auto-scroll if naturalScroll is disabled and scrolling is not disabled
   React.useEffect(() => {
-    if (carouselRef.current && !naturalScroll) {
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+    if (carouselRef.current && !naturalScroll && !shouldDisableScrolling()) {
+      const actualCardWidth = Math.max(responsiveCardWidth, 248)
+      const totalCardWidth = actualCardWidth + responsiveCardGap
       
       // Set flag to indicate this is a programmatic scroll
       isProgrammaticScrollRef.current = true
@@ -481,6 +535,11 @@ export function PlatformCarousel({
   const handleSlideChange = (index: number) => {
     if (naturalScroll) {
       scrollToSlide(index)
+    } else if (shouldDisableScrolling()) {
+      // When scrolling is disabled, just update the active card
+      setActiveCardIndex(index)
+      setProgress(0)
+      onSlideChange?.(index)
     } else {
       setCurrentSlide(index)
       setProgress(0)
@@ -489,11 +548,19 @@ export function PlatformCarousel({
   }
 
   const nextSlide = () => {
-    handleSlideChange((currentSlide + 1) % items.length)
+    if (shouldDisableScrolling()) {
+      handleSlideChange((activeCardIndex + 1) % items.length)
+    } else {
+      handleSlideChange((currentSlide + 1) % items.length)
+    }
   }
 
   const prevSlide = () => {
-    handleSlideChange((currentSlide - 1 + items.length) % items.length)
+    if (shouldDisableScrolling()) {
+      handleSlideChange((activeCardIndex - 1 + items.length) % items.length)
+    } else {
+      handleSlideChange((currentSlide - 1 + items.length) % items.length)
+    }
   }
 
   const handleMouseEnter = () => {
@@ -602,7 +669,7 @@ export function PlatformCarousel({
       onMouseLeave={handleMouseLeave}
     >
       {/* Gradient Overlays */}
-      {showGradients && (
+      {showGradients && !shouldDisableScrolling() && (
         <>
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
@@ -612,7 +679,10 @@ export function PlatformCarousel({
       {/* Carousel Container */}
       {naturalScroll ? (
         <div 
-          className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide platform-carousel-container"
+          className={cn(
+            "flex pb-4 pt-4 platform-carousel-container",
+            shouldDisableScrolling() ? "overflow-visible" : "overflow-x-auto scrollbar-hide"
+          )}
           ref={carouselRef}
           style={{ 
             gap: `${responsiveCardGap}px`
@@ -626,8 +696,9 @@ export function PlatformCarousel({
               }}
               className="platform-carousel-card flex-shrink-0"
               style={{ 
-                minWidth: `${responsiveCardWidth}px`, 
-                maxWidth: `${responsiveCardWidth}px`,
+                minWidth: shouldUseFlexibleWidth() ? 'auto' : `${Math.max(responsiveCardWidth, 300)}px`, 
+                maxWidth: shouldUseFlexibleWidth() ? 'none' : `${Math.max(responsiveCardWidth, 300)}px`,
+                flex: shouldUseFlexibleWidth() ? '1' : 'none',
                 height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
                 minHeight: responsiveMinHeightValue,
                 marginLeft: index === 0 ? `${responsivePadding.paddingLeft}px` : '0',
@@ -672,16 +743,19 @@ export function PlatformCarousel({
         </div>
       ) : (
         <div 
-          className="overflow-hidden platform-carousel-container"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeaveDrag}
+          className={cn(
+            "platform-carousel-container",
+            shouldDisableScrolling() ? "overflow-visible" : "overflow-hidden"
+          )}
+          onTouchStart={shouldDisableScrolling() ? undefined : handleTouchStart}
+          onTouchMove={shouldDisableScrolling() ? undefined : handleTouchMove}
+          onTouchEnd={shouldDisableScrolling() ? undefined : handleTouchEnd}
+          onMouseDown={shouldDisableScrolling() ? undefined : handleMouseDown}
+          onMouseMove={shouldDisableScrolling() ? undefined : handleMouseMove}
+          onMouseUp={shouldDisableScrolling() ? undefined : handleMouseUp}
+          onMouseLeave={shouldDisableScrolling() ? undefined : handleMouseLeaveDrag}
           style={{ 
-            cursor: isDragging ? 'grabbing' : 'grab',
+            cursor: shouldDisableScrolling() ? 'default' : (isDragging ? 'grabbing' : 'grab'),
             width: '100%',
             maxWidth: '100%'
           }}
@@ -689,7 +763,7 @@ export function PlatformCarousel({
           <div 
             className={`flex ${isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out'}`}
             style={{ 
-              transform: `translateX(-${currentSlide * (responsiveCardWidth + responsiveCardGap) + dragOffset}px)`,
+              transform: shouldDisableScrolling() ? 'none' : `translateX(-${currentSlide * (Math.max(responsiveCardWidth, 300) + responsiveCardGap) + dragOffset}px)`,
               gap: `${responsiveCardGap}px`
             }}
           >
@@ -701,8 +775,9 @@ export function PlatformCarousel({
                 }}
                 className="platform-carousel-card flex-shrink-0"
                 style={{ 
-                  minWidth: `${responsiveCardWidth}px`, 
-                  maxWidth: `${responsiveCardWidth}px`,
+                  minWidth: shouldUseFlexibleWidth() ? 'auto' : `${Math.max(responsiveCardWidth, 248)}px`, 
+                  maxWidth: shouldUseFlexibleWidth() ? 'none' : `${Math.max(responsiveCardWidth, 248)}px`,
+                  flex: shouldUseFlexibleWidth() ? '1' : 'none',
                   height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
                   minHeight: responsiveMinHeightValue,
                   marginLeft: index === 0 ? `${responsivePadding.paddingLeft}px` : '0',

@@ -1058,7 +1058,7 @@ function ExpandableSolutionCard({
             
             <div className="space-y-4">
               <H3 className="text-lg font-semibold">{solution.challenge.title}</H3>
-              <H3 className="text-muted-foreground">{solution.challenge.content}</H3>
+              <BodyLarge className="text-primary">{solution.challenge.content}</BodyLarge>
             </div>
 
             <div className="space-y-4">
@@ -1091,7 +1091,7 @@ function ExpandableSolutionCard({
 
             <div className="space-y-4">
               <H3 className="text-lg font-semibold">Key Integrations</H3>
-              <div className="p-4 bg-gradient-to-r from-muted/20 to-muted/30 border border-border/50 rounded-lg">
+              <div className="p-4 border border-border/50 rounded-lg">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center mt-0.5">
                     <Icon name="links-line" size="sm" className="text-primary" />
