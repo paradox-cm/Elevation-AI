@@ -575,11 +575,11 @@ function ProblemSection() {
         description: "Work from a single source of truth. Break down the walls between departments and tools, work from a unified platform where all your knowledge is connected, accessible, and actionable in one place.",
         icon: "database-2-line"
       },
-    {
-      title: "Intelligent Process Automation",
-      description: "Eliminate bottlenecks with context-aware automation. Elevation AI identifies and automates the repetitive processes that hold you back—freeing your people from busywork so they can focus on high-value work that drives growth.",
-      icon: "brain-line"
-    },
+      {
+        title: "Intelligent Process Automation",
+        description: "Eliminate bottlenecks with context-aware automation, identify and automate the repetitive processes that hold you back—freeing people from busywork so they can focus on the high-value work.",
+        icon: "brain-line"
+      },
     {
       title: "Real-Time Business Intelligence",
               description: "Convert blind spots into detailed, actionable insights with a unified command center—delivering real-time visibility across operations and the confidence to act.",
@@ -594,27 +594,28 @@ function ProblemSection() {
 
 
     return (
-    <Section paddingY="lg">
-      <div className="space-y-6 sm:space-y-8 lg:space-y-12">
-        {/* Mobile Layout */}
-        {!isDesktop && (
-          <div key="mobile-layout" className="mb-0">
-            {/* Section Headline */}
-            <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 px-4 sm:px-6 lg:px-8">
-              <H1>Orchestrate Your Universe</H1>
-              <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
-                Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
-              </P>
-            </div>
-            <div className="overflow-x-auto overflow-y-hidden pb-1">
-              <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
+      <Section paddingY="lg">
+        <div className="space-y-6 sm:space-y-8 lg:space-y-12">
+          {/* Mobile Layout */}
+          {!isDesktop && (
+            <Container size="2xl">
+              <div className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
+              {/* Section Headline */}
+              <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
+                <H1>Orchestrate Your Universe</H1>
+                <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
+                  Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+                </P>
+              </div>
+              <div className="overflow-x-auto overflow-y-hidden pb-1">
+                <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
                 {problems.map((problem, index) => (
                   <div
                     key={index}
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-[520px] sm:h-[570px] md:h-[620px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
+                    <Card className="h-[520px] sm:h-[570px] md:h-[680px] lg:h-[720px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0 h-[200px] sm:h-[220px] md:h-[240px]">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -627,36 +628,38 @@ function ProblemSection() {
                         </BodyLarge>
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col pb-6 px-4 min-h-0">
-                        {/* Animation Container - Fixed position */}
-                        <div className="h-[220px] sm:h-[260px] md:h-[300px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
+                        {/* Spacer to push animation to bottom */}
+                        <div className="flex-1"></div>
+                        {/* Animation Container */}
+                        <div className="h-[220px] sm:h-[260px] md:h-[300px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden mt-4">
                           {index === 0 && (
                             <UnifiedKnowledge 
-                              width={154} 
-                              height={154} 
+                              width={220} 
+                              height={220} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 1 && (
                             <IntelligentProcessAutomationMobile 
-                              width={196} 
-                              height={112} 
+                              width={280} 
+                              height={160} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 2 && (
                             <RealTimeBusinessIntelligenceMobile 
-                              width={140} 
-                              height={140} 
+                              width={200} 
+                              height={200} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 3 && (
                             <FutureReadyMobile 
-                              width={140} 
-                              height={112} 
+                              width={200} 
+                              height={160} 
                               showBorder={false}
                               className=""
                             />
@@ -677,12 +680,13 @@ function ProblemSection() {
                 ))}
               </div>
             </div>
-            </div>
+          </div>
+          </Container>
           )}
 
           {/* Desktop Layout - Natural Scrolling Carousel */}
           {isDesktop && (
-            <div key="desktop-layout" className="relative">
+            <div className="relative">
               {/* Section Headline */}
               <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8 px-4 sm:px-6 lg:px-8">
                 <H1>Orchestrate Your Universe</H1>
@@ -763,9 +767,9 @@ function ProblemSection() {
             </div>
           )}
         </div>
-    </Section>
-  )
-}
+      </Section>
+    )
+  }
 
 
 
@@ -1297,39 +1301,41 @@ function WhoWeServeSection() {
               <Carousel 
                 items={solutions}
                 autoPlay={true}
-                autoPlayInterval={5000}
+                autoPlayInterval={4000}
                 showProgressIndicators={true}
                 showGradients={false}
-                cardWidth={400}
-                cardGap={32}
+                cardWidth={380}
+                cardGap={24}
                 className="w-full"
                 naturalScroll={false}
                 cardStyle="blue"
                 highlightActiveCard={true}
                 responsive={{
-                  sm: { cardWidth: 288, cardGap: 12 },
-                  md: { cardWidth: 336, cardGap: 16 }
+                  sm: { cardWidth: 340, cardGap: 16 },
+                  md: { cardWidth: 360, cardGap: 20 }
                 }}
               />
             </div>
 
-            {/* Desktop Carousel - Stays in place, highlights active */}
+            {/* Desktop Carousel - Shows 3.5 cards with auto-scroll */}
             <div className="hidden lg:block">
               <Carousel 
                 items={solutions}
                 autoPlay={true}
-                autoPlayInterval={5000}
+                autoPlayInterval={4000}
                 showProgressIndicators={true}
                 showGradients={false}
-                cardWidth={400}
-                cardGap={32}
+                cardWidth={420}
+                cardGap={24}
                 className="w-full"
                 naturalScroll={false}
-                staticMode={true}
+                staticMode={false}
                 cardStyle="blue"
                 highlightActiveCard={true}
                 responsive={{
-                  lg: { cardWidth: 320, cardGap: 24 }
+                  lg: { cardWidth: 420, cardGap: 24 },
+                  xl: { cardWidth: 440, cardGap: 28 },
+                  '2xl': { cardWidth: 460, cardGap: 32 }
                 }}
               />
             </div>

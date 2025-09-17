@@ -53,6 +53,7 @@ export function Carousel({
   responsive
 }: CarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
+  const [activeCardIndex, setActiveCardIndex] = React.useState(0)
   const [progress, setProgress] = React.useState(0)
   const [showGradient, setShowGradient] = React.useState(true)
   const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
@@ -219,7 +220,22 @@ export function Carousel({
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
-    setCurrentSlide(index)
+    // Calculate how many cards can fit in the viewport
+    const calculateVisibleCards = () => {
+      if (typeof window === 'undefined') return 0
+      const viewportWidth = window.innerWidth
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      return Math.floor(viewportWidth / totalCardWidth)
+    }
+    
+    const visibleCards = calculateVisibleCards()
+    const maxSlide = Math.max(0, items.length - visibleCards)
+    
+    // Clamp the index to the maximum slide
+    const clampedIndex = Math.min(index, maxSlide)
+    
+    setCurrentSlide(clampedIndex)
+    setActiveCardIndex(index) // Update active card highlighting
     setProgress(0)
     
     // Detect manual interaction when user clicks indicators
@@ -228,7 +244,7 @@ export function Carousel({
     // Note: The auto-scroll effect will handle the actual scrolling
     // when currentSlide changes, so we don't need to scroll here
     
-    onSlideChange?.(index)
+    onSlideChange?.(clampedIndex)
   }
 
   // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
@@ -236,31 +252,64 @@ export function Carousel({
     // Don't auto-play if user has manually interacted or if natural scroll is enabled
     if (!autoPlay || hasManualInteraction || naturalScroll) return
     
+    // Calculate how many cards can fit in the viewport
+    const calculateVisibleCards = () => {
+      if (typeof window === 'undefined') return 0
+      const viewportWidth = window.innerWidth
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      return Math.floor(viewportWidth / totalCardWidth)
+    }
+    
+    const visibleCards = calculateVisibleCards()
+    const maxSlide = Math.max(0, items.length - visibleCards)
+    
     // Reset progress when starting
     setProgress(0)
     
     // Calculate progress increment based on auto-play interval
     const progressIncrement = 2 // 2% every 80ms
     const progressInterval = 80 // 80ms intervals
-    const totalProgressSteps = autoPlayInterval / progressInterval // Total steps needed
     
     let currentProgress = 0
+    let currentActiveIndex = activeCardIndex
+    let currentSlidePosition = currentSlide
+    
     const progressTimer = setInterval(() => {
       currentProgress += progressIncrement
       setProgress(currentProgress)
       
-      if (currentProgress >= 100) {
+      // First card gets 3 seconds longer (extra 37.5% progress)
+      const maxProgress = currentActiveIndex === 0 ? 137.5 : 100
+      
+      if (currentProgress >= maxProgress) {
         currentProgress = 0
         setProgress(0)
-        // Move to next slide
-        setCurrentSlide((prev) => (prev + 1) % items.length)
+        
+        // Always cycle through all cards for active highlighting
+        currentActiveIndex = (currentActiveIndex + 1) % items.length
+        setActiveCardIndex(currentActiveIndex)
+        
+        // Reset scroll position when cycling back to the first card
+        if (currentActiveIndex === 0) {
+          currentSlidePosition = 0
+          setCurrentSlide(0)
+        } else {
+          // Only move scroll position until all cards are visible
+          const nextSlide = currentSlidePosition + 1
+          if (nextSlide >= maxSlide) {
+            currentSlidePosition = maxSlide
+          } else {
+            currentSlidePosition = nextSlide
+          }
+          setCurrentSlide(currentSlidePosition)
+        }
       }
     }, progressInterval)
 
     return () => {
       clearInterval(progressTimer)
     }
-  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, currentSlide])
+  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, responsiveCardWidth, responsiveCardGap])
 
   // Cleanup timeout on unmount
   React.useEffect(() => {
@@ -367,10 +416,10 @@ export function Carousel({
                     cardStyle === 'outline' 
                       ? 'border-border bg-transparent' 
                       : cardStyle === 'blue'
-                        ? highlightActiveCard && index === currentSlide
+                        ? highlightActiveCard && index === activeCardIndex
                           ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                           : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                        : highlightActiveCard && index === currentSlide 
+                        : highlightActiveCard && index === activeCardIndex
                           ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
                           : 'border-border bg-card',
                     item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
@@ -505,10 +554,10 @@ export function Carousel({
                       cardStyle === 'outline' 
                         ? 'border-border bg-transparent' 
                         : cardStyle === 'blue'
-                          ? highlightActiveCard && index === currentSlide
+                          ? highlightActiveCard && index === activeCardIndex
                             ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                             : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                          : highlightActiveCard && index === currentSlide 
+                          : highlightActiveCard && index === activeCardIndex 
                             ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
                             : 'border-border bg-card',
                       item.href && 'cursor-pointer hover:shadow-lg hover:-translate-y-1'
@@ -551,7 +600,7 @@ export function Carousel({
                     // Thin line indicators (matching ProblemIntroductionSection)
                     <div 
                       className={`h-1 w-22 transition-colors duration-300 rounded-full cursor-pointer hover:opacity-80 ${
-                        index === currentSlide
+                        index === activeCardIndex
                           ? 'bg-blue-600 dark:bg-blue-400' 
                           : 'bg-gray-300 dark:bg-gray-600'
                       }`}
@@ -559,7 +608,7 @@ export function Carousel({
                   ) : (
                     // Progress bar indicators (default)
                     <div className="relative">
-                      {index === currentSlide ? (
+                      {index === activeCardIndex ? (
                         // Active slide: Animated progress bar
                         <div className="w-6 h-2.5 bg-primary/30 rounded-[0.625rem] overflow-hidden">
                           <div 
