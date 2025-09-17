@@ -801,7 +801,6 @@ export default function PeoplePage() {
                         showProgressIndicators={true}
                         cardWidth={320}
                         cardGap={24}
-                        cardStyle="blue"
                         highlightActiveCard={true}
                         className="w-full"
                         naturalScroll={false}

@@ -3,6 +3,8 @@
 import React from "react"
 import { PlatformCarousel, PlatformCarouselItem } from "./platform-carousel"
 
+export type { PlatformCarouselItem }
+
 export interface PlatformPageCarouselProps {
   items: PlatformCarouselItem[]
   autoPlay?: boolean
@@ -38,7 +40,7 @@ export function PlatformPageCarousel(props: PlatformPageCarouselProps) {
   // Override settings for platform page specific styling
   const platformProps = {
     ...props,
-    cardStyle: 'filled' as const,
+    cardStyle: 'neutral-blue' as const,
     customPadding: 'p-6', // Platform-specific padding (hugContent=true means p-6)
     customContentPadding: undefined // No separate content padding - content is part of main card
   }

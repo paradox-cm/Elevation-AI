@@ -23,7 +23,7 @@ export interface PlatformCarouselProps {
   onSlideChange?: (index: number) => void
   indicatorStyle?: 'progress' | 'thin-lines'
   highlightActiveCard?: boolean
-  cardStyle?: 'filled' | 'outline' | 'blue'
+  cardStyle?: 'filled' | 'outline' | 'blue' | 'neutral-blue'
   minHeight?: string
   responsiveMinHeight?: {
     sm?: string
@@ -715,13 +715,17 @@ export function PlatformCarousel({
                   ? 'bg-card border-border' 
                   : cardStyle === 'outline'
                     ? 'bg-transparent border-border'
-                    :                 cardStyle === 'blue'
-                  ? highlightActiveCard && index === activeCardIndex
-                    ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                    : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                      : highlightActiveCard && index === activeCardIndex 
-                        ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
-                        : 'border-border bg-card'
+                    : cardStyle === 'blue'
+                      ? highlightActiveCard && index === activeCardIndex
+                        ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                        : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                      : cardStyle === 'neutral-blue'
+                        ? highlightActiveCard && index === activeCardIndex
+                          ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                          : 'bg-card border-border'
+                        : highlightActiveCard && index === activeCardIndex 
+                          ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
+                          : 'border-border bg-card'
               )}>
                 <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
                   <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
@@ -798,9 +802,13 @@ export function PlatformCarousel({
                         ? highlightActiveCard && index === activeCardIndex
                           ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                           : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                        : highlightActiveCard && index === activeCardIndex 
-                          ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
-                          : 'border-border bg-card'
+                        : cardStyle === 'neutral-blue'
+                          ? highlightActiveCard && index === activeCardIndex
+                            ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                            : 'bg-card border-border'
+                          : highlightActiveCard && index === activeCardIndex 
+                            ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm'
+                            : 'border-border bg-card'
                 )}>
                   <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
                     <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
