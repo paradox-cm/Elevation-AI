@@ -67,28 +67,6 @@ export function Carousel({
   const manualInteractionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const isProgrammaticScrollRef = React.useRef<boolean>(false)
 
-  // Responsive screen size detection
-  React.useEffect(() => {
-    const updateScreenSize = () => {
-      const width = window.innerWidth
-      if (width < 640) {
-        setScreenSize('sm')
-      } else if (width < 768) {
-        setScreenSize('md')
-      } else if (width < 1024) {
-        setScreenSize('lg')
-      } else if (width < 1536) {
-        setScreenSize('xl')
-      } else {
-        setScreenSize('2xl')
-      }
-    }
-
-    updateScreenSize()
-    window.addEventListener('resize', updateScreenSize)
-    return () => window.removeEventListener('resize', updateScreenSize)
-  }, [])
-
   // Calculate responsive card width and gap
   const getResponsiveSettings = () => {
     if (!responsive) return { cardWidth, cardGap }
@@ -110,6 +88,56 @@ export function Carousel({
   }
 
   const { cardWidth: responsiveCardWidth, cardGap: responsiveCardGap } = getResponsiveSettings()
+
+  // Responsive screen size detection and carousel position adjustment
+  React.useEffect(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth
+      let newScreenSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+      
+      if (width < 640) {
+        newScreenSize = 'sm'
+      } else if (width < 768) {
+        newScreenSize = 'md'
+      } else if (width < 1024) {
+        newScreenSize = 'lg'
+      } else if (width < 1536) {
+        newScreenSize = 'xl'
+      } else {
+        newScreenSize = '2xl'
+      }
+      
+      setScreenSize(newScreenSize)
+      
+      // Recalculate carousel position when viewport changes
+      if (carouselRef.current && !naturalScroll) {
+        const calculateVisibleCards = () => {
+          const viewportWidth = window.innerWidth
+          const totalCardWidth = responsiveCardWidth + responsiveCardGap
+          return Math.floor(viewportWidth / totalCardWidth)
+        }
+        
+        const visibleCards = calculateVisibleCards()
+        const maxSlide = Math.max(0, items.length - visibleCards)
+        
+        // Ensure current slide doesn't exceed the new maximum
+        const adjustedSlide = Math.min(currentSlide, maxSlide)
+        if (adjustedSlide !== currentSlide) {
+          setCurrentSlide(adjustedSlide)
+        }
+        
+        // Ensure active card is visible in the new viewport
+        const adjustedActiveCard = Math.min(activeCardIndex, items.length - 1)
+        if (adjustedActiveCard !== activeCardIndex) {
+          setActiveCardIndex(adjustedActiveCard)
+        }
+      }
+    }
+
+    updateScreenSize()
+    window.addEventListener('resize', updateScreenSize)
+    return () => window.removeEventListener('resize', updateScreenSize)
+  }, [currentSlide, activeCardIndex, responsiveCardWidth, responsiveCardGap, items.length, naturalScroll])
 
   // Calculate responsive padding to match Container padding exactly
   const getResponsivePadding = () => {
