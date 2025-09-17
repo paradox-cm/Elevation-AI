@@ -32,6 +32,8 @@ export interface CarouselProps {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
     lg?: { cardWidth: number; cardGap: number }
+    xl?: { cardWidth: number; cardGap: number }
+    '2xl'?: { cardWidth: number; cardGap: number }
   }
 }
 
@@ -56,7 +58,7 @@ export function Carousel({
   const [activeCardIndex, setActiveCardIndex] = React.useState(0)
   const [progress, setProgress] = React.useState(0)
   const [showGradient, setShowGradient] = React.useState(true)
-  const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
+  const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl' | '2xl'>('lg')
   const [maxCardHeight, setMaxCardHeight] = React.useState<number>(0)
   const [hasManualInteraction, setHasManualInteraction] = React.useState(false)
   const carouselRef = React.useRef<HTMLDivElement>(null)
@@ -75,8 +77,10 @@ export function Carousel({
         setScreenSize('md')
       } else if (width < 1024) {
         setScreenSize('lg')
-      } else {
+      } else if (width < 1536) {
         setScreenSize('xl')
+      } else {
+        setScreenSize('2xl')
       }
     }
 
@@ -96,6 +100,10 @@ export function Carousel({
         return responsive.md || responsive.sm || { cardWidth, cardGap }
       case 'lg':
         return responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
+      case 'xl':
+        return responsive.xl || responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
+      case '2xl':
+        return responsive['2xl'] || responsive.xl || responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
       default:
         return { cardWidth, cardGap }
     }
@@ -113,6 +121,8 @@ export function Carousel({
       case 'lg':
         return { paddingLeft: '2rem', paddingRight: '2rem' } // lg:px-8 = 2rem
       case 'xl':
+        return { paddingLeft: '2rem', paddingRight: '2rem' } // lg:px-8 = 2rem
+      case '2xl':
         return { paddingLeft: '2rem', paddingRight: '2rem' } // lg:px-8 = 2rem
       default:
         return { paddingLeft: '1rem', paddingRight: '1rem' } // px-4 = 1rem
