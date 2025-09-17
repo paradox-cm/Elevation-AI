@@ -3,6 +3,8 @@
 import React from "react"
 import { PlatformCarousel, PlatformCarouselItem } from "./platform-carousel"
 
+export type { PlatformCarouselItem }
+
 export interface PeopleCarouselProps {
   items: PlatformCarouselItem[]
   autoPlay?: boolean
