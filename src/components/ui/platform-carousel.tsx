@@ -34,6 +34,8 @@ export interface PlatformCarouselProps {
   stopWhenAllVisible?: boolean
   naturalScroll?: boolean
   flexibleWidth?: boolean
+  customPadding?: string
+  customContentPadding?: string
   responsive?: {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
@@ -62,6 +64,8 @@ export function PlatformCarousel({
   stopWhenAllVisible = false,
   naturalScroll = false,
   flexibleWidth = false,
+  customPadding,
+  customContentPadding,
   responsive
 }: PlatformCarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
@@ -711,18 +715,18 @@ export function PlatformCarousel({
                   ? 'bg-card border-border' 
                   : cardStyle === 'outline'
                     ? 'bg-transparent border-border'
-                    : cardStyle === 'blue'
-                      ? highlightActiveCard && index === activeCardIndex
-                        ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                        : 'border-border bg-card hover:bg-card/80'
+                    :                 cardStyle === 'blue'
+                  ? highlightActiveCard && index === activeCardIndex
+                    ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                    : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
                       : highlightActiveCard && index === activeCardIndex 
                         ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
                         : 'border-border bg-card'
               )}>
                 <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
-                  <div className={hugContent ? "p-6" : "p-6 pb-4"}>
+                  <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
                     {item.icon && (
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
                         <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
                       </div>
                     )}
@@ -732,7 +736,7 @@ export function PlatformCarousel({
                     </div>
                   </div>
                   {item.content && (
-                    <div className="flex-shrink-0 mt-auto">
+                    <div className={`flex-shrink-0 mt-auto ${customContentPadding || ''}`}>
                       {item.content}
                     </div>
                   )}
@@ -793,15 +797,15 @@ export function PlatformCarousel({
                       : cardStyle === 'blue'
                         ? highlightActiveCard && index === activeCardIndex
                           ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                          : 'border-border bg-card hover:bg-card/80'
+                          : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
                         : highlightActiveCard && index === activeCardIndex 
                           ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
                           : 'border-border bg-card'
                 )}>
                   <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
-                    <div className={hugContent ? "p-6" : "p-6 pb-4"}>
+                    <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
                       {item.icon && (
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-muted/20 flex items-center justify-center mb-4 flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
                           <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
                         </div>
                       )}
@@ -811,7 +815,7 @@ export function PlatformCarousel({
                       </div>
                     </div>
                     {item.content && (
-                      <div className="flex-shrink-0 mt-auto">
+                      <div className={`flex-shrink-0 mt-auto ${customContentPadding || ''}`}>
                         {item.content}
                       </div>
                     )}

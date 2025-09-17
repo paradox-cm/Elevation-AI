@@ -21,6 +21,7 @@ import Image from "next/image"
 import Icon from "@/components/ui/icon"
 import { VerticalSquareFlow, LogoCarousel, TunnelShader } from "@/components/animations"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
+import { PeopleCarousel, PlatformCarouselItem } from "@/components/ui/people-carousel"
 
 // Animated Text Carousel Component
 function AnimatedTextCarousel({ 
@@ -259,8 +260,8 @@ const expertCategories: ExpertCategory[] = [
   }
 ]
 
-// Transform expert categories to carousel items
-const expertCarouselItems: CarouselItem[] = expertCategories.map((category) => ({
+// Transform expert categories to platform carousel items
+const expertCarouselItems: PlatformCarouselItem[] = expertCategories.map((category) => ({
   id: category.id,
   title: category.title,
   description: category.description,
@@ -793,7 +794,7 @@ export default function PeoplePage() {
 
                     {/* Expert Categories Carousel */}
                     <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                      <Carousel
+                      <PeopleCarousel
                         items={expertCarouselItems}
                         autoPlay={true}
                         autoPlayInterval={5000}
@@ -803,11 +804,14 @@ export default function PeoplePage() {
                         cardStyle="blue"
                         highlightActiveCard={true}
                         className="w-full"
-                        naturalScroll={true}
+                        naturalScroll={false}
+                        flexibleWidth={true}
                         responsive={{
-                          sm: { cardWidth: 280, cardGap: 16 },
-                          md: { cardWidth: 300, cardGap: 20 },
-                          lg: { cardWidth: 320, cardGap: 24 }
+                          sm: { cardWidth: 320, cardGap: 16 },
+                          md: { cardWidth: 320, cardGap: 20 },
+                          lg: { cardWidth: 320, cardGap: 24 },
+                          xl: { cardWidth: 320, cardGap: 28 },
+                          '2xl': { cardWidth: 320, cardGap: 32 }
                         }}
                       />
                     </div>

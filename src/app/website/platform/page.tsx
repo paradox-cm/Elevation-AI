@@ -22,7 +22,7 @@ import { ShaderAnimation } from "@/components/animations/shader-animation"
 import { ShaderAnimationLight } from "@/components/animations/shader-animation-light"
 import { useTheme } from "next-themes"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
-import { PlatformCarousel, PlatformCarouselItem } from "@/components/ui/platform-carousel"
+import { PlatformPageCarousel, PlatformCarouselItem } from "@/components/ui/platform-page-carousel"
 import { useMediaQuery } from "@/hooks/use-media-query"
 
 // Platform Hero Section Component
@@ -376,7 +376,7 @@ function SecuritySection() {
           
           {/* Interactive Carousel for All Breakpoints */}
           <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-            <PlatformCarousel 
+            <PlatformPageCarousel 
               items={securityFeatures}
               autoPlay={true}
               autoPlayInterval={4000}
@@ -386,7 +386,6 @@ function SecuritySection() {
               cardGap={24}
               className="w-full"
               highlightActiveCard={true}
-              cardStyle="blue"
               hugContent={true}
               minHeight="320px"
               stopWhenAllVisible={false}
