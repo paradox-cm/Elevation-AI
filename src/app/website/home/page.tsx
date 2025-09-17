@@ -615,7 +615,7 @@ function ProblemSection() {
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                    <Card className="h-[520px] sm:h-[570px] md:h-[680px] lg:h-[720px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
+                    <Card className="h-[520px] sm:h-[570px] md:h-[680px] lg:h-[720px] border-border/50 bg-transparent transition-colors duration-200 ease-out flex flex-col gap-0">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0 h-[200px] sm:h-[220px] md:h-[240px]">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -703,7 +703,7 @@ function ProblemSection() {
                       key={index}
                       className="w-[480px] lg:w-[520px] xl:w-[560px] 2xl:w-[600px] flex-shrink-0"
                     >
-                      <Card className="h-[500px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] border-border/50 transition-colors duration-200 ease-out flex flex-col gap-0">
+                      <Card className="h-[500px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] border-border/50 bg-transparent transition-colors duration-200 ease-out flex flex-col gap-0">
                         <CardHeader className="pt-6 pb-4 px-6 flex-shrink-0 h-[240px] lg:h-[260px] xl:h-[280px] 2xl:h-[300px]">
                           <div className="space-y-4">
                             <div className="flex items-center gap-3">
