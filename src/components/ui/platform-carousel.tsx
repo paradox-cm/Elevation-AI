@@ -115,14 +115,15 @@ export function PlatformCarousel({
 
   const responsiveMinHeightValue = getResponsiveMinHeight()
 
-  // Responsive padding calculation
+  // Responsive padding calculation (matches Container component: px-4 sm:px-6 lg:px-8)
   const getResponsivePadding = () => {
-    const basePadding = 16
     switch (screenSize) {
-      case 'sm': return { paddingLeft: basePadding, paddingRight: basePadding }
-      case 'md': return { paddingLeft: basePadding * 1.5, paddingRight: basePadding * 1.5 }
-      case 'lg': return { paddingLeft: basePadding * 2, paddingRight: basePadding * 2 }
-      default: return { paddingLeft: basePadding * 2, paddingRight: basePadding * 2 }
+      case 'sm': return { paddingLeft: 16, paddingRight: 16 } // px-4 = 16px
+      case 'md': return { paddingLeft: 24, paddingRight: 24 } // sm:px-6 = 24px
+      case 'lg': return { paddingLeft: 32, paddingRight: 32 } // lg:px-8 = 32px
+      case 'xl': return { paddingLeft: 32, paddingRight: 32 } // lg:px-8 = 32px
+      case '2xl': return { paddingLeft: 32, paddingRight: 32 } // lg:px-8 = 32px
+      default: return { paddingLeft: 16, paddingRight: 16 } // px-4 = 16px
     }
   }
 
@@ -595,8 +596,8 @@ export function PlatformCarousel({
                 maxWidth: `${responsiveCardWidth}px`,
                 height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
                 minHeight: responsiveMinHeightValue,
-                marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
-                marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                marginLeft: index === 0 ? `${responsivePadding.paddingLeft}px` : '0',
+                marginRight: index === items.length - 1 ? `${responsivePadding.paddingRight}px` : '0'
               }}
             >
               <div className={cn(
@@ -645,7 +646,11 @@ export function PlatformCarousel({
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeaveDrag}
-          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          style={{ 
+            cursor: isDragging ? 'grabbing' : 'grab',
+            width: '100%',
+            maxWidth: '100%'
+          }}
         >
           <div 
             className={`flex ${isDragging ? 'transition-none' : 'transition-transform duration-500 ease-in-out'}`}
@@ -666,12 +671,12 @@ export function PlatformCarousel({
                   maxWidth: `${responsiveCardWidth}px`,
                   height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
                   minHeight: responsiveMinHeightValue,
-                  marginLeft: index === 0 ? responsivePadding.paddingLeft : '0',
-                  marginRight: index === items.length - 1 ? responsivePadding.paddingRight : '0'
+                  marginLeft: index === 0 ? `${responsivePadding.paddingLeft}px` : '0',
+                  marginRight: index === items.length - 1 ? `${responsivePadding.paddingRight}px` : '0'
                 }}
               >
                 <div className={cn(
-                  "w-full h-full rounded-lg border transition-all duration-300",
+                  "w-full h-full rounded-lg border transition-all duration-300 overflow-hidden",
                   cardStyle === 'filled' 
                     ? 'bg-card border-border' 
                     : cardStyle === 'outline'
@@ -687,7 +692,7 @@ export function PlatformCarousel({
                   <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
                     <div className={hugContent ? "p-6" : "p-6 pb-4"}>
                       {item.icon && (
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-muted/20 flex items-center justify-center mb-4 flex-shrink-0">
                           <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
                         </div>
                       )}

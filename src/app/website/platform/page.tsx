@@ -365,7 +365,7 @@ function SecuritySection() {
 
   return (
     <Section paddingY="lg">
-      <Container size="full">
+      <Container size="2xl">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
             <H1>Enterprise-Grade Security & Compliance</H1>
@@ -376,29 +376,29 @@ function SecuritySection() {
           
           {/* Interactive Carousel for All Breakpoints */}
           <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-             <PlatformCarousel 
-               items={securityFeatures}
-               autoPlay={true}
-               autoPlayInterval={4000}
-               showProgressIndicators={true}
-               showGradients={false}
-               cardWidth={320}
-               cardGap={24}
-               className="w-full"
-               highlightActiveCard={true}
-               cardStyle="blue"
-               hugContent={true}
-               minHeight="320px"
-               stopWhenAllVisible={false}
-               naturalScroll={false}
-               responsive={{
-                 sm: { cardWidth: 320, cardGap: 16 },
-                 md: { cardWidth: 320, cardGap: 20 },
-                 lg: { cardWidth: 320, cardGap: 24 },
-                 xl: { cardWidth: 320, cardGap: 28 },
-                 '2xl': { cardWidth: 320, cardGap: 32 }
-               }}
-             />
+            <PlatformCarousel 
+              items={securityFeatures}
+              autoPlay={true}
+              autoPlayInterval={4000}
+              showProgressIndicators={true}
+              showGradients={false}
+              cardWidth={320}
+              cardGap={24}
+              className="w-full"
+              highlightActiveCard={true}
+              cardStyle="blue"
+              hugContent={true}
+              minHeight="320px"
+              stopWhenAllVisible={false}
+              naturalScroll={false}
+              responsive={{
+                sm: { cardWidth: 320, cardGap: 16 },
+                md: { cardWidth: 320, cardGap: 20 },
+                lg: { cardWidth: 320, cardGap: 24 },
+                xl: { cardWidth: 320, cardGap: 28 },
+                '2xl': { cardWidth: 320, cardGap: 32 }
+              }}
+            />
           </div>
         </div>
       </Container>

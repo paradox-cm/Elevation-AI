@@ -608,12 +608,16 @@ function ProblemSection() {
                 </P>
               </div>
               <div className="overflow-x-auto overflow-y-hidden pb-1">
-                <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
+                <div className="flex gap-4 w-max items-stretch">
                 {problems.map((problem, index) => (
                   <div
                     key={index}
                     data-problem-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
+                    style={{
+                      marginLeft: index === 0 ? '1rem' : '0', // px-4 = 1rem
+                      marginRight: index === problems.length - 1 ? '1rem' : '0' // px-4 = 1rem
+                    }}
                   >
                     <Card className="h-[520px] sm:h-[570px] md:h-[680px] lg:h-[720px] border-border/50 bg-transparent transition-colors duration-200 ease-out flex flex-col gap-0">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0 h-[200px] sm:h-[220px] md:h-[240px]">
@@ -686,22 +690,28 @@ function ProblemSection() {
 
           {/* Desktop Layout - Natural Scrolling Carousel */}
           {isDesktop && (
-            <div className="relative">
-              {/* Section Headline */}
-              <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8 px-4 sm:px-6 lg:px-8">
-                <H1>Orchestrate Your Universe</H1>
-                <P className="text-muted-foreground max-w-4xl mx-auto">
-                  Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
-                </P>
-              </div>
+            <Container size="2xl">
+              <div className="relative">
+                {/* Section Headline */}
+                <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
+                  <H1>Orchestrate Your Universe</H1>
+                  <P className="text-muted-foreground max-w-4xl mx-auto">
+                    Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+                  </P>
+                </div>
 
-              {/* Natural Scrolling Container - Full Width */}
-              <div className="overflow-x-auto overflow-y-hidden pb-4 scrollbar-hide">
-                <div className="flex gap-6 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 items-stretch">
+                {/* Natural Scrolling Container - Full Width */}
+                <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+                  <div className="overflow-x-auto overflow-y-hidden pb-4 scrollbar-hide">
+                    <div className="flex gap-6 w-max items-stretch">
                   {problems.map((problem, index) => (
                     <div
                       key={index}
                       className="w-[480px] lg:w-[520px] xl:w-[560px] 2xl:w-[600px] flex-shrink-0"
+                      style={{
+                        marginLeft: index === 0 ? '2rem' : '0', // lg:px-8 = 2rem
+                        marginRight: index === problems.length - 1 ? '2rem' : '0' // lg:px-8 = 2rem
+                      }}
                     >
                       <Card className="h-[500px] lg:h-[550px] xl:h-[600px] 2xl:h-[650px] border-border/50 bg-transparent transition-colors duration-200 ease-out flex flex-col gap-0">
                         <CardHeader className="pt-6 pb-4 px-6 flex-shrink-0 h-[240px] lg:h-[260px] xl:h-[280px] 2xl:h-[300px]">
@@ -762,9 +772,11 @@ function ProblemSection() {
                       </Card>
                     </div>
                   ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Container>
           )}
         </div>
       </Section>
