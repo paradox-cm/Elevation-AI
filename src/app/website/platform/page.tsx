@@ -389,12 +389,14 @@ function SecuritySection() {
                cardStyle="blue"
                hugContent={true}
                minHeight="320px"
-               stopWhenAllVisible={true}
-               naturalScroll={true}
+               stopWhenAllVisible={false}
+               naturalScroll={false}
                responsive={{
                  sm: { cardWidth: 320, cardGap: 16 },
                  md: { cardWidth: 320, cardGap: 20 },
-                 lg: { cardWidth: 320, cardGap: 24 }
+                 lg: { cardWidth: 320, cardGap: 24 },
+                 xl: { cardWidth: 320, cardGap: 28 },
+                 '2xl': { cardWidth: 320, cardGap: 32 }
                }}
              />
           </div>

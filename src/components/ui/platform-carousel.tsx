@@ -37,6 +37,8 @@ export interface PlatformCarouselProps {
     sm?: { cardWidth: number; cardGap: number }
     md?: { cardWidth: number; cardGap: number }
     lg?: { cardWidth: number; cardGap: number }
+    xl?: { cardWidth: number; cardGap: number }
+    '2xl'?: { cardWidth: number; cardGap: number }
   }
 }
 
@@ -61,9 +63,10 @@ export function PlatformCarousel({
   responsive
 }: PlatformCarouselProps) {
   const [currentSlide, setCurrentSlide] = React.useState(0)
+  const [activeCardIndex, setActiveCardIndex] = React.useState(0)
   const [progress, setProgress] = React.useState(0)
   const [showGradient, setShowGradient] = React.useState(true)
-  const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
+  const [screenSize, setScreenSize] = React.useState<'sm' | 'md' | 'lg' | 'xl' | '2xl'>('lg')
   const [maxCardHeight, setMaxCardHeight] = React.useState<number>(0)
   const [allCardsVisible, setAllCardsVisible] = React.useState(false)
   const [hasManualInteraction, setHasManualInteraction] = React.useState(false)
@@ -88,8 +91,10 @@ export function PlatformCarousel({
     
     switch (screenSize) {
       case 'sm': return responsive.sm || { cardWidth, cardGap }
-      case 'md': return responsive.md || { cardWidth, cardGap }
-      case 'lg': return responsive.lg || { cardWidth, cardGap }
+      case 'md': return responsive.md || responsive.sm || { cardWidth, cardGap }
+      case 'lg': return responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
+      case 'xl': return responsive.xl || responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
+      case '2xl': return responsive['2xl'] || responsive.xl || responsive.lg || responsive.md || responsive.sm || { cardWidth, cardGap }
       default: return { cardWidth, cardGap }
     }
   }
@@ -130,7 +135,8 @@ export function PlatformCarousel({
       if (width < 640) setScreenSize('sm')
       else if (width < 768) setScreenSize('md')
       else if (width < 1024) setScreenSize('lg')
-      else setScreenSize('xl')
+      else if (width < 1536) setScreenSize('xl')
+      else setScreenSize('2xl')
     }
 
     updateScreenSize()
@@ -245,9 +251,28 @@ export function PlatformCarousel({
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
-    setCurrentSlide(index)
+    // Calculate how many cards can fit in the viewport
+    const calculateVisibleCards = () => {
+      if (typeof window === 'undefined') return 0
+      const viewportWidth = window.innerWidth
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      return Math.floor(viewportWidth / totalCardWidth)
+    }
+    
+    const visibleCards = calculateVisibleCards()
+    const maxSlide = Math.max(0, items.length - visibleCards)
+    
+    // Clamp the index to the maximum slide for scrolling
+    const clampedIndex = Math.min(index, maxSlide)
+    
+    setCurrentSlide(clampedIndex)
+    setActiveCardIndex(index) // Update active card highlighting
     setProgress(0)
-    onSlideChange?.(index)
+    
+    // Detect manual interaction when user clicks indicators
+    handleManualInteraction()
+    
+    onSlideChange?.(clampedIndex)
     
     if (naturalScroll && carouselRef.current) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
@@ -256,7 +281,7 @@ export function PlatformCarousel({
       isProgrammaticScrollRef.current = true
       
       carouselRef.current.scrollTo({
-        left: index * totalCardWidth,
+        left: clampedIndex * totalCardWidth,
         behavior: 'smooth'
       })
       
@@ -267,32 +292,71 @@ export function PlatformCarousel({
     }
   }
 
-  // Auto-play functionality
-  // Disable auto-play when natural scroll is enabled to prevent snapping
+  // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
   React.useEffect(() => {
-    if (!autoPlay) return
-    if (naturalScroll) return // Disable auto-play for natural scroll
-    if (stopWhenAllVisible && allCardsVisible) {
-      return
+    // Don't auto-play if user has manually interacted or if natural scroll is enabled
+    if (!autoPlay || hasManualInteraction || naturalScroll) return
+    
+    // Calculate how many cards can fit in the viewport
+    const calculateVisibleCards = () => {
+      if (typeof window === 'undefined') return 0
+      const viewportWidth = window.innerWidth
+      const totalCardWidth = responsiveCardWidth + responsiveCardGap
+      return Math.floor(viewportWidth / totalCardWidth)
     }
-    if (hasManualInteraction) {
-      return
-    }
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => {
-        // If all cards are visible and we're at the last card, stay at the last card
-        if (stopWhenAllVisible && allCardsVisible && prev === items.length - 1) {
-          return prev
+    
+    const visibleCards = calculateVisibleCards()
+    const maxSlide = Math.max(0, items.length - visibleCards)
+    
+    // Reset progress when starting
+    setProgress(0)
+    
+    // Calculate progress increment based on auto-play interval
+    const progressIncrement = 2 // 2% every 80ms
+    const progressInterval = 80 // 80ms intervals
+    const totalProgressSteps = autoPlayInterval / progressInterval // Total steps needed
+    
+    let currentProgress = 0
+    let currentActiveIndex = activeCardIndex
+    let currentSlidePosition = currentSlide
+    
+    const progressTimer = setInterval(() => {
+      currentProgress += progressIncrement
+      setProgress(currentProgress)
+      
+      // First card gets 3 seconds longer (137.5% progress instead of 100%)
+      const progressThreshold = currentActiveIndex === 0 ? 137.5 : 100
+      
+      if (currentProgress >= progressThreshold) {
+        currentProgress = 0
+        setProgress(0)
+        
+        // Always cycle through all cards for active highlighting
+        currentActiveIndex = (currentActiveIndex + 1) % items.length
+        setActiveCardIndex(currentActiveIndex)
+        
+        // Reset scroll position when cycling back to the first card
+        if (currentActiveIndex === 0) {
+          currentSlidePosition = 0
+          setCurrentSlide(0)
+        } else {
+          // Only move scroll position until all cards are visible
+          const nextSlide = currentSlidePosition + 1
+          // If we've reached the point where all cards are visible, stay there
+          if (nextSlide >= maxSlide) {
+            currentSlidePosition = maxSlide
+          } else {
+            currentSlidePosition = nextSlide
+          }
+          setCurrentSlide(currentSlidePosition)
         }
-        const nextSlide = (prev + 1) % items.length
-        return nextSlide
-      })
-      setProgress(0)
-    }, autoPlayInterval)
+      }
+    }, progressInterval)
 
-    return () => clearInterval(interval)
-  }, [autoPlay, autoPlayInterval, items.length, stopWhenAllVisible, allCardsVisible, currentSlide, naturalScroll, hasManualInteraction])
+    return () => {
+      clearInterval(progressTimer)
+    }
+  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, responsiveCardWidth, responsiveCardGap])
 
   // Auto-scroll carousel when currentSlide changes (for natural scroll)
   // Only auto-scroll if naturalScroll is disabled
@@ -542,10 +606,10 @@ export function PlatformCarousel({
                   : cardStyle === 'outline'
                     ? 'bg-transparent border-border'
                     : cardStyle === 'blue'
-                      ? highlightActiveCard && index === currentSlide
+                      ? highlightActiveCard && index === activeCardIndex
                         ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                         : 'border-border bg-card hover:bg-card/80'
-                      : highlightActiveCard && index === currentSlide 
+                      : highlightActiveCard && index === activeCardIndex 
                         ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
                         : 'border-border bg-card'
               )}>
@@ -613,10 +677,10 @@ export function PlatformCarousel({
                     : cardStyle === 'outline'
                       ? 'bg-transparent border-border'
                       : cardStyle === 'blue'
-                        ? highlightActiveCard && index === currentSlide
+                        ? highlightActiveCard && index === activeCardIndex
                           ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                           : 'border-border bg-card hover:bg-card/80'
-                        : highlightActiveCard && index === currentSlide 
+                        : highlightActiveCard && index === activeCardIndex 
                           ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
                           : 'border-border bg-card'
                 )}>
@@ -655,10 +719,10 @@ export function PlatformCarousel({
               className={cn(
                 "w-2 h-2 rounded-full transition-all duration-300",
                 indicatorStyle === 'progress'
-                  ? index === currentSlide 
+                  ? index === activeCardIndex 
                     ? "bg-primary w-8" 
                     : "bg-muted-foreground/30"
-                  : index === currentSlide
+                  : index === activeCardIndex
                     ? "bg-primary h-1 w-6"
                     : "bg-muted-foreground/30 h-1 w-2"
               )}
