@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Container } from "@/components/ui/layout/container"
-import { H3, BodySmall } from "@/components/ui/typography"
+import { H3, H4, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Logo } from "@/components/ui/logo"
@@ -40,7 +40,7 @@ export function WebsiteFooter() {
             {/* Platform */}
             <div className="space-y-4">
               <Link href="/website/platform" className="block">
-                <H3 className="text-base font-semibold hover:text-primary transition-colors">Platform</H3>
+                <H4 className="hover:text-primary transition-colors">Platform</H4>
               </Link>
               <ul className="space-y-2">
                 <li><Link href="/website/platform#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
@@ -52,7 +52,7 @@ export function WebsiteFooter() {
               {/* People */}
               <div className="space-y-4">
                 <Link href="/website/people" className="block">
-                  <H3 className="text-base font-semibold hover:text-primary transition-colors">People</H3>
+                  <H4 className="hover:text-primary transition-colors">People</H4>
                 </Link>
                 <ul className="space-y-2">
                   <li><Link href="/website/people#our-solution-section" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
@@ -64,7 +64,7 @@ export function WebsiteFooter() {
             {/* Solutions */}
             <div className="space-y-4">
               <Link href="/website/solutions" className="block">
-                <H3 className="text-base font-semibold hover:text-primary transition-colors">Solutions</H3>
+                <H4 className="hover:text-primary transition-colors">Solutions</H4>
               </Link>
               <div className="space-y-4">
                 <div>
@@ -92,7 +92,7 @@ export function WebsiteFooter() {
             
             {/* Resources */}
             <div className="space-y-4">
-              <H3 className="text-base font-semibold">Resources</H3>
+              <H4>Resources</H4>
               <ul className="space-y-2">
                 <li><Link href="/website/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Partners</Link></li>
                 <li><Link href="/website/investors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Investors</Link></li>
@@ -104,7 +104,7 @@ export function WebsiteFooter() {
             
             {/* Company */}
             <div className="space-y-4">
-              <H3 className="text-base font-semibold">Company</H3>
+              <H4>Company</H4>
               <ul className="space-y-2">
                 <li><Link href="/website/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link></li>
                 <li><Link href="/website/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</Link></li>
