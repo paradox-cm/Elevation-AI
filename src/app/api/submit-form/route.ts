@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { getClientIp } from '@/lib/request'
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
         company: contactInfo.company,
         job_title: contactInfo.jobTitle || contactInfo.job_title,
         form_data: formData || {},
-        ip_address: request.ip || request.headers.get('x-forwarded-for'),
+        ip_address: getClientIp(request) || 'unknown',
         user_agent: request.headers.get('user-agent'),
         referrer_url: request.headers.get('referer'),
         page_url: request.headers.get('origin'),
