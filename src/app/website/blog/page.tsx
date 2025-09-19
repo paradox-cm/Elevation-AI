@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 import { PageWrapper } from "@/components/page-wrapper"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
@@ -15,6 +16,9 @@ import { H2, H3, BodyLarge, BodySmall } from "@/components/ui/typography"
 import Link from "next/link"
 import Icon from "@/components/ui/icon"
 import React from "react"
+import { usePageCache } from '@/hooks/use-page-cache'
+import { useBlogListCache } from '@/hooks/use-blog-cache'
+import { LogoLoadingSpinner } from '@/components/ui/loading-spinner'
 
 // Mock blog data
 const featuredArticle = {
@@ -112,6 +116,182 @@ const categories = [
 
 
 export default function BlogPage() {
+  // Use the page cache hook for intelligent loading
+  const { pageData, isLoading: pageLoading } = usePageCache({ 
+    pageId: 'blog',
+    enableCache: true
+  })
+  
+  // Use the blog list cache hook for intelligent loading
+  const { posts: blogPosts, isLoading: postsLoading } = useBlogListCache({
+    enableCache: true
+  })
+  
+  // Show loading only if both are loading and we don't have cached data
+  const loading = pageLoading && postsLoading
+
+  // Fallback to static content if CMS data is not available
+  if (loading) {
+    return (
+      <PageWrapper>
+        <MobileOnlyLayout
+          header={<MainHeader />}
+          footer={<WebsiteFooter />}
+          mobileMenu={<MobileMenuDrawer currentPage="resources" />}
+        >
+          <div className="min-h-screen bg-background transition-colors duration-300 flex items-center justify-center">
+            <LogoLoadingSpinner size="md" />
+          </div>
+        </MobileOnlyLayout>
+      </PageWrapper>
+    )
+  }
+
+  // Get section data with fallbacks
+  const headerSection = pageData?.sections.find(s => s.section_type === 'hero_simple')
+  const categoriesSection = pageData?.sections.find(s => s.section_type === 'custom')
+  const featuredSection = pageData?.sections.find(s => s.section_type === 'blog_listing' && s.section_data?.show_featured)
+  const articlesSection = pageData?.sections.find(s => s.section_type === 'blog_listing' && !s.section_data?.show_featured)
+  const ctaSection = pageData?.sections.find(s => s.section_type === 'cta')
+
+  // Extract data with fallbacks
+  const pageTitle = headerSection?.section_data?.title || "Blog"
+  const pageDescription = headerSection?.section_data?.subtitle || "Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation"
+  const categories = categoriesSection?.section_data?.categories || [
+    "All Posts",
+    "AI & Technology", 
+    "Technical Insights",
+    "Business Intelligence",
+    "Security & Compliance",
+    "Data Strategy",
+    "Workplace Innovation",
+    "Industry Insights"
+  ]
+  // Use actual featured article from database, with fallback to static data
+  const featuredArticle = blogPosts.length > 0 ? {
+    id: blogPosts[0].id,
+    title: blogPosts[0].title,
+    excerpt: blogPosts[0].excerpt,
+    author: "Elevation AI Team", // Default author since author_id is null
+    authorRole: "Content Team",
+    publishDate: blogPosts[0].published_at ? new Date(blogPosts[0].published_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }) : '',
+    readTime: "8 min read", // Default read time
+    category: blogPosts[0].category?.name || 'Uncategorized',
+    image: blogPosts[0].featured_image,
+    featured: true,
+    slug: blogPosts[0].slug
+  } : (featuredSection?.section_data?.featured_article || {
+    id: 1,
+    title: "The Future of Business Orchestration: How AI is Transforming Enterprise Operations",
+    excerpt: "Explore how artificial intelligence is revolutionizing the way businesses orchestrate complex operations, from supply chain management to customer experience optimization.",
+    author: "Sarah Chen",
+    authorRole: "VP of Product Strategy",
+    publishDate: "2025-01-15",
+    readTime: "8 min read",
+    category: "AI & Technology",
+    image: "/images/blog/featured-article.jpg",
+    featured: true,
+    slug: "future-business-orchestration"
+  })
+  // Use actual blog posts from database, with fallback to static data
+  const blogArticles = blogPosts.length > 0 ? blogPosts.slice(1).map(post => ({
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt,
+    author: "Elevation AI Team", // Default author since author_id is null
+    authorRole: "Content Team",
+    publishDate: post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }) : '',
+    readTime: "6 min read", // Default read time
+    category: post.category?.name || 'Uncategorized',
+    image: post.featured_image,
+    slug: post.slug
+  })) : [
+    {
+      id: 2,
+      title: "Building Scalable AI Workflows: Best Practices for Enterprise Implementation",
+      excerpt: "Learn the key principles and strategies for implementing AI workflows that can scale with your organization's growth and evolving needs.",
+      author: "Michael Rodriguez",
+      authorRole: "Lead AI Engineer",
+      publishDate: "2025-01-12",
+      readTime: "6 min read",
+      category: "Technical Insights",
+      image: "/images/blog/ai-workflows.jpg",
+      slug: "scalable-ai-workflows"
+    },
+    {
+      id: 3,
+      title: "The ROI of Intelligent Process Automation: A Data-Driven Analysis",
+      excerpt: "Discover the measurable benefits of implementing intelligent process automation across different industries and business functions.",
+      author: "Dr. Emily Watson",
+      authorRole: "Head of Analytics",
+      publishDate: "2025-01-10",
+      readTime: "7 min read",
+      category: "Business Intelligence",
+      image: "/images/blog/roi-analysis.jpg",
+      slug: "roi-intelligent-process-automation"
+    },
+    {
+      id: 4,
+      title: "Security First: Building Trust in AI-Powered Business Systems",
+      excerpt: "Understanding the critical security considerations and best practices for deploying AI systems in enterprise environments.",
+      author: "James Park",
+      authorRole: "Chief Security Officer",
+      publishDate: "2025-01-08",
+      readTime: "5 min read",
+      category: "Security & Compliance",
+      image: "/images/blog/ai-security.jpg",
+      slug: "security-first-ai-systems"
+    },
+    {
+      id: 5,
+      title: "From Data Silos to Unified Intelligence: A Transformation Guide",
+      excerpt: "How organizations can break down data silos and create unified intelligence platforms that drive better decision-making.",
+      author: "Lisa Thompson",
+      authorRole: "Data Strategy Director",
+      publishDate: "2025-01-05",
+      readTime: "9 min read",
+      category: "Data Strategy",
+      image: "/images/blog/data-unification.jpg",
+      slug: "data-silos-unified-intelligence"
+    },
+    {
+      id: 6,
+      title: "The Human-AI Collaboration Model: Maximizing Team Performance",
+      excerpt: "Explore how to design effective collaboration between human teams and AI systems for optimal business outcomes.",
+      author: "David Kim",
+      authorRole: "VP of Human Resources",
+      publishDate: "2025-01-03",
+      readTime: "6 min read",
+      category: "Workplace Innovation",
+      image: "/images/blog/human-ai-collab.jpg",
+      slug: "human-ai-collaboration-model"
+    },
+    {
+      id: 7,
+      title: "Industry Spotlight: AI Transformation in Financial Services",
+      excerpt: "A deep dive into how financial institutions are leveraging AI for risk management, fraud detection, and customer service.",
+      author: "Rachel Green",
+      authorRole: "Industry Solutions Lead",
+      publishDate: "2025-01-01",
+      readTime: "8 min read",
+      category: "Industry Insights",
+      image: "/images/blog/financial-services.jpg",
+      slug: "ai-transformation-financial-services"
+    }
+  ]
+  const ctaTitle = ctaSection?.section_data?.title || "Stay Updated"
+  const ctaDescription = ctaSection?.section_data?.description || "Get the latest insights on AI, business orchestration, and industry trends delivered to your inbox."
+  const ctaPlaceholder = ctaSection?.section_data?.email_placeholder || "Enter your email"
+  const ctaButtonText = ctaSection?.section_data?.cta_primary_text || "Subscribe"
+
   return (
     <PageWrapper>
       <MobileOnlyLayout
@@ -127,10 +307,10 @@ export default function BlogPage() {
                 <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                   <div className="text-center space-y-1">
                     <H1>
-                      Blog
+                      {pageTitle}
                     </H1>
                     <P className="max-w-[42rem] mx-auto">
-                      Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation
+                      {pageDescription}
                     </P>
                   </div>
                 </div>
@@ -191,15 +371,29 @@ export default function BlogPage() {
                         </div>
                       </div>
                       
-                      <Button size="lg" className="w-fit">
-                        Read Full Article
-                        <Icon name="arrow-right-s-line" className="h-4 w-4 ml-2" />
+                      <Button size="lg" className="w-fit" asChild>
+                        <Link href={`/website/blog/${featuredArticle.slug}`}>
+                          Read Full Article
+                          <Icon name="arrow-right-s-line" className="h-4 w-4 ml-2" />
+                        </Link>
                       </Button>
                     </div>
                     
                     <div className="relative">
-                      <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-xl flex items-center justify-center">
-                        <div className="text-center space-y-4">
+                      <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-xl flex items-center justify-center overflow-hidden">
+                        {featuredArticle.image ? (
+                          <img 
+                            src={featuredArticle.image} 
+                            alt={featuredArticle.title}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback to placeholder if image fails to load
+                              e.currentTarget.style.display = 'none'
+                              e.currentTarget.nextElementSibling.style.display = 'flex'
+                            }}
+                          />
+                        ) : null}
+                        <div className="text-center space-y-4" style={{ display: featuredArticle.image ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                           <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">
                             <Icon name="article-line" className="h-8 w-8 text-primary" />
                           </div>
@@ -226,8 +420,20 @@ export default function BlogPage() {
                     {blogArticles.map((article) => (
                       <article key={article.id} className="group h-full">
                         <div className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-primary/20 h-full flex flex-col">
-                          <div className="aspect-[16/10] bg-gradient-to-br from-muted/50 to-muted/20 flex items-center justify-center flex-shrink-0">
-                            <div className="text-center space-y-2">
+                          <div className="aspect-[16/10] bg-gradient-to-br from-muted/50 to-muted/20 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {article.image ? (
+                              <img 
+                                src={article.image} 
+                                alt={article.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  // Fallback to placeholder if image fails to load
+                                  e.currentTarget.style.display = 'none'
+                                  e.currentTarget.nextElementSibling.style.display = 'flex'
+                                }}
+                              />
+                            ) : null}
+                            <div className="text-center space-y-2" style={{ display: article.image ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
                                 <Icon name="article-line" className="h-6 w-6 text-primary" />
                               </div>
@@ -264,9 +470,11 @@ export default function BlogPage() {
                               </div>
                             </div>
                             
-                            <Button variant="ghost" size="sm" className="w-full group-hover:bg-primary/10 mt-auto">
-                              Read More
-                              <Icon name="arrow-right-s-line" className="h-4 w-4 ml-1" />
+                            <Button variant="ghost" size="sm" className="w-full group-hover:bg-primary/10 mt-auto" asChild>
+                              <Link href={`/website/blog/${article.slug}`}>
+                                Read More
+                                <Icon name="arrow-right-s-line" className="h-4 w-4 ml-1" />
+                              </Link>
                             </Button>
                           </div>
                         </div>
@@ -280,18 +488,18 @@ export default function BlogPage() {
               <Section paddingY="xl">
                 <div className="bg-gradient-to-r from-primary/5 to-blue-50 dark:to-blue-950/20 rounded-2xl p-8 lg:p-12 text-center border border-primary/10">
                   <div className="max-w-2xl mx-auto space-y-6">
-                    <H3 className="text-2xl font-semibold">Stay Updated</H3>
+                    <H3 className="text-2xl font-semibold">{ctaTitle}</H3>
                     <P className="text-muted-foreground text-sm sm:text-base">
-                      Get the latest insights on AI, business orchestration, and industry trends delivered to your inbox.
+                      {ctaDescription}
                     </P>
                     <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                       <input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={ctaPlaceholder}
                         className="flex-1 px-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                       />
                       <Button size="lg" className="px-8">
-                        Subscribe
+                        {ctaButtonText}
                       </Button>
                     </div>
                   </div>

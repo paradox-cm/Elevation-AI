@@ -69,20 +69,20 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
           
           {/* People Dropdown */}
           <div className="relative group">
-            <Link href="/website/people" className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
+            <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
               People
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
-              {currentPage === 'people' && (
+              {(currentPage === 'people-concierge' || currentPage === 'people-experts') && (
                 <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
               )}
-            </Link>
+            </button>
             {/* Dropdown menu for People */}
             <div className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-2 space-y-1">
-                <Link href="/website/people#our-solution-section" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
-                  Concierge Team
+                <Link href="/website/people-concierge" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Concierge Support
                 </Link>
-                <Link href="/website/people#expert-network" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                <Link href="/website/people-experts" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Expert Network
                 </Link>
               </div>

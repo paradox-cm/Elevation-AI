@@ -12,7 +12,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
   const animationRef = useRef<number | undefined>(undefined)
   const dotsRef = useRef<Dot[]>([])
   const lastTimestampRef = useRef<number>(0)
-  const { theme } = useThemeProvider()
+  const { isDark } = useThemeProvider()
 
   class Dot {
     x: number
@@ -92,7 +92,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
     // Determine dot color based on theme
-    const dotColor = theme === 'dark' ? '#ffffff' : '#000000'
+    const dotColor = isDark ? '#ffffff' : '#000000'
     
     dotsRef.current.forEach(dot => {
       dot.update(deltaTime, 8, 400000) // 40x slower (2.5% of original speed)
@@ -124,7 +124,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [theme])
+  }, [isDark])
 
   // Handle resize
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { H1, H2, H3, H4, P, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { MainHeader } from "@/components/ui/main-header"
+import { LoadingSpinner } from "@/components/ui/loading"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
@@ -22,6 +23,8 @@ import Icon from "@/components/ui/icon"
 import { VerticalSquareFlow, LogoCarousel, TunnelShader } from "@/components/animations"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
 import { PeopleCarousel, PlatformCarouselItem } from "@/components/ui/people-carousel"
+import { pagesService } from "@/lib/cms"
+import { PageWithSections } from "@/types/cms"
 
 // Animated Text Carousel Component
 function AnimatedTextCarousel({ 
@@ -310,7 +313,7 @@ function ConciergeServiceCard({ service }: { service: ConciergeService }) {
 
 
 // Creative Hero Section Component
-function CreativeHeroSection() {
+function CreativeHeroSection({ data }: { data?: any }) {
 
   return (
     <Section 
@@ -324,40 +327,43 @@ function CreativeHeroSection() {
           <div className="space-y-6 sm:space-y-8">
              <div className="space-y-4 sm:space-y-6">
                         <H1>
-                          Your Dedicated Team for the Agentic Era
+                          {data?.title || 'Your Dedicated Team for the Agentic Era'}
                         </H1>
               <BodyLarge className="text-muted-foreground max-w-2xl">
-                Your concierge support team, acting as an extension of your own team, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.
+                {data?.description || 'Your concierge support team, acting as an extension of your own team, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.'}
               </BodyLarge>
             </div>
 
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button 
-                size="lg" 
-                className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
-                onClick={() => {
-                  const element = document.getElementById('concierge-team')
-                  if (element) {
-                    const headerHeight = 64 // Height of the fixed header (4rem = 64px)
-                    const elementPosition = element.offsetTop
-                    const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer
-                    
-                    window.scrollTo({
-                      top: offsetPosition,
-                      behavior: 'smooth'
-                    })
-                  }
-                }}
-              >
-                Learn More
-              </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/website/demo">
-                  Request a Demo
-                </Link>
-              </Button>
+              {(data?.ctaButtons || [
+                { text: 'Learn More', href: '#concierge-team', variant: 'default', isScrollButton: true },
+                { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
+              ]).map((button: any, index: number) => (
+                <Button 
+                  key={index}
+                  size="lg" 
+                  variant={button.variant}
+                  className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
+                  onClick={button.isScrollButton ? () => {
+                    const element = document.getElementById('concierge-team')
+                    if (element) {
+                      const headerHeight = 64 // Height of the fixed header (4rem = 64px)
+                      const elementPosition = element.offsetTop
+                      const offsetPosition = elementPosition - headerHeight - 32 // Add 32px buffer
+                      
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      })
+                    }
+                  } : undefined}
+                  asChild={!button.isScrollButton}
+                >
+                  {button.isScrollButton ? button.text : <Link href={button.href}>{button.text}</Link>}
+                </Button>
+              ))}
             </div>
           </div>
 
@@ -392,7 +398,7 @@ function CreativeHeroSection() {
               {/* Center Logo */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img 
-                  src="/images/branding/E-AI-Squircle.svg" 
+                  src={data?.logoImage || "/images/branding/E-AI-Squircle.svg"} 
                   alt="Elevation AI Logo"
                   className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 dark:brightness-0 dark:invert"
                 />
@@ -409,15 +415,15 @@ function CreativeHeroSection() {
 
 
 // Logo Carousel Section
-function LogoCarouselSection() {
+function LogoCarouselSection({ data }: { data?: any }) {
   return (
-    <Section paddingY="lg" className="bg-muted/20">
+    <Section paddingY="lg" className={data?.backgroundColor || "bg-muted/20"}>
       <Container size="2xl">
         <div className="space-y-6 sm:space-y-8">
           {/* Section Header */}
           <div className="text-center space-y-2">
             <H3 className="text-muted-foreground">
-              Led by industry veterans from:
+              {data?.title || 'Led by industry veterans from:'}
             </H3>
           </div>
           
@@ -432,6 +438,41 @@ function LogoCarouselSection() {
 }
 
 export default function PeoplePage() {
+  const [pageData, setPageData] = useState<PageWithSections | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchPageData = async () => {
+      try {
+        const data = await pagesService.getWithSections('people')
+        setPageData(data)
+      } catch (error) {
+        console.error('Error fetching people page data:', error)
+        setPageData(null) // Fallback to static content
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPageData()
+  }, [])
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      const fetchPageData = async () => {
+        try {
+          const data = await pagesService.getWithSections('people')
+          setPageData(data)
+        } catch (error) {
+          console.error('Error fetching people page data:', error)
+          setPageData(null)
+        }
+      }
+      fetchPageData()
+    }
+    window.addEventListener('refresh-page', handleRefresh)
+    return () => window.removeEventListener('refresh-page', handleRefresh)
+  }, [])
+
   // Handle hash navigation with header offset
   useEffect(() => {
     const handleHashNavigation = () => {
@@ -515,338 +556,326 @@ export default function PeoplePage() {
               >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
-            
-            {/* Creative Hero Section */}
-            <CreativeHeroSection />
+            {loading ? (
+              <div className="flex items-center justify-center h-64">
+                <LoadingSpinner size="lg" text="Loading people page..." />
+              </div>
+            ) : (
+              <>
+                {/* Creative Hero Section */}
+                <CreativeHeroSection data={pageData?.sections.find(s => s.section_type === 'hero_simple')?.section_data} />
 
-
-            {/* Concierge Details Section */}
-            <div id="concierge-team">
-              <Section paddingY="sm">
-                <Container size="2xl">
-                  <div className="space-y-6">
-
-                {/* Challenge and Solution - Full Width Layout */}
-                <div className="space-y-8">
-                  {/* The Challenge Section */}
-                  <div className="relative">
-                    <div className="text-center space-y-8">
-                      <div className="space-y-4">
-                        <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500/10 rounded-full border border-orange-500/20">
-                          <Brain className="w-5 h-5 text-orange-500" />
-                          <span className="text-sm font-semibold text-orange-500">The Challenge</span>
-                        </div>
-                        <H2>Technology Alone Isn't Transformation</H2>
-                      </div>
-                      
-                      <div className="relative w-full">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-orange-500/10 to-transparent rounded-3xl"></div>
-                        <div className="relative p-8 sm:p-12 lg:p-16 rounded-3xl border border-orange-500/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
-                          <div className="max-w-5xl lg:max-w-[1144px] mx-auto">
-                            <AnimatedTextCarousel 
-                              texts={[
-                                "Adopting agentic AI is not just about adding another app to your tech stack—it's a fundamental shift in how your business operates.",
-                                "The transition requires a unique blend of strategic foresight to identify opportunities, technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation.",
-                                "Most organizations don't have this specialized, multi-disciplinary team in-house. This is where Elevation AI comes in."
-                              ]}
-                              autoPlayInterval={5000}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Our Solution Section - Single Container */}
-                  <div id="our-solution-section" className="relative">
-                    <Card className="border-border bg-transparent">
-                      <CardContent className="p-6">
-                        <div className="space-y-12">
-                          {/* Header Section */}
-                          <div className="text-center space-y-8">
-                            <div className="space-y-4">
-                              <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
-                                <Users className="w-5 h-5 text-primary" />
-                                <span className="text-sm font-semibold text-primary">Our Solution</span>
+                {/* Concierge Details Section */}
+                <div id="concierge-team">
+                  <Section paddingY="sm">
+                    <Container size="2xl">
+                      <div className="space-y-6">
+                        {/* Challenge and Solution - Full Width Layout */}
+                        <div className="space-y-8">
+                          {/* The Challenge Section */}
+                          <div className="relative">
+                            <div className="text-center space-y-8">
+                              <div className="space-y-4">
+                                <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500/10 rounded-full border border-orange-500/20">
+                                  <Brain className="w-5 h-5 text-orange-500" />
+                                  <span className="text-sm font-semibold text-orange-500">
+                                    {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.challenge?.badgeText || 'The Challenge'}
+                                  </span>
+                                </div>
+                                <H2>Technology Alone Isn't Transformation</H2>
                               </div>
-                              <H2>We Become Your Agentic Operations Team</H2>
+                              
+                              <div className="relative w-full">
+                                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-orange-500/10 to-transparent rounded-3xl"></div>
+                                <div className="relative p-8 sm:p-12 lg:p-16 rounded-3xl border border-orange-500/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
+                                  <div className="max-w-5xl lg:max-w-[1144px] mx-auto">
+                                    <AnimatedTextCarousel 
+                                      texts={pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.challenge?.statements || [
+                                        "Adopting agentic AI is not just about adding another app to your tech stack—it's a fundamental shift in how your business operates.",
+                                        "The transition requires a unique blend of strategic foresight to identify opportunities, technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation.",
+                                        "Most organizations don't have this specialized, multi-disciplinary team in-house. This is where Elevation AI comes in."
+                                      ]}
+                                      autoPlayInterval={pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.challenge?.autoPlayInterval || 5000}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            
-                            <BodyLarge className="text-muted-foreground leading-relaxed text-center text-lg max-w-5xl mx-auto">
-                              Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.
-                            </BodyLarge>
                           </div>
 
-                          {/* Process Flow Section */}
-                          <div className="space-y-8">
-                            {/* Four Column Process Flow */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
-                      {/* Background Pattern */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      <CardHeader className="pb-4 relative z-10">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                            <Target className="w-5 h-5 text-primary" />
-                          </div>
-                          <CardTitle className="text-base">Design & Strategize</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="relative z-10">
-                        <P className="text-muted-foreground leading-relaxed">
-                          Our engagement begins with a deep-dive discovery process. We work alongside your leadership to map your unique challenges, identify the highest-value automation opportunities, and co-design a clear, phased roadmap for your agentic transformation.
-                        </P>
-                      </CardContent>
-                    </Card>
+                          {/* Our Solution Section - Single Container */}
+                          <div id="our-solution-section" className="relative">
+                            <Card className="border-border bg-transparent">
+                              <CardContent className="p-6">
+                                <div className="space-y-12">
+                                  {/* Header Section */}
+                                  <div className="text-center space-y-8">
+                                    <div className="space-y-4">
+                                      <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
+                                        <Users className="w-5 h-5 text-primary" />
+                                        <span className="text-sm font-semibold text-primary">
+                                          {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.badgeText || 'Our Solution'}
+                                        </span>
+                                      </div>
+                                      <H2>
+                                        {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.subtitle || 'We Become Your Agentic Operations Team'}
+                                      </H2>
+                                    </div>
+                                    
+                                    <BodyLarge className="text-muted-foreground leading-relaxed text-center text-lg max-w-5xl mx-auto">
+                                      {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.description || 'Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.'}
+                                    </BodyLarge>
+                                  </div>
 
-                    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
-                      {/* Background Pattern */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      <CardHeader className="pb-4 relative z-10">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                            <Zap className="w-5 h-5 text-primary" />
-                          </div>
-                          <CardTitle className="text-base">Build & Implement</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="relative z-10">
-                        <P className="text-muted-foreground leading-relaxed">
-                          Our agentic engineers get to work building the custom solutions you need. This includes creating specialized agents, designing complex automated workflows, and configuring your Workspaces and Canvases for your specific operational needs.
-                        </P>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
-                      {/* Background Pattern */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      <CardHeader className="pb-4 relative z-10">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                            <Shield className="w-5 h-5 text-primary" />
-                          </div>
-                          <CardTitle className="text-base">Integrate & Orchestrate</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="relative z-10">
-                        <P className="text-muted-foreground leading-relaxed">
-                          We handle the complexity of connecting our platform to your existing systems of record. We ensure a seamless flow of data, allowing your new agentic workflows to orchestrate your entire tech stack.
-                        </P>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
-                      {/* Background Pattern */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      <CardHeader className="pb-4 relative z-10">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                            <Sparkles className="w-5 h-5 text-primary" />
-                          </div>
-                          <CardTitle className="text-base">Support & Iterate</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="relative z-10">
-                        <P className="text-muted-foreground leading-relaxed">
-                          Our partnership doesn't end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.
-                        </P>
-                      </CardContent>
-                    </Card>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-
-                {/* Who This Is For Section - Enhanced */}
-                <div className="space-y-8">
-                  {/* Two-Column Card Layout */}
-                  <Card className="border-border bg-transparent">
-                    <CardContent className="p-6">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Left Column - Main Content */}
-                        <div className="flex flex-col h-full">
-                          <div className="space-y-6">
-                            <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
-                              <Target className="w-5 h-5 text-primary" />
-                              <span className="text-sm font-semibold text-primary">Who This Is For</span>
-                            </div>
-                            
-                            <div>
-                              <H2>A Partnership for Ambitious Leaders</H2>
-                              <P className="text-muted-foreground leading-relaxed text-lg">
-                                Our Concierge service is designed for growth-oriented leaders who understand that the future belongs to those who act decisively today. These are the visionaries who recognize that transformative change requires more than just technology—it demands strategic partnership, specialized expertise, and unwavering commitment to excellence.
-                              </P>
-                            </div>
-                          </div>
-                          
-                          {/* Tunnel Shader Animation Container - Fills remaining height */}
-                          <div className="flex-1 w-full rounded-lg overflow-hidden mt-6 h-[400px] sm:h-auto flex flex-col items-center justify-center bg-muted/5 relative">
-                            {/* E-AI-Square Logo - Centered in container */}
-                            <div className="absolute inset-0 flex items-center justify-center z-10">
-                              <Image
-                                src="/images/branding/E-AI-Sqaure.svg"
-                                alt="Elevation AI Logo"
-                                width={123}
-                                height={123}
-                                className="w-[123px] h-[123px] dark:brightness-0 dark:invert"
-                                priority
-                              />
-                            </div>
-                            
-                            {/* Tunnel Shader Animation */}
-                            <div className="w-full h-full max-w-full max-h-full">
-                              <TunnelShader />
-                            </div>
+                                  {/* Process Flow Section */}
+                                  <div className="space-y-8">
+                                    {/* Four Column Process Flow */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                                      {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.processSteps || [
+                                        {
+                                          title: 'Design & Strategize',
+                                          description: 'Our engagement begins with a deep-dive discovery process. We work alongside your leadership to map your unique challenges, identify the highest-value automation opportunities, and co-design a clear, phased roadmap for your agentic transformation.',
+                                          icon: 'target-line'
+                                        },
+                                        {
+                                          title: 'Build & Implement',
+                                          description: 'Our agentic engineers get to work building the custom solutions you need. This includes creating specialized agents, designing complex automated workflows, and configuring your Workspaces and Canvases for your specific operational needs.',
+                                          icon: 'flash-line'
+                                        },
+                                        {
+                                          title: 'Integrate & Orchestrate',
+                                          description: 'We handle the complexity of connecting our platform to your existing systems of record. We ensure a seamless flow of data, allowing your new agentic workflows to orchestrate your entire tech stack.',
+                                          icon: 'shield-check-line'
+                                        },
+                                        {
+                                          title: 'Support & Iterate',
+                                          description: 'Our partnership doesn\'t end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.',
+                                          icon: 'sparkles-line'
+                                        }
+                                      ]).map((step: any, index: number) => (
+                                        <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
+                                          {/* Background Pattern */}
+                                          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                          
+                                          <CardHeader className="pb-4 relative z-10">
+                                            <div className="flex items-center gap-3 mb-3">
+                                              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                                                {step.icon === 'target-line' && <Target className="w-5 h-5 text-primary" />}
+                                                {step.icon === 'flash-line' && <Zap className="w-5 h-5 text-primary" />}
+                                                {step.icon === 'shield-check-line' && <Shield className="w-5 h-5 text-primary" />}
+                                                {step.icon === 'sparkles-line' && <Sparkles className="w-5 h-5 text-primary" />}
+                                              </div>
+                                              <CardTitle className="text-base">{step.title}</CardTitle>
+                                            </div>
+                                          </CardHeader>
+                                          <CardContent className="relative z-10">
+                                            <P className="text-muted-foreground leading-relaxed">
+                                              {step.description}
+                                            </P>
+                                          </CardContent>
+                                        </Card>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
                           </div>
                         </div>
 
-                        {/* Right Column - Four Characteristic Cards */}
-                        <div className="space-y-6">
-                          <Card className="border-border/50 bg-transparent">
-                            <CardHeader className="pb-3">
-                              <CardTitle className="text-base font-semibold flex items-center gap-3">
-                                <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">1</span>
-                                First-Mover Advantage
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <P className="text-muted-foreground leading-relaxed text-sm">
-                                Want to move quickly and capture a first-mover advantage in their industry.
-                              </P>
-                            </CardContent>
-                          </Card>
+                        {/* Who This Is For Section - Enhanced */}
+                        <div className="space-y-8">
+                          {/* Two-Column Card Layout */}
+                          <Card className="border-border bg-transparent">
+                            <CardContent className="p-6">
+                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                {/* Left Column - Main Content */}
+                                <div className="flex flex-col h-full">
+                                  <div className="space-y-6">
+                                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
+                                      <Target className="w-5 h-5 text-primary" />
+                                      <span className="text-sm font-semibold text-primary">
+                                        {pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.badgeText || 'Who This Is For'}
+                                      </span>
+                                    </div>
+                                    
+                                    <div>
+                                      <H2>
+                                        {pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.title || 'A Partnership for Ambitious Leaders'}
+                                      </H2>
+                                      <P className="text-muted-foreground leading-relaxed text-lg">
+                                        {pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.description || 'Our Concierge service is designed for growth-oriented leaders who understand that the future belongs to those who act decisively today. These are the visionaries who recognize that transformative change requires more than just technology—it demands strategic partnership, specialized expertise, and unwavering commitment to excellence.'}
+                                      </P>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Tunnel Shader Animation Container - Fills remaining height */}
+                                  <div className="flex-1 w-full rounded-lg overflow-hidden mt-6 h-[400px] sm:h-auto flex flex-col items-center justify-center bg-muted/5 relative">
+                                    {/* E-AI-Square Logo - Centered in container */}
+                                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                                      <Image
+                                        src={pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.logoImage || "/images/branding/E-AI-Sqaure.svg"}
+                                        alt="Elevation AI Logo"
+                                        width={123}
+                                        height={123}
+                                        className="w-[123px] h-[123px] dark:brightness-0 dark:invert"
+                                        priority
+                                      />
+                                    </div>
+                                    
+                                    {/* Tunnel Shader Animation */}
+                                    <div className="w-full h-full max-w-full max-h-full">
+                                      <TunnelShader />
+                                    </div>
+                                  </div>
+                                </div>
 
-                          <Card className="border-border/50 bg-transparent">
-                            <CardHeader className="pb-3">
-                              <CardTitle className="text-base font-semibold flex items-center gap-3">
-                                <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">2</span>
-                                Complex Workflows
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <P className="text-muted-foreground leading-relaxed text-sm">
-                                Have complex, mission-critical workflows that require a bespoke, tailored solution.
-                              </P>
-                            </CardContent>
-                          </Card>
-
-                          <Card className="border-border/50 bg-transparent">
-                            <CardHeader className="pb-3">
-                              <CardTitle className="text-base font-semibold flex items-center gap-3">
-                                <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">3</span>
-                                Strategic Partnership
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <P className="text-muted-foreground leading-relaxed text-sm">
-                                Prefer a strategic partner to act as their dedicated agentic implementation team.
-                              </P>
-                            </CardContent>
-                          </Card>
-
-                          <Card className="border-border/50 bg-transparent">
-                            <CardHeader className="pb-3">
-                              <CardTitle className="text-base font-semibold flex items-center gap-3">
-                                <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">4</span>
-                                Specialized Talent
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <P className="text-muted-foreground leading-relaxed text-sm">
-                                Need to augment their existing team's capacity with specialized, hard-to-find talent.
-                              </P>
+                                {/* Right Column - Four Characteristic Cards */}
+                                <div className="space-y-6">
+                                  {(pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.characteristics || [
+                                    {
+                                      number: '1',
+                                      title: 'First-Mover Advantage',
+                                      description: 'Want to move quickly and capture a first-mover advantage in their industry.'
+                                    },
+                                    {
+                                      number: '2',
+                                      title: 'Complex Workflows',
+                                      description: 'Have complex, mission-critical workflows that require a bespoke, tailored solution.'
+                                    },
+                                    {
+                                      number: '3',
+                                      title: 'Strategic Partnership',
+                                      description: 'Prefer a strategic partner to act as their dedicated agentic implementation team.'
+                                    },
+                                    {
+                                      number: '4',
+                                      title: 'Specialized Talent',
+                                      description: 'Need to augment their existing team\'s capacity with specialized, hard-to-find talent.'
+                                    }
+                                  ]).map((characteristic: any, index: number) => (
+                                    <Card key={index} className="border-border/50 bg-transparent">
+                                      <CardHeader className="pb-3">
+                                        <CardTitle className="text-base font-semibold flex items-center gap-3">
+                                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">{characteristic.number}</span>
+                                          {characteristic.title}
+                                        </CardTitle>
+                                      </CardHeader>
+                                      <CardContent>
+                                        <P className="text-muted-foreground leading-relaxed text-sm">
+                                          {characteristic.description}
+                                        </P>
+                                      </CardContent>
+                                    </Card>
+                                  ))}
+                                </div>
+                              </div>
                             </CardContent>
                           </Card>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </Container>
+                  </Section>
                 </div>
 
-                  </div>
-                </Container>
-              </Section>
-            </div>
+                {/* Expert Network Section */}
+                <div id="expert-network">
+                  <Section paddingY="lg" className={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.backgroundColor || 'bg-blue-500/10'}>
+                    <Container size="2xl">
+                      <div className="space-y-12">
+                        {/* Header */}
+                        <div className="text-center space-y-6">
+                          <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
+                            <Users className="w-5 h-5 text-primary" />
+                            <span className="text-sm font-semibold text-primary">
+                              {pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.badgeText || 'Expert Network'}
+                            </span>
+                          </div>
+                          <H1>
+                            {pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.title || 'Access World-Class Expertise'}
+                          </H1>
+                          <BodyLarge className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-lg">
+                            {pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.description || 'Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.'}
+                          </BodyLarge>
+                        </div>
 
-            {/* Expert Network Section */}
-            <div id="expert-network">
-              <Section paddingY="lg" className="bg-blue-500/10">
-                <Container size="2xl">
-                  <div className="space-y-12">
-                    {/* Header */}
-                    <div className="text-center space-y-6">
-                      <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
-                        <Users className="w-5 h-5 text-primary" />
-                        <span className="text-sm font-semibold text-primary">Expert Network</span>
+                        {/* Expert Categories Carousel */}
+                        <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+                          <PeopleCarousel
+                            items={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.expertCategories?.map((category: any) => ({
+                              id: category.id,
+                              title: category.title,
+                              description: category.description,
+                              icon: category.icon === 'brain-line' ? Brain : 
+                                    category.icon === 'shield-check-line' ? Shield : 
+                                    category.icon === 'global-line' ? Globe : 
+                                    category.icon === 'award-line' ? Award : Brain,
+                              content: (
+                                <div className="flex flex-wrap gap-2">
+                                  {category.specialties.map((specialty: string) => (
+                                    <Badge key={specialty} variant="secondary" className="text-sm bg-blue-500/10 text-blue-500 border-blue-500/20">
+                                      {specialty}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              )
+                            })) || expertCarouselItems}
+                            autoPlay={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.autoPlay ?? true}
+                            autoPlayInterval={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.autoPlayInterval || 5000}
+                            showProgressIndicators={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.showProgressIndicators ?? true}
+                            cardWidth={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.cardWidth || 320}
+                            cardGap={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.cardGap || 24}
+                            highlightActiveCard={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.highlightActiveCard ?? true}
+                            className="w-full"
+                            naturalScroll={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.naturalScroll ?? false}
+                            flexibleWidth={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.flexibleWidth ?? true}
+                            responsive={{
+                              sm: { cardWidth: 320, cardGap: 16 },
+                              md: { cardWidth: 320, cardGap: 20 },
+                              lg: { cardWidth: 320, cardGap: 24 },
+                              xl: { cardWidth: 320, cardGap: 28 },
+                              '2xl': { cardWidth: 320, cardGap: 32 }
+                            }}
+                          />
+                        </div>
                       </div>
-                      <H1>Access World-Class Expertise</H1>
-                      <BodyLarge className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-lg">
-                        Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.
-                      </BodyLarge>
-                    </div>
+                    </Container>
+                  </Section>
+                </div>
 
-                    {/* Expert Categories Carousel */}
-                    <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                      <PeopleCarousel
-                        items={expertCarouselItems}
-                        autoPlay={true}
-                        autoPlayInterval={5000}
-                        showProgressIndicators={true}
-                        cardWidth={320}
-                        cardGap={24}
-                        highlightActiveCard={true}
-                        className="w-full"
-                        naturalScroll={false}
-                        flexibleWidth={true}
-                        responsive={{
-                          sm: { cardWidth: 320, cardGap: 16 },
-                          md: { cardWidth: 320, cardGap: 20 },
-                          lg: { cardWidth: 320, cardGap: 24 },
-                          xl: { cardWidth: 320, cardGap: 28 },
-                          '2xl': { cardWidth: 320, cardGap: 32 }
-                        }}
-                      />
-                    </div>
+                {/* Logo Carousel Section */}
+                <LogoCarouselSection data={pageData?.sections.find(s => s.section_type === 'logo_carousel')?.section_data} />
 
-                  </div>
-                </Container>
-              </Section>
-            </div>
-
-            {/* Logo Carousel Section */}
-            <LogoCarouselSection />
-
-            {/* CTA Section */}
-            <div id="connect-experts">
-              <Section paddingY="lg" className="bg-muted/30">
-                <Container size="2xl">
-                  <div className="max-w-4xl mx-auto text-center space-y-8">
-                    <div className="space-y-4">
-                      <H2>Ready to Connect with Experts?</H2>
-                      <P className="text-muted-foreground leading-relaxed">
-                        Our expert network is ready to help you tackle your most complex challenges. Connect with the right specialists for your specific needs.
-                      </P>
-                    </div>
-                    
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button size="lg" asChild>
-                        <Link href="/website/demo">Request a Demo</Link>
-                      </Button>
-                      <Button variant="outline" size="lg" asChild>
-                        <Link href="/website/about">About Us</Link>
-                      </Button>
-                    </div>
-                  </div>
-                </Container>
-              </Section>
-            </div>
+                {/* CTA Section */}
+                <div id="connect-experts">
+                  <Section paddingY="lg" className={pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.backgroundColor || 'bg-muted/30'}>
+                    <Container size="2xl">
+                      <div className="max-w-4xl mx-auto text-center space-y-8">
+                        <div className="space-y-4">
+                          <H2>
+                            {pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.title || 'Ready to Connect with Experts?'}
+                          </H2>
+                          <P className="text-muted-foreground leading-relaxed">
+                            {pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.description || 'Our expert network is ready to help you tackle your most complex challenges. Connect with the right specialists for your specific needs.'}
+                          </P>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                          {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.ctaButtons || [
+                            { text: 'Request a Demo', href: '/website/demo', variant: 'default' },
+                            { text: 'About Us', href: '/website/about', variant: 'outline' }
+                          ]).map((button: any, index: number) => (
+                            <Button key={index} size="lg" variant={button.variant} asChild>
+                              <Link href={button.href}>{button.text}</Link>
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                    </Container>
+                  </Section>
+                </div>
+              </>
+            )}
           </main>
         </div>
       </MobileOnlyLayout>

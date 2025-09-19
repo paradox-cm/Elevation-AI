@@ -336,3 +336,53 @@ html {
 .animate-scroll-fast {
   animation: scrollFast 20s linear infinite;
 }
+
+/* Toast Notification Styling - Design System Colors */
+[data-sonner-toaster] [data-type="success"] {
+  background-color: rgb(240 253 244) !important; /* green-50 */
+  border-color: rgb(187 247 208) !important; /* green-200 */
+  color: rgb(22 101 52) !important; /* green-800 */
+}
+
+[data-sonner-toaster] [data-type="error"] {
+  background-color: rgb(254 242 242) !important; /* red-50 */
+  border-color: rgb(254 202 202) !important; /* red-200 */
+  color: rgb(153 27 27) !important; /* red-800 */
+}
+
+[data-sonner-toaster] [data-type="warning"] {
+  background-color: rgb(254 252 246) !important; /* gold-50 */
+  border-color: rgb(250 238 209) !important; /* gold-200 */
+  color: rgb(146 117 46) !important; /* gold-800 */
+}
+
+[data-sonner-toaster] [data-type="info"] {
+  background-color: rgb(245 249 255) !important; /* elevation-50 */
+  border-color: rgb(186 219 255) !important; /* elevation-200 */
+  color: rgb(8 57 150) !important; /* elevation-800 */
+}
+
+/* Dark mode toast styling */
+.dark [data-sonner-toaster] [data-type="success"] {
+  background-color: rgb(20 83 45) !important; /* green-950 */
+  border-color: rgb(22 101 52) !important; /* green-800 */
+  color: rgb(187 247 208) !important; /* green-200 */
+}
+
+.dark [data-sonner-toaster] [data-type="error"] {
+  background-color: rgb(69 10 10) !important; /* red-950 */
+  border-color: rgb(153 27 27) !important; /* red-800 */
+  color: rgb(254 202 202) !important; /* red-200 */
+}
+
+.dark [data-sonner-toaster] [data-type="warning"] {
+  background-color: rgb(96 78 31) !important; /* gold-950 */
+  border-color: rgb(146 117 46) !important; /* gold-800 */
+  color: rgb(250 238 209) !important; /* gold-200 */
+}
+
+.dark [data-sonner-toaster] [data-type="info"] {
+  background-color: rgb(5 40 100) !important; /* elevation-950 */
+  border-color: rgb(8 57 150) !important; /* elevation-800 */
+  color: rgb(186 219 255) !important; /* elevation-200 */
+}

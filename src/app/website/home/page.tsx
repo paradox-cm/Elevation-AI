@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
@@ -14,6 +14,7 @@ import { Carousel, CarouselItem } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { H1, H2, H3, H4, P, BodyLarge, BodySmall, HeroHeading } from "@/components/ui/typography"
 import { MainHeader } from "@/components/ui/main-header"
+import { LoadingSpinner } from "@/components/ui/loading"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
@@ -25,6 +26,7 @@ import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { StarfieldAnimationPlatform } from "@/app/design-system/animations/starfield-animation"
+import { usePageCache } from '@/hooks/use-page-cache'
 import { 
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
@@ -419,7 +421,30 @@ function TypewriterText({
 }
 
 // Hero Section
-function HeroSection() {
+function HeroSection({ data }: { data?: any }) {
+  const {
+    title = "The Agentic Platform for",
+    cyclingWords = [
+      "Intelligent Operations.",
+      "Seamless Workflows.",
+      "Data-Driven Decisions.",
+      "Automated Processes.",
+      "Strategic Growth.",
+      "Operational Excellence.",
+      "Business Transformation.",
+      "Digital Innovation."
+    ],
+    description = "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.",
+    ctaButtons = [
+      { text: "Get Started", href: "/website/sign-up", variant: "default" },
+      { text: "Request a Demo", href: "/website/demo", variant: "outline" }
+    ],
+    speed = 100,
+    delay = 500,
+    cyclingSpeed = 300,
+    cyclingDelay = 0
+  } = data || {}
+
   return (
     <Section 
       paddingY="lg" 
@@ -432,38 +457,32 @@ function HeroSection() {
             <div className="space-y-4 sm:space-y-6">
                               <HeroHeading>
                   <OriginalTypewriterText 
-                    text="The Agentic Platform for" 
-                    speed={100} 
-                    delay={500}
-                    cyclingSpeed={300}
-                    cyclingDelay={0}
-                    cyclingWords={[
-                      "Intelligent Operations.",
-                      "Seamless Workflows.",
-                      "Data-Driven Decisions.",
-                      "Automated Processes.",
-                      "Strategic Growth.",
-                      "Operational Excellence.",
-                      "Business Transformation.",
-                      "Digital Innovation."
-                    ]}
+                    text={title}
+                    speed={speed}
+                    delay={delay}
+                    cyclingSpeed={cyclingSpeed}
+                    cyclingDelay={cyclingDelay}
+                    cyclingWords={cyclingWords}
                   />
                               </HeroHeading>
               <P className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-base md:text-lg leading-relaxed">
-                Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.
+                {description}
               </P>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/website/sign-up">
-                  Get Started
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
-                <Link href="/website/demo">
-                  Request a Demo
-                </Link>
-              </Button>
+              {ctaButtons.map((button: any, index: number) => (
+                <Button
+                  key={index}
+                  size="lg"
+                  asChild
+                  variant={button.variant || "default"}
+                  className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
+                >
+                  <Link href={button.href}>
+                    {button.text}
+                  </Link>
+                </Button>
+              ))}
             </div>
           </div>
 
@@ -512,24 +531,27 @@ function HeroSection() {
 }
 
 // Introduction Section
-function IntroductionSection() {
-  const accordionItems = [
-    {
-      title: "Securely Orchestrate Your Business",
-      content: "Your business's greatest asset—its collective data and knowledge—unlocked and ready to power every decision.",
-      value: "greatest-asset"
-    },
-    {
-      title: "Seamless Collaboration, Shared Context", 
-      content: "Instead of being siloed across apps, conversations, and documents, your knowledge lives in one intelligent network—accessible, contextual, and aligned for action.",
-      value: "scattered-to-connected"
-    },
-    {
-      title: "Clarity That Drives Action",
-      content: "Elevation AI transforms complexity into focus—delivering clarity, precision, and control so your organization can move faster and stay ahead.",
-      value: "clarity-drives-action"
-    }
-  ]
+function IntroductionSection({ data }: { data?: any }) {
+  const {
+    title = "The Agentic Era is Here",
+    accordionItems = [
+      {
+        title: "Securely Orchestrate Your Business",
+        content: "Your business's greatest asset—its collective data and knowledge—unlocked and ready to power every decision.",
+        value: "greatest-asset"
+      },
+      {
+        title: "Seamless Collaboration, Shared Context", 
+        content: "Instead of being siloed across apps, conversations, and documents, your knowledge lives in one intelligent network—accessible, contextual, and aligned for action.",
+        value: "scattered-to-connected"
+      },
+      {
+        title: "Clarity That Drives Action",
+        content: "Elevation AI transforms complexity into focus—delivering clarity, precision, and control so your organization can move faster and stay ahead.",
+        value: "clarity-drives-action"
+      }
+    ]
+  } = data || {}
 
   return (
     <Section paddingY="xl" className="relative">
@@ -540,14 +562,14 @@ function IntroductionSection() {
           {/* Left Column - Heading */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             <H3>
-              The Agentic Era is Here
+              {title}
             </H3>
           </div>
 
           {/* Right Column - Accordion */}
           <div className="col-span-12 lg:col-span-8 space-y-4 pb-6">
             <Accordion type="single" collapsible className="w-full" defaultValue="greatest-asset">
-              {accordionItems.map((item, index) => (
+                {accordionItems.map((item: any, index: number) => (
                 <AccordionItem key={item.value} value={item.value} className="border-b border-border/50">
                   <AccordionTrigger className="text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium leading-tight sm:leading-normal tracking-normal text-primary hover:no-underline py-4">
                     {item.title}
@@ -566,10 +588,13 @@ function IntroductionSection() {
 }
 
 // Problem We Solve Section
-function ProblemSection() {
+function ProblemSection({ data }: { data?: any }) {
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
-  const problems = [
+  const {
+    title = "Orchestrate Your Universe",
+    subtitle = "Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.",
+    cards = [
       {
         title: "The Business Orchestration Platform",
         description: "Work from a single source of truth. Break down the walls between departments and tools, work from a unified platform where all your knowledge is connected, accessible, and actionable in one place.",
@@ -580,17 +605,20 @@ function ProblemSection() {
         description: "Eliminate bottlenecks with context-aware automation, identify and automate the repetitive processes that hold you back—freeing people from busywork so they can focus on the high-value work.",
         icon: "brain-line"
       },
-    {
-      title: "Real-Time Business Intelligence",
-              description: "Convert blind spots into detailed, actionable insights with a unified command center—delivering real-time visibility across operations and the confidence to act.",
-      icon: "eye-line"
-    },
-    {
-      title: "Future-Ready Strategic Advantage",
-      description: "Mitigate strategic risk, lead the agentic era. Elevation AI is the platform and partnership which ensures you are not just keeping up, but leading the way in the new AI-powered business landscape.",
-      icon: "shield-check-line"
-    }
-  ]
+      {
+        title: "Real-Time Business Intelligence",
+        description: "Convert blind spots into detailed, actionable insights with a unified command center—delivering real-time visibility across operations and the confidence to act.",
+        icon: "eye-line"
+      },
+      {
+        title: "Future-Ready Strategic Advantage",
+        description: "Mitigate strategic risk, lead the agentic era. Elevation AI is the platform and partnership which ensures you are not just keeping up, but leading the way in the new AI-powered business landscape.",
+        icon: "shield-check-line"
+      }
+    ]
+  } = data || {}
+
+  const problems = cards
 
 
     return (
@@ -602,14 +630,14 @@ function ProblemSection() {
               <div className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0">
               {/* Section Headline */}
               <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-                <H1>Orchestrate Your Universe</H1>
+                <H1>{title}</H1>
                 <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
-                  Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+                  {subtitle}
                 </P>
               </div>
               <div className="overflow-x-auto overflow-y-hidden pb-1">
                 <div className="flex gap-4 w-max items-stretch">
-                {problems.map((problem, index) => (
+                {problems.map((problem: any, index: number) => (
                   <div
                     key={index}
                     data-problem-card
@@ -694,9 +722,9 @@ function ProblemSection() {
               <div className="relative">
                 {/* Section Headline */}
                 <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
-                  <H1>Orchestrate Your Universe</H1>
+                  <H1>{title}</H1>
                   <P className="text-muted-foreground max-w-4xl mx-auto">
-                    Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.
+                    {subtitle}
                   </P>
                 </div>
 
@@ -704,7 +732,7 @@ function ProblemSection() {
                 <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                   <div className="overflow-x-auto overflow-y-hidden pb-4 scrollbar-hide">
                     <div className="flex gap-6 w-max items-stretch">
-                  {problems.map((problem, index) => (
+                  {problems.map((problem: any, index: number) => (
                     <div
                       key={index}
                       className="w-[480px] lg:w-[520px] xl:w-[560px] 2xl:w-[600px] flex-shrink-0"
@@ -786,38 +814,42 @@ function ProblemSection() {
 
 
 // Platform Overview Section
-function PlatformSection() {
+function PlatformSection({ data }: { data?: any }) {
   const [activeTab, setActiveTab] = React.useState(0)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   const sectionRef = React.useRef<HTMLDivElement>(null)
   
-  const features = [
-    {
-      title: "Knowledge Blocks",
-      description: "The private intelligence layer of your business—capturing and connecting all your data into a live Knowledge Graph that powers every decision and workflow.",
-      icon: "node-tree"
-    },
-    {
-      title: "Workspaces & Canvases",
-      description: "The collaborative fabric where teams and AI agents work together. Every task, document, and conversation enriches the shared context automatically.",
-      icon: "layout-grid-line"
-    },
-    {
-      title: "Agentic Engine",
-      description: "Your secure middleware layer—connecting knowledge to external AI tools and agents with enterprise-grade security and orchestration.",
-      icon: "cpu-line"
-    },
-    {
-      title: "Personal Co-pilot",
-      description: "A conversational interface to your entire universe—delivering context-aware answers, insights, and actions from your Knowledge Graph.",
-      icon: "message-3-line"
-    },
-    {
-      title: "Enterprise Security",
-      description: "Enterprise-grade encryption, every action in the platform is auditable, compliant, and secure, ensuring you unlock the full power of AI without ever compromising control.",
-      icon: "shield-keyhole-line"
-    }
-  ]
+  const {
+    title = "The Agentic Platform",
+    description = "So your business moves faster, thinks smarter, and stays ahead.",
+    features = [
+      {
+        title: "Knowledge Blocks",
+        description: "The private intelligence layer of your business—capturing and connecting all your data into a live Knowledge Graph that powers every decision and workflow.",
+        icon: "node-tree"
+      },
+      {
+        title: "Workspaces & Canvases",
+        description: "The collaborative fabric where teams and AI agents work together. Every task, document, and conversation enriches the shared context automatically.",
+        icon: "layout-grid-line"
+      },
+      {
+        title: "Agentic Engine",
+        description: "Your secure middleware layer—connecting knowledge to external AI tools and agents with enterprise-grade security and orchestration.",
+        icon: "cpu-line"
+      },
+      {
+        title: "Personal Co-pilot",
+        description: "A conversational interface to your entire universe—delivering context-aware answers, insights, and actions from your Knowledge Graph.",
+        icon: "message-3-line"
+      },
+      {
+        title: "Enterprise Security",
+        description: "Enterprise-grade encryption, every action in the platform is auditable, compliant, and secure, ensuring you unlock the full power of AI without ever compromising control.",
+        icon: "shield-keyhole-line"
+      }
+    ]
+  } = data || {}
 
   // Mobile scroll-based card activation - REMOVED for normal scrolling
   // Cards now expand/collapse normally without scroll interference
@@ -909,14 +941,14 @@ function PlatformSection() {
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
             <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
-              <H1>The Agentic Platform</H1>
+              <H1>{title}</H1>
               <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
-                So your business moves faster, thinks smarter, and stays ahead.
+                {description}
               </P>
             </div>
             <div className="overflow-x-auto pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
-                {features.map((feature, index) => (
+                {features.map((feature: any, index: number) => (
                   <div
                     key={index}
                     data-platform-card
@@ -1004,14 +1036,14 @@ function PlatformSection() {
                                   <div className="w-full flex flex-col items-center justify-center">
                   {/* Section Headline */}
                   <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
-                    <H1>The Agentic Platform</H1>
+                    <H1>{title}</H1>
                     <P className="text-muted-foreground max-w-4xl mx-auto">
-                      So your business moves faster, thinks smarter, and stays ahead.
+                      {description}
                     </P>
                   </div>
                   {/* Tab Content Container */}
                   <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px] pb-6">
-                    {features.map((feature, index) => (
+                    {features.map((feature: any, index: number) => (
                       <div
                         key={index}
                         className={`absolute inset-0 pb-6 ${
@@ -1024,7 +1056,7 @@ function PlatformSection() {
                           <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12">
                             {/* Tab Navigation - Positioned at top of card with proper spacing */}
                             <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-2 lg:mb-4 xl:mb-6 2xl:mb-8">
-                              {features.map((featureTab, tabIndex) => (
+                              {features.map((featureTab: any, tabIndex: number) => (
                                 <button
                                   key={tabIndex}
                                   onClick={() => handleTabClick(tabIndex)}
@@ -1115,7 +1147,30 @@ function PlatformSection() {
 }
 
 // Logo Carousel Section
-function LogoCarouselSection() {
+function LogoCarouselSection({ data }: { data?: any }) {
+  const {
+    title = "Led by industry veterans from:",
+    logos = [
+      { name: "Accenture", logo: "/images/logos/Accenture.svg" },
+      { name: "Apple", logo: "/images/logos/Apple.svg" },
+      { name: "Bank of America", logo: "/images/logos/Bank-of-America.svg" },
+      { name: "Barclays", logo: "/images/logos/Barclays.svg" },
+      { name: "BCG Consulting", logo: "/images/logos/BCG-Consulting.svg" },
+      { name: "Capital One", logo: "/images/logos/Capital-One.svg" },
+      { name: "Deutsche Bank", logo: "/images/logos/Deutsche-Bank.svg" },
+      { name: "eBay", logo: "/images/logos/ebay.svg" },
+      { name: "Google", logo: "/images/logos/Google.svg" },
+      { name: "Indeed", logo: "/images/logos/Indeed.svg" },
+      { name: "JPM", logo: "/images/logos/JPM.svg" },
+      { name: "McKinsey", logo: "/images/logos/McKinsey.svg" },
+      { name: "Meta", logo: "/images/logos/Meta.svg" },
+      { name: "Morgan Stanley", logo: "/images/logos/Morgan-Stanley.svg" },
+      { name: "Tesla", logo: "/images/logos/Tesla.svg" },
+      { name: "Visa", logo: "/images/logos/Visa.svg" },
+      { name: "Windows", logo: "/images/logos/Windows.svg" }
+    ]
+  } = data || {}
+
   return (
     <Section paddingY="lg" className="bg-muted/20">
       <Container size="2xl">
@@ -1123,13 +1178,13 @@ function LogoCarouselSection() {
           {/* Section Header */}
           <div className="text-center space-y-2">
             <H3 className="text-muted-foreground">
-              Led by industry veterans from:
+              {title}
             </H3>
           </div>
           
           {/* Logo Carousel */}
           <div className="py-4 sm:py-6">
-            <LogoCarousel />
+            <LogoCarousel logos={logos} />
           </div>
         </div>
       </Container>
@@ -1138,25 +1193,28 @@ function LogoCarouselSection() {
 }
 
 // How We Do It Section
-function HowWeDoItSection() {
-  
-  const approaches = [
-    {
-      title: "Your Strategic AI Advisory",
-      description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
-      icon: "elevation-ai-logo"
-    },
-    {
-      title: "Your Agentic Concierge Team",
-      description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
-      icon: "team-line"
-    },
-    {
-      title: "Your Expert & Partner Network",
-      description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
-      icon: "global-line"
-    }
-  ]
+function HowWeDoItSection({ data }: { data?: any }) {
+  const {
+    title = "More Than a Platform.",
+    description = "Your partner at every step.",
+    approaches = [
+      {
+        title: "Your Strategic AI Advisory",
+        description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
+        icon: "elevation-ai-logo"
+      },
+      {
+        title: "Your Agentic Concierge Team",
+        description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
+        icon: "team-line"
+      },
+      {
+        title: "Your Expert & Partner Network",
+        description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
+        icon: "global-line"
+      }
+    ]
+  } = data || {}
 
 
 
@@ -1166,15 +1224,15 @@ function HowWeDoItSection() {
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left space-y-3 lg:space-y-2 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
-            <H1>More Than a Platform.</H1>
+            <H1>{title}</H1>
             <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
-              Your partner at every step.
+              {description}
             </P>
           </div>
 
           {/* Modern Tech Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {approaches.map((approach, index) => (
+            {approaches.map((approach: any, index: number) => (
               <Link key={index} href="/website/people" className="block">
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden cursor-pointer h-full">
                   {/* Background Pattern */}
@@ -1223,56 +1281,67 @@ function HowWeDoItSection() {
 }
 
 // Who We Serve Section
-function WhoWeServeSection() {
+function WhoWeServeSection({ data }: { data?: any }) {
+  const {
+    title = "Intelligent Solutions for Every Domain",
+    description = "Powered by Elevation AI and guided by experts.",
+    solutions = [
+      {
+        id: "private-markets",
+        title: "Private Market Organizations",
+        description: "The agentic backbone for the entire private capital lifecycle.",
+        icon: "building-2-line",
+        href: "/website/solutions?open=private-markets"
+      },
+      {
+        id: "public-markets",
+        title: "Public Market Organizations",
+        description: "A unified intelligence platform for modern investment management.",
+        icon: "store-line",
+        href: "/website/solutions?open=public-markets"
+      },
+      {
+        id: "banks",
+        title: "Banks",
+        description: "Automate compliance, enhance risk management, and improve customer service.",
+        icon: "bank-line",
+        href: "/website/solutions?open=banks"
+      },
+      {
+        id: "enterprise",
+        title: "Enterprise",
+        description: "The secure control plane for growing and established organizations.",
+        icon: "briefcase-line",
+        href: "/website/solutions?open=enterprise"
+      },
+      {
+        id: "government",
+        title: "Government",
+        description: "A secure, compliant, and auditable platform for the public sector.",
+        icon: "government-line",
+        href: "/website/solutions?open=government"
+      }
+    ],
+    smallCards = [
+      "Creating a Venture",
+      "Scaling a Venture", 
+      "Exiting a Venture",
+      "Post-IPO Growth",
+      "Post-Exit/Family Office"
+    ]
+  } = data || {}
 
-  const solutions: CarouselItem[] = [
-    {
-      id: "private-markets",
-      title: "Private Market Organizations",
-      description: "The agentic backbone for the entire private capital lifecycle.",
-      icon: ({ className }) => <Icon name="building-2-line" className={className} />,
-      href: "/website/solutions?open=private-markets"
-    },
-    {
-      id: "public-markets",
-      title: "Public Market Organizations",
-      description: "A unified intelligence platform for modern investment management.",
-      icon: ({ className }) => <Icon name="store-line" className={className} />,
-      href: "/website/solutions?open=public-markets"
-    },
-    {
-      id: "banks",
-      title: "Banks",
-      description: "Automate compliance, enhance risk management, and improve customer service.",
-      icon: ({ className }) => <Icon name="bank-line" className={className} />,
-      href: "/website/solutions?open=banks"
-    },
-    {
-      id: "enterprise",
-      title: "Enterprise",
-      description: "The secure control plane for growing and established organizations.",
-      icon: ({ className }) => <Icon name="briefcase-line" className={className} />,
-      href: "/website/solutions?open=enterprise"
-    },
-    {
-      id: "government",
-      title: "Government",
-      description: "A secure, compliant, and auditable platform for the public sector.",
-      icon: ({ className }) => <Icon name="government-line" className={className} />,
-      href: "/website/solutions?open=government"
-    }
-  ]
-
-  const smallCards = [
-    "Creating a Venture",
-    "Scaling a Venture", 
-    "Exiting a Venture",
-    "Post-IPO Growth",
-    "Post-Exit/Family Office"
-  ]
+  // Convert solutions to CarouselItem format
+  const solutionsCarousel: CarouselItem[] = solutions.map((solution: any) => ({
+    id: solution.id || solution.title.toLowerCase().replace(/\s+/g, '-'),
+    title: solution.title,
+    description: solution.description,
+    icon: ({ className }: { className: string }) => <Icon name={solution.icon} className={className} />,
+    href: solution.href
+  }))
 
   // Convert smallCards to CarouselItem format
-  const smallCardsCarouselItems = smallCards.map((card, index) => {
+  const smallCardsCarouselItems = smallCards.map((card: string, index: number) => {
     // Map card names to their corresponding stage solution IDs
     const cardIdMap: { [key: string]: string } = {
       "Creating a Venture": "creating-venture",
@@ -1301,9 +1370,9 @@ function WhoWeServeSection() {
         <div className="space-y-8 lg:space-y-12">
           {/* Section Header */}
           <div className="text-left space-y-3 lg:space-y-2 max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl lg:mx-0">
-            <H1>Intelligent Solutions for Every Domain</H1>
+            <H1>{title}</H1>
             <P className="text-muted-foreground max-w-4xl text-base sm:text-base md:text-lg md:text-xl">
-              Powered by Elevation AI and guided by experts.
+              {description}
             </P>
           </div>
           {/* Carousel Layout */}
@@ -1311,7 +1380,7 @@ function WhoWeServeSection() {
             {/* Mobile & Tablet Carousel - Scrolls horizontally with auto-play */}
             <div className="block lg:hidden pt-8">
               <Carousel 
-                items={solutions}
+                items={solutionsCarousel}
                 autoPlay={true}
                 autoPlayInterval={4000}
                 showProgressIndicators={true}
@@ -1332,7 +1401,7 @@ function WhoWeServeSection() {
             {/* Desktop Carousel - Shows 3.5 cards with auto-scroll */}
             <div className="hidden lg:block">
               <Carousel 
-                items={solutions}
+                items={solutionsCarousel}
                 autoPlay={true}
                 autoPlayInterval={4000}
                 showProgressIndicators={true}
@@ -1381,7 +1450,7 @@ function WhoWeServeSection() {
         <div className="hidden lg:block">
           <Container size="2xl">
             <div className="grid grid-cols-5 gap-4">
-              {smallCards.map((card, index) => {
+              {smallCards.map((card: string, index: number) => {
                 // Map card names to their corresponding stage solution IDs
                 const cardIdMap: { [key: string]: string } = {
                   "Creating a Venture": "creating-venture",
@@ -1423,7 +1492,16 @@ function WhoWeServeSection() {
 }
 
 // Closing CTA Section
-function ClosingCTASection() {
+function ClosingCTASection({ data }: { data?: any }) {
+  const {
+    title = "Orchestrate Your Universe",
+    description = "From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.",
+    ctaButtons = [
+      { text: "Get Started", href: "/website/sign-up", variant: "default" },
+      { text: "Request a Demo", href: "/website/demo", variant: "outline" }
+    ]
+  } = data || {}
+
   return (
     <Section paddingY="lg" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
@@ -1431,23 +1509,26 @@ function ClosingCTASection() {
         <div className="block lg:hidden min-h-screen flex items-center justify-center py-8">
           <div className="text-left sm:text-center space-y-8 max-w-3xl mx-auto">
             <div className="space-y-6">
-              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">Orchestrate Your Universe</H1>
+              <H1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl">{title}</H1>
               <P className="text-muted-foreground text-base sm:text-base md:text-lg md:text-xl max-w-2xl mx-auto">
-                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
+                {description}
               </P>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/website/sign-up">
-                  Get Started
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/website/demo">
-                  Request a Demo
-                </Link>
-              </Button>
+              {ctaButtons.map((button: any, index: number) => (
+                <Button
+                  key={index}
+                  size="lg"
+                  asChild
+                  variant={button.variant || "default"}
+                  className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4"
+                >
+                  <Link href={button.href}>
+                    {button.text}
+                  </Link>
+                </Button>
+              ))}
             </div>
           </div>
         </div>
@@ -1456,23 +1537,26 @@ function ClosingCTASection() {
         <div className="hidden lg:block">
           <div className="text-center space-y-8 lg:space-y-12 max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
             <div className="space-y-4 lg:space-y-6">
-              <H1>Orchestrate Your Universe</H1>
+              <H1>{title}</H1>
               <P className="text-muted-foreground max-w-2xl mx-auto">
-                From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.
+                {description}
               </P>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/website/sign-up">
-                  Get Started
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
-                <Link href="/website/demo">
-                  Request a Demo
-                </Link>
-              </Button>
+              {ctaButtons.map((button: any, index: number) => (
+                <Button
+                  key={index}
+                  size="lg"
+                  asChild
+                  variant={button.variant || "default"}
+                  className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4"
+                >
+                  <Link href={button.href}>
+                    {button.text}
+                  </Link>
+                </Button>
+              ))}
             </div>
           </div>
         </div>
@@ -1525,6 +1609,28 @@ export default function WireframesHomePage() {
   // Use media query to determine if we're on desktop or mobile
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
+  // Use the page cache hook for intelligent loading
+  const { pageData, isLoading: loading, error } = usePageCache({ 
+    pageId: 'home',
+    enableCache: true
+  })
+  
+  // Get section data by type
+  const getSectionData = (sectionType: string) => {
+    if (!pageData?.sections) return null
+    return pageData.sections.find(section => section.section_type === sectionType)?.section_data
+  }
+  
+  if (loading) {
+    return (
+      <PageWrapper>
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <LoadingSpinner size="lg" text="Loading home page..." />
+        </div>
+      </PageWrapper>
+    )
+  }
+  
   return (
     <PageWrapper>
       <MobileOnlyLayout
@@ -1533,16 +1639,16 @@ export default function WireframesHomePage() {
         mobileMenu={<MobileMenuDrawer currentPage="homepage" />}
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
-                      <main>
-              <HeroSection />
-              <IntroductionSection />
-              <LogoCarouselSection />
-                      <ProblemSection />
-        <PlatformSection />
-              <WhoWeServeSection />
-              <HowWeDoItSection />
-              <ClosingCTASection />
-            </main>
+          <main>
+            <HeroSection data={getSectionData('hero_typewriter')} />
+            <IntroductionSection data={getSectionData('introduction_accordion')} />
+            <LogoCarouselSection data={getSectionData('logo_carousel')} />
+            <ProblemSection data={getSectionData('problem_cards')} />
+            <PlatformSection data={getSectionData('platform_features')} />
+            <WhoWeServeSection data={getSectionData('solutions_carousel')} />
+            <HowWeDoItSection data={getSectionData('approach_cards')} />
+            <ClosingCTASection data={getSectionData('cta')} />
+          </main>
           
           {/* Floating Back to Top Button */}
           <FloatingBackToTop />

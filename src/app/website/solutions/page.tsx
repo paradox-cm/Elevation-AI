@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MainHeader } from "@/components/ui/main-header"
+import { LoadingSpinner } from "@/components/ui/loading"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
@@ -16,15 +17,17 @@ import { Button } from "@/components/ui/button"
 import { Building2, TrendingUp, ChevronRight, ChevronDown } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import React, { useEffect, useRef, Suspense } from "react"
+import React, { useEffect, useRef, Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import * as THREE from "three"
 import Icon from "@/components/ui/icon"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { SolutionsSubNav } from "@/components/ui/solutions-sub-nav"
+import { pagesService } from "@/lib/cms"
+import { PageWithSections } from "@/types/cms"
 
 // Solutions Hero Section Component
-function SolutionsHeroSection() {
+function SolutionsHeroSection({ data }: { data?: any }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<THREE.Scene | null>(null)
@@ -605,10 +608,14 @@ interface Solution {
 }
 
 // Industry Solutions Section Component
-function IndustrySolutionsSection() {
+function IndustrySolutionsSection({ data }: { data?: any }) {
   const [openCardId, setOpenCardId] = React.useState<string | null>(null)
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
+
+  const sectionTitle = data?.section_title || "Industry Solutions"
+  const sectionDescription = data?.section_description || "Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results."
+  const solutions = data?.solutions || industrySolutions
 
   const handleToggle = (cardId: string) => {
     const newOpenCardId = openCardId === cardId ? null : cardId
@@ -769,16 +776,16 @@ function IndustrySolutionsSection() {
           {/* Left Column - Content */}
           <div className="space-y-6 lg:col-span-1">
             <div className="space-y-4 lg:sticky lg:top-24">
-              <H1>Industry Solutions</H1>
+              <H1>{sectionTitle}</H1>
               <P className="text-muted-foreground">
-                Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results.
+                {sectionDescription}
               </P>
             </div>
           </div>
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {industrySolutions.map((solution, index) => (
+            {solutions.map((solution: any, index: number) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -803,10 +810,14 @@ function IndustrySolutionsSection() {
 }
 
 // Stage Solutions Section Component
-function StageSolutionsSection() {
+function StageSolutionsSection({ data }: { data?: any }) {
   const [openCardId, setOpenCardId] = React.useState<string | null>(null)
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
+
+  const sectionTitle = data?.section_title || "By Stage Solutions"
+  const sectionDescription = data?.section_description || "Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next."
+  const solutions = data?.solutions || stageSolutions
 
   const handleToggle = (cardId: string) => {
     const newOpenCardId = openCardId === cardId ? null : cardId
@@ -967,16 +978,16 @@ function StageSolutionsSection() {
           {/* Left Column - Content */}
           <div className="space-y-6 lg:col-span-1">
             <div className="space-y-4 lg:sticky lg:top-24">
-              <H1>By Stage Solutions</H1>
+              <H1>{sectionTitle}</H1>
               <P className="text-muted-foreground">
-                Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next.
+                {sectionDescription}
               </P>
             </div>
           </div>
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {stageSolutions.map((solution, index) => (
+            {solutions.map((solution: any, index: number) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -1149,7 +1160,149 @@ function ExpandableSolutionCard({
 }
 
 
+// Solution Features Section Component
+function SolutionFeaturesSection({ data }: { data?: any }) {
+  const sectionTitle = data?.section_title || "Built for Every Industry, Every Scale"
+  const description = data?.description || "Our platform adapts to your environment with flexible deployment options, comprehensive integrations, and enterprise-grade governance."
+  const features = data?.features || [
+    {
+      title: "Industry-Ready Compliance",
+      description: "Policy packs and guardrails mapped to leading frameworks (e.g., SOC 2/ISO control families, GDPR). Data residency by region and information-barrier controls for regulated workflows.",
+      icon: "shield-check-line",
+      order: 1
+    },
+    {
+      title: "Flexible Deployment",
+      description: "Run as managed cloud, in your private VPC, or on-prem. Choose model routing and data residency per workspace to meet security and latency needs.",
+      icon: "cloud-line",
+      order: 2
+    },
+    {
+      title: "Comprehensive Integrations",
+      description: "Native connectors for Salesforce, Google/Microsoft 365, Slack, cloud storage, databases/warehouses (Snowflake, BigQuery, Redshift), plus open APIs/SDKs for anything custom.",
+      icon: "links-line",
+      order: 3
+    },
+    {
+      title: "Enterprise-Grade Security",
+      description: "Tenant isolation, SSO (SAML/OIDC), RBAC/ABAC, encryption in transit and at rest, fine-grained audit logs, and approval workflows for sensitive actions.",
+      icon: "lock-line",
+      order: 4
+    },
+    {
+      title: "Scalable Architecture",
+      description: "Multi-workspace, multi-entity design that scales horizontally as your data and teams grow—with budgets, routing, and usage controls to keep costs predictable.",
+      icon: "database-2-line",
+      order: 5
+    },
+    {
+      title: "Support & Concierge",
+      description: "Tiered support and an Agentic Concierge Team to accelerate onboarding and new use cases. 24×7 incident response is available on Enterprise and private deployments.",
+      icon: "customer-service-line",
+      order: 6
+    }
+  ]
+
+  return (
+    <Section paddingY="lg" className="bg-primary/5">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+        <div className="space-y-8">
+          <div className="text-center space-y-4 max-w-4xl mx-auto">
+            <H1>{sectionTitle}</H1>
+            <P className="text-muted-foreground">{description}</P>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature: any, index: number) => (
+              <Card key={index} className="p-6 bg-primary/10 border-primary/20">
+                <div className="space-y-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Icon name={feature.icon} size="lg" className="text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-left text-base lg:text-xl mb-2">{feature.title}</CardTitle>
+                    <P className="text-sm text-muted-foreground">{feature.description}</P>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
+// CTA Section Component
+function CTASection({ data }: { data?: any }) {
+  const title = data?.title || "Ready to Transform Your Organization?"
+  const description = data?.description || "Discover how Elevation AI can solve your unique industry challenges and accelerate your growth."
+  const ctaPrimaryText = data?.cta_primary_text || "Schedule Consultation"
+  const ctaPrimaryUrl = data?.cta_primary_url || "/website/demo"
+  const ctaSecondaryText = data?.cta_secondary_text || "Contact Sales"
+  const ctaSecondaryUrl = data?.cta_secondary_url || "/website/contact"
+
+  return (
+    <Section paddingY="lg" className="bg-muted/30">
+      <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="space-y-4">
+            <H1>{title}</H1>
+            <P className="text-muted-foreground leading-relaxed">{description}</P>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" asChild>
+              <Link href={ctaPrimaryUrl}>{ctaPrimaryText}</Link>
+            </Button>
+            <Button variant="outline" size="lg" asChild>
+              <Link href={ctaSecondaryUrl}>{ctaSecondaryText}</Link>
+            </Button>
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
 export default function WireframesSolutionsPage() {
+  const [pageData, setPageData] = useState<PageWithSections | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Fetch CMS data
+  useEffect(() => {
+    const fetchPageData = async () => {
+      try {
+        const data = await pagesService.getWithSections('solutions')
+        setPageData(data)
+      } catch (error) {
+        console.error('Error fetching solutions page data:', error)
+        setPageData(null) // Fallback to static content
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPageData()
+  }, [])
+
+  // Add refresh mechanism
+  useEffect(() => {
+    const handleRefresh = () => {
+      const fetchPageData = async () => {
+        try {
+          const data = await pagesService.getWithSections('solutions')
+          setPageData(data)
+        } catch (error) {
+          console.error('Error fetching solutions page data:', error)
+          setPageData(null)
+        }
+      }
+      fetchPageData()
+    }
+    window.addEventListener('refresh-page', handleRefresh)
+    return () => window.removeEventListener('refresh-page', handleRefresh)
+  }, [])
+
   // Disable browser's scroll restoration to prevent conflicts with our custom scroll handling
   useEffect(() => {
     if ('scrollRestoration' in history) {
@@ -1177,129 +1330,28 @@ export default function WireframesSolutionsPage() {
         <div className="min-h-screen bg-background transition-colors duration-300">
           <Suspense fallback={<div>Loading...</div>}>
             <main>
-              {/* Solutions Hero Section */}
-              <SolutionsHeroSection />
-
-              {/* Industry Solutions Section */}
-              <IndustrySolutionsSection />
-
-              {/* Stage Solutions Section */}
-              <StageSolutionsSection />
-
-            {/* Solution Features Section */}
-            <Section paddingY="lg" className="bg-primary/5">
-              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-                <div className="space-y-8">
-                  <div className="text-center space-y-4 max-w-4xl mx-auto">
-                    <H1>Built for Every Industry, Every Scale</H1>
-                    <P className="text-muted-foreground">
-                      Our platform adapts to your environment with flexible deployment options, comprehensive integrations, and enterprise-grade governance.
-                    </P>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <Card className="p-6 bg-primary/10 border-primary/20">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name="shield-check-line" size="lg" className="text-primary" />
-                        </div>
-                        <div>
-                          <H3 className="text-lg font-semibold mb-2">Industry-Ready Compliance</H3>
-                          <P className="text-sm text-muted-foreground">Policy packs and guardrails mapped to leading frameworks (e.g., SOC 2/ISO control families, GDPR). Data residency by region and information-barrier controls for regulated workflows.</P>
-                        </div>
-                      </div>
-                    </Card>
-                    
-                    <Card className="p-6 bg-primary/10 border-primary/20">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name="cloud-line" size="lg" className="text-primary" />
-                        </div>
-                        <div>
-                          <H3 className="text-lg font-semibold mb-2">Flexible Deployment</H3>
-                          <P className="text-sm text-muted-foreground">Run as managed cloud, in your private VPC, or on-prem. Choose model routing and data residency per workspace to meet security and latency needs.</P>
-                        </div>
-                      </div>
-                    </Card>
-                    
-                    <Card className="p-6 bg-primary/10 border-primary/20">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name="links-line" size="lg" className="text-primary" />
-                        </div>
-                        <div>
-                          <H3 className="text-lg font-semibold mb-2">Comprehensive Integrations</H3>
-                          <P className="text-sm text-muted-foreground">Native connectors for Salesforce, Google/Microsoft 365, Slack, cloud storage, databases/warehouses (Snowflake, BigQuery, Redshift), plus open APIs/SDKs for anything custom.</P>
-                        </div>
-                      </div>
-                    </Card>
-                    
-                    <Card className="p-6 bg-primary/10 border-primary/20">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name="lock-line" size="lg" className="text-primary" />
-                        </div>
-                        <div>
-                          <H3 className="text-lg font-semibold mb-2">Enterprise-Grade Security</H3>
-                          <P className="text-sm text-muted-foreground">Tenant isolation, SSO (SAML/OIDC), RBAC/ABAC, encryption in transit and at rest, fine-grained audit logs, and approval workflows for sensitive actions.</P>
-                        </div>
-                      </div>
-                    </Card>
-                    
-                    <Card className="p-6 bg-primary/10 border-primary/20">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name="database-2-line" size="lg" className="text-primary" />
-                        </div>
-                        <div>
-                          <H3 className="text-lg font-semibold mb-2">Scalable Architecture</H3>
-                          <P className="text-sm text-muted-foreground">Multi-workspace, multi-entity design that scales horizontally as your data and teams grow—with budgets, routing, and usage controls to keep costs predictable.</P>
-                        </div>
-                      </div>
-                    </Card>
-                    
-                    <Card className="p-6 bg-primary/10 border-primary/20">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon name="customer-service-line" size="lg" className="text-primary" />
-                        </div>
-                        <div>
-                          <H3 className="text-lg font-semibold mb-2">Support & Concierge</H3>
-                          <P className="text-sm text-muted-foreground">Tiered support and an Agentic Concierge Team to accelerate onboarding and new use cases. 24×7 incident response is available on Enterprise and private deployments.</P>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
+              {loading ? (
+                <div className="flex items-center justify-center h-64">
+                  <LoadingSpinner size="lg" text="Loading solutions..." />
                 </div>
-              </Container>
-            </Section>
+              ) : (
+                <>
+                  {/* Solutions Hero Section */}
+                  <SolutionsHeroSection data={pageData?.sections?.[0]?.section_data} />
 
-            {/* CTA Section */}
-            <Section paddingY="lg" className="bg-muted/30">
-              <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-                <div className="max-w-4xl mx-auto text-center space-y-8">
-                  <div className="space-y-4">
-                    <H1>Ready to Transform Your Organization?</H1>
-                    <P className="text-muted-foreground leading-relaxed">
-                      Discover how Elevation AI can solve your unique industry challenges and accelerate your growth.
-                    </P>
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button size="lg" asChild>
-                      <Link href="/website/demo">
-                        Schedule Consultation
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="lg" asChild>
-                      <Link href="/website/contact">
-                        Contact Sales
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-                </Container>
-              </Section>
+                  {/* Industry Solutions Section */}
+                  <IndustrySolutionsSection data={pageData?.sections?.[1]?.section_data} />
+
+                  {/* Stage Solutions Section */}
+                  <StageSolutionsSection data={pageData?.sections?.[2]?.section_data} />
+
+                  {/* Solution Features Section */}
+                  <SolutionFeaturesSection data={pageData?.sections?.[3]?.section_data} />
+
+                  {/* CTA Section */}
+                  <CTASection data={pageData?.sections?.[4]?.section_data} />
+                </>
+              )}
             </main>
           </Suspense>
         </div>
