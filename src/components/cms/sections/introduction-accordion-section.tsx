@@ -8,8 +8,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { PageSection } from '@/types/cms'
 
 interface IntroductionAccordionSectionProps {
-  data: any
-  section: PageSection
+  data: Record<string, unknown>
+  section?: PageSection
 }
 
 export function IntroductionAccordionSection({ data, section }: IntroductionAccordionSectionProps) {
@@ -34,7 +34,7 @@ export function IntroductionAccordionSection({ data, section }: IntroductionAcco
           </div>
           <div className="col-span-12 lg:col-span-8 space-y-4 pb-6">
             <Accordion type="single" collapsible className="w-full" defaultValue={accordionItems[0]?.value}>
-              {accordionItems.map((item: any, index: number) => (
+              {accordionItems.map((item: Record<string, unknown>, index: number) => (
                 <AccordionItem key={item.value || index} value={item.value || `item-${index}`} className="border-b border-border/50">
                   <AccordionTrigger className="text-left text-sm md:text-base lg:text-lg font-medium leading-tight text-primary hover:no-underline py-4">
                     {item.title}

@@ -10,8 +10,8 @@ import Icon from '@/components/ui/icon'
 import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface ProblemCardsSectionProps {
-  data: any
-  section: PageSection
+  data: Record<string, unknown>
+  section?: PageSection
 }
 
 export function ProblemCardsSection({ data, section }: ProblemCardsSectionProps) {
@@ -65,7 +65,7 @@ export function ProblemCardsSection({ data, section }: ProblemCardsSectionProps)
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {cards.map((card: any, index: number) => (
+            {cards.map((card: Record<string, unknown>, index: number) => (
               <Card 
                 key={index} 
                 className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20"

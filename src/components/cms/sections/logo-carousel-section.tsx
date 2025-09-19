@@ -8,8 +8,8 @@ import { PageSection } from '@/types/cms'
 import Image from 'next/image'
 
 interface LogoCarouselSectionProps {
-  data: any
-  section: PageSection
+  data: Record<string, unknown>
+  section?: PageSection
 }
 
 export function LogoCarouselSection({ data, section }: LogoCarouselSectionProps) {
@@ -31,7 +31,7 @@ export function LogoCarouselSection({ data, section }: LogoCarouselSectionProps)
             </div>
           )}
           <div className="flex items-center justify-center space-x-8 overflow-x-auto">
-            {logos.map((logo: any, index: number) => (
+            {logos.map((logo: Record<string, unknown>, index: number) => (
               <div key={index} className="flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity">
                 <Image
                   src={logo.logo}

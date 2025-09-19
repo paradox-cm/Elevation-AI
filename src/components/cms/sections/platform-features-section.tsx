@@ -8,6 +8,7 @@ import { H1, P, BodyLarge } from '@/components/ui/typography'
 import Icon from '@/components/ui/icon'
 import Link from 'next/link'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { PageSection } from '@/types/cms'
 
 interface PlatformFeaturesSectionProps {
   data: {
@@ -19,7 +20,7 @@ interface PlatformFeaturesSectionProps {
       icon: string
     }>
   }
-  section?: any
+  section?: PageSection
 }
 
 export function PlatformFeaturesSection({ data, section }: PlatformFeaturesSectionProps) {

@@ -9,8 +9,8 @@ import { PageSection } from '@/types/cms'
 import Link from 'next/link'
 
 interface HeroSimpleSectionProps {
-  data: any
-  section: PageSection
+  data: Record<string, unknown>
+  section?: PageSection
 }
 
 export function HeroSimpleSection({ data, section }: HeroSimpleSectionProps) {
@@ -34,7 +34,7 @@ export function HeroSimpleSection({ data, section }: HeroSimpleSectionProps) {
           </P>
           {ctaButtons && ctaButtons.length > 0 && (
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button: any, index: number) => (
+              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
                 <Button
                   key={index}
                   asChild

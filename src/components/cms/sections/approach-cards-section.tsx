@@ -7,6 +7,7 @@ import { Section } from '@/components/ui/layout/section'
 import { H1, P } from '@/components/ui/typography'
 import Icon from '@/components/ui/icon'
 import Link from 'next/link'
+import { PageSection } from '@/types/cms'
 
 interface ApproachCardsSectionProps {
   data: {
@@ -19,7 +20,7 @@ interface ApproachCardsSectionProps {
       href: string
     }>
   }
-  section?: any
+  section?: PageSection
 }
 
 export function ApproachCardsSection({ data, section }: ApproachCardsSectionProps) {

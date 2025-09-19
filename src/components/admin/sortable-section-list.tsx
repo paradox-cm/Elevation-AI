@@ -127,7 +127,7 @@ export function SortableSectionList({
     })
   )
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: { active: { id: string }; over: { id: string } }) => {
     const { active, over } = event
 
     if (active.id !== over.id) {

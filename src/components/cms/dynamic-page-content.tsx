@@ -58,7 +58,7 @@ export function DynamicPageContent({ pageSlug, fallbackContent }: DynamicPageCon
     )
   }
 
-  const renderSection = (section: any) => {
+  const renderSection = (section: PageSection) => {
     switch (section.section_type) {
       case 'hero':
         return (

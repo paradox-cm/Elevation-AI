@@ -38,7 +38,7 @@ export function usePageCache({
   const [error, setError] = useState<string | null>(null)
 
   // Check if cache entry is valid
-  const isCacheValid = useCallback((cacheEntry: any) => {
+  const isCacheValid = useCallback((cacheEntry: Record<string, unknown>) => {
     if (!cacheEntry) return false
     const now = Date.now()
     return (now - cacheEntry.timestamp) < cacheExpiry
@@ -165,7 +165,7 @@ export function getCacheStats() {
 }
 
 // Helper function to check if cache entry is valid
-function isCacheValid(cacheEntry: any): boolean {
+function isCacheValid(cacheEntry: Record<string, unknown>): boolean {
   if (!cacheEntry) return false
   const now = Date.now()
   return (now - cacheEntry.timestamp) < CACHE_EXPIRY

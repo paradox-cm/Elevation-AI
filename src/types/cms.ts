@@ -10,7 +10,7 @@ export interface ActivityLog {
   user_id: string | null
   user_name: string | null
   description: string
-  details: Record<string, any>
+  details: Record<string, unknown>
   ip_address: string | null
   user_agent: string | null
   created_at: string
@@ -29,7 +29,7 @@ export interface Database {
           user_id: string | null
           user_name: string | null
           description: string
-          details: Record<string, any>
+          details: Record<string, unknown>
           ip_address: string | null
           user_agent: string | null
           created_at: string
@@ -43,7 +43,7 @@ export interface Database {
           user_id?: string | null
           user_name?: string | null
           description: string
-          details?: Record<string, any>
+          details?: Record<string, unknown>
           ip_address?: string | null
           user_agent?: string | null
           created_at?: string
@@ -57,7 +57,7 @@ export interface Database {
           user_id?: string | null
           user_name?: string | null
           description?: string
-          details?: Record<string, any>
+          details?: Record<string, unknown>
           ip_address?: string | null
           user_agent?: string | null
           created_at?: string
@@ -109,8 +109,8 @@ export interface Database {
           section_order: number
           title: string | null
           content: string | null
-          metadata: Record<string, any> | null
-          section_data: Record<string, any> | null
+          metadata: Record<string, unknown> | null
+          section_data: Record<string, unknown> | null
           is_published: boolean
           created_at: string
           updated_at: string
@@ -122,8 +122,8 @@ export interface Database {
           section_order: number
           title?: string | null
           content?: string | null
-          metadata?: Record<string, any> | null
-          section_data?: Record<string, any> | null
+          metadata?: Record<string, unknown> | null
+          section_data?: Record<string, unknown> | null
           is_published?: boolean
           created_at?: string
           updated_at?: string
@@ -135,8 +135,8 @@ export interface Database {
           section_order?: number
           title?: string | null
           content?: string | null
-          metadata?: Record<string, any> | null
-          section_data?: Record<string, any> | null
+          metadata?: Record<string, unknown> | null
+          section_data?: Record<string, unknown> | null
           is_published?: boolean
           created_at?: string
           updated_at?: string

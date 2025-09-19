@@ -91,8 +91,8 @@ function TypewriterText({
 }
 
 interface HeroTypewriterSectionProps {
-  data: any
-  section: PageSection
+  data: Record<string, unknown>
+  section?: PageSection
 }
 
 export function HeroTypewriterSection({ data, section }: HeroTypewriterSectionProps) {
@@ -143,7 +143,7 @@ export function HeroTypewriterSection({ data, section }: HeroTypewriterSectionPr
             {/* CTA Buttons */}
             {ctaButtons && ctaButtons.length > 0 && (
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                {ctaButtons.map((button: any, index: number) => (
+                {ctaButtons.map((button: Record<string, unknown>, index: number) => (
                   <Button
                     key={index}
                     asChild
