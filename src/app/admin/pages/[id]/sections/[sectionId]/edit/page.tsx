@@ -209,7 +209,7 @@ export default function SectionEditPage() {
     }
   }
 
-  const renderSectionFields = () => {
+  const renderSectionFields = (): React.ReactElement | null => {
     if (!section) return null
 
     const sectionType = section.section_type
