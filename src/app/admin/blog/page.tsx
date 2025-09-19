@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { BlogPost, BlogCategory } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,11 +15,11 @@ import {
   Trash2, 
   BookOpen,
   Calendar,
-  User,
   Eye,
   MoreHorizontal
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface BlogPostWithCategory extends BlogPost {
   category: BlogCategory | null
@@ -33,9 +33,9 @@ export default function BlogPage() {
 
   useEffect(() => {
     fetchPosts()
-  }, [])
+  }, [fetchPosts])
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -55,7 +55,7 @@ export default function BlogPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase])
 
   const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -165,9 +165,11 @@ export default function BlogPage() {
                 {/* Featured Image */}
                 {post.featured_image && (
                   <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                    <img
+                    <Image
                       src={post.featured_image}
                       alt={post.title}
+                      width={400}
+                      height={225}
                       className="w-full h-full object-cover"
                     />
                   </div>

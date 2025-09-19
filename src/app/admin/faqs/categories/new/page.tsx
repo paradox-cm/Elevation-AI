@@ -11,8 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { 
   Save, 
-  ArrowLeft, 
-  HelpCircle
+  ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'

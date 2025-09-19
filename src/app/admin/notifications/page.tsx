@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading'
 import { Badge } from '@/components/ui/badge'
@@ -61,11 +61,6 @@ const typeColors = {
   info: 'text-gray-600 dark:text-gray-400'
 }
 
-const statusLabels = {
-  unread: 'Unread',
-  read: 'Read',
-  archived: 'Archived'
-}
 
 const priorityLabels = {
   low: 'Low',
@@ -95,9 +90,9 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     fetchNotifications()
-  }, [])
+  }, [fetchNotifications])
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -121,7 +116,7 @@ export default function NotificationsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router])
 
   const markAsRead = async (id: string) => {
     try {

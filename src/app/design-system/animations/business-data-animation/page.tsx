@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { H2, H3, H4, P, BodyLarge } from "@/components/ui/typography"
+import { H2, H3, H4, P } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -150,7 +150,7 @@ export default function BusinessDataAnimationPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <P className="text-sm text-muted-foreground">
-                      Used as a fixed background animation in the "Orchestrate Your Universe" section, creating a subtle data flow effect behind the problem cards.
+                      Used as a fixed background animation in the &quot;Orchestrate Your Universe&quot; section, creating a subtle data flow effect behind the problem cards.
                     </P>
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2 text-sm">

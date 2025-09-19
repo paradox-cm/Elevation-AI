@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { FAQCategory, FAQ } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -32,7 +32,7 @@ export default function FAQsPage() {
 
   useEffect(() => {
     fetchCategories()
-  }, [])
+  }, [fetchCategories])
 
   // Add refresh mechanism for when changes are made
   useEffect(() => {
@@ -41,9 +41,9 @@ export default function FAQsPage() {
     }
     window.addEventListener('refresh-page', handleRefresh)
     return () => window.removeEventListener('refresh-page', handleRefresh)
-  }, [])
+  }, [fetchCategories])
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('faq_categories')
@@ -81,7 +81,7 @@ export default function FAQsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase])
 
   const toggleCategory = (categoryId: string) => {
     const newExpanded = new Set(expandedCategories)

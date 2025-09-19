@@ -1,27 +1,58 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React from "react"
+
+// TypeScript interfaces
+interface CTAButton {
+  text: string;
+  href: string;
+  variant?: string;
+}
+
+interface AccordionItem {
+  title: string;
+  content: string;
+  value: string;
+}
+
+interface ProblemCard {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Approach {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Solution {
+  title: string;
+  description: string;
+  icon: string;
+}
 import { PageWrapper } from "@/components/page-wrapper"
-import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Logo } from "@/components/ui/logo"
-import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/icon"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { H1, H2, H3, H4, P, BodyLarge, BodySmall, HeroHeading } from "@/components/ui/typography"
+import { H1, H3, P, BodyLarge, HeroHeading } from "@/components/ui/typography"
 import { MainHeader } from "@/components/ui/main-header"
 import { LoadingSpinner } from "@/components/ui/loading"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { CookiesBanner } from "@/components/ui/cookies-banner"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { calculateActiveSlide, getScrollSpacerHeight } from "@/lib/scroll-standards"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
@@ -70,7 +101,6 @@ function OriginalTypewriterText({
   const [isDeleting, setIsDeleting] = React.useState(false)
   const [isTypingComplete, setIsTypingComplete] = React.useState(false)
   const [cyclingWordIndex, setCyclingWordIndex] = React.useState(0)
-  const [isTypingCyclingWord, setIsTypingCyclingWord] = React.useState(false)
 
   // Split text into words
   const words = text.split(" ")
@@ -252,7 +282,6 @@ function TypewriterText({
   const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
   const [isScrolling, setIsScrolling] = React.useState(false)
   const [isTransitioning, setIsTransitioning] = React.useState(false)
-  const [previousWord, setPreviousWord] = React.useState("")
 
   // Split text into words to find where to insert cycling word
   const words = text.split(" ")
@@ -470,7 +499,7 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
               </P>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {ctaButtons.map((button: any, index: number) => (
+              {ctaButtons.map((button: CTAButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"
@@ -569,7 +598,7 @@ function IntroductionSection({ data }: { data?: Record<string, unknown> }) {
           {/* Right Column - Accordion */}
           <div className="col-span-12 lg:col-span-8 space-y-4 pb-6">
             <Accordion type="single" collapsible className="w-full" defaultValue="greatest-asset">
-                {accordionItems.map((item: any, index: number) => (
+                {accordionItems.map((item: AccordionItem, index: number) => (
                 <AccordionItem key={item.value} value={item.value} className="border-b border-border/50">
                   <AccordionTrigger className="text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium leading-tight sm:leading-normal tracking-normal text-primary hover:no-underline py-4">
                     {item.title}
@@ -637,7 +666,7 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
               </div>
               <div className="overflow-x-auto overflow-y-hidden pb-1">
                 <div className="flex gap-4 w-max items-stretch">
-                {problems.map((problem: any, index: number) => (
+                {problems.map((problem: ProblemCard, index: number) => (
                   <div
                     key={index}
                     data-problem-card
@@ -732,7 +761,7 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                 <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                   <div className="overflow-x-auto overflow-y-hidden pb-4 scrollbar-hide">
                     <div className="flex gap-6 w-max items-stretch">
-                  {problems.map((problem: any, index: number) => (
+                  {problems.map((problem: ProblemCard, index: number) => (
                     <div
                       key={index}
                       className="w-[480px] lg:w-[520px] xl:w-[560px] 2xl:w-[600px] flex-shrink-0"
@@ -948,7 +977,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
             </div>
             <div className="overflow-x-auto pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
-                {features.map((feature: any, index: number) => (
+                {features.map((feature: Feature, index: number) => (
                   <div
                     key={index}
                     data-platform-card
@@ -1043,7 +1072,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                   </div>
                   {/* Tab Content Container */}
                   <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px] pb-6">
-                    {features.map((feature: any, index: number) => (
+                    {features.map((feature: Feature, index: number) => (
                       <div
                         key={index}
                         className={`absolute inset-0 pb-6 ${
@@ -1056,7 +1085,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                           <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12">
                             {/* Tab Navigation - Positioned at top of card with proper spacing */}
                             <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-2 lg:mb-4 xl:mb-6 2xl:mb-8">
-                              {features.map((featureTab: any, tabIndex: number) => (
+                              {features.map((featureTab: Feature, tabIndex: number) => (
                                 <button
                                   key={tabIndex}
                                   onClick={() => handleTabClick(tabIndex)}
@@ -1232,7 +1261,7 @@ function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
 
           {/* Modern Tech Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {approaches.map((approach: any, index: number) => (
+            {approaches.map((approach: Approach, index: number) => (
               <Link key={index} href="/website/people" className="block">
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden cursor-pointer h-full">
                   {/* Background Pattern */}
@@ -1332,7 +1361,7 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
   } = data || {}
 
   // Convert solutions to CarouselItem format
-  const solutionsCarousel: CarouselItem[] = solutions.map((solution: any) => ({
+  const solutionsCarousel: CarouselItem[] = solutions.map((solution: Solution) => ({
     id: solution.id || solution.title.toLowerCase().replace(/\s+/g, '-'),
     title: solution.title,
     description: solution.description,
@@ -1516,7 +1545,7 @@ function ClosingCTASection({ data }: { data?: Record<string, unknown> }) {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button: any, index: number) => (
+              {ctaButtons.map((button: CTAButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"
@@ -1544,7 +1573,7 @@ function ClosingCTASection({ data }: { data?: Record<string, unknown> }) {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button: any, index: number) => (
+              {ctaButtons.map((button: CTAButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"
@@ -1606,11 +1635,8 @@ function FloatingBackToTop() {
 
 
 export default function WireframesHomePage() {
-  // Use media query to determine if we're on desktop or mobile
-  const isDesktop = useMediaQuery("(min-width: 1024px)")
-  
   // Use the page cache hook for intelligent loading
-  const { pageData, isLoading: loading, error } = usePageCache({ 
+  const { pageData, isLoading: loading } = usePageCache({ 
     pageId: 'home',
     enableCache: true
   })

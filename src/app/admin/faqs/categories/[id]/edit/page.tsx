@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { FAQCategory } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -12,18 +12,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { 
   Save, 
-  ArrowLeft, 
-  Eye,
-  HelpCircle,
-  Plus,
-  Trash2
+  ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
 export default function FAQCategoryEditPage() {
   const params = useParams()
-  const router = useRouter()
   const [category, setCategory] = useState<FAQCategory | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -124,7 +119,7 @@ export default function FAQCategoryEditPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center space-y-4">
             <h1 className="text-2xl font-semibold">FAQ Category Not Found</h1>
-            <p className="text-muted-foreground">The FAQ category you're looking for doesn't exist.</p>
+            <p className="text-muted-foreground">The FAQ category you&apos;re looking for doesn&apos;t exist.</p>
             <Button asChild>
               <Link href="/admin/faqs">
                 <ArrowLeft className="h-4 w-4 mr-2" />
