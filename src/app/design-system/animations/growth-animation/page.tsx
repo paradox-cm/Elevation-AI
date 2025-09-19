@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { H2, H3, BodyLarge, P } from "@/components/ui/typography"
+import { H2, P } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
@@ -83,7 +83,7 @@ export default function GrowthAnimationPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <P className="text-sm text-muted-foreground">
-                      Used as a full-width background animation with a centered "Calculate Your Plan" button overlay.
+                      Used as a full-width background animation with a centered &ldquo;Calculate Your Plan&rdquo; button overlay.
                     </P>
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2 text-sm">

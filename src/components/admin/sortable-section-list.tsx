@@ -46,9 +46,9 @@ function SortableSectionItem({ section, onEdit, onDelete }: SortableSectionItemP
       case 'hero-typewriter': return <Layout className="h-4 w-4" />
       case 'problem-cards': return <FileText className="h-4 w-4" />
       case 'cta': return <Type className="h-4 w-4" />
-      case 'platform-features': return <Image className="h-4 w-4" />
+      case 'platform-features': return <Image className="h-4 w-4" /> {/* eslint-disable-line jsx-a11y/alt-text -- Lucide React icon */}
       case 'solutions-carousel': return <FileText className="h-4 w-4" />
-      case 'logo-carousel': return <Image className="h-4 w-4" />
+      case 'logo-carousel': return <Image className="h-4 w-4" /> {/* eslint-disable-line jsx-a11y/alt-text -- Lucide React icon */}
       case 'introduction-accordion': return <Type className="h-4 w-4" />
       case 'approach-cards': return <FileText className="h-4 w-4" />
       default: return <FileText className="h-4 w-4" />

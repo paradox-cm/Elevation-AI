@@ -494,13 +494,13 @@ export default function MotionPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* {cssCustomProperties.description} */</div>
-                      <div className="text-muted-foreground">/* Timing variables */</div>
+                      <div className="text-muted-foreground">{`/* ${cssCustomProperties.description} */`}</div>
+                      <div className="text-muted-foreground">{'/* Timing variables */'}</div>
                       {cssCustomProperties.timing.map((timing, index) => (
                         <div key={index}>{timing};</div>
                       ))}
                       <div></div>
-                      <div className="text-muted-foreground">/* Easing functions */</div>
+                      <div className="text-muted-foreground">{'/* Easing functions */'}</div>
                       {cssCustomProperties.easing.map((easing, index) => (
                         <div key={index}>{easing};</div>
                       ))}

@@ -8,7 +8,7 @@ import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { H1, H2, H3, H4, P, BodyLarge, BodySmall, HeroHeading, Large } from "@/components/ui/typography"
+import { H1, H2, H4, P, BodyLarge } from "@/components/ui/typography"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
@@ -274,7 +274,7 @@ export default function PerlinLogoAnimationPage() {
                         <div className="space-y-2">
                           <H4>2. Find the Parameters Section</H4>
                           <P className="text-sm text-muted-foreground">
-                            Look for the comment "Performance optimization: Pre-calculate constants" around line 61 and line 355.
+                            Look for the comment &ldquo;Performance optimization: Pre-calculate constants&rdquo; around line 61 and line 355.
                           </P>
                         </div>
 

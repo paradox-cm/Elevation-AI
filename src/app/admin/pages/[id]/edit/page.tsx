@@ -24,7 +24,6 @@ import {
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { DeleteConfirmationDialog } from '@/components/admin/delete-confirmation-dialog'
-import { pageSectionsService } from '@/lib/cms'
 import { useCMSRefresh } from '@/hooks/use-cms-refresh'
 
 export default function EditPagePage() {
@@ -85,7 +84,7 @@ export default function EditPagePage() {
     } finally {
       setIsLoading(false)
     }
-  }, [pageId, supabase, refreshCurrentPage])
+  }, [pageId, supabase, refreshCurrentPage]) // eslint-disable-line react-hooks/exhaustive-deps -- refreshCurrentPage is used in the function
 
   useEffect(() => {
     if (pageId) {
@@ -179,9 +178,9 @@ export default function EditPagePage() {
       case 'hero_simple': return <Layout className="h-4 w-4" />
       case 'problem_cards': return <FileText className="h-4 w-4" />
       case 'cta': return <Type className="h-4 w-4" />
-      case 'platform_features': return <Image className="h-4 w-4" />
+      case 'platform_features': return <Image className="h-4 w-4" /> // eslint-disable-line jsx-a11y/alt-text -- Lucide React icon
       case 'solutions_carousel': return <FileText className="h-4 w-4" />
-      case 'logo_carousel': return <Image className="h-4 w-4" />
+      case 'logo_carousel': return <Image className="h-4 w-4" /> // eslint-disable-line jsx-a11y/alt-text -- Lucide React icon
       case 'introduction_accordion': return <Type className="h-4 w-4" />
       case 'approach_cards': return <FileText className="h-4 w-4" />
       default: return <FileText className="h-4 w-4" />

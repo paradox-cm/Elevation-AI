@@ -23,13 +23,6 @@ import { useErrorStatesConfig } from "@/hooks/use-error-states-config"
 
 export default function ErrorStatesPage() {
   const {
-    config,
-    errorTypeConfig,
-    validationPatternConfig,
-    errorMessageConfig,
-    feedbackTypeConfig,
-    errorBoundaryConfig,
-    formErrorConfig,
     alertConfig,
     emptyStateConfig
   } = useErrorStatesConfig()

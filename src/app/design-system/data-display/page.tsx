@@ -133,19 +133,7 @@ const projects: Project[] = [
 ]
 
 export default function DataDisplayPage() {
-  const {
-    config,
-    tableConfig,
-    emptyStateConfig,
-    dataCardConfig,
-    progressIndicatorConfig,
-    chartConfig,
-    listConfig,
-    statusIndicatorConfig,
-    paginationConfig,
-    searchFilterConfig,
-    dataVisualizationConfig,
-  } = useDataDisplayConfig()
+  const {} = useDataDisplayConfig()
 
   // User table columns
   const userColumns: ColumnDef<User>[] = [

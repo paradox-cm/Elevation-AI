@@ -124,7 +124,7 @@ export function GrowthAnimation({ className = "" }: GrowthAnimationProps) {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [isDark])
+  }, [isDark, animate, createGrid])
 
   // Handle resize
   useEffect(() => {

@@ -13,7 +13,7 @@ import { DesignSystemNavigation } from "@/components/ui/design-system-navigation
 import { ShaderAnimation } from "@/components/animations/shader-animation"
 import { ShaderAnimationLight } from "@/components/animations/shader-animation-light"
 import { useTheme } from "next-themes"
-import { H1, H2, H3, P, Code } from "@/components/ui/typography"
+import { H2, H3, P, Code } from "@/components/ui/typography"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
 
@@ -377,7 +377,7 @@ const colors = isDarkMode ? darkColors : lightColors
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <P className="text-sm text-muted-foreground">
-                    The shader animation replaces static gradient backgrounds in the "Built for Every Industry, Every Team" 
+                    The shader animation replaces static gradient backgrounds in the &ldquo;Built for Every Industry, Every Team&rdquo; 
                     section, providing dynamic visual interest while maintaining the original color schemes for each category.
                   </P>
                   <div className="flex gap-2">
