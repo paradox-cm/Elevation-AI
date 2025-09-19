@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -19,12 +19,9 @@ import {
   Eye, 
   MessageSquare, 
   Archive,
-  Star,
   Clock,
   User,
-  AlertCircle,
-  CheckCircle,
-  XCircle
+  AlertCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -101,11 +98,7 @@ export default function FormSubmissionsPage() {
   const supabase = createClient()
   const router = useRouter()
 
-  useEffect(() => {
-    fetchSubmissions()
-  }, [])
-
-  const fetchSubmissions = async () => {
+  const fetchSubmissions = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -128,7 +121,11 @@ export default function FormSubmissionsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router])
+
+  useEffect(() => {
+    fetchSubmissions()
+  }, [fetchSubmissions])
 
   const updateSubmissionStatus = async (id: string, status: string) => {
     try {
