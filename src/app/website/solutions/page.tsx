@@ -623,8 +623,8 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
-  const sectionTitle = data?.section_title || "Industry Solutions"
-  const sectionDescription = data?.section_description || "Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results."
+  const sectionTitle = data?.title || "Industry Solutions"
+  const sectionDescription = data?.description || "Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results."
   const solutions = data?.solutions || industrySolutions
 
   const handleToggle = (cardId: string) => {
@@ -825,8 +825,8 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
-  const sectionTitle = data?.section_title || "By Stage Solutions"
-  const sectionDescription = data?.section_description || "Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next."
+  const sectionTitle = data?.title || "By Stage Solutions"
+  const sectionDescription = data?.description || "Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next."
   const solutions = data?.solutions || stageSolutions
 
   const handleToggle = (cardId: string) => {

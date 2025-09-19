@@ -58,7 +58,7 @@ export function useBlogPostCache({
     if (enableCache && !forceRefresh) {
       const cachedEntry = blogCache.get(cacheKey)
       
-      if (cachedEntry && isCacheValid(cachedEntry)) {
+      if (cachedEntry && isCacheValid(cachedEntry) && !cachedEntry.isLoading) {
         // Use cached data
         setPost(cachedEntry.data)
         setIsLoading(false)
@@ -67,8 +67,9 @@ export function useBlogPostCache({
       }
     }
 
-    // Mark as loading only if we don't have valid cached data
-    if (!blogCache.get(cacheKey) || !isCacheValid(blogCache.get(cacheKey))) {
+    // Mark as loading only if we don't have valid cached data or if it's currently loading
+    const currentCacheEntry = blogCache.get(cacheKey)
+    if (!currentCacheEntry || !isCacheValid(currentCacheEntry) || !currentCacheEntry.isLoading) {
       setIsLoading(true)
     }
     
@@ -100,8 +101,15 @@ export function useBlogPostCache({
       setPost(transformedPost)
       setError(null)
     } catch (err) {
+      // Only set error if it's a real error, not just a 404
       const errorMessage = err instanceof Error ? err.message : 'Failed to load blog post'
-      setError(errorMessage)
+      
+      // Check if it's a "not found" error specifically
+      if (errorMessage.includes('PGRST116') || errorMessage.includes('not found')) {
+        setError('Blog post not found')
+      } else {
+        setError(errorMessage)
+      }
       
       // Update cache with error state
       blogCache.set(cacheKey, {

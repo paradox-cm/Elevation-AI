@@ -350,7 +350,7 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
     )
   }
 
-  if (error || !post) {
+  if (error) {
     return (
       <PageWrapper>
         <MobileOnlyLayout
@@ -369,6 +369,22 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
                 </Link>
               </Button>
             </div>
+          </div>
+        </MobileOnlyLayout>
+      </PageWrapper>
+    )
+  }
+
+  if (!post) {
+    return (
+      <PageWrapper>
+        <MobileOnlyLayout
+          header={<MainHeader />}
+          footer={<WebsiteFooter />}
+          mobileMenu={<MobileMenuDrawer currentPage="resources" />}
+        >
+          <div className="min-h-screen bg-background transition-colors duration-300 flex items-center justify-center">
+            <LoadingSpinner size="lg" text="Loading article..." />
           </div>
         </MobileOnlyLayout>
       </PageWrapper>

@@ -432,7 +432,7 @@ export default function FormSubmissionsPage() {
                         <span className="font-medium">{formTypeLabels[submission.form_type as keyof typeof formTypeLabels]}</span>
                         {submission.form_data?.message && (
                           <p className="text-muted-foreground mt-1 line-clamp-2">
-                            {submission.form_data.message}
+                            {typeof submission.form_data.message === 'string' ? submission.form_data.message : String(submission.form_data.message)}
                           </p>
                         )}
                       </div>
