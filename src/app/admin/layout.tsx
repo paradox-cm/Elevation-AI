@@ -1,5 +1,8 @@
 "use client"
 
+// Force dynamic rendering for admin pages
+export const dynamic = 'force-dynamic'
+
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
