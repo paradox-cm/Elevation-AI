@@ -21,7 +21,7 @@ export function DynamicPage({ page, sections, currentPage }: DynamicPageProps) {
 // Helper function to load page data (server-side)
 export async function loadPageData(slug: string) {
   const { createClient } = await import('@/lib/supabase/server')
-  const supabase = createClient()
+  const supabase = await createClient()
   
   try {
     // Load page data
