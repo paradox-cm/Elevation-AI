@@ -75,7 +75,7 @@ UPDATE site_settings SET updated_by = 'your-admin-user-id' WHERE updated_by IS N
   console.log('   - Login with your admin credentials\n');
   
   console.log('6. 🧪 Test Dynamic Pages:');
-  console.log('   - Visit: http://localhost:3000/website/faq-dynamic');
+  console.log('   - Visit: http://localhost:3000/website/knowledge-base');
   console.log('   - Visit: http://localhost:3000/website/blog-dynamic\n');
   
   console.log('📚 Next Steps:');
