@@ -56,7 +56,7 @@ export default function FAQCategoryEditPage() {
     fetchData()
   }, [params.id])
 
-  const handleFieldChange = (field: string, value: any) => {
+  const handleFieldChange = (field: string, value: unknown) => {
     if (!category) return
     
     setCategory({

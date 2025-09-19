@@ -20,7 +20,7 @@ import { PageWithSections } from "@/types/cms"
 
 
 // Hero Section Component
-function HeroSection({ data }: { data?: any }) {
+function HeroSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Build on the Operating System for the Agentic Era"
   const description = data?.description || "Integrate your agents and platforms with Elevation AI to gain access to a high-value customer base and participate in a thriving, collaborative ecosystem."
 
@@ -35,7 +35,7 @@ function HeroSection({ data }: { data?: any }) {
 }
 
 // Content Section Component
-function ContentSection({ data }: { data?: any }) {
+function ContentSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || ""
   const content = data?.content || ""
 
@@ -50,7 +50,7 @@ function ContentSection({ data }: { data?: any }) {
 }
 
 // Animation Section Component
-function AnimationSection({ data }: { data?: any }) {
+function AnimationSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Visual Integration"
   const content = data?.content || "Experience the power of our platform through our interactive business data visualization."
   const animationType = data?.animation_type || "business_data"
@@ -89,7 +89,7 @@ function AnimationSection({ data }: { data?: any }) {
 }
 
 // Revenue Path Section Component
-function RevenuePathSection({ data }: { data?: any }) {
+function RevenuePathSection({ data }: { data?: Record<string, unknown> }) {
   const sectionTitle = data?.section_title || "A Clear Path to Revenue"
   const features = data?.features || [
     {
@@ -114,7 +114,7 @@ function RevenuePathSection({ data }: { data?: any }) {
       <div className="max-w-4xl mx-auto space-y-4">
         <H2>{sectionTitle}</H2>
         <div className="space-y-3">
-          {features.map((feature: any, index: number) => (
+          {features.map((feature: Record<string, unknown>, index: number) => (
             <Card key={index} className="border-border">
               <CardHeader>
                 <CardTitle className="text-base sm:text-base md:text-lg">{feature.title}</CardTitle>
@@ -131,7 +131,7 @@ function RevenuePathSection({ data }: { data?: any }) {
 }
 
 // Commitment Section Component
-function CommitmentSection({ data }: { data?: any }) {
+function CommitmentSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Let's Build the Future, Together"
   const description = data?.description || "We believe that the future of agentic AI is not a walled garden, but a vibrant, open ecosystem. We are committed to fostering a community where the best ideas can be discovered, deployed, and monetized. By building on Elevation AI, you are not just integrating with a platform; you are joining a movement to build the agentic future."
   const ctaText = data?.cta_primary_text || "Apply to Our Developer Program"

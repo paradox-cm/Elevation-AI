@@ -27,7 +27,7 @@ import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
 
 // Creative Hero Section Component
-function CreativeHeroSection({ data }: { data?: any }) {
+function CreativeHeroSection({ data }: { data?: Record<string, unknown> }) {
   return (
     <Section 
       paddingY="lg" 
@@ -51,7 +51,7 @@ function CreativeHeroSection({ data }: { data?: any }) {
               {(data?.ctaButtons || [
                 { text: 'Explore the Expert Network', href: '#expert-network', variant: 'default' },
                 { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
-              ]).map((button: any, index: number) => (
+              ]).map((button: Record<string, unknown>, index: number) => (
                 <Button 
                   key={index}
                   size="lg" 
@@ -110,7 +110,7 @@ function CreativeHeroSection({ data }: { data?: any }) {
 }
 
 // Logo Carousel Section
-function LogoCarouselSection({ data }: { data?: any }) {
+function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
   return (
     <Section paddingY="lg" className={data?.backgroundColor || "bg-muted/20"}>
       <Container size="2xl">
@@ -267,7 +267,7 @@ export default function PeopleExpertsPage() {
                                           description: 'The expert collaborates with your team directly within your existing workflows, providing their insights where they\'re most valuable. When the engagement is complete, their access is cleanly revoked, and all the knowledge they created remains securely in your Knowledge Base.',
                                           icon: 'zap-line'
                                         }
-                                      ]).map((step: any, index: number) => (
+                                      ]).map((step: Record<string, unknown>, index: number) => (
                                         <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
                                           {/* Background Pattern */}
                                           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -367,7 +367,7 @@ export default function PeopleExpertsPage() {
                                       title: 'Objective Review',
                                       description: 'An objective third-party review of a plan or document.'
                                     }
-                                  ]).map((characteristic: any, index: number) => (
+                                  ]).map((characteristic: Record<string, unknown>, index: number) => (
                                     <Card key={index} className="border-border/50 bg-transparent">
                                       <CardHeader className="pb-3">
                                         <CardTitle className="text-base font-semibold flex items-center gap-3">
@@ -416,7 +416,7 @@ export default function PeopleExpertsPage() {
                         {/* Expert Categories Carousel */}
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                           <PeopleCarousel
-                            items={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.expertCategories?.map((category: any) => ({
+                            items={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.expertCategories?.map((category: Record<string, unknown>) => ({
                               id: category.id,
                               title: category.title,
                               description: category.description,
@@ -478,7 +478,7 @@ export default function PeopleExpertsPage() {
                           {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.ctaButtons || [
                             { text: 'Explore the Expert Network', href: '/website/demo', variant: 'default' },
                             { text: 'About Us', href: '/website/about', variant: 'outline' }
-                          ]).map((button: any, index: number) => (
+                          ]).map((button: Record<string, unknown>, index: number) => (
                             <Button key={index} size="lg" variant={button.variant} asChild>
                               <Link href={button.href}>{button.text}</Link>
                             </Button>

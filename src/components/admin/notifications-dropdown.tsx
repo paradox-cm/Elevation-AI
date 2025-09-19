@@ -21,7 +21,7 @@ interface Notification {
   type: string
   title: string
   message: string
-  data: any
+  data: Record<string, unknown>
   is_read: boolean
   priority: string
   related_type: string | null

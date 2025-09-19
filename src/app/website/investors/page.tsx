@@ -17,7 +17,7 @@ import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
 
 // Logo Grid Section
-function LogoGridSection({ data }: { data?: any }) {
+function LogoGridSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Led by industry veterans from:"
   const logos = data?.logos || [
     { name: "Accenture", filename: "Accenture.svg", showText: true },
@@ -83,7 +83,7 @@ function LogoGridSection({ data }: { data?: any }) {
 }
 
 // Hero Section Component
-function HeroSection({ data }: { data?: any }) {
+function HeroSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Investing in the Agentic Era"
   const description = data?.description || "Led by a top-tier team of enterprise leaders, we are building the essential platform for the agentic era."
   const faviconUrl = data?.favicon_url || "/images/Favicon-Stroke.png"
@@ -122,7 +122,7 @@ function HeroSection({ data }: { data?: any }) {
 }
 
 // Content Section Component
-function ContentSection({ data }: { data?: any }) {
+function ContentSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || ""
   const content = data?.content || ""
 
@@ -137,7 +137,7 @@ function ContentSection({ data }: { data?: any }) {
 }
 
 // CTA Section Component
-function CTASection({ data }: { data?: any }) {
+function CTASection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || ""
   const description = data?.description || ""
   const ctaText = data?.cta_primary_text || "Contact Us"

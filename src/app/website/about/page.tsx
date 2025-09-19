@@ -191,7 +191,7 @@ function TypewriterText({
 }
 
 // Mission Section
-function MissionSection({ data }: { data?: any }) {
+function MissionSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Our Mission"
   const content = data?.content || "We're here to help complex organizations operate with clarity, precision and trust—unifying knowledge and orchestrating secure, agentic AI across their business."
   const backgroundAnimation = data?.background_animation !== false
@@ -221,7 +221,7 @@ function MissionSection({ data }: { data?: any }) {
 }
 
 // Problem & Solution Section
-function ProblemSolutionSection({ data }: { data?: any }) {
+function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
   const badgeText = data?.badge_text || "Our Vision"
   const badgeIcon = data?.badge_icon || "lightbulb-line"
   const sectionTitle = data?.section_title || "The Problem We Solve"
@@ -258,7 +258,7 @@ function ProblemSolutionSection({ data }: { data?: any }) {
 
           {/* Problem & Solution Content */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {cards.map((card: any, index: number) => (
+            {cards.map((card: Record<string, unknown>, index: number) => (
               <div key={index} className="space-y-6">
                 <Card className="bg-transparent border border-border/50 h-full">
                   <CardContent className="p-6">
@@ -281,7 +281,7 @@ function ProblemSolutionSection({ data }: { data?: any }) {
 }
 
 // Principles Section
-function PrinciplesSection({ data }: { data?: any }) {
+function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
   const badgeText = data?.badge_text || "Our Foundation"
   const badgeIcon = data?.badge_icon || "star-line"
   const sectionTitle = data?.section_title || "Principles That Guide Us"
@@ -327,7 +327,7 @@ function PrinciplesSection({ data }: { data?: any }) {
     { color: "bg-indigo-50 dark:bg-indigo-950/30", iconColor: "text-indigo-600 dark:text-indigo-400" }
   ]
 
-  const principles = features.map((feature: any, index: number) => ({
+  const principles = features.map((feature: Record<string, unknown>, index: number) => ({
     ...feature,
     color: feature.color || defaultColors[index]?.color || "bg-gray-50 dark:bg-gray-950/30",
     iconColor: feature.icon_color || defaultColors[index]?.iconColor || "text-gray-600 dark:text-gray-400"
@@ -381,7 +381,7 @@ function PrinciplesSection({ data }: { data?: any }) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {principles.map((principle: any, index: number) => (
+            {principles.map((principle: Record<string, unknown>, index: number) => (
                 <Card 
                   key={index} 
                   className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-shadow duration-300 transition-transform duration-300 hover:-translate-y-2 bg-card/80 backdrop-blur-sm dark:bg-black/60 dark:backdrop-blur-md dark:border dark:border-white/10"
@@ -415,7 +415,7 @@ function PrinciplesSection({ data }: { data?: any }) {
 }
 
 // Ecosystem Section
-function EcosystemSection({ data }: { data?: any }) {
+function EcosystemSection({ data }: { data?: Record<string, unknown> }) {
   const badgeText = data?.badge_text || "Integration Hub"
   const badgeIcon = data?.badge_icon || "share-line"
   const sectionTitle = data?.section_title || "The Ecosystem We Orchestrate"
@@ -452,7 +452,7 @@ function EcosystemSection({ data }: { data?: any }) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {accordionItems.map((item: any, index: number) => (
+            {accordionItems.map((item: Record<string, unknown>, index: number) => (
               <Card key={index} className="border border-border/50 bg-transparent h-80">
                 <CardContent className="p-8 h-full flex flex-col">
                   <div className="flex flex-col items-start text-left space-y-6 h-full justify-center">
@@ -477,7 +477,7 @@ function EcosystemSection({ data }: { data?: any }) {
 }
 
 // Path Ahead Section
-function PathAheadSection({ data }: { data?: any }) {
+function PathAheadSection({ data }: { data?: Record<string, unknown> }) {
   const badgeText = data?.badge_text || "Future Vision"
   const badgeIcon = data?.badge_icon || "road-map-line"
   const sectionTitle = data?.section_title || "The Path Ahead"
@@ -507,7 +507,7 @@ function PathAheadSection({ data }: { data?: any }) {
 }
 
 // Careers Section
-function CareersSection({ data }: { data?: any }) {
+function CareersSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Careers"
   const description = data?.description || "We're looking for systems thinkers, security‑minded engineers, and product designers who love turning complexity into clarity. If that's you, reach out."
   const ctaText = data?.cta_primary_text || "View Open Positions"

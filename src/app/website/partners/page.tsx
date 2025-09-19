@@ -18,7 +18,7 @@ import { PageWithSections } from "@/types/cms"
 
 
 // Hero Section Component
-function HeroSection({ data }: { data?: any }) {
+function HeroSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Partner with Elevation AI"
   const description = data?.description || "Join our ecosystem of trusted ambassadors, consulting firms, and experts to help bring the power of agentic AI to businesses everywhere."
 
@@ -33,7 +33,7 @@ function HeroSection({ data }: { data?: any }) {
 }
 
 // Ambassador Program Section Component
-function AmbassadorSection({ data }: { data?: any }) {
+function AmbassadorSection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Become an Ambassador"
   const content = data?.content || "Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem."
   const ctaText = data?.cta_text || "Inquire About Our Ambassador Program"
@@ -55,7 +55,7 @@ function AmbassadorSection({ data }: { data?: any }) {
 }
 
 // Partner Network Section Component
-function PartnerNetworkSection({ data }: { data?: any }) {
+function PartnerNetworkSection({ data }: { data?: Record<string, unknown> }) {
   const sectionTitle = data?.section_title || "Join Our Partner Network"
   const description = data?.description || "We are building a network of specialized consulting firms and individual experts who natively use our platform to serve their clients and extend their own capabilities. By partnering with us, you can:"
   const features = data?.features || [
@@ -84,7 +84,7 @@ function PartnerNetworkSection({ data }: { data?: any }) {
         <H2>{sectionTitle}</H2>
         <P>{description}</P>
         <div className="space-y-3 text-muted-foreground">
-          {features.map((feature: any, index: number) => (
+          {features.map((feature: Record<string, unknown>, index: number) => (
             <Card key={index} className="border-border">
               <CardHeader>
                 <CardTitle className="text-base sm:text-base md:text-lg">{feature.title}</CardTitle>

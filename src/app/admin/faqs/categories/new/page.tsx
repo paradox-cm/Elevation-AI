@@ -29,7 +29,7 @@ export default function NewFAQCategoryPage() {
     is_published: true
   })
 
-  const handleFieldChange = (field: string, value: any) => {
+  const handleFieldChange = (field: string, value: unknown) => {
     setFormData({
       ...formData,
       [field]: value
