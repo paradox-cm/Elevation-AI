@@ -474,21 +474,21 @@ export default function DesignTokensPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* Define design tokens as CSS custom properties */</div>
+                      <div className="text-muted-foreground">{/* Define design tokens as CSS custom properties */}</div>
                       <div>:root &#123;</div>
-                      <div>  /* Color tokens */</div>
+                      <div>  {/* Color tokens */}</div>
                       <div>  --primary: 222.2 84% 4.9%;</div>
                       <div>  --primary-foreground: 210 40% 98%;</div>
                       <div>  --background: 0 0% 100%;</div>
                       <div>  --foreground: 222.2 84% 4.9%;</div>
                       <div></div>
-                      <div>  /* Spacing tokens */</div>
+                      <div>  {/* Spacing tokens */}</div>
                       <div>  --spacing-1: 0.25rem;</div>
                       <div>  --spacing-2: 0.5rem;</div>
                       <div>  --spacing-4: 1rem;</div>
                       <div>  --spacing-6: 1.5rem;</div>
                       <div></div>
-                      <div>  /* Typography tokens */</div>
+                      <div>  {/* Typography tokens */}</div>
                       <div>  --font-size-sm: 0.875rem;</div>
                       <div>  --font-size-base: 1rem;</div>
                       <div>  --font-size-lg: 1.125rem;</div>
@@ -561,7 +561,7 @@ export default function DesignTokensPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">&#123;/* Using design tokens in components */&#125;</div>
+                      <div className="text-muted-foreground">{/* Using design tokens in components */}</div>
                       <div>function Button(&#123; children, variant = &apos;primary&apos; &#125;) &#123;</div>
                       <div>  const baseClasses = [</div>
                       <div>    &apos;px-4 py-2 rounded font-medium transition-colors&apos;,</div>

@@ -692,7 +692,7 @@ export default function ErrorStatesPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">// Custom hook for form validation</div>
+                      <div className="text-muted-foreground">{/* Custom hook for form validation */}</div>
                       <div>function useFormValidation() &#123;</div>
                       <div>  const [errors, setErrors] = useState(&#123;&#125;)</div>
                       <div>  const [touched, setTouched] = useState(&#123;&#125;)</div>
@@ -741,7 +741,7 @@ export default function ErrorStatesPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">// Error boundary component</div>
+                      <div className="text-muted-foreground">{/* Error boundary component */}</div>
                       <div>class ErrorBoundary extends React.Component &#123;</div>
                       <div>  constructor(props) &#123;</div>
                       <div>    super(props)</div>
@@ -754,7 +754,7 @@ export default function ErrorStatesPage() {
                       <div></div>
                       <div>  componentDidCatch(error, errorInfo) &#123;</div>
                       <div>    console.error(&apos;Error caught by boundary:&apos;, error, errorInfo)</div>
-                      <div>    // Log to error reporting service</div>
+                      <div>    {/* Log to error reporting service */}</div>
                       <div>  &#125;</div>
                       <div></div>
                       <div>  render() &#123;</div>
@@ -792,19 +792,19 @@ export default function ErrorStatesPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* Error state variables */</div>
+                      <div className="text-muted-foreground">{/* Error state variables */}</div>
                       <div>--error-50: #fef2f2;</div>
                       <div>--error-100: #fee2e2;</div>
                       <div>--error-500: #ef4444;</div>
                       <div>--error-600: #dc2626;</div>
                       <div></div>
-                      <div className="text-muted-foreground">/* Error input styles */</div>
+                      <div className="text-muted-foreground">{/* Error input styles */}</div>
                       <div>.input-error &#123;</div>
                       <div>  border-color: var(--error-500);</div>
                       <div>  box-shadow: 0 0 0 1px var(--error-500);</div>
                       <div>&#125;</div>
                       <div></div>
-                      <div className="text-muted-foreground">/* Error message styles */</div>
+                      <div className="text-muted-foreground">{/* Error message styles */}</div>
                       <div>.error-message &#123;</div>
                       <div>  color: var(--error-600);</div>
                       <div>  font-size: 0.875rem;</div>

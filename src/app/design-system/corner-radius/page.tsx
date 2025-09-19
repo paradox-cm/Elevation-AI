@@ -380,10 +380,10 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* {cssCustomProperties.description} */</div>
+                      <div className="text-muted-foreground">{/* {cssCustomProperties.description} */}</div>
                       <div>{cssCustomProperties.baseValue}</div>
                       <div></div>
-                      <div className="text-muted-foreground">/* Calculated radius scale */</div>
+                      <div className="text-muted-foreground">{/* Calculated radius scale */}</div>
                       {cssCustomProperties.calculatedValues.map((value, index) => (
                         <div key={index}>{value}</div>
                       ))}
@@ -400,12 +400,12 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* {tailwindClasses.description} */</div>
+                      <div className="text-muted-foreground">{/* {tailwindClasses.description} */}</div>
                       {tailwindClasses.utilities.map((utility, index) => (
                         <div key={index}>{utility}</div>
                       ))}
                       <div></div>
-                      <div className="text-muted-foreground">/* Directional radius */</div>
+                      <div className="text-muted-foreground">{/* Directional radius */}</div>
                       {tailwindClasses.directional.map((direction, index) => (
                         <div key={index}>{direction}</div>
                       ))}
@@ -424,7 +424,7 @@ export default function CornerRadiusPage() {
                     <div>
                       <H4 className="mb-3">{implementationExamples.reactComponent.title}</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">/* {implementationExamples.reactComponent.description} */</div>
+                        <div className="text-muted-foreground">{/* {implementationExamples.reactComponent.description} */}</div>
                         {implementationExamples.reactComponent.code.split('\n').map((line, index) => (
                           <div key={index}>{line}</div>
                         ))}
@@ -434,7 +434,7 @@ export default function CornerRadiusPage() {
                     <div>
                       <H4 className="mb-3">{implementationExamples.customCSS.title}</H4>
                       <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                        <div className="text-muted-foreground">/* {implementationExamples.customCSS.description} */</div>
+                        <div className="text-muted-foreground">{/* {implementationExamples.customCSS.description} */}</div>
                         {implementationExamples.customCSS.code.split('\n').map((line, index) => (
                           <div key={index}>{line}</div>
                         ))}
@@ -452,20 +452,20 @@ export default function CornerRadiusPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">/* {customizationExamples.subtle.title} */</div>
-                      <div className="text-muted-foreground">/* {customizationExamples.subtle.description} */</div>
+                      <div className="text-muted-foreground">{/* {customizationExamples.subtle.title} */}</div>
+                      <div className="text-muted-foreground">{/* {customizationExamples.subtle.description} */}</div>
                       {customizationExamples.subtle.code.split('\n').map((line, index) => (
                         <div key={index}>{line}</div>
                       ))}
                       <div></div>
-                      <div className="text-muted-foreground">/* {customizationExamples.technical.title} */</div>
-                      <div className="text-muted-foreground">/* {customizationExamples.technical.description} */</div>
+                      <div className="text-muted-foreground">{/* {customizationExamples.technical.title} */}</div>
+                      <div className="text-muted-foreground">{/* {customizationExamples.technical.description} */}</div>
                       {customizationExamples.technical.code.split('\n').map((line, index) => (
                         <div key={index}>{line}</div>
                       ))}
                       <div></div>
-                      <div className="text-muted-foreground">/* {customizationExamples.friendly.title} */</div>
-                      <div className="text-muted-foreground">/* {customizationExamples.friendly.description} */</div>
+                      <div className="text-muted-foreground">{/* {customizationExamples.friendly.title} */}</div>
+                      <div className="text-muted-foreground">{/* {customizationExamples.friendly.description} */}</div>
                       {customizationExamples.friendly.code.split('\n').map((line, index) => (
                         <div key={index}>{line}</div>
                       ))}
