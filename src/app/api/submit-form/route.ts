@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = createClient()
+    const supabase = await createClient()
 
     // Insert form submission
     const { data, error } = await supabase

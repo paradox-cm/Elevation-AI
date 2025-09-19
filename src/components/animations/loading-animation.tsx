@@ -112,24 +112,24 @@ export function LoadingAnimation({
     // Set up initial CSS variables with cached values
     // Set CSS variables on the SVG element instead of the path element
     if (svgRef.current && svgRef.current.style && typeof svgRef.current.style.setProperty === 'function') {
-      svgRef.current.style.setProperty('--path-length', `${cachedPathLength}`)
-      svgRef.current.style.setProperty('--head-length', `${headLength}`)
-      svgRef.current.style.setProperty('--tail-length', `${cachedPathLength - headLength}`)
+      svgRef.current.style.setProperty('--path-length', `${cachedPathLength}`);
+      svgRef.current.style.setProperty('--head-length', `${headLength}`);
+      svgRef.current.style.setProperty('--tail-length', `${cachedPathLength - headLength}`);
     }
 
     // Use requestIdleCallback for smooth setup
     const setupAnimation = () => {
-      const actualPathLength = head.getTotalLength()
+      const actualPathLength = head.getTotalLength();
       
       // Update cache if we got a different value
       if (actualPathLength > 0 && Math.abs(actualPathLength - cachedPathLength) > 10) {
-        const actualHeadLength: number = actualPathLength * 0.15
-        const tailLength = actualPathLength - actualHeadLength
+        const actualHeadLength: number = actualPathLength * 0.15;
+        const tailLength = actualPathLength - actualHeadLength;
         // Update CSS variables on the SVG element
         if (svgRef.current && svgRef.current.style && typeof svgRef.current.style.setProperty === 'function') {
-          svgRef.current.style.setProperty('--path-length', `${actualPathLength}`)
-          svgRef.current.style.setProperty('--head-length', `${actualHeadLength}`)
-          svgRef.current.style.setProperty('--tail-length', `${tailLength}`)
+          svgRef.current.style.setProperty('--path-length', `${actualPathLength}`);
+          svgRef.current.style.setProperty('--head-length', `${actualHeadLength}`);
+          svgRef.current.style.setProperty('--tail-length', `${tailLength}`);
         }
         
         // Cache the new value
@@ -272,21 +272,21 @@ export function PulsingLoadingAnimation({
     }
 
     // Set up initial CSS variables with cached values
-    (path as unknown as HTMLElement).style.setProperty('--path-length', `${cachedPathLength}`)
-    (path as unknown as HTMLElement).style.setProperty('--head-length', `${segmentLength}`)
-    (path as unknown as HTMLElement).style.setProperty('--tail-length', `${cachedPathLength - segmentLength}`)
+    (path as unknown as HTMLElement).style.setProperty('--path-length', `${cachedPathLength}`);;
+    (path as unknown as HTMLElement).style.setProperty('--head-length', `${segmentLength}`);
+    (path as unknown as HTMLElement).style.setProperty('--tail-length', `${cachedPathLength - segmentLength}`);
 
     // Use requestIdleCallback for smooth setup
     const setupAnimation = () => {
-      const actualPathLength = path.getTotalLength()
+      const actualPathLength = path.getTotalLength();
       
       // Update cache if we got a different value
       if (actualPathLength > 0 && Math.abs(actualPathLength - cachedPathLength) > 10) {
-        const actualSegmentLength: number = actualPathLength * 0.3
-        const tailLength = actualPathLength - actualSegmentLength
-        (path as unknown as HTMLElement).style.setProperty('--path-length', `${actualPathLength}`)
-        (path as unknown as HTMLElement).style.setProperty('--head-length', `${actualSegmentLength}`)
-        (path as unknown as HTMLElement).style.setProperty('--tail-length', `${tailLength}`)
+        const actualSegmentLength: number = actualPathLength * 0.3;
+        const tailLength = actualPathLength - actualSegmentLength;
+        (path as unknown as HTMLElement).style.setProperty('--path-length', `${actualPathLength}`);
+        (path as unknown as HTMLElement).style.setProperty('--head-length', `${actualSegmentLength}`);
+        (path as unknown as HTMLElement).style.setProperty('--tail-length', `${tailLength}`);
         
         // Cache the new value
         animationCache.pathLength = actualPathLength
@@ -417,24 +417,24 @@ export function TravelingLoadingAnimation({
     // Set up initial CSS variables with cached values
     // Set CSS variables on the SVG element instead of the path element
     if (svgRef.current && svgRef.current.style && typeof svgRef.current.style.setProperty === 'function') {
-      svgRef.current.style.setProperty('--path-length', `${cachedPathLength}`)
-      svgRef.current.style.setProperty('--head-length', `${headLength}`)
-      svgRef.current.style.setProperty('--tail-length', `${cachedPathLength - headLength}`)
+      svgRef.current.style.setProperty('--path-length', `${cachedPathLength}`);
+      svgRef.current.style.setProperty('--head-length', `${headLength}`);
+      svgRef.current.style.setProperty('--tail-length', `${cachedPathLength - headLength}`);
     }
 
     // Use requestIdleCallback for smooth setup
     const setupAnimation = () => {
-      const actualPathLength = head.getTotalLength()
+      const actualPathLength = head.getTotalLength();
       
       // Update cache if we got a different value
       if (actualPathLength > 0 && Math.abs(actualPathLength - cachedPathLength) > 10) {
-        const actualHeadLength: number = actualPathLength * 0.2
-        const tailLength = actualPathLength - actualHeadLength
+        const actualHeadLength: number = actualPathLength * 0.2;
+        const tailLength = actualPathLength - actualHeadLength;
         // Update CSS variables on the SVG element
         if (svgRef.current && svgRef.current.style && typeof svgRef.current.style.setProperty === 'function') {
-          svgRef.current.style.setProperty('--path-length', `${actualPathLength}`)
-          svgRef.current.style.setProperty('--head-length', `${actualHeadLength}`)
-          svgRef.current.style.setProperty('--tail-length', `${tailLength}`)
+          svgRef.current.style.setProperty('--path-length', `${actualPathLength}`);
+          svgRef.current.style.setProperty('--head-length', `${actualHeadLength}`);
+          svgRef.current.style.setProperty('--tail-length', `${tailLength}`);
         }
         
         // Cache the new value
@@ -555,33 +555,33 @@ export function MinimalLoadingAnimation({
     if (!pathRef.current) return
 
     const path = pathRef.current
-    const pathLength: number = path.getTotalLength()
-    const pathLengthStr = pathLength.toString()
+    const pathLength: number = path.getTotalLength();
+    const pathLengthStr = pathLength.toString();
 
     // Set initial stroke-dasharray and stroke-dashoffset
-    (path as unknown as HTMLElement).style.strokeDasharray = `${pathLengthStr} ${pathLengthStr}`
-    (path as unknown as HTMLElement).style.strokeDashoffset = pathLengthStr
+    (path as unknown as HTMLElement).style.strokeDasharray = `${pathLengthStr} ${pathLengthStr}`;
+    (path as unknown as HTMLElement).style.strokeDashoffset = pathLengthStr;
 
     // Create the animation
     const animate = () => {
-      (path as unknown as HTMLElement).style.strokeDashoffset = pathLengthStr
-      (path as unknown as HTMLElement).style.transition = 'none'
+      (path as unknown as HTMLElement).style.strokeDashoffset = pathLengthStr;
+      (path as unknown as HTMLElement).style.transition = 'none';
       
       // Trigger reflow
-      (path as unknown as HTMLElement).offsetHeight
+      (path as unknown as HTMLElement).offsetHeight;
       
       // Start animation
-      (path as unknown as HTMLElement).style.transition = 'stroke-dashoffset 1.5s ease-in-out'
-      (path as unknown as HTMLElement).style.strokeDashoffset = '0'
+      (path as unknown as HTMLElement).style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+      (path as unknown as HTMLElement).style.strokeDashoffset = '0';
     }
 
     // Start animation immediately
-    animate()
+    animate();
 
     // Set up interval for continuous animation
-    const interval = setInterval(animate, 2000)
+    const interval = setInterval(animate, 2000);
 
-    return () => clearInterval(interval)
+    return () => clearInterval(interval);
   }, [])
 
   return (
