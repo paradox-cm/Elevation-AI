@@ -90,7 +90,7 @@ export function NotificationsDropdown() {
       if (error) throw error
 
       setNotifications(notificationsData || [])
-      setUnreadCount(notificationsData?.filter(n => !n.is_read).length || 0)
+      setUnreadCount(notificationsData?.filter((n: any) => !n.is_read).length || 0)
     } catch (error) {
       console.error('Error fetching notifications:', error)
     }

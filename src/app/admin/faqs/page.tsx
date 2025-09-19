@@ -44,7 +44,7 @@ export default function FAQsPage() {
 
       // Fetch FAQs for each category
       const categoriesWithFAQs = await Promise.all(
-        (categoriesData || []).map(async (category) => {
+        (categoriesData || []).map(async (category: any) => {
           const { data: faqsData, error: faqsError } = await supabase
             .from('faqs')
             .select('*')

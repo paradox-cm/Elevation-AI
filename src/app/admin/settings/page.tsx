@@ -60,11 +60,11 @@ export default function AdminSettingsPage() {
 
       // Initialize form data
       const initialData = {
-        site_name: settingsData?.find(s => s.key === 'site_name')?.value || '',
-        site_description: settingsData?.find(s => s.key === 'site_description')?.value || '',
-        admin_email: settingsData?.find(s => s.key === 'admin_email')?.value || '',
-        maintenance_mode: settingsData?.find(s => s.key === 'maintenance_mode')?.value === 'true',
-        max_upload_size: settingsData?.find(s => s.key === 'max_upload_size')?.value || ''
+        site_name: settingsData?.find((s: any) => s.key === 'site_name')?.value || '',
+        site_description: settingsData?.find((s: any) => s.key === 'site_description')?.value || '',
+        admin_email: settingsData?.find((s: any) => s.key === 'admin_email')?.value || '',
+        maintenance_mode: settingsData?.find((s: any) => s.key === 'maintenance_mode')?.value === 'true',
+        max_upload_size: settingsData?.find((s: any) => s.key === 'max_upload_size')?.value || ''
       }
 
       setFormData(initialData)

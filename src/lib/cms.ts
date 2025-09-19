@@ -201,7 +201,7 @@ export const faqCategoriesService = {
     if (categoriesError) throw categoriesError
 
     const categoriesWithFAQs = await Promise.all(
-      (categories || []).map(async (category) => {
+      (categories || []).map(async (category: any) => {
         const { data: faqs, error: faqsError } = await supabase
           .from('faqs')
           .select('*')

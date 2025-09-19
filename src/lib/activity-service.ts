@@ -114,8 +114,8 @@ export const activityService = {
       .select('action')
       .gte('created_at', monthAgo.toISOString())
 
-    const topActions = topActionsData?.reduce((acc, item) => {
-      const existing = acc.find(a => a.action === item.action)
+    const topActions = topActionsData?.reduce((acc: any, item: any) => {
+      const existing = acc.find((a: any) => a.action === item.action)
       if (existing) {
         existing.count++
       } else {
@@ -130,8 +130,8 @@ export const activityService = {
       .select('entity_type')
       .gte('created_at', monthAgo.toISOString())
 
-    const topEntityTypes = topEntityTypesData?.reduce((acc, item) => {
-      const existing = acc.find(a => a.entity_type === item.entity_type)
+    const topEntityTypes = topEntityTypesData?.reduce((acc: any, item: any) => {
+      const existing = acc.find((a: any) => a.entity_type === item.entity_type)
       if (existing) {
         existing.count++
       } else {
@@ -147,9 +147,9 @@ export const activityService = {
       .gte('created_at', monthAgo.toISOString())
       .not('user_name', 'is', null)
 
-    const topUsers = topUsersData?.reduce((acc, item) => {
+    const topUsers = topUsersData?.reduce((acc: any, item: any) => {
       if (!item.user_name) return acc
-      const existing = acc.find(a => a.user_name === item.user_name)
+      const existing = acc.find((a: any) => a.user_name === item.user_name)
       if (existing) {
         existing.count++
       } else {
@@ -163,9 +163,9 @@ export const activityService = {
       activitiesToday: activitiesToday || 0,
       activitiesThisWeek: activitiesThisWeek || 0,
       activitiesThisMonth: activitiesThisMonth || 0,
-      topActions: topActions.sort((a, b) => b.count - a.count).slice(0, 5),
-      topEntityTypes: topEntityTypes.sort((a, b) => b.count - a.count).slice(0, 5),
-      topUsers: topUsers.sort((a, b) => b.count - a.count).slice(0, 5)
+      topActions: topActions.sort((a: any, b: any) => b.count - a.count).slice(0, 5),
+      topEntityTypes: topEntityTypes.sort((a: any, b: any) => b.count - a.count).slice(0, 5),
+      topUsers: topUsers.sort((a: any, b: any) => b.count - a.count).slice(0, 5)
     }
   },
 
