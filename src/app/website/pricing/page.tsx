@@ -24,13 +24,13 @@ import { PageWithSections } from "@/types/cms"
 // Pricing Hero Section Component
 function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Transparent Pricing for Every Organization'
-  const description = data?.description || 'Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed.'
-  const ctaButtons = data?.ctaButtons || [
+  const title = typeof data?.title === 'string' ? data.title : 'Transparent Pricing for Every Organization'
+  const description = typeof data?.description === 'string' ? data.description : 'Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed.'
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as unknown[] : [
     { text: 'Get a Custom Quote', href: '#consultation', variant: 'default', action: 'openConsultation' },
     { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
   ]
-  const logoPath = data?.logoPath || '/images/branding/E-AI-Circle.svg'
+  const logoPath = typeof data?.logoPath === 'string' ? data.logoPath : '/images/branding/E-AI-Circle.svg'
 
   return (
     <Section 
@@ -55,27 +55,27 @@ function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: 
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
+              {ctaButtons.map((button: unknown, index: number) => { const btn = button as Record<string, unknown>; return (
                 <Button 
                   key={index}
                   size="lg" 
-                  variant={button.variant}
-                  onClick={button.action === 'openConsultation' ? onOpenConsultation : undefined}
-                  asChild={!button.action}
+                  variant={btn.variant as any}
+                  onClick={btn.action === 'openConsultation' ? onOpenConsultation : undefined}
+                  asChild={!btn.action}
                   className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto cursor-pointer group"
                 >
-                  {button.action === 'openConsultation' ? (
+                  {btn.action === 'openConsultation' ? (
                     <>
-                      {button.text}
+                      {typeof btn.text === 'string' ? btn.text : 'Button'}
                       <Icon name="calendar-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
                     </>
                   ) : (
-                    <Link href={button.href}>
-                      {button.text}
+                    <Link href={typeof btn.href === 'string' ? btn.href : '/'}>
+                      {typeof btn.text === 'string' ? btn.text : 'Button'}
                     </Link>
                   )}
                 </Button>
-              ))}
+              ); })}
             </div>
           </div>
 
@@ -130,9 +130,9 @@ function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: 
 // How It Works Section (Mobile: Full width, Desktop: Left column)
 function HowItWorksSection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'How It Works'
-  const description = data?.description || 'Three simple steps to get your custom plan'
-  const cards = data?.cards || [
+  const title = typeof data?.title === 'string' ? data.title : 'How It Works'
+  const description = typeof data?.description === 'string' ? data.description : 'Three simple steps to get your custom plan'
+  const cards = Array.isArray(data?.cards) ? data.cards as unknown[] : [
     {
       title: 'Tell Us About Your Universe',
       description: 'Share key details about your organization and core needs.',
@@ -163,21 +163,21 @@ function HowItWorksSection({ data }: { data?: Record<string, unknown> }) {
 
           {/* Three Steps */}
           <div className="space-y-6">
-            {cards.map((card: Record<string, unknown>, index: number) => (
+            {cards.map((card: unknown, index: number) => { const c = card as Record<string, unknown>; return (
               <Card key={index} className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
                 <CardContent className="p-6 h-full flex flex-col">
                   <div className="flex items-center space-x-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <span className="text-primary font-semibold text-lg">{index + 1}</span>
                     </div>
-                    <H4 className="text-base">{card.title}</H4>
+                    <H4 className="text-base">{typeof c.title === 'string' ? c.title : 'Title'}</H4>
                   </div>
                   <P className="text-muted-foreground text-sm leading-relaxed">
-                    {card.description}
+                    {typeof c.description === 'string' ? c.description : 'Description'}
                   </P>
                 </CardContent>
               </Card>
-            ))}
+            ); })}
           </div>
         </div>
       </Container>
@@ -188,11 +188,11 @@ function HowItWorksSection({ data }: { data?: Record<string, unknown> }) {
 // Get Custom Quote Section (Mobile: Full width with animation, Desktop: Right column)
 function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Get a Custom Quote'
-  const description = data?.description || 'Schedule a consultation to receive your personalized pricing'
-  const ctaButton = data?.ctaButton || { text: 'Get a Custom Quote', action: 'openConsultation' }
+  const title = typeof data?.title === 'string' ? data.title : 'Get a Custom Quote'
+  const description = typeof data?.description === 'string' ? data.description : 'Schedule a consultation to receive your personalized pricing'
+  const ctaButton = (data?.ctaButton as Record<string, unknown>) || { text: 'Get a Custom Quote', action: 'openConsultation' }
   const hasAnimation = data?.hasAnimation !== false
-  const animationType = data?.animationType || 'growth'
+  const animationType = typeof data?.animationType === 'string' ? data.animationType : 'growth'
 
   return (
     <div className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] pb-0 lg:hidden">
@@ -209,7 +209,7 @@ function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultatio
           <div className="text-center group">
             <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
               <Button size="lg" onClick={onOpenConsultation} className="flex items-center mx-auto cursor-pointer group">
-                {ctaButton.text}
+                {typeof ctaButton.text === 'string' ? ctaButton.text : 'Button'}
                 <Icon name="calendar-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
               </Button>
             </div>
@@ -223,8 +223,8 @@ function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultatio
 // Desktop Combined Section (Side-by-side layout)
 function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData }: { onOpenConsultation: () => void, howItWorksData?: Record<string, unknown>, quoteData?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const howItWorksTitle = howItWorksData?.title || 'How It Works'
-  const howItWorksCards = howItWorksData?.cards || [
+  const howItWorksTitle = typeof howItWorksData?.title === 'string' ? howItWorksData.title : 'How It Works'
+  const howItWorksCards = Array.isArray(howItWorksData?.cards) ? howItWorksData.cards as unknown[] : [
     {
       title: 'Tell Us About Your Universe',
       description: 'Share key details about your organization and core needs.',
@@ -241,7 +241,7 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
       icon: 'file-text-line'
     }
   ]
-  const quoteButton = quoteData?.ctaButton || { text: 'Get a Custom Quote', action: 'openConsultation' }
+  const quoteButton = (quoteData?.ctaButton as Record<string, unknown>) || { text: 'Get a Custom Quote', action: 'openConsultation' }
 
   return (
     <Section 
@@ -271,21 +271,21 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
 
               {/* Three Steps */}
               <div className="space-y-6">
-                {howItWorksCards.map((card: Record<string, unknown>, index: number) => (
+                {howItWorksCards.map((card: unknown, index: number) => { const c = card as Record<string, unknown>; return (
                   <Card key={index} className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
                     <CardContent className="p-6 h-full flex flex-col">
                       <div className="flex items-center space-x-3 mb-4">
                         <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <span className="text-primary font-semibold text-lg">{index + 1}</span>
                         </div>
-                        <H4 className="text-base">{card.title}</H4>
+                        <H4 className="text-base">{typeof c.title === 'string' ? c.title : 'Title'}</H4>
                       </div>
                       <P className="text-muted-foreground text-sm leading-relaxed">
-                        {card.description}
+                        {typeof c.description === 'string' ? c.description : 'Description'}
                       </P>
                     </CardContent>
                   </Card>
-                ))}
+                ); })}
               </div>
             </div>
           </div>
@@ -295,7 +295,7 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
             <div className="text-center group">
               <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
                 <Button size="lg" onClick={onOpenConsultation} className="flex items-center mx-auto cursor-pointer group">
-                  {quoteButton.text}
+                  {typeof quoteButton.text === 'string' ? quoteButton.text : 'Button'}
                   <Icon name="calendar-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
                 </Button>
               </div>
@@ -310,13 +310,13 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
 // CTA Section
 function CTASection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Ready to Transform Your Operations?'
-  const description = data?.description || 'Discover how Elevation AI can unify your knowledge, secure your operations, and orchestrate intelligent workflows across your organization.'
-  const ctaButtons = data?.ctaButtons || [
+  const title = typeof data?.title === 'string' ? data.title : 'Ready to Transform Your Operations?'
+  const description = typeof data?.description === 'string' ? data.description : 'Discover how Elevation AI can unify your knowledge, secure your operations, and orchestrate intelligent workflows across your organization.'
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as unknown[] : [
     { text: 'Request a Demo', href: '/website/demo', variant: 'default' },
     { text: 'Get in Touch', href: '/website/contact', variant: 'outline' }
   ]
-  const backgroundColor = data?.backgroundColor || 'bg-muted/30'
+  const backgroundColor = typeof data?.backgroundColor === 'string' ? data.backgroundColor : 'bg-muted/30'
 
   return (
     <div className={`${backgroundColor} -mt-px`}>
@@ -330,13 +330,17 @@ function CTASection({ data }: { data?: Record<string, unknown> }) {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {ctaButtons.map((button: Record<string, unknown>, index: number) => (
-              <Button key={index} size="lg" variant={button.variant} asChild>
-                <Link href={button.href}>
-                  {button.text}
+            {ctaButtons.map((button: unknown, index: number) => { 
+              const btn = button as Record<string, unknown>; 
+              const v = typeof btn.variant === "string" ? (btn.variant as any) : undefined;
+              return (
+              <Button key={index} size="lg" variant={v} asChild>
+                <Link href={typeof btn.href === 'string' ? btn.href : '/'}>
+                  {typeof btn.text === 'string' ? btn.text : 'Button'}
                 </Link>
               </Button>
-            ))}
+              );
+            })}
           </div>
         </div>
       </Container>
@@ -391,10 +395,10 @@ export default function PricingPage() {
   }
 
   // Extract section data
-  const heroData = pageData?.sections?.find(s => s.section_type === 'hero_simple')?.section_data
-  const howItWorksData = pageData?.sections?.find(s => s.section_type === 'problem_cards')?.section_data
-  const quoteData = pageData?.sections?.find(s => s.section_type === 'cta' && s.section_order === 3)?.section_data
-  const ctaData = pageData?.sections?.find(s => s.section_type === 'cta' && s.section_order === 4)?.section_data
+  const heroData = pageData?.sections?.find(s => s.section_type === 'hero_simple')?.section_data || undefined
+  const howItWorksData = pageData?.sections?.find(s => s.section_type === 'problem_cards')?.section_data || undefined
+  const quoteData = pageData?.sections?.find(s => s.section_type === 'cta' && s.section_order === 3)?.section_data || undefined
+  const ctaData = pageData?.sections?.find(s => s.section_type === 'cta' && s.section_order === 4)?.section_data || undefined
 
   if (loading) {
     return (

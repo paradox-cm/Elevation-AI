@@ -47,7 +47,8 @@ export function useBlogPostCache({
   const isCacheValid = useCallback((cacheEntry: Record<string, unknown>) => {
     if (!cacheEntry) return false
     const now = Date.now()
-    return (now - cacheEntry.timestamp) < cacheExpiry
+    const timestamp = typeof cacheEntry.timestamp === 'number' ? cacheEntry.timestamp : 0
+    return (now - timestamp) < cacheExpiry
   }, [cacheExpiry])
 
   // Get blog post from cache or fetch from API
@@ -83,12 +84,19 @@ export function useBlogPostCache({
     try {
       const data = await blogPostsService.getBySlug(slug)
       
+      if (!data) {
+        setError('Blog post not found')
+        setIsLoading(false)
+        return
+      }
+      
       // Transform the database post to match the expected format
       const transformedPost = {
         ...data,
-        author: data.author_id ? "Elevation AI Team" : "Elevation AI Team",
+        author: "Elevation AI Team",
         author_role: "Content Team",
-        read_time: "8 min read" // Default read time
+        read_time: "8 min read", // Default read time
+        category: data.category || null // Ensure category is null if undefined
       }
       
       // Update cache
@@ -171,7 +179,8 @@ export function useBlogListCache({
   const isCacheValid = useCallback((cacheEntry: Record<string, unknown>) => {
     if (!cacheEntry) return false
     const now = Date.now()
-    return (now - cacheEntry.timestamp) < cacheExpiry
+    const timestamp = typeof cacheEntry.timestamp === 'number' ? cacheEntry.timestamp : 0
+    return (now - timestamp) < cacheExpiry
   }, [cacheExpiry])
 
   // Get blog list from cache or fetch from API
@@ -192,7 +201,8 @@ export function useBlogListCache({
     }
 
     // Mark as loading only if we don't have valid cached data
-    if (!blogListCache.get(cacheKey) || !isCacheValid(blogListCache.get(cacheKey))) {
+    const cachedEntry = blogListCache.get(cacheKey)
+    if (!cachedEntry || !isCacheValid(cachedEntry)) {
       setIsLoading(true)
     }
     
@@ -278,5 +288,6 @@ export function getBlogCacheStats() {
 function isCacheValid(cacheEntry: Record<string, unknown>): boolean {
   if (!cacheEntry) return false
   const now = Date.now()
-  return (now - cacheEntry.timestamp) < CACHE_EXPIRY
+  const timestamp = typeof cacheEntry.timestamp === 'number' ? cacheEntry.timestamp : 0
+  return (now - timestamp) < CACHE_EXPIRY
 }

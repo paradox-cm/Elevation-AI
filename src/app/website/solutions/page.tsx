@@ -8,6 +8,20 @@ interface Solution {
   icon: string;
 }
 
+interface IndustrySolution {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  challenge: {
+    title: string;
+    content: string;
+  };
+  solutions: string[];
+  useCases: string[];
+  integrations: string;
+}
+
 interface Feature {
   title: string;
   description: string;
@@ -623,9 +637,9 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
-  const sectionTitle = data?.title || "Industry Solutions"
-  const sectionDescription = data?.description || "Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results."
-  const solutions = data?.solutions || industrySolutions
+  const sectionTitle = typeof data?.title === 'string' ? data.title : "Industry Solutions"
+  const sectionDescription = typeof data?.description === 'string' ? data.description : "Every industry faces unique challenges in the agentic era. From complex regulatory requirements to specialized workflows, Elevation AI provides industry-specific solutions that understand your domain, integrate with your existing systems, and deliver measurable results."
+  const solutions = Array.isArray(data?.solutions) ? data.solutions as IndustrySolution[] : industrySolutions
 
   const handleToggle = (cardId: string) => {
     const newOpenCardId = openCardId === cardId ? null : cardId
@@ -795,7 +809,7 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {solutions.map((solution: Solution, index: number) => (
+            {solutions.map((solution: IndustrySolution, index: number) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -825,9 +839,9 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
-  const sectionTitle = data?.title || "By Stage Solutions"
-  const sectionDescription = data?.description || "Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next."
-  const solutions = data?.solutions || stageSolutions
+  const sectionTitle = typeof data?.title === 'string' ? data.title : "By Stage Solutions"
+  const sectionDescription = typeof data?.description === 'string' ? data.description : "Every organization goes through distinct stages of growth and evolution. Each stage presents unique challenges, opportunities, and requirements. Elevation AI provides stage-specific solutions that understand your current needs while preparing you for what's next."
+  const solutions = Array.isArray(data?.solutions) ? data.solutions as IndustrySolution[] : stageSolutions
 
   const handleToggle = (cardId: string) => {
     const newOpenCardId = openCardId === cardId ? null : cardId
@@ -997,7 +1011,7 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {solutions.map((solution: Solution, index: number) => (
+            {solutions.map((solution: IndustrySolution, index: number) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -1032,7 +1046,7 @@ function ExpandableSolutionCard({
   onNavigateUp, 
   onNavigateDown 
 }: { 
-  solution: Solution, 
+  solution: IndustrySolution, 
   type: 'industry' | 'stage',
   isOpen: boolean,
   onToggle: () => void,
@@ -1172,9 +1186,9 @@ function ExpandableSolutionCard({
 
 // Solution Features Section Component
 function SolutionFeaturesSection({ data }: { data?: Record<string, unknown> }) {
-  const sectionTitle = data?.section_title || "Built for Every Industry, Every Scale"
-  const description = data?.description || "Our platform adapts to your environment with flexible deployment options, comprehensive integrations, and enterprise-grade governance."
-  const features = data?.features || [
+  const sectionTitle = typeof data?.section_title === 'string' ? data.section_title : "Built for Every Industry, Every Scale"
+  const description = typeof data?.description === 'string' ? data.description : "Our platform adapts to your environment with flexible deployment options, comprehensive integrations, and enterprise-grade governance."
+  const features = Array.isArray(data?.features) ? data.features as Feature[] : [
     {
       title: "Industry-Ready Compliance",
       description: "Policy packs and guardrails mapped to leading frameworks (e.g., SOC 2/ISO control families, GDPR). Data residency by region and information-barrier controls for regulated workflows.",
@@ -1245,12 +1259,12 @@ function SolutionFeaturesSection({ data }: { data?: Record<string, unknown> }) {
 
 // CTA Section Component
 function CTASection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Ready to Transform Your Organization?"
-  const description = data?.description || "Discover how Elevation AI can solve your unique industry challenges and accelerate your growth."
-  const ctaPrimaryText = data?.cta_primary_text || "Schedule Consultation"
-  const ctaPrimaryUrl = data?.cta_primary_url || "/website/demo"
-  const ctaSecondaryText = data?.cta_secondary_text || "Contact Sales"
-  const ctaSecondaryUrl = data?.cta_secondary_url || "/website/contact"
+  const title = typeof data?.title === 'string' ? data.title : "Ready to Transform Your Organization?"
+  const description = typeof data?.description === 'string' ? data.description : "Discover how Elevation AI can solve your unique industry challenges and accelerate your growth."
+  const ctaPrimaryText = typeof data?.cta_primary_text === 'string' ? data.cta_primary_text : "Schedule Consultation"
+  const ctaPrimaryUrl = typeof data?.cta_primary_url === 'string' ? data.cta_primary_url : "/website/demo"
+  const ctaSecondaryText = typeof data?.cta_secondary_text === 'string' ? data.cta_secondary_text : "Contact Sales"
+  const ctaSecondaryUrl = typeof data?.cta_secondary_url === 'string' ? data.cta_secondary_url : "/website/contact"
 
   return (
     <Section paddingY="lg" className="bg-muted/30">
@@ -1347,19 +1361,19 @@ export default function WireframesSolutionsPage() {
               ) : (
                 <>
                   {/* Solutions Hero Section */}
-                  <SolutionsHeroSection data={pageData?.sections?.[0]?.section_data} />
+                  <SolutionsHeroSection data={pageData?.sections?.[0]?.section_data || undefined} />
 
                   {/* Industry Solutions Section */}
-                  <IndustrySolutionsSection data={pageData?.sections?.[1]?.section_data} />
+                  <IndustrySolutionsSection data={pageData?.sections?.[1]?.section_data || undefined} />
 
                   {/* Stage Solutions Section */}
-                  <StageSolutionsSection data={pageData?.sections?.[2]?.section_data} />
+                  <StageSolutionsSection data={pageData?.sections?.[2]?.section_data || undefined} />
 
                   {/* Solution Features Section */}
-                  <SolutionFeaturesSection data={pageData?.sections?.[3]?.section_data} />
+                  <SolutionFeaturesSection data={pageData?.sections?.[3]?.section_data || undefined} />
 
                   {/* CTA Section */}
-                  <CTASection data={pageData?.sections?.[4]?.section_data} />
+                  <CTASection data={pageData?.sections?.[4]?.section_data || undefined} />
                 </>
               )}
             </main>

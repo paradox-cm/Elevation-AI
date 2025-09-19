@@ -327,28 +327,28 @@ function CreativeHeroSection({ data }: { data?: Record<string, unknown> }) {
           <div className="space-y-6 sm:space-y-8">
              <div className="space-y-4 sm:space-y-6">
                         <H1>
-                          {data?.title || 'Your Dedicated Team for the Agentic Era'}
+                          {typeof data?.title === 'string' ? data.title : 'Your Dedicated Team for the Agentic Era'}
                         </H1>
               <BodyLarge className="text-muted-foreground max-w-2xl">
-                {data?.description || 'For organizations that need more than a platform, our Concierge Support team acts as an extension of your own, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.'}
+                {typeof data?.description === 'string' ? data.description : 'For organizations that need more than a platform, our Concierge Support team acts as an extension of your own, providing the strategic guidance and technical expertise to design, build, and implement transformative agentic solutions.'}
               </BodyLarge>
             </div>
 
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {(data?.ctaButtons || [
+              {(Array.isArray(data?.ctaButtons) ? data.ctaButtons : [
                 { text: 'Learn More', href: '#concierge-team', variant: 'default' },
                 { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
               ]).map((button: Record<string, unknown>, index: number) => (
                 <Button 
                   key={index}
                   size="lg" 
-                  variant={button.variant}
+                  variant={typeof button.variant === 'string' && ["default", "link", "destructive", "outline", "secondary", "ghost"].includes(button.variant) ? button.variant as "default" | "link" | "destructive" | "outline" | "secondary" | "ghost" : "default"}
                   className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
                   asChild
                 >
-                  <Link href={button.href}>{button.text}</Link>
+                  <Link href={typeof button.href === 'string' ? button.href : '#'}>{typeof button.text === 'string' ? button.text : ''}</Link>
                 </Button>
               ))}
             </div>
@@ -385,7 +385,7 @@ function CreativeHeroSection({ data }: { data?: Record<string, unknown> }) {
               {/* Center Logo */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img 
-                  src={data?.logoImage || "/images/branding/E-AI-Squircle.svg"} 
+                  src={typeof data?.logoImage === 'string' ? data.logoImage : "/images/branding/E-AI-Squircle.svg"} 
                   alt="Elevation AI Logo"
                   className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 dark:brightness-0 dark:invert"
                 />
@@ -402,15 +402,15 @@ function CreativeHeroSection({ data }: { data?: Record<string, unknown> }) {
 
 
 // Logo Carousel Section
-function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
+function LogoCarouselSection({ data }: { data?: Record<string, unknown> | null }) {
   return (
-    <Section paddingY="lg" className={data?.backgroundColor || "bg-muted/20"}>
+    <Section paddingY="lg" className={typeof data?.backgroundColor === 'string' ? data.backgroundColor : "bg-muted/20"}>
       <Container size="2xl">
         <div className="space-y-6 sm:space-y-8">
           {/* Section Header */}
           <div className="text-center space-y-2">
             <H3 className="text-muted-foreground">
-              {data?.title || 'Led by industry veterans from:'}
+              {typeof data?.title === 'string' ? data.title : 'Led by industry veterans from:'}
             </H3>
           </div>
           
@@ -478,7 +478,7 @@ export default function PeopleConciergePage() {
             ) : (
               <>
                 {/* Creative Hero Section */}
-                <CreativeHeroSection data={pageData?.sections.find(s => s.section_type === 'hero_simple')?.section_data} />
+                <CreativeHeroSection data={pageData?.sections.find(s => s.section_type === 'hero_simple')?.section_data || undefined} />
 
                 {/* Concierge Details Section */}
                 <div id="concierge-team">
@@ -494,7 +494,7 @@ export default function PeopleConciergePage() {
                                 <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500/10 rounded-full border border-orange-500/20">
                                   <Brain className="w-5 h-5 text-orange-500" />
                                   <span className="text-sm font-semibold text-orange-500">
-                                    {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.challenge?.badgeText || 'The Challenge'}
+                                    {'The Challenge'}
                                   </span>
                                 </div>
                                 <H2>Technology Alone Isn't Transformation</H2>
@@ -505,7 +505,7 @@ export default function PeopleConciergePage() {
                                 <div className="relative p-8 sm:p-12 lg:p-16 rounded-3xl border border-orange-500/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
                                   <div className="max-w-5xl lg:max-w-[1144px] mx-auto">
                                     <P className="text-lg leading-relaxed text-center">
-                                      {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.challenge?.statement || "Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates. The transition requires a unique blend of strategic foresight to identify the right opportunities, deep technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption. Most organizations don't have this specialized, multi-disciplinary team in-house."}
+                                      {"Adopting agentic AI is not just about adding another app to your tech stack; it's a fundamental shift in how your business operates. The transition requires a unique blend of strategic foresight to identify the right opportunities, deep technical expertise to build the solutions, and a hands-on partnership to ensure successful implementation and adoption. Most organizations don't have this specialized, multi-disciplinary team in-house."}
                                     </P>
                                   </div>
                                 </div>
@@ -524,16 +524,16 @@ export default function PeopleConciergePage() {
                                       <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
                                         <Users className="w-5 h-5 text-primary" />
                                         <span className="text-sm font-semibold text-primary">
-                                          {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.badgeText || 'Our Solution: Your Embedded Team of Experts'}
+                                          {'Our Solution: Your Embedded Team of Experts'}
                                         </span>
                                       </div>
                                       <H2>
-                                        {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.subtitle || 'We Become Your Agentic Operations Team'}
+                                        {'We Become Your Agentic Operations Team'}
                                       </H2>
                                     </div>
                                     
                                     <BodyLarge className="text-muted-foreground leading-relaxed text-center text-lg max-w-5xl mx-auto">
-                                      {pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.description || 'Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.'}
+                                      {'Our Concierge service is a deep, hands-on partnership. We embed our team of expert engineers and strategists directly into your operations to accelerate your journey into the agentic era.'}
                                     </BodyLarge>
                                   </div>
 
@@ -541,7 +541,7 @@ export default function PeopleConciergePage() {
                                   <div className="space-y-8">
                                     {/* Four Column Process Flow */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                                      {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data?.solution?.processSteps || [
+                                      {[
                                         {
                                           title: 'Design & Strategize',
                                           description: 'Our engagement begins with a deep-dive discovery process. We work alongside your leadership to map your unique challenges, identify the highest-value automation opportunities, and co-design a clear, phased roadmap for your agentic transformation.',
@@ -562,7 +562,7 @@ export default function PeopleConciergePage() {
                                           description: 'Our partnership doesn\'t end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.',
                                           icon: 'sparkles-line'
                                         }
-                                      ]).map((step: Record<string, unknown>, index: number) => (
+                                      ].map((step: Record<string, unknown>, index: number) => (
                                         <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
                                           {/* Background Pattern */}
                                           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -575,12 +575,12 @@ export default function PeopleConciergePage() {
                                                 {step.icon === 'shield-check-line' && <Shield className="w-5 h-5 text-primary" />}
                                                 {step.icon === 'sparkles-line' && <Sparkles className="w-5 h-5 text-primary" />}
                                               </div>
-                                              <CardTitle className="text-base">{step.title}</CardTitle>
+                                              <CardTitle className="text-base">{typeof step.title === 'string' ? step.title : ''}</CardTitle>
                                             </div>
                                           </CardHeader>
                                           <CardContent className="relative z-10">
                                             <P className="text-muted-foreground leading-relaxed">
-                                              {step.description}
+                                              {typeof step.description === 'string' ? step.description : ''}
                                             </P>
                                           </CardContent>
                                         </Card>
@@ -605,16 +605,16 @@ export default function PeopleConciergePage() {
                                     <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
                                       <Target className="w-5 h-5 text-primary" />
                                       <span className="text-sm font-semibold text-primary">
-                                        {pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.badgeText || 'Who This Is For'}
+                                        {'Who This Is For'}
                                       </span>
                                     </div>
                                     
                                     <div>
                                       <H2>
-                                        {pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.title || 'A Partnership for Ambitious Leaders'}
+                                        {'A Partnership for Ambitious Leaders'}
                                       </H2>
                                       <P className="text-muted-foreground leading-relaxed text-lg">
-                                        {pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.description || 'Our Concierge service is designed for growth-oriented leaders who:'}
+                                        {'Our Concierge service is designed for growth-oriented leaders who:'}
                                       </P>
                                     </div>
                                   </div>
@@ -624,7 +624,7 @@ export default function PeopleConciergePage() {
                                     {/* E-AI-Square Logo - Centered in container */}
                                     <div className="absolute inset-0 flex items-center justify-center z-10">
                                       <Image
-                                        src={pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.logoImage || "/images/branding/E-AI-Sqaure.svg"}
+                                        src={"/images/branding/E-AI-Sqaure.svg"}
                                         alt="Elevation AI Logo"
                                         width={123}
                                         height={123}
@@ -642,7 +642,7 @@ export default function PeopleConciergePage() {
 
                                 {/* Right Column - Four Characteristic Cards */}
                                 <div className="space-y-6">
-                                  {(pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data?.characteristics || [
+                                  {[
                                     {
                                       number: '1',
                                       title: 'First-Mover Advantage',
@@ -663,17 +663,17 @@ export default function PeopleConciergePage() {
                                       title: 'Specialized Talent',
                                       description: 'Need to augment their existing team\'s capacity with specialized, hard-to-find talent.'
                                     }
-                                  ]).map((characteristic: Record<string, unknown>, index: number) => (
+                                  ].map((characteristic: Record<string, unknown>, index: number) => (
                                     <Card key={index} className="border-border/50 bg-transparent">
                                       <CardHeader className="pb-3">
                                         <CardTitle className="text-base font-semibold flex items-center gap-3">
-                                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">{characteristic.number}</span>
-                                          {characteristic.title}
+                                          <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">{typeof characteristic.number === 'string' ? characteristic.number : ''}</span>
+                                          {typeof characteristic.title === 'string' ? characteristic.title : ''}
                                         </CardTitle>
                                       </CardHeader>
                                       <CardContent>
                                         <P className="text-muted-foreground leading-relaxed text-sm">
-                                          {characteristic.description}
+                                          {typeof characteristic.description === 'string' ? characteristic.description : ''}
                                         </P>
                                       </CardContent>
                                     </Card>
@@ -690,7 +690,7 @@ export default function PeopleConciergePage() {
 
                 {/* Expert Network Section */}
                 <div id="expert-network">
-                  <Section paddingY="lg" className={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.backgroundColor || 'bg-blue-500/10'}>
+                  <Section paddingY="lg" className={'bg-blue-500/10'}>
                     <Container size="2xl">
                       <div className="space-y-12">
                         {/* Header */}
@@ -698,31 +698,61 @@ export default function PeopleConciergePage() {
                           <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
                             <Users className="w-5 h-5 text-primary" />
                             <span className="text-sm font-semibold text-primary">
-                              {pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.badgeText || 'Expert Network'}
+                              {'Expert Network'}
                             </span>
                           </div>
                           <H1>
-                            {pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.title || 'Access World-Class Expertise'}
+                            {'Access World-Class Expertise'}
                           </H1>
                           <BodyLarge className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-lg">
-                            {pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.description || 'Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.'}
+                            {'Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.'}
                           </BodyLarge>
                         </div>
 
                         {/* Expert Categories Carousel */}
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                           <PeopleCarousel
-                            items={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.expertCategories?.map((category: Record<string, unknown>) => ({
-                              id: category.id,
-                              title: category.title,
-                              description: category.description,
+                            items={[
+                              {
+                                id: 'ai-strategy',
+                                title: 'AI Strategy & Implementation',
+                                description: 'Strategic guidance on AI adoption, roadmap development, and change management.',
+                                icon: 'brain-line'
+                              },
+                              {
+                                id: 'enterprise-architecture',
+                                title: 'Enterprise Architecture',
+                                description: 'System design, integration patterns, and scalable infrastructure solutions.',
+                                icon: 'building-2-line'
+                              },
+                              {
+                                id: 'data-science',
+                                title: 'Data Science & Analytics',
+                                description: 'Advanced analytics, machine learning models, and data-driven insights.',
+                                icon: 'bar-chart-line'
+                              },
+                              {
+                                id: 'industry-expertise',
+                                title: 'Industry-Specific Expertise',
+                                description: 'Domain knowledge across finance, healthcare, manufacturing, and more.',
+                                icon: 'briefcase-line'
+                              }
+                            ].map((category: Record<string, unknown>) => ({
+                              id: typeof category.id === 'string' ? category.id : '',
+                              title: typeof category.title === 'string' ? category.title : '',
+                              description: typeof category.description === 'string' ? category.description : '',
                               icon: category.icon === 'brain-line' ? Brain : 
                                     category.icon === 'shield-check-line' ? Shield : 
                                     category.icon === 'global-line' ? Globe : 
                                     category.icon === 'award-line' ? Award : Brain,
                               content: (
                                 <div className="flex flex-wrap gap-2">
-                                  {category.specialties.map((specialty: string) => (
+                                  {(Array.isArray(category.specialties) ? category.specialties : [
+                                    'AI Strategy',
+                                    'Change Management',
+                                    'ROI Analysis',
+                                    'Implementation Planning'
+                                  ]).map((specialty: string) => (
                                     <Badge key={specialty} variant="secondary" className="text-sm bg-blue-500/10 text-blue-500 border-blue-500/20">
                                       {specialty}
                                     </Badge>
@@ -730,15 +760,15 @@ export default function PeopleConciergePage() {
                                 </div>
                               )
                             })) || expertCarouselItems}
-                            autoPlay={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.autoPlay ?? true}
-                            autoPlayInterval={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.autoPlayInterval || 5000}
-                            showProgressIndicators={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.showProgressIndicators ?? true}
-                            cardWidth={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.cardWidth || 320}
-                            cardGap={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.cardGap || 24}
-                            highlightActiveCard={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.highlightActiveCard ?? true}
+                            autoPlay={true}
+                            autoPlayInterval={5000}
+                            showProgressIndicators={true}
+                            cardWidth={320}
+                            cardGap={24}
+                            highlightActiveCard={true}
                             className="w-full"
-                            naturalScroll={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.naturalScroll ?? false}
-                            flexibleWidth={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.carouselSettings?.flexibleWidth ?? true}
+                            naturalScroll={false}
+                            flexibleWidth={true}
                             responsive={{
                               sm: { cardWidth: 320, cardGap: 16 },
                               md: { cardWidth: 320, cardGap: 20 },
@@ -758,27 +788,33 @@ export default function PeopleConciergePage() {
 
                 {/* CTA Section */}
                 <div id="connect-experts">
-                  <Section paddingY="lg" className={pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.backgroundColor || 'bg-muted/30'}>
+                  <Section paddingY="lg" className={typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.backgroundColor === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.backgroundColor as string : 'bg-muted/30'}>
                     <Container size="2xl">
                       <div className="max-w-4xl mx-auto text-center space-y-8">
                         <div className="space-y-4">
                           <H2>
-                            {pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.title || 'Ready to Build Your Agentic Future?'}
+                            {typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.title === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.title as string : 'Ready to Build Your Agentic Future?'}
                           </H2>
                           <P className="text-muted-foreground leading-relaxed">
-                            {pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.description || 'Let\'s discuss how our Concierge Support Team can help you achieve your goals.'}
+                            {typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.description === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.description as string : 'Let\'s discuss how our Concierge Support Team can help you achieve your goals.'}
                           </P>
                         </div>
                         
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                          {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.ctaButtons || [
+                          {(Array.isArray((pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.ctaButtons) ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.ctaButtons as unknown[] : [
                             { text: 'Speak With Our Team', href: '/website/demo', variant: 'default' },
                             { text: 'About Us', href: '/website/about', variant: 'outline' }
-                          ]).map((button: Record<string, unknown>, index: number) => (
-                            <Button key={index} size="lg" variant={button.variant} asChild>
-                              <Link href={button.href}>{button.text}</Link>
+                          ]).map((button: unknown, index: number) => {
+                            const btn = button as Record<string, unknown>
+                            const v = typeof btn.variant === "string" ? (btn.variant as any) : undefined;
+                            const href = typeof btn.href === "string" ? btn.href : "/";
+                            const text = typeof btn.text === "string" ? btn.text : "Button";
+                            return (
+                            <Button key={index} size="lg" variant={v} asChild>
+                              <Link href={href}>{text}</Link>
                             </Button>
-                          ))}
+                            )
+                          })}
                         </div>
                       </div>
                     </Container>

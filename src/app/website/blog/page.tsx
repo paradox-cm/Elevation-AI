@@ -312,10 +312,10 @@ export default function BlogPage() {
       slug: "ai-transformation-financial-services"
     }
   ]
-  const ctaTitle = ctaSection?.section_data?.title || "Stay Updated"
-  const ctaDescription = ctaSection?.section_data?.description || "Get the latest insights on AI, business orchestration, and industry trends delivered to your inbox."
-  const ctaPlaceholder = ctaSection?.section_data?.email_placeholder || "Enter your email"
-  const ctaButtonText = ctaSection?.section_data?.cta_primary_text || "Subscribe"
+  const ctaTitle = (typeof ctaSection?.section_data?.title === 'string' ? ctaSection.section_data.title : "Stay Updated")
+  const ctaDescription = (typeof ctaSection?.section_data?.description === 'string' ? ctaSection.section_data.description : "Get the latest insights on AI, business orchestration, and industry trends delivered to your inbox.")
+  const ctaPlaceholder = (typeof ctaSection?.section_data?.email_placeholder === 'string' ? ctaSection.section_data.email_placeholder : "Enter your email")
+  const ctaButtonText = (typeof ctaSection?.section_data?.cta_primary_text === 'string' ? ctaSection.section_data.cta_primary_text : "Subscribe")
 
   return (
     <PageWrapper>
@@ -457,7 +457,10 @@ export default function BlogPage() {
                                 onError={(e) => {
                                   // Fallback to placeholder if image fails to load
                                   e.currentTarget.style.display = 'none'
-                                  e.currentTarget.nextElementSibling.style.display = 'flex'
+                                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement | null
+                                  if (nextElement) {
+                                    nextElement.style.display = 'flex'
+                                  }
                                 }}
                               />
                             ) : null}

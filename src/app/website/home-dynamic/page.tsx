@@ -7,6 +7,7 @@ import { MainHeader } from "@/components/ui/main-header"
 import { WebsiteFooter } from "@/components/ui/website-footer"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { DynamicPageClient } from "@/components/cms/dynamic-page-client"
+import { DynamicPageContent } from "@/components/cms/dynamic-page-content"
 
 export default function DynamicHomePage() {
   // Page data will be fetched by the DynamicPageClient component
@@ -20,7 +21,7 @@ export default function DynamicHomePage() {
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
-            <DynamicPageClient pageId="home" />
+            <DynamicPageContent pageSlug="home" />
           </main>
         </div>
       </MobileOnlyLayout>

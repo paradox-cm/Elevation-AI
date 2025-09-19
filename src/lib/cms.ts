@@ -14,6 +14,21 @@ import {
   BlogPostWithCategory
 } from '@/types/cms'
 
+// Export types for use in components
+export type {
+  Page,
+  PageSection,
+  FAQCategory,
+  FAQ,
+  BlogPost,
+  BlogCategory,
+  Media,
+  SiteSetting,
+  PageWithSections,
+  FAQCategoryWithFAQs,
+  BlogPostWithCategory
+}
+
 const supabase = createClient()
 
 // Pages CRUD Operations

@@ -18,8 +18,8 @@ import { PageWithSections } from "@/types/cms"
 
 // Logo Grid Section
 function LogoGridSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Led by industry veterans from:"
-  const logos = data?.logos || [
+  const title = (typeof data?.title === 'string' ? data.title : "Led by industry veterans from:")
+  const logos = (Array.isArray(data?.logos) ? data.logos : [
     { name: "Accenture", filename: "Accenture.svg", showText: true },
     { name: "Apple", filename: "Apple.svg", showText: false },
     { name: "Bank of America", filename: "Bank-of-America.svg", showText: true },
@@ -35,7 +35,7 @@ function LogoGridSection({ data }: { data?: Record<string, unknown> }) {
     { name: "Tesla", filename: "Tesla.svg", showText: true },
     { name: "Visa", filename: "Visa.svg", showText: true },
     { name: "Microsoft", filename: "Windows.svg", showText: true }
-  ]
+  ])
 
   return (
     <Section paddingY="lg" className="bg-muted/20">
@@ -84,9 +84,9 @@ function LogoGridSection({ data }: { data?: Record<string, unknown> }) {
 
 // Hero Section Component
 function HeroSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Investing in the Agentic Era"
-  const description = data?.description || "Led by a top-tier team of enterprise leaders, we are building the essential platform for the agentic era."
-  const faviconUrl = data?.favicon_url || "/images/Favicon-Stroke.png"
+  const title = (typeof data?.title === 'string' ? data.title : "Investing in the Agentic Era")
+  const description = (typeof data?.description === 'string' ? data.description : "Led by a top-tier team of enterprise leaders, we are building the essential platform for the agentic era.")
+  const faviconUrl = (typeof data?.favicon_url === 'string' ? data.favicon_url : "/images/Favicon-Stroke.png")
   const backgroundAnimation = data?.background_animation
 
   return (
@@ -123,8 +123,8 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
 
 // Content Section Component
 function ContentSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || ""
-  const content = data?.content || ""
+  const title = (typeof data?.title === 'string' ? data.title : "")
+  const content = (typeof data?.content === 'string' ? data.content : "")
 
   return (
     <Section paddingY="xl">
@@ -138,10 +138,10 @@ function ContentSection({ data }: { data?: Record<string, unknown> }) {
 
 // CTA Section Component
 function CTASection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || ""
-  const description = data?.description || ""
-  const ctaText = data?.cta_primary_text || "Contact Us"
-  const ctaUrl = data?.cta_primary_url || "/website/contact"
+  const title = (typeof data?.title === 'string' ? data.title : "")
+  const description = (typeof data?.description === 'string' ? data.description : "")
+  const ctaText = (typeof data?.cta_primary_text === 'string' ? data.cta_primary_text : "Contact Us")
+  const ctaUrl = (typeof data?.cta_primary_url === 'string' ? data.cta_primary_url : "/website/contact")
 
   return (
     <Section paddingY="xl">
@@ -211,13 +211,13 @@ export default function InvestorsPage() {
               </div>
             ) : (
               <>
-                <HeroSection data={pageData?.sections?.[0]?.section_data} />
-                <LogoGridSection data={pageData?.sections?.[1]?.section_data} />
+                <HeroSection data={pageData?.sections?.[0]?.section_data || undefined} />
+                <LogoGridSection data={pageData?.sections?.[1]?.section_data || undefined} />
                 
                 <Container size="2xl">
-                  <ContentSection data={pageData?.sections?.[2]?.section_data} />
-                  <ContentSection data={pageData?.sections?.[3]?.section_data} />
-                  <CTASection data={pageData?.sections?.[4]?.section_data} />
+                  <ContentSection data={pageData?.sections?.[2]?.section_data || undefined} />
+                  <ContentSection data={pageData?.sections?.[3]?.section_data || undefined} />
+                  <CTASection data={pageData?.sections?.[4]?.section_data || undefined} />
                 </Container>
               </>
             )}

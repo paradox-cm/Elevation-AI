@@ -370,15 +370,15 @@ export default function KnowledgeBasePage() {
   const ctaSection = pageData?.sections.find(s => s.section_type === 'cta')
 
   // Extract data with fallbacks
-  const pageTitle = headerSection?.section_data?.title || "Knowledge Base"
-  const pageDescription = headerSection?.section_data?.subtitle || "Find comprehensive information about Elevation AI, our platform, and our partnership model. Search across all categories or browse by topic."
-  const searchPlaceholder = faqSection?.section_data?.search_placeholder || "Search knowledge base..."
-  const ctaTitle = ctaSection?.section_data?.title || "Still have questions?"
-  const ctaDescription = ctaSection?.section_data?.description || "Can't find what you're looking for? Our team is here to help."
-  const ctaPrimaryText = ctaSection?.section_data?.cta_primary_text || "Contact Support"
-  const ctaPrimaryUrl = ctaSection?.section_data?.cta_primary_url || "/website/contact"
-  const ctaSecondaryText = ctaSection?.section_data?.cta_secondary_text || "Schedule Demo"
-  const ctaSecondaryUrl = ctaSection?.section_data?.cta_secondary_url || "/website/demo"
+  const pageTitle = (typeof headerSection?.section_data?.title === 'string' ? headerSection.section_data.title : "Knowledge Base")
+  const pageDescription = (typeof headerSection?.section_data?.subtitle === 'string' ? headerSection.section_data.subtitle : "Find comprehensive information about Elevation AI, our platform, and our partnership model. Search across all categories or browse by topic.")
+  const searchPlaceholder = (typeof faqSection?.section_data?.search_placeholder === 'string' ? faqSection.section_data.search_placeholder : "Search knowledge base...")
+  const ctaTitle = (typeof ctaSection?.section_data?.title === 'string' ? ctaSection.section_data.title : "Still have questions?")
+  const ctaDescription = (typeof ctaSection?.section_data?.description === 'string' ? ctaSection.section_data.description : "Can't find what you're looking for? Our team is here to help.")
+  const ctaPrimaryText = (typeof ctaSection?.section_data?.cta_primary_text === 'string' ? ctaSection.section_data.cta_primary_text : "Contact Support")
+  const ctaPrimaryUrl = (typeof ctaSection?.section_data?.cta_primary_url === 'string' ? ctaSection.section_data.cta_primary_url : "/website/contact")
+  const ctaSecondaryText = (typeof ctaSection?.section_data?.cta_secondary_text === 'string' ? ctaSection.section_data.cta_secondary_text : "Schedule Demo")
+  const ctaSecondaryUrl = (typeof ctaSection?.section_data?.cta_secondary_url === 'string' ? ctaSection.section_data.cta_secondary_url : "/website/demo")
 
   const handleSearch = (query: string, results: KnowledgeItem[]) => {
     setSearchQuery(query)

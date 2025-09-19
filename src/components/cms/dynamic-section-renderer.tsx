@@ -50,7 +50,7 @@ const sectionComponents = {
 
 export function DynamicSectionRenderer({ section, className }: DynamicSectionRendererProps) {
   // Get the appropriate component for this section type
-  const SectionComponent = sectionComponents[section.section_type]
+  const SectionComponent = sectionComponents[section.section_type as keyof typeof sectionComponents]
   
   if (!SectionComponent) {
     console.warn(`No component found for section type: ${section.section_type}`)
@@ -64,13 +64,13 @@ export function DynamicSectionRenderer({ section, className }: DynamicSectionRen
     ? JSON.parse(section.section_data) 
     : section.section_data || {}
 
-  const sectionConfig = typeof section.section_config === 'string'
-    ? JSON.parse(section.section_config)
-    : section.section_config || {}
+  const sectionConfig = typeof section.metadata?.config === 'string'
+    ? JSON.parse(section.metadata.config)
+    : section.metadata?.config || {}
 
-  const sectionStyles = typeof section.section_styles === 'string'
-    ? JSON.parse(section.section_styles)
-    : section.section_styles || {}
+  const sectionStyles = typeof section.metadata?.styles === 'string'
+    ? JSON.parse(section.metadata.styles)
+    : section.metadata?.styles || {}
 
   // Combine all section data
   const combinedData = {
@@ -86,10 +86,10 @@ export function DynamicSectionRenderer({ section, className }: DynamicSectionRen
     <div 
       className={cn(
         "section",
-        section.section_class && section.section_class,
+        typeof section.metadata?.section_class === 'string' ? section.metadata.section_class : undefined,
         className
       )}
-      id={section.section_id || undefined}
+      id={section.id}
       data-section-type={section.section_type}
       data-section-id={section.id}
     >

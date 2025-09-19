@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { pagesService, PageWithSections } from '@/lib/cms'
+import { pagesService, PageWithSections, PageSection } from '@/lib/cms'
 import { Container } from '@/components/ui/layout/container'
 import { Section } from '@/components/ui/layout/section'
 import { DynamicHero } from './dynamic-hero'
@@ -66,12 +66,12 @@ export function DynamicPageContent({ pageSlug, fallbackContent }: DynamicPageCon
             <Container size="2xl">
               <DynamicHero 
                 pageSlug={pageSlug}
-                fallbackTitle={section.metadata?.title}
-                fallbackSubtitle={section.metadata?.subtitle}
-                fallbackCtaPrimary={section.metadata?.cta_primary_text}
-                fallbackCtaSecondary={section.metadata?.cta_secondary_text}
-                fallbackCtaPrimaryUrl={section.metadata?.cta_primary_url}
-                fallbackCtaSecondaryUrl={section.metadata?.cta_secondary_url}
+                fallbackTitle={typeof section.metadata?.title === 'string' ? section.metadata.title : undefined}
+                fallbackSubtitle={typeof section.metadata?.subtitle === 'string' ? section.metadata.subtitle : undefined}
+                fallbackCtaPrimary={typeof section.metadata?.cta_primary_text === 'string' ? section.metadata.cta_primary_text : undefined}
+                fallbackCtaSecondary={typeof section.metadata?.cta_secondary_text === 'string' ? section.metadata.cta_secondary_text : undefined}
+                fallbackCtaPrimaryUrl={typeof section.metadata?.cta_primary_url === 'string' ? section.metadata.cta_primary_url : undefined}
+                fallbackCtaSecondaryUrl={typeof section.metadata?.cta_secondary_url === 'string' ? section.metadata.cta_secondary_url : undefined}
               />
             </Container>
           </Section>
@@ -91,10 +91,10 @@ export function DynamicPageContent({ pageSlug, fallbackContent }: DynamicPageCon
           <Section key={section.id} paddingY="lg">
             <Container size="2xl">
               <DynamicBlogListing 
-                limit={section.metadata?.limit || 6}
+                limit={typeof section.metadata?.limit === 'number' ? section.metadata.limit : 6}
                 showTitle={section.metadata?.show_title !== false}
-                title={section.metadata?.title || "Latest Blog Posts"}
-                description={section.metadata?.description || "Stay updated with our latest insights and updates"}
+                title={typeof section.metadata?.title === 'string' ? section.metadata.title : "Latest Blog Posts"}
+                description={typeof section.metadata?.description === 'string' ? section.metadata.description : "Stay updated with our latest insights and updates"}
               />
             </Container>
           </Section>

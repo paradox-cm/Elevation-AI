@@ -282,6 +282,7 @@ function TypewriterText({
   const [currentCycleIndex, setCurrentCycleIndex] = React.useState(0)
   const [isScrolling, setIsScrolling] = React.useState(false)
   const [isTransitioning, setIsTransitioning] = React.useState(false)
+  const [previousWord, setPreviousWord] = React.useState("")
 
   // Split text into words to find where to insert cycling word
   const words = text.split(" ")
@@ -452,8 +453,8 @@ function TypewriterText({
 // Hero Section
 function HeroSection({ data }: { data?: Record<string, unknown> }) {
   const {
-    title = "The Agentic Platform for",
-    cyclingWords = [
+    title: rawTitle = "The Agentic Platform for",
+    cyclingWords: rawCyclingWords = [
       "Intelligent Operations.",
       "Seamless Workflows.",
       "Data-Driven Decisions.",
@@ -463,16 +464,37 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
       "Business Transformation.",
       "Digital Innovation."
     ],
-    description = "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.",
-    ctaButtons = [
+    description: rawDescription = "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.",
+    ctaButtons: rawCtaButtons = [
       { text: "Get Started", href: "/website/sign-up", variant: "default" },
       { text: "Request a Demo", href: "/website/demo", variant: "outline" }
     ],
-    speed = 100,
-    delay = 500,
-    cyclingSpeed = 300,
-    cyclingDelay = 0
+    speed: rawSpeed = 100,
+    delay: rawDelay = 500,
+    cyclingSpeed: rawCyclingSpeed = 300,
+    cyclingDelay: rawCyclingDelay = 0
   } = data || {}
+
+  const title = typeof rawTitle === 'string' ? rawTitle : "The Agentic Platform for"
+  const description = typeof rawDescription === 'string' ? rawDescription : "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated."
+  const speedValue = typeof rawSpeed === 'number' ? rawSpeed : 100
+  const delayValue = typeof rawDelay === 'number' ? rawDelay : 500
+  const cyclingSpeedValue = typeof rawCyclingSpeed === 'number' ? rawCyclingSpeed : 300
+  const cyclingDelayValue = typeof rawCyclingDelay === 'number' ? rawCyclingDelay : 0
+  const cyclingWordsArray = Array.isArray(rawCyclingWords) ? rawCyclingWords : [
+    "Intelligent Operations.",
+    "Seamless Workflows.",
+    "Data-Driven Decisions.",
+    "Automated Processes.",
+    "Strategic Growth.",
+    "Operational Excellence.",
+    "Business Transformation.",
+    "Digital Innovation."
+  ]
+  const ctaButtonsArray = Array.isArray(rawCtaButtons) ? rawCtaButtons : [
+    { text: "Get Started", href: "/website/sign-up", variant: "default" },
+    { text: "Request a Demo", href: "/website/demo", variant: "outline" }
+  ]
 
   return (
     <Section 
@@ -487,11 +509,11 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
                               <HeroHeading>
                   <OriginalTypewriterText 
                     text={title}
-                    speed={speed}
-                    delay={delay}
-                    cyclingSpeed={cyclingSpeed}
-                    cyclingDelay={cyclingDelay}
-                    cyclingWords={cyclingWords}
+                    speed={speedValue}
+                    delay={delayValue}
+                    cyclingSpeed={cyclingSpeedValue}
+                    cyclingDelay={cyclingDelayValue}
+                    cyclingWords={cyclingWordsArray}
                   />
                               </HeroHeading>
               <P className="text-muted-foreground max-w-2xl xl:max-w-4xl 2xl:max-w-5xl text-base sm:text-base md:text-lg leading-relaxed">
@@ -499,19 +521,25 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
               </P>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {ctaButtons.map((button: CTAButton, index: number) => (
+              {ctaButtonsArray.map((button: CTAButton, index: number) => {
+                const validVariants = ["default", "link", "destructive", "outline", "secondary", "ghost"] as const
+                const variant = typeof button.variant === 'string' && validVariants.includes(button.variant as any) 
+                  ? button.variant as "default" | "link" | "destructive" | "outline" | "secondary" | "ghost"
+                  : "default"
+                return (
                 <Button
                   key={index}
                   size="lg"
                   asChild
-                  variant={button.variant || "default"}
+                  variant={variant}
                   className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
                 >
-                  <Link href={button.href}>
-                    {button.text}
+                  <Link href={typeof button.href === 'string' ? button.href : '/'}>
+                    {typeof button.text === 'string' ? button.text : 'Button'}
                   </Link>
                 </Button>
-              ))}
+                )
+              })}
             </div>
           </div>
 
@@ -562,8 +590,8 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
 // Introduction Section
 function IntroductionSection({ data }: { data?: Record<string, unknown> }) {
   const {
-    title = "The Agentic Era is Here",
-    accordionItems = [
+    title: rawTitle = "The Agentic Era is Here",
+    accordionItems: rawAccordionItems = [
       {
         title: "Securely Orchestrate Your Business",
         content: "Your business's greatest asset—its collective data and knowledge—unlocked and ready to power every decision.",
@@ -582,6 +610,25 @@ function IntroductionSection({ data }: { data?: Record<string, unknown> }) {
     ]
   } = data || {}
 
+  const title = typeof rawTitle === 'string' ? rawTitle : "The Agentic Era is Here"
+  const accordionItemsArray = Array.isArray(rawAccordionItems) ? rawAccordionItems : [
+    {
+      title: "Securely Orchestrate Your Business",
+      content: "Your business's greatest asset—its collective data and knowledge—unlocked and ready to power every decision.",
+      value: "greatest-asset"
+    },
+    {
+      title: "Seamless Collaboration, Shared Context", 
+      content: "Instead of being siloed across apps, conversations, and documents, your knowledge lives in one intelligent network—accessible, contextual, and aligned for action.",
+      value: "scattered-to-connected"
+    },
+    {
+      title: "Clarity That Drives Action",
+      content: "Elevation AI transforms complexity into focus—delivering clarity, precision, and control so your organization can move faster and stay ahead.",
+      value: "clarity-drives-action"
+    }
+  ]
+
   return (
     <Section paddingY="xl" className="relative">
       {/* Blue Gradient Background */}
@@ -598,7 +645,7 @@ function IntroductionSection({ data }: { data?: Record<string, unknown> }) {
           {/* Right Column - Accordion */}
           <div className="col-span-12 lg:col-span-8 space-y-4 pb-6">
             <Accordion type="single" collapsible className="w-full" defaultValue="greatest-asset">
-                {accordionItems.map((item: AccordionItem, index: number) => (
+                {accordionItemsArray.map((item: AccordionItem, index: number) => (
                 <AccordionItem key={item.value} value={item.value} className="border-b border-border/50">
                   <AccordionTrigger className="text-left text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-medium leading-tight sm:leading-normal tracking-normal text-primary hover:no-underline py-4">
                     {item.title}
@@ -621,9 +668,9 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
   const {
-    title = "Orchestrate Your Universe",
-    subtitle = "Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.",
-    cards = [
+    title: rawTitle = "Orchestrate Your Universe",
+    subtitle: rawSubtitle = "Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale.",
+    cards: rawCards = [
       {
         title: "The Business Orchestration Platform",
         description: "Work from a single source of truth. Break down the walls between departments and tools, work from a unified platform where all your knowledge is connected, accessible, and actionable in one place.",
@@ -647,7 +694,30 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
     ]
   } = data || {}
 
-  const problems = cards
+  const title = typeof rawTitle === 'string' ? rawTitle : "Orchestrate Your Universe"
+  const subtitle = typeof rawSubtitle === 'string' ? rawSubtitle : "Turn scattered knowledge into precision, collaboration, and clarity—securely at enterprise scale."
+  const problems = Array.isArray(rawCards) ? rawCards : [
+    {
+      title: "The Business Orchestration Platform",
+      description: "Work from a single source of truth. Break down the walls between departments and tools, work from a unified platform where all your knowledge is connected, accessible, and actionable in one place.",
+      icon: "database-2-line"
+    },
+    {
+      title: "Intelligent Process Automation",
+      description: "Eliminate bottlenecks with context-aware automation, identify and automate the repetitive processes that hold you back—freeing people from busywork so they can focus on the high-value work.",
+      icon: "brain-line"
+    },
+    {
+      title: "Real-Time Business Intelligence",
+      description: "Convert blind spots into detailed, actionable insights with a unified command center—delivering real-time visibility across operations and the confidence to act.",
+      icon: "eye-line"
+    },
+    {
+      title: "Future-Ready Strategic Advantage",
+      description: "Mitigate strategic risk, lead the agentic era. Elevation AI is the platform and partnership which ensures you are not just keeping up, but leading the way in the new AI-powered business landscape.",
+      icon: "shield-check-line"
+    }
+  ]
 
 
     return (
@@ -849,9 +919,9 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
   const sectionRef = React.useRef<HTMLDivElement>(null)
   
   const {
-    title = "The Agentic Platform",
-    description = "So your business moves faster, thinks smarter, and stays ahead.",
-    features = [
+    title: rawTitle = "The Agentic Platform",
+    description: rawDescription = "So your business moves faster, thinks smarter, and stays ahead.",
+    features: rawFeatures = [
       {
         title: "Knowledge Blocks",
         description: "The private intelligence layer of your business—capturing and connecting all your data into a live Knowledge Graph that powers every decision and workflow.",
@@ -879,6 +949,36 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
       }
     ]
   } = data || {}
+
+  const title = typeof rawTitle === 'string' ? rawTitle : "The Agentic Platform"
+  const description = typeof rawDescription === 'string' ? rawDescription : "So your business moves faster, thinks smarter, and stays ahead."
+  const featuresArray = Array.isArray(rawFeatures) ? rawFeatures : [
+    {
+      title: "Knowledge Blocks",
+      description: "The private intelligence layer of your business—capturing and connecting all your data into a live Knowledge Graph that powers every decision and workflow.",
+      icon: "node-tree"
+    },
+    {
+      title: "Workspaces & Canvases",
+      description: "The collaborative fabric where teams and AI agents work together. Every task, document, and conversation enriches the shared context automatically.",
+      icon: "layout-grid-line"
+    },
+    {
+      title: "Agentic Engine",
+      description: "Your secure middleware layer—connecting knowledge to external AI tools and agents with enterprise-grade security and orchestration.",
+      icon: "cpu-line"
+    },
+    {
+      title: "Personal Co-pilot",
+      description: "A conversational interface to your entire universe—delivering context-aware answers, insights, and actions from your Knowledge Graph.",
+      icon: "message-3-line"
+    },
+    {
+      title: "Enterprise Security",
+      description: "Enterprise-grade encryption, every action in the platform is auditable, compliant, and secure, ensuring you unlock the full power of AI without ever compromising control.",
+      icon: "shield-keyhole-line"
+    }
+  ]
 
   // Mobile scroll-based card activation - REMOVED for normal scrolling
   // Cards now expand/collapse normally without scroll interference
@@ -942,13 +1042,13 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
         setActiveTab(0)
       } else {
         // Section is below viewport
-        setActiveTab(features.length - 1)
+        setActiveTab(featuresArray.length - 1)
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [features.length])
+  }, [featuresArray.length])
 
   // Handle manual tab clicks
   const handleTabClick = (tabIndex: number) => {
@@ -977,7 +1077,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
             </div>
             <div className="overflow-x-auto pb-1">
               <div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8">
-                {features.map((feature: Feature, index: number) => (
+                {featuresArray.map((feature: Feature, index: number) => (
                   <div
                     key={index}
                     data-platform-card
@@ -1072,7 +1172,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                   </div>
                   {/* Tab Content Container */}
                   <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px] pb-6">
-                    {features.map((feature: Feature, index: number) => (
+                    {featuresArray.map((feature: Feature, index: number) => (
                       <div
                         key={index}
                         className={`absolute inset-0 pb-6 ${
@@ -1085,7 +1185,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                           <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12">
                             {/* Tab Navigation - Positioned at top of card with proper spacing */}
                             <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-2 lg:mb-4 xl:mb-6 2xl:mb-8">
-                              {features.map((featureTab: Feature, tabIndex: number) => (
+                              {featuresArray.map((featureTab: Feature, tabIndex: number) => (
                                 <button
                                   key={tabIndex}
                                   onClick={() => handleTabClick(tabIndex)}
@@ -1176,10 +1276,10 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
 }
 
 // Logo Carousel Section
-function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
+function LogoCarouselSection({ data }: { data?: Record<string, unknown> | null }) {
   const {
-    title = "Led by industry veterans from:",
-    logos = [
+    title: rawTitle = "Led by industry veterans from:",
+    logos: rawLogos = [
       { name: "Accenture", logo: "/images/logos/Accenture.svg" },
       { name: "Apple", logo: "/images/logos/Apple.svg" },
       { name: "Bank of America", logo: "/images/logos/Bank-of-America.svg" },
@@ -1200,6 +1300,27 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
     ]
   } = data || {}
 
+  const title = typeof rawTitle === 'string' ? rawTitle : "Led by industry veterans from:"
+  const logosArray = Array.isArray(rawLogos) ? rawLogos : [
+    { name: "Accenture", logo: "/images/logos/Accenture.svg" },
+    { name: "Apple", logo: "/images/logos/Apple.svg" },
+    { name: "Bank of America", logo: "/images/logos/Bank-of-America.svg" },
+    { name: "Barclays", logo: "/images/logos/Barclays.svg" },
+    { name: "BCG Consulting", logo: "/images/logos/BCG-Consulting.svg" },
+    { name: "Capital One", logo: "/images/logos/Capital-One.svg" },
+    { name: "Deutsche Bank", logo: "/images/logos/Deutsche-Bank.svg" },
+    { name: "eBay", logo: "/images/logos/ebay.svg" },
+    { name: "Google", logo: "/images/logos/Google.svg" },
+    { name: "Indeed", logo: "/images/logos/Indeed.svg" },
+    { name: "JPM", logo: "/images/logos/JPM.svg" },
+    { name: "McKinsey", logo: "/images/logos/McKinsey.svg" },
+    { name: "Meta", logo: "/images/logos/Meta.svg" },
+    { name: "Morgan Stanley", logo: "/images/logos/Morgan-Stanley.svg" },
+    { name: "Tesla", logo: "/images/logos/Tesla.svg" },
+    { name: "Visa", logo: "/images/logos/Visa.svg" },
+    { name: "Windows", logo: "/images/logos/Windows.svg" }
+  ]
+
   return (
     <Section paddingY="lg" className="bg-muted/20">
       <Container size="2xl">
@@ -1213,7 +1334,7 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
           
           {/* Logo Carousel */}
           <div className="py-4 sm:py-6">
-            <LogoCarousel logos={logos} />
+            <LogoCarousel logos={logosArray} />
           </div>
         </div>
       </Container>
@@ -1224,9 +1345,9 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
 // How We Do It Section
 function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
   const {
-    title = "More Than a Platform.",
-    description = "Your partner at every step.",
-    approaches = [
+    title: rawTitle = "More Than a Platform.",
+    description: rawDescription = "Your partner at every step.",
+    approaches: rawApproaches = [
       {
         title: "Your Strategic AI Advisory",
         description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
@@ -1245,7 +1366,25 @@ function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
     ]
   } = data || {}
 
-
+  const title = typeof rawTitle === 'string' ? rawTitle : "More Than a Platform."
+  const description = typeof rawDescription === 'string' ? rawDescription : "Your partner at every step."
+  const approachesArray = Array.isArray(rawApproaches) ? rawApproaches : [
+    {
+      title: "Your Strategic AI Advisory",
+      description: "Guidance that goes beyond setup—our team helps you define where AI creates the most impact for your business, aligning technology with long-term strategy.",
+      icon: "elevation-ai-logo"
+    },
+    {
+      title: "Your Agentic Concierge Team",
+      description: "A hands-on team of engineers and strategists who partner with you to design, build, and customize solutions for your biggest challenges.",
+      icon: "team-line"
+    },
+    {
+      title: "Your Expert & Partner Network",
+      description: "Specialized consultants and domain experts who extend your team's capacity, embedding seamlessly into your workspaces to solve complex problems.",
+      icon: "global-line"
+    }
+  ]
 
   return (
     <Section paddingY="lg" className="bg-muted/30">
@@ -1261,8 +1400,8 @@ function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
 
           {/* Modern Tech Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {approaches.map((approach: Approach, index: number) => (
-              <Link key={index} href="/website/people" className="block">
+            {approachesArray.map((approach: Approach, index: number) => (
+              <Link key={index} href="/website/people-concierge" className="block">
                 <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden cursor-pointer h-full">
                   {/* Background Pattern */}
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -1312,9 +1451,9 @@ function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
 // Who We Serve Section
 function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
   const {
-    title = "Intelligent Solutions for Every Domain",
-    description = "Powered by Elevation AI and guided by experts.",
-    solutions = [
+    title: rawTitle = "Intelligent Solutions for Every Domain",
+    description: rawDescription = "Powered by Elevation AI and guided by experts.",
+    solutions: rawSolutions = [
       {
         id: "private-markets",
         title: "Private Market Organizations",
@@ -1351,7 +1490,7 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
         href: "/website/solutions?open=government"
       }
     ],
-    smallCards = [
+    smallCards: rawSmallCards = [
       "Creating a Venture",
       "Scaling a Venture", 
       "Exiting a Venture",
@@ -1360,17 +1499,64 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
     ]
   } = data || {}
 
+  const title = typeof rawTitle === 'string' ? rawTitle : "Intelligent Solutions for Every Domain"
+  const description = typeof rawDescription === 'string' ? rawDescription : "Powered by Elevation AI and guided by experts."
+  const solutionsArray = Array.isArray(rawSolutions) ? rawSolutions : [
+    {
+      id: "private-markets",
+      title: "Private Market Organizations",
+      description: "The agentic backbone for the entire private capital lifecycle.",
+      icon: "building-2-line",
+      href: "/website/solutions?open=private-markets"
+    },
+    {
+      id: "public-markets",
+      title: "Public Market Organizations",
+      description: "A unified intelligence platform for modern investment management.",
+      icon: "store-line",
+      href: "/website/solutions?open=public-markets"
+    },
+    {
+      id: "banks",
+      title: "Banks",
+      description: "Automate compliance, enhance risk management, and improve customer service.",
+      icon: "bank-line",
+      href: "/website/solutions?open=banks"
+    },
+    {
+      id: "enterprise",
+      title: "Enterprise",
+      description: "The secure control plane for growing and established organizations.",
+      icon: "briefcase-line",
+      href: "/website/solutions?open=enterprise"
+    },
+    {
+      id: "government",
+      title: "Government",
+      description: "A secure, compliant, and auditable platform for the public sector.",
+      icon: "government-line",
+      href: "/website/solutions?open=government"
+    }
+  ]
+  const smallCardsArray = Array.isArray(rawSmallCards) ? rawSmallCards : [
+    "Creating a Venture",
+    "Scaling a Venture", 
+    "Exiting a Venture",
+    "Post-IPO Growth",
+    "Post-Exit/Family Office"
+  ]
+
   // Convert solutions to CarouselItem format
-  const solutionsCarousel: CarouselItem[] = solutions.map((solution: Solution) => ({
-    id: solution.id || solution.title.toLowerCase().replace(/\s+/g, '-'),
-    title: solution.title,
-    description: solution.description,
-    icon: ({ className }: { className: string }) => <Icon name={solution.icon} className={className} />,
-    href: solution.href
+  const solutionsCarousel: CarouselItem[] = solutionsArray.map((solution: any) => ({
+    id: (typeof solution.id === 'string' ? solution.id : (typeof solution.title === 'string' ? solution.title.toLowerCase().replace(/\s+/g, '-') : 'default')),
+    title: (typeof solution.title === 'string' ? solution.title : ''),
+    description: (typeof solution.description === 'string' ? solution.description : ''),
+    icon: ({ className }: { className?: string }) => <Icon name={typeof solution.icon === 'string' ? solution.icon : 'default'} className={className} />,
+    href: (typeof solution.href === 'string' ? solution.href : '#')
   }))
 
   // Convert smallCards to CarouselItem format
-  const smallCardsCarouselItems = smallCards.map((card: string, index: number) => {
+  const smallCardsCarouselItems = smallCardsArray.map((card: string, index: number) => {
     // Map card names to their corresponding stage solution IDs
     const cardIdMap: { [key: string]: string } = {
       "Creating a Venture": "creating-venture",
@@ -1479,7 +1665,7 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
         <div className="hidden lg:block">
           <Container size="2xl">
             <div className="grid grid-cols-5 gap-4">
-              {smallCards.map((card: string, index: number) => {
+              {smallCardsArray.map((card: string, index: number) => {
                 // Map card names to their corresponding stage solution IDs
                 const cardIdMap: { [key: string]: string } = {
                   "Creating a Venture": "creating-venture",
@@ -1523,13 +1709,20 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
 // Closing CTA Section
 function ClosingCTASection({ data }: { data?: Record<string, unknown> }) {
   const {
-    title = "Orchestrate Your Universe",
-    description = "From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.",
-    ctaButtons = [
+    title: rawTitle = "Orchestrate Your Universe",
+    description: rawDescription = "From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.",
+    ctaButtons: rawCtaButtons = [
       { text: "Get Started", href: "/website/sign-up", variant: "default" },
       { text: "Request a Demo", href: "/website/demo", variant: "outline" }
     ]
   } = data || {}
+
+  const title = typeof rawTitle === 'string' ? rawTitle : "Orchestrate Your Universe"
+  const description = typeof rawDescription === 'string' ? rawDescription : "From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity."
+  const ctaButtonsArray = Array.isArray(rawCtaButtons) ? rawCtaButtons : [
+    { text: "Get Started", href: "/website/sign-up", variant: "default" },
+    { text: "Request a Demo", href: "/website/demo", variant: "outline" }
+  ]
 
   return (
     <Section paddingY="lg" className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
@@ -1545,16 +1738,16 @@ function ClosingCTASection({ data }: { data?: Record<string, unknown> }) {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button: CTAButton, index: number) => (
+              {ctaButtonsArray.map((button: CTAButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"
                   asChild
-                  variant={button.variant || "default"}
+                  variant={typeof button.variant === 'string' && ["default", "link", "destructive", "outline", "secondary", "ghost"].includes(button.variant) ? button.variant as "default" | "link" | "destructive" | "outline" | "secondary" | "ghost" : "default"}
                   className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4"
                 >
-                  <Link href={button.href}>
-                    {button.text}
+                  <Link href={typeof button.href === 'string' ? button.href : '/'}>
+                    {typeof button.text === 'string' ? button.text : 'Button'}
                   </Link>
                 </Button>
               ))}
@@ -1573,16 +1766,16 @@ function ClosingCTASection({ data }: { data?: Record<string, unknown> }) {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button: CTAButton, index: number) => (
+              {ctaButtonsArray.map((button: CTAButton, index: number) => (
                 <Button
                   key={index}
                   size="lg"
                   asChild
-                  variant={button.variant || "default"}
+                  variant={typeof button.variant === 'string' && ["default", "link", "destructive", "outline", "secondary", "ghost"].includes(button.variant) ? button.variant as "default" | "link" | "destructive" | "outline" | "secondary" | "ghost" : "default"}
                   className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4"
                 >
-                  <Link href={button.href}>
-                    {button.text}
+                  <Link href={typeof button.href === 'string' ? button.href : '/'}>
+                    {typeof button.text === 'string' ? button.text : 'Button'}
                   </Link>
                 </Button>
               ))}
@@ -1643,8 +1836,8 @@ export default function WireframesHomePage() {
   
   // Get section data by type
   const getSectionData = (sectionType: string) => {
-    if (!pageData?.sections) return null
-    return pageData.sections.find(section => section.section_type === sectionType)?.section_data
+    if (!pageData?.sections) return undefined
+    return pageData.sections.find(section => section.section_type === sectionType)?.section_data || undefined
   }
   
   if (loading) {

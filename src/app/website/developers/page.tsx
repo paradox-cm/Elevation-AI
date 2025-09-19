@@ -21,8 +21,8 @@ import { PageWithSections } from "@/types/cms"
 
 // Hero Section Component
 function HeroSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Build on the Operating System for the Agentic Era"
-  const description = data?.description || "Integrate your agents and platforms with Elevation AI to gain access to a high-value customer base and participate in a thriving, collaborative ecosystem."
+  const title = (typeof data?.title === 'string' ? data.title : "Build on the Operating System for the Agentic Era")
+  const description = (typeof data?.description === 'string' ? data.description : "Integrate your agents and platforms with Elevation AI to gain access to a high-value customer base and participate in a thriving, collaborative ecosystem.")
 
   return (
     <div className="relative w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
@@ -36,8 +36,8 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
 
 // Content Section Component
 function ContentSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || ""
-  const content = data?.content || ""
+  const title = (typeof data?.title === 'string' ? data.title : "")
+  const content = (typeof data?.content === 'string' ? data.content : "")
 
   return (
     <Section paddingY="lg">
@@ -51,15 +51,15 @@ function ContentSection({ data }: { data?: Record<string, unknown> }) {
 
 // Animation Section Component
 function AnimationSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Visual Integration"
-  const content = data?.content || "Experience the power of our platform through our interactive business data visualization."
-  const animationType = data?.animation_type || "business_data"
-  const overlayImage = data?.overlay_image || "/images/E-Arrow.svg"
-  const overlayAlt = data?.overlay_alt || "Elevation AI Arrow"
-  const minHeight = data?.min_height || "400px"
-  const overlayWidth = data?.overlay_width || 120
-  const overlayHeight = data?.overlay_height || 120
-  const overlayOpacity = data?.overlay_opacity || 0.8
+  const title = (typeof data?.title === 'string' ? data.title : "Visual Integration")
+  const content = (typeof data?.content === 'string' ? data.content : "Experience the power of our platform through our interactive business data visualization.")
+  const animationType = (typeof data?.animation_type === 'string' ? data.animation_type : "business_data")
+  const overlayImage = (typeof data?.overlay_image === 'string' ? data.overlay_image : "/images/E-Arrow.svg")
+  const overlayAlt = (typeof data?.overlay_alt === 'string' ? data.overlay_alt : "Elevation AI Arrow")
+  const minHeight = (typeof data?.min_height === 'string' ? data.min_height : "400px")
+  const overlayWidth = (typeof data?.overlay_width === 'number' ? data.overlay_width : 120)
+  const overlayHeight = (typeof data?.overlay_height === 'number' ? data.overlay_height : 120)
+  const overlayOpacity = (typeof data?.overlay_opacity === 'number' ? data.overlay_opacity : 0.8)
 
   return (
     <>
@@ -90,8 +90,8 @@ function AnimationSection({ data }: { data?: Record<string, unknown> }) {
 
 // Revenue Path Section Component
 function RevenuePathSection({ data }: { data?: Record<string, unknown> }) {
-  const sectionTitle = data?.section_title || "A Clear Path to Revenue"
-  const features = data?.features || [
+  const sectionTitle = (typeof data?.section_title === 'string' ? data.section_title : "A Clear Path to Revenue")
+  const features = (Array.isArray(data?.features) ? data.features : [
     {
       title: "1. Clients Receive Credits",
       description: "Our clients subscribe to packages that include a monthly allotment of credits, which they can use for any resource in our ecosystem.",
@@ -107,23 +107,25 @@ function RevenuePathSection({ data }: { data?: Record<string, unknown> }) {
       description: "When a client uses their credits to deploy your agent in one of their workflows, you get paid. These credits translate directly into revenue for you.",
       order: 3
     }
-  ]
+  ])
 
   return (
     <Section paddingY="lg">
       <div className="max-w-4xl mx-auto space-y-4">
         <H2>{sectionTitle}</H2>
         <div className="space-y-3">
-          {features.map((feature: Record<string, unknown>, index: number) => (
+          {features.map((feature: unknown, index: number) => { const f = feature as Record<string, unknown>; return (
             <Card key={index} className="border-border">
               <CardHeader>
-                <CardTitle className="text-base sm:text-base md:text-lg">{feature.title}</CardTitle>
+                <CardTitle className="text-base sm:text-base md:text-lg">
+                  {typeof f.title === 'string' ? f.title : ''}
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
-                {feature.description}
+                {typeof f.description === 'string' ? f.description : ''}
               </CardContent>
             </Card>
-          ))}
+          ); })}
         </div>
       </div>
     </Section>
@@ -132,12 +134,12 @@ function RevenuePathSection({ data }: { data?: Record<string, unknown> }) {
 
 // Commitment Section Component
 function CommitmentSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Let's Build the Future, Together"
-  const description = data?.description || "We believe that the future of agentic AI is not a walled garden, but a vibrant, open ecosystem. We are committed to fostering a community where the best ideas can be discovered, deployed, and monetized. By building on Elevation AI, you are not just integrating with a platform; you are joining a movement to build the agentic future."
-  const ctaText = data?.cta_primary_text || "Apply to Our Developer Program"
-  const ctaUrl = data?.cta_primary_url || "#apply"
-  const backgroundGradient = data?.background_gradient || "from-primary/10 to-primary/5"
-  const borderColor = data?.border_color || "primary/20"
+  const title = (typeof data?.title === 'string' ? data.title : "Let's Build the Future, Together")
+  const description = (typeof data?.description === 'string' ? data.description : "We believe that the future of agentic AI is not a walled garden, but a vibrant, open ecosystem. We are committed to fostering a community where the best ideas can be discovered, deployed, and monetized. By building on Elevation AI, you are not just integrating with a platform; you are joining a movement to build the agentic future.")
+  const ctaText = (typeof data?.cta_primary_text === 'string' ? data.cta_primary_text : "Apply to Our Developer Program")
+  const ctaUrl = (typeof data?.cta_primary_url === 'string' ? data.cta_primary_url : "#apply")
+  const backgroundGradient = (typeof data?.background_gradient === 'string' ? data.background_gradient : "from-primary/10 to-primary/5")
+  const borderColor = (typeof data?.border_color === 'string' ? data.border_color : "primary/20")
 
   return (
     <Section paddingY="lg">
@@ -214,11 +216,11 @@ export default function DevelopersPage() {
                 </div>
               ) : (
                 <>
-                  <HeroSection data={pageData?.sections?.[0]?.section_data} />
-                  <ContentSection data={pageData?.sections?.[1]?.section_data} />
-                  <AnimationSection data={pageData?.sections?.[2]?.section_data} />
-                  <RevenuePathSection data={pageData?.sections?.[3]?.section_data} />
-                  <CommitmentSection data={pageData?.sections?.[4]?.section_data} />
+                  <HeroSection data={pageData?.sections?.[0]?.section_data || undefined} />
+                  <ContentSection data={pageData?.sections?.[1]?.section_data || undefined} />
+                  <AnimationSection data={pageData?.sections?.[2]?.section_data || undefined} />
+                  <RevenuePathSection data={pageData?.sections?.[3]?.section_data || undefined} />
+                  <CommitmentSection data={pageData?.sections?.[4]?.section_data || undefined} />
                 </>
               )}
             </Container>
