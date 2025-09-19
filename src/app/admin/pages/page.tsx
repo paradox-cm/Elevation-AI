@@ -20,8 +20,6 @@ import {
   Eye, 
   FileText,
   Calendar,
-  User,
-  Users,
   ChevronDown
 } from 'lucide-react'
 import Link from 'next/link'

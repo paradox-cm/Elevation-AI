@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Media } from '@/types/cms'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading'
-import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { 
   Plus, 
@@ -16,9 +15,9 @@ import {
   File,
   Download,
   Calendar,
-  User,
   Upload
 } from 'lucide-react'
+import NextImage from 'next/image'
 
 export default function MediaPage() {
   const [media, setMedia] = useState<Media[]>([])
@@ -29,9 +28,9 @@ export default function MediaPage() {
 
   useEffect(() => {
     fetchMedia()
-  }, [])
+  }, [fetchMedia])
 
-  const fetchMedia = async () => {
+  const fetchMedia = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('media')
@@ -48,7 +47,7 @@ export default function MediaPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase])
 
   const filteredMedia = media.filter(item =>
     item.original_filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -84,7 +83,7 @@ export default function MediaPage() {
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
         const filePath = `media/${fileName}`
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('media')
           .upload(filePath, file)
 
@@ -221,9 +220,11 @@ export default function MediaPage() {
             <CardHeader className="pb-2">
               <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-3">
                 {isImage(item.mime_type) ? (
-                  <img
+                  <NextImage
                     src={item.url}
                     alt={item.alt_text || item.original_filename}
+                    width={200}
+                    height={200}
                     className="w-full h-full object-cover"
                   />
                 ) : (

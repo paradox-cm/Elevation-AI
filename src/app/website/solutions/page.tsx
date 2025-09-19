@@ -1,21 +1,25 @@
 "use client"
 
+// TypeScript interfaces
+interface Solution {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
 import { PageWrapper } from "@/components/page-wrapper"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { Grid } from "@/components/ui/layout/grid"
-import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { MainHeader } from "@/components/ui/main-header"
 import { LoadingSpinner } from "@/components/ui/loading"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { H1, H2, H3, P, BodyLarge } from "@/components/ui/typography"
+import { H1, H3, P, BodyLarge } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
-import { Building2, TrendingUp, ChevronRight, ChevronDown } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 import React, { useEffect, useRef, Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
@@ -785,7 +789,7 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {solutions.map((solution: any, index: number) => (
+            {solutions.map((solution: Solution, index: number) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}
@@ -987,7 +991,7 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
           
           {/* Right Column - Cards */}
           <div className="space-y-4 lg:col-span-2">
-            {solutions.map((solution: any, index: number) => (
+            {solutions.map((solution: Solution, index: number) => (
               <div 
                 key={solution.id}
                 ref={(el) => { cardRefs.current[solution.id] = el }}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { BlogPost, BlogCategory } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,14 +14,10 @@ import { Switch } from '@/components/ui/switch'
 import { FileUpload } from '@/components/ui/file-upload'
 import { 
   Save, 
-  ArrowLeft, 
-  Eye,
-  Calendar,
-  User,
-  Clock,
-  Image as ImageIcon
+  ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { toast } from 'sonner'
 
 interface BlogPostWithCategory extends BlogPost {
@@ -30,7 +26,6 @@ interface BlogPostWithCategory extends BlogPost {
 
 export default function BlogPostEditPage() {
   const params = useParams()
-  const router = useRouter()
   const [post, setPost] = useState<BlogPostWithCategory | null>(null)
   const [categories, setCategories] = useState<BlogCategory[]>([])
   const [loading, setLoading] = useState(true)
@@ -175,7 +170,7 @@ export default function BlogPostEditPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center space-y-4">
             <h1 className="text-2xl font-semibold">Blog Post Not Found</h1>
-            <p className="text-muted-foreground">The blog post you're looking for doesn't exist.</p>
+            <p className="text-muted-foreground">The blog post you&apos;re looking for doesn&apos;t exist.</p>
             <Button asChild>
               <Link href="/admin/blog">
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -396,9 +391,11 @@ export default function BlogPostEditPage() {
                   <div className="space-y-2">
                     <Label>Current Featured Image</Label>
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden border">
-                      <img
+                      <Image
                         src={post.featured_image}
                         alt="Featured image"
+                        width={800}
+                        height={450}
                         className="w-full h-full object-cover"
                       />
                     </div>
