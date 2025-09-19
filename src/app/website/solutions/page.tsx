@@ -27,7 +27,7 @@ import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
 
 // Solutions Hero Section Component
-function SolutionsHeroSection({ data }: { data?: any }) {
+function SolutionsHeroSection({ data }: { data?: Record<string, unknown> }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<THREE.Scene | null>(null)
@@ -608,7 +608,7 @@ interface Solution {
 }
 
 // Industry Solutions Section Component
-function IndustrySolutionsSection({ data }: { data?: any }) {
+function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) {
   const [openCardId, setOpenCardId] = React.useState<string | null>(null)
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
@@ -810,7 +810,7 @@ function IndustrySolutionsSection({ data }: { data?: any }) {
 }
 
 // Stage Solutions Section Component
-function StageSolutionsSection({ data }: { data?: any }) {
+function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
   const [openCardId, setOpenCardId] = React.useState<string | null>(null)
   const searchParams = useSearchParams()
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
@@ -1161,7 +1161,7 @@ function ExpandableSolutionCard({
 
 
 // Solution Features Section Component
-function SolutionFeaturesSection({ data }: { data?: any }) {
+function SolutionFeaturesSection({ data }: { data?: Record<string, unknown> }) {
   const sectionTitle = data?.section_title || "Built for Every Industry, Every Scale"
   const description = data?.description || "Our platform adapts to your environment with flexible deployment options, comprehensive integrations, and enterprise-grade governance."
   const features = data?.features || [
@@ -1234,7 +1234,7 @@ function SolutionFeaturesSection({ data }: { data?: any }) {
 }
 
 // CTA Section Component
-function CTASection({ data }: { data?: any }) {
+function CTASection({ data }: { data?: Record<string, unknown> }) {
   const title = data?.title || "Ready to Transform Your Organization?"
   const description = data?.description || "Discover how Elevation AI can solve your unique industry challenges and accelerate your growth."
   const ctaPrimaryText = data?.cta_primary_text || "Schedule Consultation"

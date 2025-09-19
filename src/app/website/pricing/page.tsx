@@ -22,7 +22,7 @@ import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
 
 // Pricing Hero Section Component
-function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: any }) {
+function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Transparent Pricing for Every Organization'
   const description = data?.description || 'Our platform is not one-size-fits-all, and neither is our pricing. We believe in a transparent, value-aligned model that provides the specific capabilities you need to succeed.'
@@ -55,7 +55,7 @@ function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: 
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {ctaButtons.map((button: any, index: number) => (
+              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
                 <Button 
                   key={index}
                   size="lg" 
@@ -128,7 +128,7 @@ function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: 
 }
 
 // How It Works Section (Mobile: Full width, Desktop: Left column)
-function HowItWorksSection({ data }: { data?: any }) {
+function HowItWorksSection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'How It Works'
   const description = data?.description || 'Three simple steps to get your custom plan'
@@ -163,7 +163,7 @@ function HowItWorksSection({ data }: { data?: any }) {
 
           {/* Three Steps */}
           <div className="space-y-6">
-            {cards.map((card: any, index: number) => (
+            {cards.map((card: Record<string, unknown>, index: number) => (
               <Card key={index} className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
                 <CardContent className="p-6 h-full flex flex-col">
                   <div className="flex items-center space-x-3 mb-4">
@@ -186,7 +186,7 @@ function HowItWorksSection({ data }: { data?: any }) {
 }
 
 // Get Custom Quote Section (Mobile: Full width with animation, Desktop: Right column)
-function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: any }) {
+function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Get a Custom Quote'
   const description = data?.description || 'Schedule a consultation to receive your personalized pricing'
@@ -221,7 +221,7 @@ function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultatio
 }
 
 // Desktop Combined Section (Side-by-side layout)
-function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData }: { onOpenConsultation: () => void, howItWorksData?: any, quoteData?: any }) {
+function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData }: { onOpenConsultation: () => void, howItWorksData?: Record<string, unknown>, quoteData?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const howItWorksTitle = howItWorksData?.title || 'How It Works'
   const howItWorksCards = howItWorksData?.cards || [
@@ -271,7 +271,7 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
 
               {/* Three Steps */}
               <div className="space-y-6">
-                {howItWorksCards.map((card: any, index: number) => (
+                {howItWorksCards.map((card: Record<string, unknown>, index: number) => (
                   <Card key={index} className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
                     <CardContent className="p-6 h-full flex flex-col">
                       <div className="flex items-center space-x-3 mb-4">
@@ -308,7 +308,7 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
 }
 
 // CTA Section
-function CTASection({ data }: { data?: any }) {
+function CTASection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Ready to Transform Your Operations?'
   const description = data?.description || 'Discover how Elevation AI can unify your knowledge, secure your operations, and orchestrate intelligent workflows across your organization.'
@@ -330,7 +330,7 @@ function CTASection({ data }: { data?: any }) {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {ctaButtons.map((button: any, index: number) => (
+            {ctaButtons.map((button: Record<string, unknown>, index: number) => (
               <Button key={index} size="lg" variant={button.variant} asChild>
                 <Link href={button.href}>
                   {button.text}

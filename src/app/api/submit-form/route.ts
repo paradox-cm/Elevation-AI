@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function determinePriority(formType: string, formData: any): string {
+function determinePriority(formType: string, formData: Record<string, unknown>): string {
   // Set priority based on form type and content
   switch (formType) {
     case 'consultation':

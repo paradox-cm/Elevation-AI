@@ -19,7 +19,7 @@ interface AdminProfile {
   first_name: string | null
   last_name: string | null
   avatar_url: string | null
-  preferences: any
+  preferences: Record<string, unknown>
   created_at: string
   updated_at: string
 }

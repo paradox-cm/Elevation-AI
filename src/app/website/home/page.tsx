@@ -421,7 +421,7 @@ function TypewriterText({
 }
 
 // Hero Section
-function HeroSection({ data }: { data?: any }) {
+function HeroSection({ data }: { data?: Record<string, unknown> }) {
   const {
     title = "The Agentic Platform for",
     cyclingWords = [
@@ -531,7 +531,7 @@ function HeroSection({ data }: { data?: any }) {
 }
 
 // Introduction Section
-function IntroductionSection({ data }: { data?: any }) {
+function IntroductionSection({ data }: { data?: Record<string, unknown> }) {
   const {
     title = "The Agentic Era is Here",
     accordionItems = [
@@ -588,7 +588,7 @@ function IntroductionSection({ data }: { data?: any }) {
 }
 
 // Problem We Solve Section
-function ProblemSection({ data }: { data?: any }) {
+function ProblemSection({ data }: { data?: Record<string, unknown> }) {
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
   const {
@@ -814,7 +814,7 @@ function ProblemSection({ data }: { data?: any }) {
 
 
 // Platform Overview Section
-function PlatformSection({ data }: { data?: any }) {
+function PlatformSection({ data }: { data?: Record<string, unknown> }) {
   const [activeTab, setActiveTab] = React.useState(0)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   const sectionRef = React.useRef<HTMLDivElement>(null)
@@ -1147,7 +1147,7 @@ function PlatformSection({ data }: { data?: any }) {
 }
 
 // Logo Carousel Section
-function LogoCarouselSection({ data }: { data?: any }) {
+function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
   const {
     title = "Led by industry veterans from:",
     logos = [
@@ -1193,7 +1193,7 @@ function LogoCarouselSection({ data }: { data?: any }) {
 }
 
 // How We Do It Section
-function HowWeDoItSection({ data }: { data?: any }) {
+function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
   const {
     title = "More Than a Platform.",
     description = "Your partner at every step.",
@@ -1281,7 +1281,7 @@ function HowWeDoItSection({ data }: { data?: any }) {
 }
 
 // Who We Serve Section
-function WhoWeServeSection({ data }: { data?: any }) {
+function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
   const {
     title = "Intelligent Solutions for Every Domain",
     description = "Powered by Elevation AI and guided by experts.",
@@ -1492,7 +1492,7 @@ function WhoWeServeSection({ data }: { data?: any }) {
 }
 
 // Closing CTA Section
-function ClosingCTASection({ data }: { data?: any }) {
+function ClosingCTASection({ data }: { data?: Record<string, unknown> }) {
   const {
     title = "Orchestrate Your Universe",
     description = "From strategy to execution, Elevation AI unifies your knowledge, secures your operation, and empowers your teams to move with clarity.",

@@ -68,7 +68,7 @@ export default function FAQEditPage() {
     fetchData()
   }, [params.id])
 
-  const handleFieldChange = (field: string, value: any) => {
+  const handleFieldChange = (field: string, value: unknown) => {
     if (!faq) return
     
     setFaq({

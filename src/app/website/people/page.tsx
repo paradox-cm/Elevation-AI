@@ -313,7 +313,7 @@ function ConciergeServiceCard({ service }: { service: ConciergeService }) {
 
 
 // Creative Hero Section Component
-function CreativeHeroSection({ data }: { data?: any }) {
+function CreativeHeroSection({ data }: { data?: Record<string, unknown> }) {
 
   return (
     <Section 
@@ -340,7 +340,7 @@ function CreativeHeroSection({ data }: { data?: any }) {
               {(data?.ctaButtons || [
                 { text: 'Learn More', href: '#concierge-team', variant: 'default', isScrollButton: true },
                 { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
-              ]).map((button: any, index: number) => (
+              ]).map((button: Record<string, unknown>, index: number) => (
                 <Button 
                   key={index}
                   size="lg" 
@@ -415,7 +415,7 @@ function CreativeHeroSection({ data }: { data?: any }) {
 
 
 // Logo Carousel Section
-function LogoCarouselSection({ data }: { data?: any }) {
+function LogoCarouselSection({ data }: { data?: Record<string, unknown> }) {
   return (
     <Section paddingY="lg" className={data?.backgroundColor || "bg-muted/20"}>
       <Container size="2xl">
@@ -652,7 +652,7 @@ export default function PeoplePage() {
                                           description: 'Our partnership doesn\'t end at launch. We provide ongoing support, monitor agent performance, and continuously work with you to identify new opportunities for optimization and automation as your business evolves.',
                                           icon: 'sparkles-line'
                                         }
-                                      ]).map((step: any, index: number) => (
+                                      ]).map((step: Record<string, unknown>, index: number) => (
                                         <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border-border/50 transition-colors duration-300 relative overflow-hidden h-full bg-transparent">
                                           {/* Background Pattern */}
                                           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -753,7 +753,7 @@ export default function PeoplePage() {
                                       title: 'Specialized Talent',
                                       description: 'Need to augment their existing team\'s capacity with specialized, hard-to-find talent.'
                                     }
-                                  ]).map((characteristic: any, index: number) => (
+                                  ]).map((characteristic: Record<string, unknown>, index: number) => (
                                     <Card key={index} className="border-border/50 bg-transparent">
                                       <CardHeader className="pb-3">
                                         <CardTitle className="text-base font-semibold flex items-center gap-3">
@@ -802,7 +802,7 @@ export default function PeoplePage() {
                         {/* Expert Categories Carousel */}
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                           <PeopleCarousel
-                            items={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.expertCategories?.map((category: any) => ({
+                            items={pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data?.expertCategories?.map((category: Record<string, unknown>) => ({
                               id: category.id,
                               title: category.title,
                               description: category.description,
@@ -864,7 +864,7 @@ export default function PeoplePage() {
                           {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data?.ctaButtons || [
                             { text: 'Request a Demo', href: '/website/demo', variant: 'default' },
                             { text: 'About Us', href: '/website/about', variant: 'outline' }
-                          ]).map((button: any, index: number) => (
+                          ]).map((button: Record<string, unknown>, index: number) => (
                             <Button key={index} size="lg" variant={button.variant} asChild>
                               <Link href={button.href}>{button.text}</Link>
                             </Button>

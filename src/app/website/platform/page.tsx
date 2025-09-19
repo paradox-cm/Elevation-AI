@@ -28,7 +28,7 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import { usePageCache } from '@/hooks/use-page-cache'
 
 // Platform Hero Section Component
-function PlatformHeroSection({ data }: { data?: any }) {
+function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
   // Extract CMS data with fallbacks
@@ -61,7 +61,7 @@ function PlatformHeroSection({ data }: { data?: any }) {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {ctaButtons.map((button: any, index: number) => (
+              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
                 <Button 
                   key={index}
                   size="lg" 
@@ -125,7 +125,7 @@ function PlatformHeroSection({ data }: { data?: any }) {
 
 
 // Platform Features Section
-function PlatformFeaturesSection({ data }: { data?: any }) {
+function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Platform Features'
   const description = data?.description || 'Our platform consists of five core features that work together to create a comprehensive AI-powered operating system for your organization.'
@@ -143,7 +143,7 @@ function PlatformFeaturesSection({ data }: { data?: any }) {
           </div>
 
           {/* Dynamic Features */}
-          {features.map((feature: any, index: number) => (
+          {features.map((feature: Record<string, unknown>, index: number) => (
             <div 
               key={feature.id || index}
               data-section={feature.id} 
@@ -176,7 +176,7 @@ function PlatformFeaturesSection({ data }: { data?: any }) {
 }
 
 // Security Section
-function SecuritySection({ data }: { data?: any }) {
+function SecuritySection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Enterprise-Grade Security & Compliance'
   const description = data?.description || 'Your data security is our top priority. We implement industry-leading security measures and maintain compliance with the highest standards.'
@@ -184,7 +184,7 @@ function SecuritySection({ data }: { data?: any }) {
   const carouselSettings = data?.carouselSettings || {}
 
   // Convert features to carousel items
-  const securityFeatures: PlatformCarouselItem[] = features.map((feature: any) => ({
+  const securityFeatures: PlatformCarouselItem[] = features.map((feature: Record<string, unknown>) => ({
     id: feature.id,
     title: feature.title,
     description: feature.description,
@@ -244,7 +244,7 @@ function SecuritySection({ data }: { data?: any }) {
 }
 
 // Integrations Section
-function IntegrationsSection({ data }: { data?: any }) {
+function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Connect Your Entire Universe'
   const description = data?.description || 'Elevation AI is built to be the central hub of your operations. We connect with the tools you already use, bringing all your data and workflows into one secure control plane.'
@@ -266,7 +266,7 @@ function IntegrationsSection({ data }: { data?: any }) {
             {/* Mobile connecting line - only visible on mobile */}
             <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border transform -translate-x-1/2 sm:hidden z-0"></div>
             
-            {categories.map((category: any, index: number) => {
+            {categories.map((category: Record<string, unknown>, index: number) => {
               return (
                 <div
                   key={category.id}
@@ -316,7 +316,7 @@ function IntegrationsSection({ data }: { data?: any }) {
 }
 
 // Use Cases Section
-function UseCasesSection({ data }: { data?: any }) {
+function UseCasesSection({ data }: { data?: Record<string, unknown> }) {
   const { isDark } = useThemeProvider()
   const [mounted, setMounted] = React.useState(false)
   
@@ -335,7 +335,7 @@ function UseCasesSection({ data }: { data?: any }) {
   const isDarkMode = mounted ? isDark : false
   const ShaderComponent = isDarkMode ? ShaderAnimation : ShaderAnimationLight
 
-  const industryCategories: PlatformCarouselItem[] = useCases.map((useCase: any) => ({
+  const industryCategories: PlatformCarouselItem[] = useCases.map((useCase: Record<string, unknown>) => ({
     id: useCase.id,
     title: useCase.title,
     description: useCase.description,
@@ -513,7 +513,7 @@ function UseCasesSection({ data }: { data?: any }) {
 }
 
 // CTA Section
-function CTASection({ data }: { data?: any }) {
+function CTASection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
   const title = data?.title || 'Ready to Transform Your Organization?'
   const description = data?.description || 'Custom plans built for your organization\'s specific needs and growth trajectory. Join thousands of organizations already using Elevation AI to unlock the power of intelligent automation.'
@@ -535,7 +535,7 @@ function CTASection({ data }: { data?: any }) {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {ctaButtons.map((button: any, index: number) => (
+            {ctaButtons.map((button: Record<string, unknown>, index: number) => (
               <Button key={index} size="lg" variant={button.variant} asChild>
                 <Link href={button.href}>
                   {button.text}

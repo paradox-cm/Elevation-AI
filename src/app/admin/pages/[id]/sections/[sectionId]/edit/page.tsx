@@ -623,7 +623,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {(section.section_data?.cards || []).map((card: any, index: number) => (
+                    {(section.section_data?.cards || []).map((card: Record<string, unknown>, index: number) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3">
                         <div className="flex items-center justify-between">
                           <Label>Step {index + 1}</Label>
@@ -1628,7 +1628,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {(section.section_data?.ctaButtons || []).map((button: any, index: number) => (
+                    {(section.section_data?.ctaButtons || []).map((button: Record<string, unknown>, index: number) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3">
                         <div className="flex items-center justify-between">
                           <Label>{isCalculateSection ? 'Quote Button' : `Button ${index + 1}`}</Label>
@@ -1915,7 +1915,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {(section.section_data?.ctaButtons || []).map((button: any, index: number) => (
+                    {(section.section_data?.ctaButtons || []).map((button: Record<string, unknown>, index: number) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3">
                         <div className="flex items-center justify-between">
                           <Label>Button {index + 1}</Label>
@@ -2811,7 +2811,7 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
-                  {(section.section_data?.articles || []).map((article: any, index: number) => (
+                  {(section.section_data?.articles || []).map((article: Record<string, unknown>, index: number) => (
                     <div key={index} className="border rounded-lg p-4 space-y-4">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium">Article {index + 1}</h4>

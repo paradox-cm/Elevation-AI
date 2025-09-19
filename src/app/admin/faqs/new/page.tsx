@@ -58,7 +58,7 @@ export default function NewFAQPage() {
     fetchCategories()
   }, [])
 
-  const handleFieldChange = (field: string, value: any) => {
+  const handleFieldChange = (field: string, value: unknown) => {
     setFormData({
       ...formData,
       [field]: value

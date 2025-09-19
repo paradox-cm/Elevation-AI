@@ -39,7 +39,7 @@ interface FormSubmission {
   phone: string | null
   company: string | null
   job_title: string | null
-  form_data: any
+  form_data: Record<string, unknown>
   ip_address: string | null
   user_agent: string | null
   referrer_url: string | null
@@ -132,7 +132,7 @@ export default function FormSubmissionsPage() {
 
   const updateSubmissionStatus = async (id: string, status: string) => {
     try {
-      const updateData: any = { status }
+      const updateData: Record<string, unknown> = { status }
       
       if (status === 'read' && !submissions.find(s => s.id === id)?.read_at) {
         updateData.read_at = new Date().toISOString()

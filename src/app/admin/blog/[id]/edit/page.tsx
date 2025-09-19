@@ -76,7 +76,7 @@ export default function BlogPostEditPage() {
     fetchData()
   }, [params.id])
 
-  const handleFieldChange = (field: string, value: any) => {
+  const handleFieldChange = (field: string, value: unknown) => {
     if (!post) return
     
     setPost({
