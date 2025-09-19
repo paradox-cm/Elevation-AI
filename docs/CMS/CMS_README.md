@@ -69,7 +69,7 @@ npm run dev
 ## 🧪 **Test Dynamic Pages**
 
 ### **Dynamic FAQ Page**
-- Visit: http://localhost:3000/website/faq-dynamic
+- Visit: http://localhost:3000/website/knowledge-base
 - Shows all FAQ categories and questions from CMS
 - Fully responsive and searchable
 
@@ -96,7 +96,7 @@ src/
 │   ├── blog/page.tsx            # Blog management
 │   └── media/page.tsx           # Media management
 ├── app/website/                 # Dynamic website pages
-│   ├── faq-dynamic/page.tsx     # Dynamic FAQ page
+│   ├── knowledge-base/page.tsx  # Dynamic FAQ/Knowledge Base page
 │   ├── blog-dynamic/page.tsx    # Dynamic blog listing
 │   └── blog-dynamic/[slug]/     # Dynamic blog posts
 ├── components/admin/            # Admin components

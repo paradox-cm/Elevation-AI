@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState, useCallback } from 'react'
-
 // Force dynamic rendering for admin pages
 export const dynamic = 'force-dynamic'
+
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { BlogPost, BlogCategory } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
