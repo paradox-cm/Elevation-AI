@@ -152,9 +152,9 @@ function HowItWorksSection({ data }: { data?: Record<string, unknown> }) {
 
   return (
     <Section paddingY="none" className="bg-muted/30 pb-0 lg:hidden">
-      <Container size="2xl" className="py-8 lg:py-16">
-        <div className="space-y-8">
-          <div className="space-y-6">
+      <Container size="2xl" className="py-6 lg:py-8">
+        <div className="space-y-6">
+          <div className="space-y-4">
             <H2>{title}</H2>
             {description && (
               <P className="text-muted-foreground">{description}</P>
@@ -162,11 +162,11 @@ function HowItWorksSection({ data }: { data?: Record<string, unknown> }) {
           </div>
 
           {/* Three Steps */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {cards.map((card: unknown, index: number) => { const c = card as Record<string, unknown>; return (
               <Card key={index} className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
-                <CardContent className="p-6 h-full flex flex-col">
-                  <div className="flex items-center space-x-3 mb-4">
+                <CardContent className="px-4 py-3 flex flex-col">
+                  <div className="flex items-center space-x-3 mb-2">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <span className="text-primary font-semibold text-lg">{index + 1}</span>
                     </div>
@@ -195,7 +195,7 @@ function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultatio
   const animationType = typeof data?.animationType === 'string' ? data.animationType : 'growth'
 
   return (
-    <div className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] pb-0 lg:hidden">
+    <div className="relative overflow-hidden min-h-[300px] sm:min-h-[350px] lg:min-h-[400px] pb-0 lg:hidden">
       {/* Background Animation */}
       {hasAnimation && (
         <div className="absolute inset-0">
@@ -204,10 +204,10 @@ function GetCustomQuoteSection({ onOpenConsultation, data }: { onOpenConsultatio
       )}
       
       {/* Content Overlay */}
-      <div className="relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] w-full px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px] w-full px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-2xl mx-auto">
           <div className="text-center group">
-            <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+            <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
               <Button size="lg" onClick={onOpenConsultation} className="flex items-center mx-auto cursor-pointer group">
                 {typeof ctaButton.text === 'string' ? ctaButton.text : 'Button'}
                 <Icon name="calendar-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />
@@ -246,7 +246,7 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
   return (
     <Section 
       paddingY="none"
-      className="relative overflow-hidden min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] flex items-center pb-0 hidden lg:flex"
+      className="relative overflow-hidden min-h-[300px] sm:min-h-[350px] lg:min-h-[400px] flex items-center pb-0 hidden lg:flex"
     >
       {/* Left Column - How It Works */}
       <div className="absolute inset-y-0 left-0 w-1/4 bg-muted/30"></div>
@@ -260,21 +260,21 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
       </div>
 
       {/* Content Overlay */}
-      <Container size="2xl" className="relative z-10 h-full py-8 lg:py-16 pb-0">
+      <Container size="2xl" className="relative z-10 h-full py-6 lg:py-8 pb-0">
         <div className="grid grid-cols-4 gap-0 h-full">
           {/* Left Column - How It Works (1 column) */}
-          <div className="col-span-1 flex items-center pl-1 pr-12 py-12 pb-0">
-            <div className="w-full space-y-8">
-              <div className="space-y-6">
+          <div className="col-span-1 flex items-center pl-1 pr-12 py-8 pb-0">
+            <div className="w-full space-y-6">
+              <div className="space-y-4">
                 <H2>{howItWorksTitle}</H2>
               </div>
 
               {/* Three Steps */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {howItWorksCards.map((card: unknown, index: number) => { const c = card as Record<string, unknown>; return (
                   <Card key={index} className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
-                    <CardContent className="p-6 h-full flex flex-col">
-                      <div className="flex items-center space-x-3 mb-4">
+                    <CardContent className="px-4 py-3 flex flex-col">
+                      <div className="flex items-center space-x-3 mb-2">
                         <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <span className="text-primary font-semibold text-lg">{index + 1}</span>
                         </div>
@@ -291,9 +291,9 @@ function DesktopCombinedSection({ onOpenConsultation, howItWorksData, quoteData 
           </div>
 
           {/* Right Column - Get Custom Quote (3 columns) */}
-          <div className="col-span-3 flex items-center justify-center p-12 pb-0">
+          <div className="col-span-3 flex items-center justify-center p-8 pb-0">
             <div className="text-center group">
-              <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+              <div className="inline-block bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <Button size="lg" onClick={onOpenConsultation} className="flex items-center mx-auto cursor-pointer group">
                   {typeof quoteButton.text === 'string' ? quoteButton.text : 'Button'}
                   <Icon name="calendar-line" className="h-4 w-4 ml-2 transition-transform duration-200 group-hover:scale-110" />

@@ -33,7 +33,7 @@ const formSchema = z.object({
   securityLevel: z.string().optional(),
   complianceNeeds: z.array(z.string()).optional(),
   addOns: z.array(z.string()).optional(),
-  supportLevel: z.string().min(1, "Please select a support level"),
+  supportLevel: z.string().optional(),
   planType: z.string().min(1, "Plan type is required"),
   // Scheduling form fields
   firstName: z.string().min(1, "First name is required"),
@@ -153,6 +153,7 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: "onSubmit",
     defaultValues: {
       industry: "",
       teamSize: [1],
@@ -163,7 +164,7 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
       securityLevel: "",
       complianceNeeds: [],
       addOns: [],
-      supportLevel: "",
+      supportLevel: "platform-support",
       planType: "paid",
       firstName: "",
       lastName: "",
@@ -269,7 +270,7 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
   }
 
   const handleNext = () => {
-    if (currentStep < 5) {
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1)
     }
   }
@@ -660,47 +661,8 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
     </div>
   )
 
-  const renderStep4 = () => (
-    <div className="space-y-6">
-      <H3>Choose Your Level of Support</H3>
-      
-      <FormField
-        control={form.control}
-        name="supportLevel"
-        render={({ field }) => (
-          <FormItem className="space-y-3">
-            <FormControl>
-              <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                className="space-y-4"
-              >
-                {supportLevels.map((level) => (
-                  <div key={level.id} className="flex items-start space-x-3">
-                    <RadioGroupItem value={level.id} id={level.id} className="mt-1" />
-                    <div className="space-y-1">
-                      <label
-                        htmlFor={level.id}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {level.title}
-                      </label>
-                      <P className="text-xs text-muted-foreground">
-                        {level.description}
-                      </P>
-                    </div>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-  )
 
-  const renderStep5 = () => (
+  const renderStep4 = () => (
     <div className="space-y-6">
       <div className="space-y-2">
         <H3>Schedule Your Custom Plan Review</H3>
@@ -923,7 +885,7 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
               <span>Request Your Custom Quote</span>
               {!showResults && (
                 <Badge variant="secondary">
-                  Step {currentStep} of 5
+                  Step {currentStep} of 4
                 </Badge>
               )}
             </DialogTitle>
@@ -937,26 +899,26 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
                 {currentStep === 2 && renderStep2()}
                 {currentStep === 3 && renderStep3()}
                 {currentStep === 4 && renderStep4()}
-                {currentStep === 5 && renderStep5()}
 
                 <div className="flex justify-between pt-6">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleBack}
-                    disabled={currentStep === 1}
-                  >
-                    <Icon name="arrow-left-line" className="h-4 w-4 mr-2" />
-                    Back
-                  </Button>
+                  {currentStep > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleBack}
+                    >
+                      <Icon name="arrow-left-line" className="h-4 w-4 mr-2" />
+                      Back
+                    </Button>
+                  )}
                   
-                  {currentStep < 5 ? (
-                    <Button type="button" onClick={handleNext}>
+                  {currentStep < 4 ? (
+                    <Button type="button" onClick={handleNext} className={currentStep === 1 ? "ml-auto" : ""}>
                       Next
                       <Icon name="arrow-right-line" className="h-4 w-4 ml-2" />
                     </Button>
                   ) : (
-                    <Button type="submit">
+                    <Button type="submit" className={currentStep === 1 ? "ml-auto" : ""}>
                       Submit Request
                     </Button>
                   )}

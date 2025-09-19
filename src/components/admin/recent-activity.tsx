@@ -210,7 +210,7 @@ export function RecentActivity({
             <p className="text-sm">Activities will appear here as you make changes</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="max-h-96 overflow-y-auto pr-2 space-y-4">
             {activities.map((activity) => (
               <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg border bg-card">
                 <div className="flex-shrink-0">
