@@ -42,7 +42,7 @@ export default function PagesPage() {
         console.error('Error fetching pages:', error)
       } else {
         // Filter out blog, FAQ, and knowledge base pages since they have their own admin sections
-        const filteredData = (data || []).filter(page => 
+        const filteredData = (data || []).filter((page: any) => 
           page.slug !== 'blog' && 
           page.slug !== 'faq' && 
           page.slug !== 'faqs' &&
