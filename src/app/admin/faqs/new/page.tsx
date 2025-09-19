@@ -79,7 +79,7 @@ export default function NewFAQPage() {
       setSaving(true)
       const supabase = createClient()
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('faqs')
         .insert({
           question: formData.question,

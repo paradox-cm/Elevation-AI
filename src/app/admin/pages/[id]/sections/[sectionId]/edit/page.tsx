@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { PageSection, Page } from '@/types/cms'
@@ -11,8 +11,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { FileUpload } from '@/components/ui/file-upload'
 import { 
   ArrowLeft, 
@@ -23,6 +21,7 @@ import {
   HelpCircle
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { toast } from 'sonner'
 import { pageSectionsService } from '@/lib/cms'
 import { useCMSRefresh } from '@/hooks/use-cms-refresh'
@@ -41,13 +40,7 @@ export default function SectionEditPage() {
   const supabase = createClient()
   const { refreshCurrentPage } = useCMSRefresh()
 
-  useEffect(() => {
-    if (sectionId) {
-      fetchSectionData()
-    }
-  }, [sectionId])
-
-  const fetchSectionData = async () => {
+  const fetchSectionData = useCallback(async () => {
     try {
       setIsLoading(true)
       
@@ -86,7 +79,13 @@ export default function SectionEditPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [sectionId, supabase, refreshCurrentPage])
+
+  useEffect(() => {
+    if (sectionId) {
+      fetchSectionData()
+    }
+  }, [sectionId, fetchSectionData])
 
   const handleFieldChange = (field: string, value: string | number | boolean) => {
     if (!section) return
@@ -438,9 +437,11 @@ export default function SectionEditPage() {
                           <div className="flex-shrink-0">
                             <div className="w-20 h-20 bg-muted rounded-lg border flex items-center justify-center overflow-hidden">
                               {(logo.logo || logo.filename) ? (
-                                <img
+                                <Image
                                   src={logo.logo || `/images/logos/${logo.filename}`}
                                   alt={logo.name || 'Logo preview'}
+                                  width={80}
+                                  height={80}
                                   className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
                                   onError={(e) => {
                                     const target = e.target as HTMLImageElement;
@@ -1328,7 +1329,7 @@ export default function SectionEditPage() {
                 <CardHeader>
                   <CardTitle>Main Content</CardTitle>
                   <CardDescription>
-                    Title and description for the "Who This Is For" section
+                    Title and description for the &quot;Who This Is For&quot; section
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1541,7 +1542,6 @@ export default function SectionEditPage() {
         if (page?.slug === 'pricing') {
           // Determine which CTA section this is based on section order
           const isCalculateSection = section.section_order === 3
-          const isFinalCTASection = section.section_order === 4
           
           return (
             <div className="space-y-6">
@@ -3154,7 +3154,7 @@ export default function SectionEditPage() {
     return (
       <div className="text-center py-8">
         <h2 className="text-xl font-semibold text-foreground mb-2">Section not found</h2>
-        <p className="text-muted-foreground mb-4">The section you're looking for doesn't exist.</p>
+        <p className="text-muted-foreground mb-4">The section you&apos;re looking for doesn&apos;t exist.</p>
         <Button asChild>
           <Link href={`/admin/pages/${pageId}/edit`}>
             <ArrowLeft className="h-4 w-4 mr-2" />

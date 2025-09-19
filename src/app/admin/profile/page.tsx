@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { activityService } from '@/lib/activity-service'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -25,7 +25,7 @@ interface AdminProfile {
 }
 
 export default function AdminProfilePage() {
-  const [profile, setProfile] = useState<AdminProfile | null>(null)
+  const [, setProfile] = useState<AdminProfile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
@@ -41,11 +41,7 @@ export default function AdminProfilePage() {
   const supabase = createClient()
   const router = useRouter()
 
-  useEffect(() => {
-    fetchProfile()
-  }, [])
-
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -104,7 +100,11 @@ export default function AdminProfilePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router])
+
+  useEffect(() => {
+    fetchProfile()
+  }, [fetchProfile])
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()

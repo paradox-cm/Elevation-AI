@@ -45,7 +45,7 @@ export default function NewFAQCategoryPage() {
       setSaving(true)
       const supabase = createClient()
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('faq_categories')
         .insert({
           title: formData.title,
