@@ -26,10 +26,6 @@ export default function MediaPage() {
   const [isUploading, setIsUploading] = useState(false)
   const supabase = createClient()
 
-  useEffect(() => {
-    fetchMedia()
-  }, [fetchMedia])
-
   const fetchMedia = useCallback(async () => {
     try {
       const { data, error } = await supabase
@@ -48,6 +44,10 @@ export default function MediaPage() {
       setIsLoading(false)
     }
   }, [supabase])
+
+  useEffect(() => {
+    fetchMedia()
+  }, [fetchMedia])
 
   const filteredMedia = media.filter(item =>
     item.original_filename.toLowerCase().includes(searchTerm.toLowerCase()) ||

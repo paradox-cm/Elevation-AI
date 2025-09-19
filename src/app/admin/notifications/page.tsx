@@ -88,10 +88,6 @@ export default function NotificationsPage() {
   const supabase = createClient()
   const router = useRouter()
 
-  useEffect(() => {
-    fetchNotifications()
-  }, [fetchNotifications])
-
   const fetchNotifications = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
@@ -117,6 +113,10 @@ export default function NotificationsPage() {
       setIsLoading(false)
     }
   }, [supabase, router])
+
+  useEffect(() => {
+    fetchNotifications()
+  }, [fetchNotifications])
 
   const markAsRead = async (id: string) => {
     try {
