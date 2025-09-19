@@ -229,20 +229,22 @@ function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
   const badgeText = toText(d.badge_text) || "Our Vision"
   const badgeIcon = toText(d.badge_icon) || "lightbulb-line"
   const sectionTitle = toText(d.section_title) || "The Problem We Solve"
-  const cards = asArray(d.cards).length > 0 ? asArray(d.cards) : [
-    {
-      title: "The Challenge",
-      description: "Leaders manage a universe of systems that don't talk to each other. Information is trapped in silos; context gets lost in personal AI chats; collaboration devolves into copy‑paste. The result: generic output, bottlenecks, and risk.",
-      icon: "alert-line",
-      order: 1
-    },
-    {
-      title: "Our Solution",
-      description: "Elevation AI is the orchestration platform that unifies your company's data, people, and workflows into a single command center—powered by a private Knowledge Graph and securely connected to the world of agentic AI.",
-      icon: "check-line",
-      order: 2
-    }
-  ]) as Record<string, unknown>[]
+  const cards: Record<string, unknown>[] = Array.isArray(d.cards)
+    ? (d.cards as Record<string, unknown>[])
+    : [
+        {
+          title: "The Challenge",
+          description: "Leaders manage a universe of systems that don't talk to each other. Information is trapped in silos; context gets lost in personal AI chats; collaboration devolves into copy‑paste. The result: generic output, bottlenecks, and risk.",
+          icon: "alert-line",
+          order: 1,
+        },
+        {
+          title: "Our Solution",
+          description: "Elevation AI is the orchestration platform that unifies your company's data, people, and workflows into a single command center—powered by a private Knowledge Graph and securely connected to the world of agentic AI.",
+          icon: "check-line",
+          order: 2,
+        },
+      ]
 
   return (
     <Section id="our-solution-section" paddingY="xl" className="relative overflow-hidden">
@@ -290,38 +292,40 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
   const badgeText = toText(d.badge_text) || "Our Foundation"
   const badgeIcon = toText(d.badge_icon) || "star-line"
   const sectionTitle = toText(d.section_title) || "Principles That Guide Us"
-  const features = asArray(d.features).length > 0 ? asArray(d.features) : [
-    {
-      title: "Precision over noise",
-      description: "Clarity, repeatability, and measurable outcomes drive everything we build.",
-      icon: "focus-3-line",
-      order: 1
-    },
-    {
-      title: "Security and trust",
-      description: "Privacy by default; least‑privilege access; auditability built into every feature.",
-      icon: "shield-check-line",
-      order: 2
-    },
-    {
-      title: "Collaboration as a feature",
-      description: "Shared context is the default, not an afterthought in our platform design.",
-      icon: "team-line",
-      order: 3
-    },
-    {
-      title: "Versatility without chaos",
-      description: "Many use cases, one coherent platform that adapts to your needs.",
-      icon: "layout-grid-line",
-      order: 4
-    },
-    {
-      title: "Build for longevity",
-      description: "Scalable design systems and maintainable implementations for the future.",
-      icon: "building-line",
-      order: 5
-    }
-  ])
+  const features: Record<string, unknown>[] = Array.isArray(d.features)
+    ? (d.features as Record<string, unknown>[])
+    : [
+        {
+          title: "Precision over noise",
+          description: "Clarity, repeatability, and measurable outcomes drive everything we build.",
+          icon: "focus-3-line",
+          order: 1,
+        },
+        {
+          title: "Security and trust",
+          description: "Privacy by default; least‑privilege access; auditability built into every feature.",
+          icon: "shield-check-line",
+          order: 2,
+        },
+        {
+          title: "Collaboration as a feature",
+          description: "Shared context is the default, not an afterthought in our platform design.",
+          icon: "team-line",
+          order: 3,
+        },
+        {
+          title: "Versatility without chaos",
+          description: "Many use cases, one coherent platform that adapts to your needs.",
+          icon: "layout-grid-line",
+          order: 4,
+        },
+        {
+          title: "Build for longevity",
+          description: "Scalable design systems and maintainable implementations for the future.",
+          icon: "building-line",
+          order: 5,
+        },
+      ]
 
   // Default colors for principles
   const defaultColors = [
@@ -332,10 +336,17 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
     { color: "bg-indigo-50 dark:bg-indigo-950/30", iconColor: "text-indigo-600 dark:text-indigo-400" }
   ]
 
-  const principles = features.map((feature: Record<string, unknown>, index: number) => ({
+  type Feature = {
+    color?: string;
+    icon_color?: string;
+    [k: string]: unknown;
+  };
+
+  const featuresTyped = asArray<Feature>(features);
+  const principles = featuresTyped.map((feature, index) => ({
     ...feature,
-    color: feature.color || defaultColors[index]?.color || "bg-gray-50 dark:bg-gray-950/30",
-    iconColor: feature.icon_color || defaultColors[index]?.iconColor || "text-gray-600 dark:text-gray-400"
+    color: feature.color ?? defaultColors[index]?.color ?? "bg-gray-50 dark:bg-gray-950/30",
+    iconColor: feature.icon_color ?? defaultColors[index]?.iconColor ?? "text-gray-600 dark:text-gray-400"
   }))
 
   return (
@@ -421,22 +432,25 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
 
 // Ecosystem Section
 function EcosystemSection({ data }: { data?: Record<string, unknown> }) {
-  const badgeText = data?.badge_text || "Integration Hub"
-  const badgeIcon = data?.badge_icon || "share-line"
-  const sectionTitle = data?.section_title || "The Ecosystem We Orchestrate"
-  const description = data?.description || "Elevation connects your core systems (from finance and cap tables to communications and docs) with specialized AI tools and open agent standards—so you can compose the right stack for your business and evolve it over time."
-  const accordionItems = data?.accordion_items || [
-    {
-      title: "Core Systems Integration",
-      content: "Seamlessly connect finance, cap tables, communications, and documentation systems into a unified platform.",
-      icon: "database-2-line"
-    },
-    {
-      title: "AI Tools & Agent Standards",
-      content: "Connect with specialized AI tools and open agent standards to build the perfect stack for your business needs.",
-      icon: "cpu-line"
-    }
-  ]
+  const d = isRecord(data) ? data : {}
+  const badgeText = toText(d.badge_text) || "Integration Hub"
+  const badgeIcon = toText(d.badge_icon) || "share-line"
+  const sectionTitle = toText(d.section_title) || "The Ecosystem We Orchestrate"
+  const description = toText(d.description) || "Elevation connects your core systems (from finance and cap tables to communications and docs) with specialized AI tools and open agent standards—so you can compose the right stack for your business and evolve it over time."
+  const accordionItems: Record<string, unknown>[] = Array.isArray(d.accordion_items)
+    ? (d.accordion_items as Record<string, unknown>[])
+    : [
+        {
+          title: "Core Systems Integration",
+          content: "Seamlessly connect finance, cap tables, communications, and documentation systems into a unified platform.",
+          icon: "database-2-line",
+        },
+        {
+          title: "AI Tools & Agent Standards",
+          content: "Connect with specialized AI tools and open agent standards to build the perfect stack for your business needs.",
+          icon: "cpu-line",
+        },
+      ]
 
   return (
     <Section paddingY="xl" className="relative overflow-hidden">
@@ -457,23 +471,29 @@ function EcosystemSection({ data }: { data?: Record<string, unknown> }) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {accordionItems.map((item: Record<string, unknown>, index: number) => (
-              <Card key={index} className="border border-border/50 bg-transparent h-80">
-                <CardContent className="p-8 h-full flex flex-col">
-                  <div className="flex flex-col items-start text-left space-y-6 h-full justify-center">
-                    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
-                      <Icon name={item.icon} size="2xl" className="text-primary" />
-                    </div>
-                    <div className="space-y-4">
-                      <H3>{item.title}</H3>
-                      <BodyLarge className="text-muted-foreground leading-relaxed">
-                        {item.content}
+            {accordionItems.map((item: Record<string, unknown>, index: number) => {
+              const icon = toText(item.icon) || "database-2-line"
+              const title = toText(item.title) || ""
+              const content = toText(item.content) || ""
+              
+              return (
+                <Card key={index} className="border border-border/50 bg-transparent h-80">
+                  <CardContent className="p-8 h-full flex flex-col">
+                    <div className="flex flex-col items-start text-left space-y-6 h-full justify-center">
+                      <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+                        <Icon name={icon} size="2xl" className="text-primary" />
+                      </div>
+                      <div className="space-y-4">
+                        <H3>{title}</H3>
+                        <BodyLarge className="text-muted-foreground leading-relaxed">
+                          {content}
                       </BodyLarge>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              )
+            })}
           </div>
         </div>
       </Container>
@@ -483,10 +503,11 @@ function EcosystemSection({ data }: { data?: Record<string, unknown> }) {
 
 // Path Ahead Section
 function PathAheadSection({ data }: { data?: Record<string, unknown> }) {
-  const badgeText = data?.badge_text || "Future Vision"
-  const badgeIcon = data?.badge_icon || "road-map-line"
-  const sectionTitle = data?.section_title || "The Path Ahead"
-  const content = data?.content || "We're building the agentic backbone for how complex organizations operate—one shared knowledge graph, one secure control plane, and a growing ecosystem of agents and integrations that make work feel orchestrated, not overloaded."
+  const d = isRecord(data) ? data : {}
+  const badgeText = toText(d.badge_text) || "Future Vision"
+  const badgeIcon = toText(d.badge_icon) || "road-map-line"
+  const sectionTitle = toText(d.section_title) || "The Path Ahead"
+  const content = toText(d.content) || "We're building the agentic backbone for how complex organizations operate—one shared knowledge graph, one secure control plane, and a growing ecosystem of agents and integrations that make work feel orchestrated, not overloaded."
 
   return (
     <Section paddingY="xl" className="relative overflow-hidden">
@@ -513,11 +534,12 @@ function PathAheadSection({ data }: { data?: Record<string, unknown> }) {
 
 // Careers Section
 function CareersSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Careers"
-  const description = data?.description || "We're looking for systems thinkers, security‑minded engineers, and product designers who love turning complexity into clarity. If that's you, reach out."
-  const ctaText = data?.cta_primary_text || "View Open Positions"
-  const ctaUrl = data?.cta_primary_url || "/website/careers"
-  const icon = data?.icon || "team-line"
+  const d = isRecord(data) ? data : {}
+  const title = toText(d.title) || "Careers"
+  const description = toText(d.description) || "We're looking for systems thinkers, security‑minded engineers, and product designers who love turning complexity into clarity. If that's you, reach out."
+  const ctaText = toText(d.cta_primary_text) || "View Open Positions"
+  const ctaUrl = toText(d.cta_primary_url) || "/website/careers"
+  const icon = toText(d.icon) || "team-line"
 
   return (
     <Section paddingY="lg">
@@ -635,17 +657,17 @@ export default function AboutPage() {
                 <div className="text-center flex-1 flex items-center justify-center">
                   <HeroHeading>
                     <TypewriterText 
-                      text={pageData?.sections?.[0]?.section_data?.initial_text || "Transforming business orchestration."}
-                      cyclingWords={pageData?.sections?.[0]?.section_data?.cycling_words || [
+                      text={toText(pageData?.sections?.[0]?.section_data?.initial_text) || "Transforming business orchestration."}
+                      cyclingWords={asArray(pageData?.sections?.[0]?.section_data?.cycling_words) || [
                         "Transforming business orchestration.",
                         "Unifying knowledge across organizations.",
                         "Orchestrating secure, agentic AI.",
                         "Building the future of intelligent operations.",
                         "Welcome to Elevation AI"
                       ]}
-                      speed={pageData?.sections?.[0]?.section_data?.typewriter_speed || 100}
-                      cyclingDelay={pageData?.sections?.[0]?.section_data?.cycling_delay || 3000}
-                      cyclingSpeed={pageData?.sections?.[0]?.section_data?.cycling_speed || 80}
+                      speed={typeof pageData?.sections?.[0]?.section_data?.typewriter_speed === 'number' ? pageData.sections[0].section_data.typewriter_speed : 100}
+                      cyclingDelay={typeof pageData?.sections?.[0]?.section_data?.cycling_delay === 'number' ? pageData.sections[0].section_data.cycling_delay : 3000}
+                      cyclingSpeed={typeof pageData?.sections?.[0]?.section_data?.cycling_speed === 'number' ? pageData.sections[0].section_data.cycling_speed : 80}
                     />
                   </HeroHeading>
                 </div>
@@ -695,12 +717,12 @@ export default function AboutPage() {
               </Section>
             </Container>
 
-            <MissionSection data={pageData?.sections?.[1]?.section_data} />
-            <ProblemSolutionSection data={pageData?.sections?.[2]?.section_data} />
-            <PrinciplesSection data={pageData?.sections?.[3]?.section_data} />
-            <EcosystemSection data={pageData?.sections?.[4]?.section_data} />
-            <PathAheadSection data={pageData?.sections?.[5]?.section_data} />
-            <CareersSection data={pageData?.sections?.[6]?.section_data} />
+            <MissionSection data={pageData?.sections?.[1]?.section_data || undefined} />
+            <ProblemSolutionSection data={pageData?.sections?.[2]?.section_data || undefined} />
+            <PrinciplesSection data={pageData?.sections?.[3]?.section_data || undefined} />
+            <EcosystemSection data={pageData?.sections?.[4]?.section_data || undefined} />
+            <PathAheadSection data={pageData?.sections?.[5]?.section_data || undefined} />
+            <CareersSection data={pageData?.sections?.[6]?.section_data || undefined} />
           </main>
         </div>
       </MobileOnlyLayout>
