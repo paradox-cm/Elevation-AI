@@ -102,11 +102,11 @@ export function LoadingAnimation({
   useEffect(() => {
     if (!headRef.current) return
 
-    const head = headRef.current
+    const head = headRef.current;
 
     // Add global styles
     if (typeof addGlobalStyles === 'function') {
-      addGlobalStyles()
+      addGlobalStyles();
     }
 
     // Set up initial CSS variables with cached values
@@ -264,15 +264,15 @@ export function PulsingLoadingAnimation({
   useEffect(() => {
     if (!pathRef.current) return
 
-    const path = pathRef.current
+    const path = pathRef.current;
 
     // Add global styles
     if (typeof addGlobalStyles === 'function') {
-      addGlobalStyles()
+      addGlobalStyles();
     }
 
     // Set up initial CSS variables with cached values
-    (path as unknown as HTMLElement).style.setProperty('--path-length', `${cachedPathLength}`);;
+    (path as unknown as HTMLElement).style.setProperty('--path-length', `${cachedPathLength}`);
     (path as unknown as HTMLElement).style.setProperty('--head-length', `${segmentLength}`);
     (path as unknown as HTMLElement).style.setProperty('--tail-length', `${cachedPathLength - segmentLength}`);
 
@@ -407,11 +407,11 @@ export function TravelingLoadingAnimation({
   useEffect(() => {
     if (!headRef.current) return
 
-    const head = headRef.current
+    const head = headRef.current;
 
     // Add global styles
     if (typeof addGlobalStyles === 'function') {
-      addGlobalStyles()
+      addGlobalStyles();
     }
 
     // Set up initial CSS variables with cached values
@@ -554,7 +554,7 @@ export function MinimalLoadingAnimation({
   useEffect(() => {
     if (!pathRef.current) return
 
-    const path = pathRef.current
+    const path = pathRef.current;
     const pathLength: number = path.getTotalLength();
     const pathLengthStr = pathLength.toString();
 

@@ -788,25 +788,25 @@ export default function PeopleConciergePage() {
 
                 {/* CTA Section */}
                 <div id="connect-experts">
-                  <Section paddingY="lg" className={typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.backgroundColor === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.backgroundColor as string : 'bg-muted/30'}>
+                  <Section paddingY="lg" className={typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { backgroundColor?: string })?.backgroundColor === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { backgroundColor?: string })?.backgroundColor as string : 'bg-muted/30'}>
                     <Container size="2xl">
                       <div className="max-w-4xl mx-auto text-center space-y-8">
                         <div className="space-y-4">
                           <H2>
-                            {typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.title === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.title as string : 'Ready to Build Your Agentic Future?'}
+                            {typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { title?: string })?.title === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { title?: string })?.title as string : 'Ready to Build Your Agentic Future?'}
                           </H2>
                           <P className="text-muted-foreground leading-relaxed">
-                            {typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.description === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.description as string : 'Let\'s discuss how our Concierge Support Team can help you achieve your goals.'}
+                            {typeof (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { description?: string })?.description === 'string' ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { description?: string })?.description as string : 'Let\'s discuss how our Concierge Support Team can help you achieve your goals.'}
                           </P>
                         </div>
                         
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                          {(Array.isArray((pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.ctaButtons) ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.ctaButtons as unknown[] : [
+                          {(Array.isArray((pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { ctaButtons?: unknown[] })?.ctaButtons) ? (pageData?.sections.find(s => s.section_type === 'cta')?.section_data as { ctaButtons?: unknown[] })?.ctaButtons as unknown[] : [
                             { text: 'Speak With Our Team', href: '/website/demo', variant: 'default' },
                             { text: 'About Us', href: '/website/about', variant: 'outline' }
                           ]).map((button: unknown, index: number) => {
                             const btn = button as Record<string, unknown>
-                            const v = typeof btn.variant === "string" ? (btn.variant as any) : undefined;
+                            const v = typeof btn.variant === "string" ? (btn.variant as "default" | "outline" | "secondary" | "ghost" | "link" | "destructive") : undefined;
                             const href = typeof btn.href === "string" ? btn.href : "/";
                             const text = typeof btn.text === "string" ? btn.text : "Button";
                             return (
