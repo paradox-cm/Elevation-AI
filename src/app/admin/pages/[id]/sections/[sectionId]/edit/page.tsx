@@ -368,7 +368,7 @@ export default function SectionEditPage() {
                             <Label htmlFor={`accordion-${index}-title`}>Title</Label>
                             <Input
                               id={`accordion-${index}-title`}
-                              value={item.title || ''}
+                              value={String((item as { title?: string })?.title || '')}
                               onChange={(e) => handleArrayFieldChange('accordionItems', index, 'title', e.target.value)}
                               placeholder="Accordion item title"
                             />
@@ -377,7 +377,7 @@ export default function SectionEditPage() {
                             <Label htmlFor={`accordion-${index}-content`}>Content</Label>
                             <Textarea
                               id={`accordion-${index}-content`}
-                              value={item.content || ''}
+                              value={String((item as { content?: string })?.content || '')}
                               onChange={(e) => handleArrayFieldChange('accordionItems', index, 'content', e.target.value)}
                               placeholder="Accordion item content"
                               rows={3}
@@ -417,7 +417,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Led by industry veterans from:"
                   />
@@ -435,17 +435,17 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
-                  {(section.section_data?.logos || []).map((logo: unknown, index: number) => (
+                  {(Array.isArray(section.section_data?.logos) ? section.section_data.logos : []).map((logo: unknown, index: number) => (
                     <Card key={index} className="border">
                       <CardContent className="p-6">
                         <div className="flex items-start gap-6">
                           {/* Logo Preview */}
                           <div className="flex-shrink-0">
                             <div className="w-20 h-20 bg-muted rounded-lg border flex items-center justify-center overflow-hidden">
-                              {(logo.logo || logo.filename) ? (
+                              {((logo as { logo?: string; filename?: string }).logo || (logo as { logo?: string; filename?: string }).filename) ? (
                                 <Image
-                                  src={logo.logo || `/images/logos/${logo.filename}`}
-                                  alt={logo.name || 'Logo preview'}
+                                  src={(logo as { logo?: string; filename?: string }).logo || `/images/logos/${(logo as { logo?: string; filename?: string }).filename}`}
+                                  alt={(logo as { name?: string }).name || 'Logo preview'}
                                   width={80}
                                   height={80}
                                   className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
@@ -456,7 +456,7 @@ export default function SectionEditPage() {
                                   }}
                                 />
                               ) : null}
-                              <div className={`${(logo.logo || logo.filename) ? 'hidden' : ''} text-muted-foreground text-xs text-center p-2`}>
+                              <div className={`${((logo as { logo?: string; filename?: string }).logo || (logo as { logo?: string; filename?: string }).filename) ? 'hidden' : ''} text-muted-foreground text-xs text-center p-2`}>
                                 No logo
                               </div>
                             </div>
@@ -470,7 +470,7 @@ export default function SectionEditPage() {
                                 <Label htmlFor={`logo-${index}-name`}>Company Name</Label>
                                 <Input
                                   id={`logo-${index}-name`}
-                                  value={logo.name || ''}
+                                  value={String((logo as { name?: string })?.name || '')}
                                   onChange={(e) => handleArrayFieldChange('logos', index, 'name', e.target.value)}
                                   placeholder="Accenture"
                                 />
@@ -480,7 +480,7 @@ export default function SectionEditPage() {
                               <div className="flex items-center space-x-2">
                                 <Switch
                                   id={`logo-${index}-showText`}
-                                  checked={logo.showText !== false}
+                                  checked={(logo as { showText?: boolean })?.showText !== false}
                                   onCheckedChange={(checked) => handleArrayFieldChange('logos', index, 'showText', checked)}
                                 />
                                 <Label htmlFor={`logo-${index}-showText`} className="text-sm">
@@ -496,7 +496,7 @@ export default function SectionEditPage() {
                                 <FileUpload
                                   onFileSelect={(file) => {
                                     // Auto-fill company name if empty
-                                    if (!logo.name) {
+                                    if (!(logo as { name?: string })?.name) {
                                       const nameWithoutExt = file.name.split('.')[0]
                                       handleArrayFieldChange('logos', index, 'name', nameWithoutExt)
                                     }
@@ -524,7 +524,7 @@ export default function SectionEditPage() {
                                   <Label htmlFor={`logo-${index}-filename`} className="text-xs">Filename</Label>
                                   <Input
                                     id={`logo-${index}-filename`}
-                                    value={logo.filename || ''}
+                                    value={String((logo as { filename?: string })?.filename || '')}
                                     onChange={(e) => handleArrayFieldChange('logos', index, 'filename', e.target.value)}
                                     placeholder="Accenture.svg"
                                     className="font-mono text-sm"
@@ -537,7 +537,7 @@ export default function SectionEditPage() {
                                   <Label htmlFor={`logo-${index}-logo`} className="text-xs">Logo Path (Advanced)</Label>
                                   <Input
                                     id={`logo-${index}-logo`}
-                                    value={logo.logo || ''}
+                                    value={String((logo as { logo?: string })?.logo || '')}
                                     onChange={(e) => handleArrayFieldChange('logos', index, 'logo', e.target.value)}
                                     placeholder="/images/logos/Accenture.svg"
                                     className="font-mono text-sm"
@@ -603,7 +603,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="title">Section Title</Label>
                     <Input
-                      value={section.section_data?.title || ''}
+                      value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
                       placeholder="How It Works"
                     />
@@ -612,7 +612,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="description">Description</Label>
                     <Input
-                      value={section.section_data?.description || ''}
+                      value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
                       placeholder="Three simple steps to get your custom plan"
                     />
@@ -630,7 +630,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {(section.section_data?.cards || []).map((card: Record<string, unknown>, index: number) => (
+                    {(Array.isArray(section.section_data?.cards) ? section.section_data.cards : []).map((card: Record<string, unknown>, index: number) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3">
                         <div className="flex items-center justify-between">
                           <Label>Step {index + 1}</Label>
@@ -638,7 +638,7 @@ export default function SectionEditPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              const cards = [...(section.section_data?.cards || [])]
+                              const cards = [...(Array.isArray(section.section_data?.cards) ? section.section_data.cards : [])]
                               cards.splice(index, 1)
                               handleSectionDataChange('cards', cards)
                             }}
@@ -650,7 +650,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Step Title</Label>
                             <Input
-                              value={card.title || ''}
+                              value={String((card as { title?: string })?.title || '')}
                               onChange={(e) => handleArrayFieldChange('cards', index, 'title', e.target.value)}
                               placeholder="Tell Us About Your Universe"
                             />
@@ -658,7 +658,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Step Description</Label>
                             <Textarea
-                              value={card.description || ''}
+                              value={String((card as { description?: string })?.description || '')}
                               onChange={(e) => handleArrayFieldChange('cards', index, 'description', e.target.value)}
                               placeholder="Share key details about your organization and core needs."
                               rows={3}
@@ -667,7 +667,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Icon Name</Label>
                             <Input
-                              value={card.icon || ''}
+                              value={String((card as { icon?: string })?.icon || '')}
                               onChange={(e) => handleArrayFieldChange('cards', index, 'icon', e.target.value)}
                               placeholder="user-line"
                             />
@@ -678,7 +678,7 @@ export default function SectionEditPage() {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        const cards = [...(section.section_data?.cards || []), { title: '', description: '', icon: '' }]
+                        const cards = [...(Array.isArray(section.section_data?.cards) ? section.section_data.cards : []), { title: '', description: '', icon: '' }]
                         handleSectionDataChange('cards', cards)
                       }}
                     >
@@ -708,7 +708,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="challenge.badgeText">Badge Text</Label>
                     <Input
-                      value={section.section_data?.challenge?.badgeText || ''}
+                      value={String((section.section_data?.challenge as { badgeText?: string })?.badgeText || '')}
                       onChange={(e) => handleNestedFieldChange('challenge', 'badgeText', e.target.value)}
                       placeholder="The Challenge"
                     />
@@ -716,7 +716,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="challenge.title">Challenge Title</Label>
                     <Input
-                      value={section.section_data?.challenge?.title || ''}
+                      value={String((section.section_data?.challenge as { title?: string })?.title || '')}
                       onChange={(e) => handleNestedFieldChange('challenge', 'title', e.target.value)}
                       placeholder="Technology Alone Isn't Transformation"
                     />
@@ -724,7 +724,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="challenge.statement">Challenge Statement</Label>
                     <Textarea
-                      value={section.section_data?.challenge?.statement || ''}
+                      value={String((section.section_data?.challenge as { statement?: string })?.statement || '')}
                       onChange={(e) => handleNestedFieldChange('challenge', 'statement', e.target.value)}
                       placeholder="Adopting agentic AI is not just about adding another app..."
                       rows={4}
@@ -745,7 +745,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="solution.badgeText">Badge Text</Label>
                     <Input
-                      value={section.section_data?.solution?.badgeText || ''}
+                      value={String((section.section_data?.solution as { badgeText?: string })?.badgeText || '')}
                       onChange={(e) => handleNestedFieldChange('solution', 'badgeText', e.target.value)}
                       placeholder="Our Solution"
                     />
@@ -753,7 +753,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="solution.subtitle">Subtitle</Label>
                     <Input
-                      value={section.section_data?.solution?.subtitle || ''}
+                      value={String((section.section_data?.solution as { subtitle?: string })?.subtitle || '')}
                       onChange={(e) => handleNestedFieldChange('solution', 'subtitle', e.target.value)}
                       placeholder="We Become Your Agentic Operations Team"
                     />
@@ -761,7 +761,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="solution.description">Description</Label>
                     <Textarea
-                      value={section.section_data?.solution?.description || ''}
+                      value={String((section.section_data?.solution as { description?: string })?.description || '')}
                       onChange={(e) => handleNestedFieldChange('solution', 'description', e.target.value)}
                       placeholder="Our Concierge service is a deep, hands-on partnership..."
                       rows={3}
@@ -779,7 +779,7 @@ export default function SectionEditPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {(section.section_data?.solution?.processSteps || []).map((step: unknown, index: number) => (
+                  {(Array.isArray((section.section_data?.solution as { processSteps?: unknown[] })?.processSteps) ? ((section.section_data?.solution as { processSteps?: unknown[] })?.processSteps || []) : []).map((step: unknown, index: number) => (
                     <div key={index} className="p-4 border rounded-lg space-y-3">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium">Step {index + 1}</h4>
@@ -795,7 +795,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Title</Label>
                           <Input
-                            value={step.title || ''}
+                            value={String((step as { title?: string })?.title || '')}
                             onChange={(e) => handleArrayFieldChange('solution.processSteps', index, 'title', e.target.value)}
                             placeholder="Design & Strategize"
                           />
@@ -803,7 +803,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Icon</Label>
                           <select
-                            value={step.icon || 'target-line'}
+                            value={String((step as { icon?: string })?.icon || 'target-line')}
                             onChange={(e) => handleArrayFieldChange('solution.processSteps', index, 'icon', e.target.value)}
                             className="w-full px-3 py-2 border border-input bg-background rounded-md"
                           >
@@ -817,7 +817,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Description</Label>
                         <Textarea
-                          value={step.description || ''}
+                          value={String((step as { description?: string })?.description || '')}
                           onChange={(e) => handleArrayFieldChange('solution.processSteps', index, 'description', e.target.value)}
                           placeholder="Step description..."
                           rows={3}
@@ -853,7 +853,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="The Problems We Solve"
                   />
@@ -862,7 +862,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Brief description of the problems section"
                     rows={3}
@@ -881,7 +881,7 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
-                  {(section.section_data?.problems || []).map((problem: unknown, index: number) => (
+                  {(Array.isArray(section.section_data?.problems) ? section.section_data.problems : []).map((problem: unknown, index: number) => (
                     <Card key={index} className="border-dashed">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
@@ -900,7 +900,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`problem-${index}-title`}>Title</Label>
                           <Input
                             id={`problem-${index}-title`}
-                            value={problem.title || ''}
+                            value={String((problem as { title?: string })?.title || '')}
                             onChange={(e) => handleArrayFieldChange('problems', index, 'title', e.target.value)}
                             placeholder="Problem title"
                           />
@@ -909,7 +909,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`problem-${index}-description`}>Description</Label>
                           <Textarea
                             id={`problem-${index}-description`}
-                            value={problem.description || ''}
+                            value={String((problem as { description?: string })?.description || '')}
                             onChange={(e) => handleArrayFieldChange('problems', index, 'description', e.target.value)}
                             placeholder="Problem description"
                             rows={3}
@@ -948,7 +948,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Platform Features"
                   />
@@ -957,7 +957,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Brief description of the platform features"
                     rows={3}
@@ -976,7 +976,7 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
-                  {(section.section_data?.features || []).map((feature: unknown, index: number) => (
+                  {(Array.isArray(section.section_data?.features) ? section.section_data.features : []).map((feature: unknown, index: number) => (
                     <Card key={index} className="border-dashed">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
@@ -995,7 +995,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`feature-${index}-title`}>Title</Label>
                           <Input
                             id={`feature-${index}-title`}
-                            value={feature.title || ''}
+                            value={String((feature as { title?: string })?.title || '')}
                             onChange={(e) => handleArrayFieldChange('features', index, 'title', e.target.value)}
                             placeholder="Feature title"
                           />
@@ -1004,7 +1004,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`feature-${index}-description`}>Description</Label>
                           <Textarea
                             id={`feature-${index}-description`}
-                            value={feature.description || ''}
+                            value={String((feature as { description?: string })?.description || '')}
                             onChange={(e) => handleArrayFieldChange('features', index, 'description', e.target.value)}
                             placeholder="Feature description"
                             rows={3}
@@ -1045,7 +1045,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="badgeText">Badge Text</Label>
                     <Input
                       id="badgeText"
-                      value={section.section_data?.badgeText || ''}
+                      value={String(section.section_data?.badgeText || '')}
                       onChange={(e) => handleSectionDataChange('badgeText', e.target.value)}
                       placeholder="Expert Network"
                     />
@@ -1054,7 +1054,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="title">Section Title</Label>
                     <Input
                       id="title"
-                      value={section.section_data?.title || ''}
+                      value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
                       placeholder="Access World-Class Expertise"
                     />
@@ -1063,7 +1063,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
-                      value={section.section_data?.description || ''}
+                      value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
                       placeholder="Tap into our curated network of specialists across AI, enterprise architecture, and industry domains."
                       rows={3}
@@ -1073,7 +1073,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="backgroundColor">Background Color Class</Label>
                     <Input
                       id="backgroundColor"
-                      value={section.section_data?.backgroundColor || ''}
+                      value={String(section.section_data?.backgroundColor || '')}
                       onChange={(e) => handleSectionDataChange('backgroundColor', e.target.value)}
                       placeholder="bg-blue-500/10"
                     />
@@ -1091,7 +1091,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-4">
-                    {(section.section_data?.expertCategories || []).map((category: unknown, index: number) => (
+                    {(Array.isArray(section.section_data?.expertCategories) ? section.section_data.expertCategories : []).map((category: unknown, index: number) => (
                       <Card key={index} className="border-dashed">
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between">
@@ -1110,7 +1110,7 @@ export default function SectionEditPage() {
                             <div className="space-y-2">
                               <Label>Title</Label>
                               <Input
-                                value={category.title || ''}
+                                value={String((category as { title?: string })?.title || '')}
                                 onChange={(e) => handleArrayFieldChange('expertCategories', index, 'title', e.target.value)}
                                 placeholder="AI & Machine Learning"
                               />
@@ -1118,7 +1118,7 @@ export default function SectionEditPage() {
                             <div className="space-y-2">
                               <Label>Icon</Label>
                               <select
-                                value={category.icon || 'brain-line'}
+                                value={String((category as { icon?: string })?.icon || 'brain-line')}
                                 onChange={(e) => handleArrayFieldChange('expertCategories', index, 'icon', e.target.value)}
                                 className="w-full px-3 py-2 border border-input bg-background rounded-md"
                               >
@@ -1132,7 +1132,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Description</Label>
                             <Textarea
-                              value={category.description || ''}
+                              value={String((category as { description?: string })?.description || '')}
                               onChange={(e) => handleArrayFieldChange('expertCategories', index, 'description', e.target.value)}
                               placeholder="Specialists in artificial intelligence, machine learning, and advanced automation technologies."
                               rows={3}
@@ -1141,7 +1141,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Specialties (one per line)</Label>
                             <Textarea
-                              value={(category.specialties || []).join('\n')}
+                              value={((category as { specialties?: string[] })?.specialties || []).join('\n')}
                               onChange={(e) => {
                                 const specialties = e.target.value.split('\n').filter(s => s.trim())
                                 handleArrayFieldChange('expertCategories', index, 'specialties', specialties)
@@ -1184,7 +1184,7 @@ export default function SectionEditPage() {
                       <Label htmlFor="autoPlay">Auto Play</Label>
                       <select
                         id="autoPlay"
-                        value={section.section_data?.carouselSettings?.autoPlay ? 'true' : 'false'}
+                        value={((section.section_data?.carouselSettings as Record<string, unknown>)?.autoPlay as boolean) ? 'true' : 'false'}
                         onChange={(e) => handleNestedFieldChange('carouselSettings', 'autoPlay', e.target.value === 'true')}
                         className="w-full px-3 py-2 border border-input bg-background rounded-md"
                       >
@@ -1197,7 +1197,7 @@ export default function SectionEditPage() {
                       <Input
                         id="autoPlayInterval"
                         type="number"
-                        value={section.section_data?.carouselSettings?.autoPlayInterval || 5000}
+                        value={((section.section_data?.carouselSettings as Record<string, unknown>)?.autoPlayInterval as number) || 5000}
                         onChange={(e) => handleNestedFieldChange('carouselSettings', 'autoPlayInterval', parseInt(e.target.value))}
                         placeholder="5000"
                       />
@@ -1209,7 +1209,7 @@ export default function SectionEditPage() {
                       <Input
                         id="cardWidth"
                         type="number"
-                        value={section.section_data?.carouselSettings?.cardWidth || 320}
+                        value={((section.section_data?.carouselSettings as Record<string, unknown>)?.cardWidth as number) || 320}
                         onChange={(e) => handleNestedFieldChange('carouselSettings', 'cardWidth', parseInt(e.target.value))}
                         placeholder="320"
                       />
@@ -1219,7 +1219,7 @@ export default function SectionEditPage() {
                       <Input
                         id="cardGap"
                         type="number"
-                        value={section.section_data?.carouselSettings?.cardGap || 24}
+                        value={((section.section_data?.carouselSettings as Record<string, unknown>)?.cardGap as number) || 24}
                         onChange={(e) => handleNestedFieldChange('carouselSettings', 'cardGap', parseInt(e.target.value))}
                         placeholder="24"
                       />
@@ -1246,7 +1246,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Who We Serve"
                   />
@@ -1255,7 +1255,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Brief description of the solutions"
                     rows={3}
@@ -1274,7 +1274,7 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
-                  {(section.section_data?.solutions || []).map((solution: unknown, index: number) => (
+                  {((section.section_data?.solutions as unknown[]) || []).map((solution: unknown, index: number) => (
                     <Card key={index} className="border-dashed">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
@@ -1293,7 +1293,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`solution-${index}-title`}>Title</Label>
                           <Input
                             id={`solution-${index}-title`}
-                            value={solution.title || ''}
+                            value={String((solution as { title?: string })?.title || '')}
                             onChange={(e) => handleArrayFieldChange('solutions', index, 'title', e.target.value)}
                             placeholder="Solution title"
                           />
@@ -1302,7 +1302,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`solution-${index}-description`}>Description</Label>
                           <Textarea
                             id={`solution-${index}-description`}
-                            value={solution.description || ''}
+                            value={String((solution as { description?: string })?.description || '')}
                             onChange={(e) => handleArrayFieldChange('solutions', index, 'description', e.target.value)}
                             placeholder="Solution description"
                             rows={3}
@@ -1343,7 +1343,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="badgeText">Badge Text</Label>
                     <Input
                       id="badgeText"
-                      value={section.section_data?.badgeText || ''}
+                      value={String(section.section_data?.badgeText || '')}
                       onChange={(e) => handleSectionDataChange('badgeText', e.target.value)}
                       placeholder="Who This Is For"
                     />
@@ -1352,7 +1352,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="title">Section Title</Label>
                     <Input
                       id="title"
-                      value={section.section_data?.title || ''}
+                      value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
                       placeholder="A Partnership for Ambitious Leaders"
                     />
@@ -1361,7 +1361,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
-                      value={section.section_data?.description || ''}
+                      value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
                       placeholder="Our Concierge service is designed for growth-oriented leaders who:"
                       rows={3}
@@ -1371,7 +1371,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="logoImage">Logo Image Path</Label>
                     <Input
                       id="logoImage"
-                      value={section.section_data?.logoImage || ''}
+                      value={(section.section_data?.logoImage as string) || ''}
                       onChange={(e) => handleSectionDataChange('logoImage', e.target.value)}
                       placeholder="/images/branding/E-AI-Sqaure.svg"
                     />
@@ -1389,7 +1389,9 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-4">
-                    {(section.section_data?.characteristics || []).map((characteristic: unknown, index: number) => (
+                    {((section.section_data?.characteristics as unknown[]) || []).map((characteristic: unknown, index: number) => {
+                      const char = characteristic as Record<string, unknown>;
+                      return (
                       <Card key={index} className="border-dashed">
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between">
@@ -1408,7 +1410,7 @@ export default function SectionEditPage() {
                             <div className="space-y-2">
                               <Label>Number</Label>
                               <Input
-                                value={characteristic.number || ''}
+                                value={(char.number as string) || ''}
                                 onChange={(e) => handleArrayFieldChange('characteristics', index, 'number', e.target.value)}
                                 placeholder="1"
                               />
@@ -1416,7 +1418,7 @@ export default function SectionEditPage() {
                             <div className="space-y-2">
                               <Label>Title</Label>
                               <Input
-                                value={characteristic.title || ''}
+                                value={String((char as { title?: string })?.title || '')}
                                 onChange={(e) => handleArrayFieldChange('characteristics', index, 'title', e.target.value)}
                                 placeholder="First-Mover Advantage"
                               />
@@ -1425,7 +1427,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Description</Label>
                             <Textarea
-                              value={characteristic.description || ''}
+                              value={String((char as { description?: string })?.description || '')}
                               onChange={(e) => handleArrayFieldChange('characteristics', index, 'description', e.target.value)}
                               placeholder="Want to move quickly and capture a first-mover advantage in their industry."
                               rows={3}
@@ -1433,7 +1435,8 @@ export default function SectionEditPage() {
                           </div>
                         </CardContent>
                       </Card>
-                    ))}
+                      );
+                    })}
                   </div>
                   <Button
                     variant="outline"
@@ -1464,7 +1467,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="How We Do It"
                   />
@@ -1473,7 +1476,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Brief description of the approach"
                     rows={3}
@@ -1492,7 +1495,9 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
-                  {(section.section_data?.approaches || []).map((approach: unknown, index: number) => (
+                  {((section.section_data?.approaches as unknown[]) || []).map((approach: unknown, index: number) => {
+                    const app = approach as Record<string, unknown>;
+                    return (
                     <Card key={index} className="border-dashed">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
@@ -1511,7 +1516,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`approach-${index}-title`}>Title</Label>
                           <Input
                             id={`approach-${index}-title`}
-                            value={approach.title || ''}
+                            value={String((app as { title?: string })?.title || '')}
                             onChange={(e) => handleArrayFieldChange('approaches', index, 'title', e.target.value)}
                             placeholder="Approach title"
                           />
@@ -1520,7 +1525,7 @@ export default function SectionEditPage() {
                           <Label htmlFor={`approach-${index}-description`}>Description</Label>
                           <Textarea
                             id={`approach-${index}-description`}
-                            value={approach.description || ''}
+                            value={String((app as { description?: string })?.description || '')}
                             onChange={(e) => handleArrayFieldChange('approaches', index, 'description', e.target.value)}
                             placeholder="Approach description"
                             rows={3}
@@ -1528,7 +1533,8 @@ export default function SectionEditPage() {
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                    );
+                  })}
                 </div>
                 <Button
                   variant="outline"
@@ -1580,7 +1586,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label htmlFor="animationType">Animation Type</Label>
                         <Input
-                          value={section.section_data?.animationType || 'growth'}
+                          value={(section.section_data?.animationType as string) || 'growth'}
                           onChange={(e) => handleSectionDataChange('animationType', e.target.value)}
                           placeholder="growth"
                         />
@@ -1592,7 +1598,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label htmlFor="title">Section Title</Label>
                         <Input
-                          value={section.section_data?.title || ''}
+                          value={String(section.section_data?.title || '')}
                           onChange={(e) => handleSectionDataChange('title', e.target.value)}
                           placeholder="Ready to Transform Your Operations?"
                         />
@@ -1601,7 +1607,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label htmlFor="description">Description</Label>
                         <Textarea
-                          value={section.section_data?.description || ''}
+                          value={String(section.section_data?.description || '')}
                           onChange={(e) => handleSectionDataChange('description', e.target.value)}
                           placeholder="Discover how Elevation AI can unify your knowledge, secure your operations, and orchestrate intelligent workflows across your organization."
                           rows={3}
@@ -1611,7 +1617,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label htmlFor="backgroundColor">Background Color Class</Label>
                         <Input
-                          value={section.section_data?.backgroundColor || 'bg-muted/30'}
+                          value={(section.section_data?.backgroundColor as string) || 'bg-muted/30'}
                           onChange={(e) => handleSectionDataChange('backgroundColor', e.target.value)}
                           placeholder="bg-muted/30"
                         />
@@ -1634,7 +1640,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {(section.section_data?.ctaButtons || []).map((button: Record<string, unknown>, index: number) => (
+                    {((section.section_data?.ctaButtons as unknown[]) || []).map((button, index) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3">
                         <div className="flex items-center justify-between">
                           <Label>{isCalculateSection ? 'Quote Button' : `Button ${index + 1}`}</Label>
@@ -1643,7 +1649,7 @@ export default function SectionEditPage() {
                               variant="ghost"
                               size="sm"
                               onClick={() => {
-                                const buttons = [...(section.section_data?.ctaButtons || [])]
+                                const buttons = [...((section.section_data?.ctaButtons as unknown[]) || [])]
                                 buttons.splice(index, 1)
                                 handleSectionDataChange('ctaButtons', buttons)
                               }}
@@ -1656,7 +1662,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Button Text</Label>
                             <Input
-                              value={button.text || ''}
+                              value={((button as Record<string, unknown>).text as string) || ''}
                               onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'text', e.target.value)}
                               placeholder={isCalculateSection ? 'Get a Custom Quote' : 'Request a Demo'}
                             />
@@ -1664,7 +1670,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Button Variant</Label>
                             <Input
-                              value={button.variant || ''}
+                              value={((button as Record<string, unknown>).variant as string) || ''}
                               onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'variant', e.target.value)}
                               placeholder="default"
                             />
@@ -1674,9 +1680,9 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Link/Action</Label>
                             <Input
-                              value={button.href || button.action || ''}
+                              value={((button as Record<string, unknown>).href as string) || ((button as Record<string, unknown>).action as string) || ''}
                               onChange={(e) => {
-                                const field = button.action ? 'action' : 'href'
+                                const field = ((button as Record<string, unknown>).action as string) ? 'action' : 'href'
                                 handleArrayFieldChange('ctaButtons', index, field, e.target.value)
                               }}
                               placeholder={isCalculateSection ? 'openConsultation' : '/website/demo'}
@@ -1689,7 +1695,7 @@ export default function SectionEditPage() {
                       <Button
                         variant="outline"
                         onClick={() => {
-                          const buttons = [...(section.section_data?.ctaButtons || []), { text: '', variant: 'default', href: '' }]
+                          const buttons = [...((section.section_data?.ctaButtons as unknown[]) || []), { text: '', variant: 'default', href: '' }]
                           handleSectionDataChange('ctaButtons', buttons)
                         }}
                       >
@@ -1721,7 +1727,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="title">Title</Label>
                     <Input
                       id="title"
-                      value={section.section_data?.title || ''}
+                      value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
                       placeholder="Ready to Build Your Agentic Future?"
                     />
@@ -1730,7 +1736,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
-                      value={section.section_data?.description || ''}
+                      value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
                       placeholder="Let's discuss how our Concierge Support Team can help you achieve your goals."
                       rows={3}
@@ -1740,7 +1746,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="backgroundColor">Background Color Class</Label>
                     <Input
                       id="backgroundColor"
-                      value={section.section_data?.backgroundColor || ''}
+                      value={(section.section_data?.backgroundColor as string) || ''}
                       onChange={(e) => handleSectionDataChange('backgroundColor', e.target.value)}
                       placeholder="bg-muted/30"
                     />
@@ -1757,7 +1763,7 @@ export default function SectionEditPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {(section.section_data?.ctaButtons || []).map((button: unknown, index: number) => (
+                  {((section.section_data?.ctaButtons as unknown[]) || []).map((button: unknown, index: number) => (
                     <div key={index} className="p-4 border rounded-lg space-y-3">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium">Button {index + 1}</h4>
@@ -1773,7 +1779,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Button Text</Label>
                           <Input
-                            value={button.text || ''}
+                            value={((button as Record<string, unknown>).text as string) || ''}
                             onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'text', e.target.value)}
                             placeholder="Speak With Our Team"
                           />
@@ -1781,7 +1787,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Button URL</Label>
                           <Input
-                            value={button.href || ''}
+                            value={((button as Record<string, unknown>).href as string) || ''}
                             onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'href', e.target.value)}
                             placeholder="/website/demo"
                           />
@@ -1789,7 +1795,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Button Variant</Label>
                           <select
-                            value={button.variant || 'default'}
+                            value={((button as Record<string, unknown>).variant as string) || 'default'}
                             onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'variant', e.target.value)}
                             className="w-full px-3 py-2 border border-input bg-background rounded-md"
                           >
@@ -1829,7 +1835,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Ready to Transform Your Enterprise?"
                   />
@@ -1838,7 +1844,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Brief description for the CTA section"
                     rows={3}
@@ -1848,7 +1854,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="buttonText">Button Text</Label>
                   <Input
                     id="buttonText"
-                    value={section.section_data?.buttonText || ''}
+                     value={(section.section_data?.buttonText as string) || ''}
                     onChange={(e) => handleSectionDataChange('buttonText', e.target.value)}
                     placeholder="Get Started"
                   />
@@ -1857,7 +1863,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="buttonLink">Button Link</Label>
                   <Input
                     id="buttonLink"
-                    value={section.section_data?.buttonLink || ''}
+                     value={(section.section_data?.buttonLink as string) || ''}
                     onChange={(e) => handleSectionDataChange('buttonLink', e.target.value)}
                     placeholder="/contact"
                   />
@@ -1884,7 +1890,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="title">Section Title</Label>
                     <Input
-                      value={section.section_data?.title || ''}
+                      value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
                       placeholder="Transparent Pricing for Every Organization"
                     />
@@ -1893,7 +1899,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="description">Description</Label>
                     <Textarea
-                      value={section.section_data?.description || ''}
+                      value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
                       placeholder="Our platform is not one-size-fits-all, and neither is our pricing..."
                       rows={4}
@@ -1903,7 +1909,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="logoPath">Logo Path</Label>
                     <Input
-                      value={section.section_data?.logoPath || ''}
+                       value={(section.section_data?.logoPath as string) || ''}
                       onChange={(e) => handleSectionDataChange('logoPath', e.target.value)}
                       placeholder="/images/branding/E-AI-Circle.svg"
                     />
@@ -1921,7 +1927,7 @@ export default function SectionEditPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    {(section.section_data?.ctaButtons || []).map((button: Record<string, unknown>, index: number) => (
+                    {((section.section_data?.ctaButtons as unknown[]) || []).map((button, index) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3">
                         <div className="flex items-center justify-between">
                           <Label>Button {index + 1}</Label>
@@ -1929,7 +1935,7 @@ export default function SectionEditPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              const buttons = [...(section.section_data?.ctaButtons || [])]
+                              const buttons = [...((section.section_data?.ctaButtons as unknown[]) || [])]
                               buttons.splice(index, 1)
                               handleSectionDataChange('ctaButtons', buttons)
                             }}
@@ -1941,7 +1947,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Button Text</Label>
                             <Input
-                              value={button.text || ''}
+                              value={((button as Record<string, unknown>).text as string) || ''}
                               onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'text', e.target.value)}
                               placeholder="Build Your Custom Plan"
                             />
@@ -1949,7 +1955,7 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Button Variant</Label>
                             <Input
-                              value={button.variant || ''}
+                              value={((button as Record<string, unknown>).variant as string) || ''}
                               onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'variant', e.target.value)}
                               placeholder="default"
                             />
@@ -1959,9 +1965,9 @@ export default function SectionEditPage() {
                           <div>
                             <Label>Link/Action</Label>
                             <Input
-                              value={button.href || button.action || ''}
+                              value={((button as Record<string, unknown>).href as string) || ((button as Record<string, unknown>).action as string) || ''}
                               onChange={(e) => {
-                                const field = button.action ? 'action' : 'href'
+                                const field = ((button as Record<string, unknown>).action as string) ? 'action' : 'href'
                                 handleArrayFieldChange('ctaButtons', index, field, e.target.value)
                               }}
                               placeholder="/website/demo or openCalculator"
@@ -1973,7 +1979,7 @@ export default function SectionEditPage() {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        const buttons = [...(section.section_data?.ctaButtons || []), { text: '', variant: 'default', href: '' }]
+                        const buttons = [...((section.section_data?.ctaButtons as unknown[]) || []), { text: '', variant: 'default', href: '' }]
                         handleSectionDataChange('ctaButtons', buttons)
                       }}
                     >
@@ -2003,7 +2009,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="title">Section Title</Label>
                     <Input
-                      value={section.section_data?.title || ''}
+                      value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
                       placeholder="Your Dedicated Team for the Agentic Era"
                     />
@@ -2011,7 +2017,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="description">Description</Label>
                     <Textarea
-                      value={section.section_data?.description || ''}
+                      value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
                       placeholder="Your concierge support team, acting as an extension..."
                       rows={3}
@@ -2020,7 +2026,7 @@ export default function SectionEditPage() {
                   <div className="space-y-2">
                     <Label htmlFor="logoImage">Logo Image Path</Label>
                     <Input
-                      value={section.section_data?.logoImage || ''}
+                       value={(section.section_data?.logoImage as string) || ''}
                       onChange={(e) => handleSectionDataChange('logoImage', e.target.value)}
                       placeholder="/images/branding/E-AI-Squircle.svg"
                     />
@@ -2037,7 +2043,7 @@ export default function SectionEditPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {(section.section_data?.ctaButtons || []).map((button: unknown, index: number) => (
+                  {((section.section_data?.ctaButtons as unknown[]) || []).map((button: unknown, index: number) => (
                     <div key={index} className="p-4 border rounded-lg space-y-3">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium">Button {index + 1}</h4>
@@ -2053,7 +2059,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Button Text</Label>
                           <Input
-                            value={button.text || ''}
+                            value={((button as Record<string, unknown>).text as string) || ''}
                             onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'text', e.target.value)}
                             placeholder="Learn More"
                           />
@@ -2061,7 +2067,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Button URL</Label>
                           <Input
-                            value={button.href || ''}
+                            value={((button as Record<string, unknown>).href as string) || ''}
                             onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'href', e.target.value)}
                             placeholder="#concierge-team"
                           />
@@ -2069,7 +2075,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Button Variant</Label>
                           <select
-                            value={button.variant || 'default'}
+                            value={((button as Record<string, unknown>).variant as string) || 'default'}
                             onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'variant', e.target.value)}
                             className="w-full px-3 py-2 border border-input bg-background rounded-md"
                           >
@@ -2083,7 +2089,7 @@ export default function SectionEditPage() {
                         <input
                           type="checkbox"
                           id={`scrollButton-${index}`}
-                          checked={button.isScrollButton || false}
+                          checked={((button as Record<string, unknown>).isScrollButton as boolean) || false}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'isScrollButton', e.target.checked)}
                           className="rounded"
                         />
@@ -2119,7 +2125,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Section Title</Label>
                   <Input
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Hero Title"
                   />
@@ -2127,7 +2133,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Hero description..."
                     rows={3}
@@ -2153,7 +2159,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Title Line 1</Label>
                   <Input
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="The Operating System for"
                   />
@@ -2161,7 +2167,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="titleLine2">Title Line 2</Label>
                   <Input
-                    value={section.section_data?.titleLine2 || ''}
+                    value={(section.section_data?.titleLine2 as string) || ''}
                     onChange={(e) => handleSectionDataChange('titleLine2', e.target.value)}
                     placeholder="the Agentic Era"
                   />
@@ -2169,7 +2175,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="The Elevation AI platform is the central, agentic backbone..."
                     rows={3}
@@ -2187,7 +2193,7 @@ export default function SectionEditPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {(section.section_data?.ctaButtons || []).map((button: unknown, index: number) => (
+                {((section.section_data?.ctaButtons as unknown[]) || []).map((button: unknown, index: number) => (
                   <div key={index} className="p-4 border rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Button {index + 1}</h4>
@@ -2203,7 +2209,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Button Text</Label>
                         <Input
-                          value={button.text || ''}
+                          value={((button as Record<string, unknown>).text as string) || ''}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'text', e.target.value)}
                           placeholder="Get Started"
                         />
@@ -2211,7 +2217,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Button URL</Label>
                         <Input
-                          value={button.href || ''}
+                          value={((button as Record<string, unknown>).href as string) || ''}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'href', e.target.value)}
                           placeholder="/website/sign-up"
                         />
@@ -2219,7 +2225,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Button Variant</Label>
                         <select
-                          value={button.variant || 'default'}
+                          value={((button as Record<string, unknown>).variant as string) || 'default'}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'variant', e.target.value)}
                           className="w-full px-3 py-2 border border-input bg-background rounded-md"
                         >
@@ -2258,7 +2264,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Section Title</Label>
                   <Input
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Enterprise-Grade Security & Compliance"
                   />
@@ -2266,7 +2272,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Your data security is our top priority..."
                     rows={3}
@@ -2284,7 +2290,7 @@ export default function SectionEditPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {(section.section_data?.features || []).map((feature: unknown, index: number) => (
+                {((section.section_data?.features as unknown[]) || []).map((feature: unknown, index: number) => (
                   <div key={index} className="p-4 border rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Feature {index + 1}</h4>
@@ -2300,7 +2306,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Title</Label>
                         <Input
-                          value={feature.title || ''}
+                          value={String((feature as { title?: string })?.title || '')}
                           onChange={(e) => handleArrayFieldChange('features', index, 'title', e.target.value)}
                           placeholder="Data Protection"
                         />
@@ -2308,7 +2314,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Description</Label>
                         <Input
-                          value={feature.description || ''}
+                          value={String((feature as { description?: string })?.description || '')}
                           onChange={(e) => handleArrayFieldChange('features', index, 'description', e.target.value)}
                           placeholder="End-to-end encryption..."
                         />
@@ -2316,7 +2322,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Icon</Label>
                         <Input
-                          value={feature.icon || ''}
+                          value={String((feature as { icon?: string })?.icon || '')}
                           onChange={(e) => handleArrayFieldChange('features', index, 'icon', e.target.value)}
                           placeholder="shield-check-line"
                         />
@@ -2351,7 +2357,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Section Title</Label>
                   <Input
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Connect Your Entire Universe"
                   />
@@ -2359,7 +2365,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Elevation AI is built to be the central hub..."
                     rows={3}
@@ -2377,7 +2383,7 @@ export default function SectionEditPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {(section.section_data?.categories || []).map((category: unknown, index: number) => (
+                {((section.section_data?.categories as unknown[]) || []).map((category: unknown, index: number) => (
                   <div key={index} className="p-4 border rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Category {index + 1}</h4>
@@ -2393,7 +2399,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Title</Label>
                         <Input
-                          value={category.title || ''}
+                          value={String((category as { title?: string })?.title || '')}
                           onChange={(e) => handleArrayFieldChange('categories', index, 'title', e.target.value)}
                           placeholder="Productivity"
                         />
@@ -2401,7 +2407,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Icon</Label>
                         <Input
-                          value={category.icon || ''}
+                          value={((category as Record<string, unknown>).icon as string) || ''}
                           onChange={(e) => handleArrayFieldChange('categories', index, 'icon', e.target.value)}
                           placeholder="file-text-line"
                         />
@@ -2410,7 +2416,7 @@ export default function SectionEditPage() {
                     <div className="space-y-2">
                       <Label>Description</Label>
                       <Textarea
-                        value={category.description || ''}
+                        value={String((category as { description?: string })?.description || '')}
                         onChange={(e) => handleArrayFieldChange('categories', index, 'description', e.target.value)}
                         placeholder="Streamline document collaboration..."
                         rows={2}
@@ -2445,7 +2451,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Section Title</Label>
                   <Input
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Built for Every Industry, Every Team"
                   />
@@ -2453,7 +2459,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="From startups to enterprises..."
                     rows={3}
@@ -2471,7 +2477,7 @@ export default function SectionEditPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {(section.section_data?.useCases || []).map((useCase: unknown, index: number) => (
+                {((section.section_data?.useCases as unknown[]) || []).map((useCase: unknown, index: number) => (
                   <div key={index} className="p-4 border rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Use Case {index + 1}</h4>
@@ -2487,7 +2493,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Title</Label>
                         <Input
-                          value={useCase.title || ''}
+                          value={String((useCase as { title?: string })?.title || '')}
                           onChange={(e) => handleArrayFieldChange('useCases', index, 'title', e.target.value)}
                           placeholder="Sales & Marketing"
                         />
@@ -2495,7 +2501,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Description</Label>
                         <Input
-                          value={useCase.description || ''}
+                          value={String((useCase as { description?: string })?.description || '')}
                           onChange={(e) => handleArrayFieldChange('useCases', index, 'description', e.target.value)}
                           placeholder="Lead qualification, content generation..."
                         />
@@ -2503,7 +2509,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Icon</Label>
                         <Input
-                          value={useCase.icon || ''}
+                          value={String((useCase as { icon?: string })?.icon || '')}
                           onChange={(e) => handleArrayFieldChange('useCases', index, 'icon', e.target.value)}
                           placeholder="line-chart-line"
                         />
@@ -2512,7 +2518,7 @@ export default function SectionEditPage() {
                     <div className="space-y-2">
                       <Label>Link URL</Label>
                       <Input
-                        value={useCase.href || ''}
+                        value={((useCase as Record<string, unknown>).href as string) || ''}
                         onChange={(e) => handleArrayFieldChange('useCases', index, 'href', e.target.value)}
                         placeholder="/website/solutions#sales-marketing"
                       />
@@ -2546,7 +2552,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Section Title</Label>
                   <Input
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Ready to Transform Your Organization?"
                   />
@@ -2554,7 +2560,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Custom plans built for your organization..."
                     rows={3}
@@ -2563,7 +2569,7 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label htmlFor="backgroundColor">Background Color Class</Label>
                   <Input
-                    value={section.section_data?.backgroundColor || ''}
+                    value={(section.section_data?.backgroundColor as string) || ''}
                     onChange={(e) => handleSectionDataChange('backgroundColor', e.target.value)}
                     placeholder="bg-muted/30"
                   />
@@ -2580,7 +2586,7 @@ export default function SectionEditPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {(section.section_data?.ctaButtons || []).map((button: unknown, index: number) => (
+                {((section.section_data?.ctaButtons as unknown[]) || []).map((button: unknown, index: number) => (
                   <div key={index} className="p-4 border rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Button {index + 1}</h4>
@@ -2596,7 +2602,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Button Text</Label>
                         <Input
-                          value={button.text || ''}
+                          value={((button as Record<string, unknown>).text as string) || ''}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'text', e.target.value)}
                           placeholder="Get Started"
                         />
@@ -2604,7 +2610,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Button URL</Label>
                         <Input
-                          value={button.href || ''}
+                          value={((button as Record<string, unknown>).href as string) || ''}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'href', e.target.value)}
                           placeholder="/website/sign-up"
                         />
@@ -2612,7 +2618,7 @@ export default function SectionEditPage() {
                       <div className="space-y-2">
                         <Label>Button Variant</Label>
                         <select
-                          value={button.variant || 'default'}
+                          value={((button as Record<string, unknown>).variant as string) || 'default'}
                           onChange={(e) => handleArrayFieldChange('ctaButtons', index, 'variant', e.target.value)}
                           className="w-full px-3 py-2 border border-input bg-background rounded-md"
                         >
@@ -2652,7 +2658,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Latest Articles"
                   />
@@ -2662,7 +2668,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Stay updated with our latest insights and updates"
                     rows={3}
@@ -2675,7 +2681,7 @@ export default function SectionEditPage() {
                     <Input
                       id="limit"
                       type="number"
-                      value={section.section_data?.limit || 6}
+                      value={(section.section_data?.limit as number) || 6}
                       onChange={(e) => handleSectionDataChange('limit', parseInt(e.target.value))}
                       placeholder="6"
                     />
@@ -2706,7 +2712,7 @@ export default function SectionEditPage() {
                     <Label htmlFor="featured_title">Article Title</Label>
                     <Input
                       id="featured_title"
-                      value={section.section_data?.featured_article?.title || ''}
+                      value={String((section.section_data?.featured_article as { title?: string })?.title || '')}
                       onChange={(e) => handleNestedFieldChange('featured_article', 'title', e.target.value)}
                       placeholder="The Future of Business Orchestration"
                     />
@@ -2817,7 +2823,7 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
-                  {(section.section_data?.articles || []).map((article: Record<string, unknown>, index: number) => (
+                  {((section.section_data?.articles as unknown[]) || []).map((article: Record<string, unknown>, index: number) => (
                     <div key={index} className="border rounded-lg p-4 space-y-4">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium">Article {index + 1}</h4>
@@ -2834,7 +2840,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Article Title</Label>
                           <Input
-                            value={article.title || ''}
+                            value={String((article as { title?: string })?.title || '')}
                             onChange={(e) => handleArrayFieldChange('articles', index, 'title', e.target.value)}
                             placeholder="Article title"
                           />
@@ -2843,7 +2849,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Article Excerpt</Label>
                           <Textarea
-                            value={article.excerpt || ''}
+                            value={((article as Record<string, unknown>).excerpt as string) || ''}
                             onChange={(e) => handleArrayFieldChange('articles', index, 'excerpt', e.target.value)}
                             placeholder="Article excerpt"
                             rows={2}
@@ -2854,7 +2860,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Author</Label>
                             <Input
-                              value={article.author || ''}
+                              value={((article as Record<string, unknown>).author as string) || ''}
                               onChange={(e) => handleArrayFieldChange('articles', index, 'author', e.target.value)}
                               placeholder="Author name"
                             />
@@ -2862,7 +2868,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Author Role</Label>
                             <Input
-                              value={article.authorRole || ''}
+                              value={((article as Record<string, unknown>).authorRole as string) || ''}
                               onChange={(e) => handleArrayFieldChange('articles', index, 'authorRole', e.target.value)}
                               placeholder="Author role"
                             />
@@ -2872,7 +2878,7 @@ export default function SectionEditPage() {
                         <div className="space-y-2">
                           <Label>Article Slug</Label>
                           <Input
-                            value={article.slug || ''}
+                            value={((article as Record<string, unknown>).slug as string) || ''}
                             onChange={(e) => handleArrayFieldChange('articles', index, 'slug', e.target.value)}
                             placeholder="article-slug"
                           />
@@ -2882,7 +2888,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Publish Date</Label>
                             <Input
-                              value={article.publishDate || ''}
+                              value={((article as Record<string, unknown>).publishDate as string) || ''}
                               onChange={(e) => handleArrayFieldChange('articles', index, 'publishDate', e.target.value)}
                               placeholder="2025-01-12"
                             />
@@ -2890,7 +2896,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Read Time</Label>
                             <Input
-                              value={article.readTime || ''}
+                              value={((article as Record<string, unknown>).readTime as string) || ''}
                               onChange={(e) => handleArrayFieldChange('articles', index, 'readTime', e.target.value)}
                               placeholder="6 min read"
                             />
@@ -2898,7 +2904,7 @@ export default function SectionEditPage() {
                           <div className="space-y-2">
                             <Label>Category</Label>
                             <Input
-                              value={article.category || ''}
+                              value={((article as Record<string, unknown>).category as string) || ''}
                               onChange={(e) => handleArrayFieldChange('articles', index, 'category', e.target.value)}
                               placeholder="Technical Insights"
                             />
@@ -2947,7 +2953,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Blog"
                   />
@@ -2957,7 +2963,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="subtitle">Subtitle</Label>
                   <Textarea
                     id="subtitle"
-                    value={section.section_data?.subtitle || ''}
+                    value={String(section.section_data?.subtitle || '')}
                     onChange={(e) => handleSectionDataChange('subtitle', e.target.value)}
                     placeholder="Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation"
                     rows={3}
@@ -2983,7 +2989,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="content">HTML Content</Label>
                   <Textarea
                     id="content"
-                    value={section.content || ''}
+                    value={String(section.content || '')}
                     onChange={(e) => handleFieldChange('content', e.target.value)}
                     placeholder="<div>Custom HTML content</div>"
                     rows={10}
@@ -2994,12 +3000,12 @@ export default function SectionEditPage() {
                 <div className="space-y-2">
                   <Label>Categories (for reference)</Label>
                   <div className="space-y-2">
-                    {(section.section_data?.categories || []).map((category: string, index: number) => (
+                    {((section.section_data?.categories as unknown[]) || []).map((category: string, index: number) => (
                       <div key={index} className="flex items-center space-x-2">
                         <Input
                           value={category}
                           onChange={(e) => {
-                            const categories = [...(section.section_data?.categories || [])]
+                            const categories = [...((section.section_data?.categories as unknown[]) || [])]
                             categories[index] = e.target.value
                             handleSectionDataChange('categories', categories)
                           }}
@@ -3009,7 +3015,7 @@ export default function SectionEditPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => {
-                            const categories = [...(section.section_data?.categories || [])]
+                            const categories = [...((section.section_data?.categories as unknown[]) || [])]
                             categories.splice(index, 1)
                             handleSectionDataChange('categories', categories)
                           }}
@@ -3022,7 +3028,7 @@ export default function SectionEditPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        const categories = [...(section.section_data?.categories || []), '']
+                        const categories = [...((section.section_data?.categories as unknown[]) || []), '']
                         handleSectionDataChange('categories', categories)
                       }}
                     >
@@ -3051,7 +3057,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Browse by Category"
                   />
@@ -3061,7 +3067,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Find answers organized by topic"
                     rows={2}
@@ -3072,7 +3078,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="search_placeholder">Search Placeholder</Label>
                   <Input
                     id="search_placeholder"
-                    value={section.section_data?.search_placeholder || ''}
+                    value={(section.section_data?.search_placeholder as string) || ''}
                     onChange={(e) => handleSectionDataChange('search_placeholder', e.target.value)}
                     placeholder="Search knowledge base..."
                   />
@@ -3136,7 +3142,7 @@ export default function SectionEditPage() {
                 <Label htmlFor="content">Content</Label>
                 <Textarea
                   id="content"
-                  value={section.content || ''}
+                  value={String(section.content || '')}
                   onChange={(e) => handleFieldChange('content', e.target.value)}
                   placeholder="Section content"
                   rows={6}
