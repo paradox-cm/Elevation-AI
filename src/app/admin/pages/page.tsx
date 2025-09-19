@@ -41,11 +41,12 @@ export default function PagesPage() {
       if (error) {
         console.error('Error fetching pages:', error)
       } else {
-        // Filter out blog and FAQ pages since they have their own admin sections
+        // Filter out blog, FAQ, and knowledge base pages since they have their own admin sections
         const filteredData = (data || []).filter(page => 
           page.slug !== 'blog' && 
           page.slug !== 'faq' && 
-          page.slug !== 'faqs'
+          page.slug !== 'faqs' &&
+          page.slug !== 'knowledge-base'
         )
         setPages(filteredData)
       }
@@ -129,13 +130,13 @@ export default function PagesPage() {
     const expertsPage = peoplePages.find(p => p.slug === 'people-experts')
     
     return (
-      <Card className="hover:shadow-md transition-shadow border-primary/20">
+      <Card className="hover:shadow-md transition-shadow">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-2">
               <FileText className="h-5 w-5 text-muted-foreground" />
               <div>
-                <CardTitle className="text-lg text-primary">People</CardTitle>
+                <CardTitle className="text-lg">People</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">
                   Concierge Support & Expert Network
                 </CardDescription>

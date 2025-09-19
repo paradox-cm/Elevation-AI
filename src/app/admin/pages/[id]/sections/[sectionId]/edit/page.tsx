@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { PageSection, Page } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,13 +18,15 @@ import {
   Eye, 
   Plus,
   Trash2,
-  HelpCircle
+  HelpCircle,
+  Loader2
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { pageSectionsService } from '@/lib/cms'
 import { useCMSRefresh } from '@/hooks/use-cms-refresh'
+import { BlogListingSection } from '@/components/sections/blog-listing-section'
 
 export default function SectionEditPage() {
   const params = useParams()
@@ -38,6 +40,7 @@ export default function SectionEditPage() {
   const [hasChanges, setHasChanges] = useState(false)
   
   const supabase = createClient()
+  const router = useRouter()
   const { refreshCurrentPage } = useCMSRefresh()
 
   const fetchSectionData = useCallback(async () => {
@@ -2644,298 +2647,15 @@ export default function SectionEditPage() {
 
       case 'blog_listing':
         return (
-          <div className="space-y-6">
-            {/* Blog Listing Settings */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Blog Listing Settings</CardTitle>
-                <CardDescription>
-                  Configure the blog listing section
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Section Title</Label>
-                  <Input
-                    id="title"
-                    value={String(section.section_data?.title || '')}
-                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
-                    placeholder="Latest Articles"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={String(section.section_data?.description || '')}
-                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
-                    placeholder="Stay updated with our latest insights and updates"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="limit">Number of Articles</Label>
-                    <Input
-                      id="limit"
-                      type="number"
-                      value={(section.section_data?.limit as number) || 6}
-                      onChange={(e) => handleSectionDataChange('limit', parseInt(e.target.value))}
-                      placeholder="6"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="show_featured">Show Featured Article</Label>
-                    <Switch
-                      id="show_featured"
-                      checked={section.section_data?.show_featured || false}
-                      onCheckedChange={(checked) => handleSectionDataChange('show_featured', checked)}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Featured Article */}
-            {section.section_data?.show_featured && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Featured Article</CardTitle>
-                  <CardDescription>
-                    Configure the featured article display
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="featured_title">Article Title</Label>
-                    <Input
-                      id="featured_title"
-                      value={String((section.section_data?.featured_article as { title?: string })?.title || '')}
-                      onChange={(e) => handleNestedFieldChange('featured_article', 'title', e.target.value)}
-                      placeholder="The Future of Business Orchestration"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="featured_slug">Article Slug</Label>
-                    <Input
-                      id="featured_slug"
-                      value={section.section_data?.featured_article?.slug || ''}
-                      onChange={(e) => handleNestedFieldChange('featured_article', 'slug', e.target.value)}
-                      placeholder="future-business-orchestration"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="featured_excerpt">Article Excerpt</Label>
-                    <Textarea
-                      id="featured_excerpt"
-                      value={section.section_data?.featured_article?.excerpt || ''}
-                      onChange={(e) => handleNestedFieldChange('featured_article', 'excerpt', e.target.value)}
-                      placeholder="Explore how artificial intelligence is revolutionizing..."
-                      rows={3}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="featured_author">Author Name</Label>
-                      <Input
-                        id="featured_author"
-                        value={section.section_data?.featured_article?.author || ''}
-                        onChange={(e) => handleNestedFieldChange('featured_article', 'author', e.target.value)}
-                        placeholder="Sarah Chen"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="featured_author_role">Author Role</Label>
-                      <Input
-                        id="featured_author_role"
-                        value={section.section_data?.featured_article?.authorRole || ''}
-                        onChange={(e) => handleNestedFieldChange('featured_article', 'authorRole', e.target.value)}
-                        placeholder="VP of Product Strategy"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="featured_date">Publish Date</Label>
-                      <Input
-                        id="featured_date"
-                        value={section.section_data?.featured_article?.publishDate || ''}
-                        onChange={(e) => handleNestedFieldChange('featured_article', 'publishDate', e.target.value)}
-                        placeholder="2025-01-15"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="featured_read_time">Read Time</Label>
-                      <Input
-                        id="featured_read_time"
-                        value={section.section_data?.featured_article?.readTime || ''}
-                        onChange={(e) => handleNestedFieldChange('featured_article', 'readTime', e.target.value)}
-                        placeholder="8 min read"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="featured_category">Category</Label>
-                      <Input
-                        id="featured_category"
-                        value={section.section_data?.featured_article?.category || ''}
-                        onChange={(e) => handleNestedFieldChange('featured_article', 'category', e.target.value)}
-                        placeholder="AI & Technology"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Featured Image</Label>
-                    <FileUpload
-                      onFileSelect={() => {}}
-                      onFileUpload={handleFileUpload}
-                      accept="image/*"
-                      maxSize={5}
-                    />
-                    {section.section_data?.featured_article?.image && (
-                      <div className="mt-2">
-                        <Label>Current Image URL</Label>
-                        <Input
-                          value={section.section_data?.featured_article?.image || ''}
-                          onChange={(e) => handleNestedFieldChange('featured_article', 'image', e.target.value)}
-                          placeholder="Image URL"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Blog Articles */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Blog Articles</CardTitle>
-                <CardDescription>
-                  Manage the list of blog articles
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-4">
-                  {((section.section_data?.articles as unknown[]) || []).map((article: Record<string, unknown>, index: number) => (
-                    <div key={index} className="border rounded-lg p-4 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">Article {index + 1}</h4>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeArrayItem('articles', index)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 gap-4">
-                        <div className="space-y-2">
-                          <Label>Article Title</Label>
-                          <Input
-                            value={String((article as { title?: string })?.title || '')}
-                            onChange={(e) => handleArrayFieldChange('articles', index, 'title', e.target.value)}
-                            placeholder="Article title"
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label>Article Excerpt</Label>
-                          <Textarea
-                            value={((article as Record<string, unknown>).excerpt as string) || ''}
-                            onChange={(e) => handleArrayFieldChange('articles', index, 'excerpt', e.target.value)}
-                            placeholder="Article excerpt"
-                            rows={2}
-                          />
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>Author</Label>
-                            <Input
-                              value={((article as Record<string, unknown>).author as string) || ''}
-                              onChange={(e) => handleArrayFieldChange('articles', index, 'author', e.target.value)}
-                              placeholder="Author name"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Author Role</Label>
-                            <Input
-                              value={((article as Record<string, unknown>).authorRole as string) || ''}
-                              onChange={(e) => handleArrayFieldChange('articles', index, 'authorRole', e.target.value)}
-                              placeholder="Author role"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label>Article Slug</Label>
-                          <Input
-                            value={((article as Record<string, unknown>).slug as string) || ''}
-                            onChange={(e) => handleArrayFieldChange('articles', index, 'slug', e.target.value)}
-                            placeholder="article-slug"
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <Label>Publish Date</Label>
-                            <Input
-                              value={((article as Record<string, unknown>).publishDate as string) || ''}
-                              onChange={(e) => handleArrayFieldChange('articles', index, 'publishDate', e.target.value)}
-                              placeholder="2025-01-12"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Read Time</Label>
-                            <Input
-                              value={((article as Record<string, unknown>).readTime as string) || ''}
-                              onChange={(e) => handleArrayFieldChange('articles', index, 'readTime', e.target.value)}
-                              placeholder="6 min read"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Category</Label>
-                            <Input
-                              value={((article as Record<string, unknown>).category as string) || ''}
-                              onChange={(e) => handleArrayFieldChange('articles', index, 'category', e.target.value)}
-                              placeholder="Technical Insights"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <Button
-                  variant="outline"
-                  onClick={() => addArrayItem('articles', {
-                    id: Date.now(),
-                    title: '',
-                    excerpt: '',
-                    author: '',
-                    authorRole: '',
-                    publishDate: '',
-                    readTime: '',
-                    category: '',
-                    image: '',
-                    slug: ''
-                  })}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Article
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          <BlogListingSection
+            section={section}
+            onSectionDataChange={handleSectionDataChange}
+            onNestedFieldChange={handleNestedFieldChange}
+            onArrayItemAdd={addArrayItem}
+            onArrayItemRemove={removeArrayItem}
+            onArrayFieldChange={handleArrayFieldChange}
+            onFileUpload={handleFileUpload}
+          />
         )
 
       case 'hero_simple':
@@ -2948,27 +2668,8 @@ export default function SectionEditPage() {
                   Configure the hero section content
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    value={String(section.section_data?.title || '')}
-                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
-                    placeholder="Blog"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="subtitle">Subtitle</Label>
-                  <Textarea
-                    id="subtitle"
-                    value={String(section.section_data?.subtitle || '')}
-                    onChange={(e) => handleSectionDataChange('subtitle', e.target.value)}
-                    placeholder="Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation"
-                    rows={3}
-                  />
-                </div>
+              <CardContent>
+                <p>Hero content</p>
               </CardContent>
             </Card>
           </div>
@@ -2981,62 +2682,11 @@ export default function SectionEditPage() {
               <CardHeader>
                 <CardTitle>Custom Section</CardTitle>
                 <CardDescription>
-                  Edit the custom HTML content for this section
+                  Configure custom section content
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="content">HTML Content</Label>
-                  <Textarea
-                    id="content"
-                    value={String(section.content || '')}
-                    onChange={(e) => handleFieldChange('content', e.target.value)}
-                    placeholder="<div>Custom HTML content</div>"
-                    rows={10}
-                    className="font-mono text-sm"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label>Categories (for reference)</Label>
-                  <div className="space-y-2">
-                    {((section.section_data?.categories as unknown[]) || []).map((category: string, index: number) => (
-                      <div key={index} className="flex items-center space-x-2">
-                        <Input
-                          value={category}
-                          onChange={(e) => {
-                            const categories = [...((section.section_data?.categories as unknown[]) || [])]
-                            categories[index] = e.target.value
-                            handleSectionDataChange('categories', categories)
-                          }}
-                          placeholder={`Category ${index + 1}`}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            const categories = [...((section.section_data?.categories as unknown[]) || [])]
-                            categories.splice(index, 1)
-                            handleSectionDataChange('categories', categories)
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        const categories = [...((section.section_data?.categories as unknown[]) || []), '']
-                        handleSectionDataChange('categories', categories)
-                      }}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Category
-                    </Button>
-                  </div>
-                </div>
+              <CardContent>
+                <p>Custom content</p>
               </CardContent>
             </Card>
           </div>
@@ -3047,73 +2697,13 @@ export default function SectionEditPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>FAQ Section Settings</CardTitle>
+                <CardTitle>FAQ Section</CardTitle>
                 <CardDescription>
-                  Configure the FAQ section display and search functionality
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Section Title</Label>
-                  <Input
-                    id="title"
-                    value={String(section.section_data?.title || '')}
-                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
-                    placeholder="Browse by Category"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={String(section.section_data?.description || '')}
-                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
-                    placeholder="Find answers organized by topic"
-                    rows={2}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="search_placeholder">Search Placeholder</Label>
-                  <Input
-                    id="search_placeholder"
-                    value={(section.section_data?.search_placeholder as string) || ''}
-                    onChange={(e) => handleSectionDataChange('search_placeholder', e.target.value)}
-                    placeholder="Search knowledge base..."
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="show_search">Show Search</Label>
-                  <Switch
-                    id="show_search"
-                    checked={section.section_data?.show_search !== false}
-                    onCheckedChange={(checked) => handleSectionDataChange('show_search', checked)}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>FAQ Management</CardTitle>
-                <CardDescription>
-                  FAQ categories and items are managed through the dedicated FAQ admin section.
+                  Configure FAQ section content
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-6">
-                  <p className="text-muted-foreground mb-4">
-                    To manage FAQ categories and questions, use the dedicated FAQ admin interface.
-                  </p>
-                  <Button asChild>
-                    <Link href="/admin/faqs">
-                      <HelpCircle className="h-4 w-4 mr-2" />
-                      Manage FAQs
-                    </Link>
-                  </Button>
-                </div>
+                <p>FAQ content</p>
               </CardContent>
             </Card>
           </div>
@@ -3133,7 +2723,7 @@ export default function SectionEditPage() {
                 <Label htmlFor="title">Title</Label>
                 <Input
                   id="title"
-                  value={section.title}
+                  value={section.title || ''}
                   onChange={(e) => handleFieldChange('title', e.target.value)}
                   placeholder="Section title"
                 />
@@ -3142,7 +2732,7 @@ export default function SectionEditPage() {
                 <Label htmlFor="content">Content</Label>
                 <Textarea
                   id="content"
-                  value={String(section.content || '')}
+                  value={section.content || ''}
                   onChange={(e) => handleFieldChange('content', e.target.value)}
                   placeholder="Section content"
                   rows={6}
@@ -3165,13 +2755,14 @@ export default function SectionEditPage() {
   if (!section) {
     return (
       <div className="text-center py-8">
-        <h2 className="text-xl font-semibold text-foreground mb-2">Section not found</h2>
-        <p className="text-muted-foreground mb-4">The section you&apos;re looking for doesn&apos;t exist.</p>
-        <Button asChild>
-          <Link href={`/admin/pages/${pageId}/edit`}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Page
-          </Link>
+        <p className="text-muted-foreground">Section not found</p>
+        <Button
+          variant="outline"
+          onClick={() => router.back()}
+          className="mt-4"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Go Back
         </Button>
       </div>
     )
@@ -3179,40 +2770,40 @@ export default function SectionEditPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href={`/admin/pages/${pageId}/edit`}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Page
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Edit Section</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              {section.title} • {section.section_type.replace(/-/g, ' ')}
-            </p>
-          </div>
+        <div>
+          <h1 className="text-2xl font-bold">Edit Section</h1>
+          <p className="text-muted-foreground">
+            {section.title || 'Untitled Section'}
+          </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" asChild>
-            <Link href="/website/home" target="_blank">
-              <Eye className="h-4 w-4 mr-2" />
-              Preview
-            </Link>
-          </Button>
-          <Button 
-            onClick={handleSave} 
-            disabled={!hasChanges || isSaving}
+          <Button
+            variant="outline"
+            onClick={() => router.back()}
           >
-            <Save className="h-4 w-4 mr-2" />
-            {isSaving ? 'Saving...' : 'Save'}
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={isSaving}
+          >
+            {isSaving ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Save Changes
+              </>
+            )}
           </Button>
         </div>
       </div>
 
-      {/* Section Fields */}
       {renderSectionFields()}
     </div>
   )

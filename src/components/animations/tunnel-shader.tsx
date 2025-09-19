@@ -1,12 +1,37 @@
 "use client"
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
 
 export function TunnelShader() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
+  const [isVisible, setIsVisible] = useState(false)
   const { isDark } = useThemeProvider()
+
+  // Intersection Observer to detect visibility
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible(entry.isIntersecting)
+        })
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the component is visible
+        rootMargin: '50px' // Start animating slightly before it comes into view
+      }
+    )
+
+    observer.observe(canvas)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -167,24 +192,30 @@ export function TunnelShader() {
       // Animation variables
       let lastTime = 0
 
-      // Animation loop with performance optimization
+      // Animation loop with performance optimization and visibility control
       const animate = (time: number) => {
-        animationRef.current = requestAnimationFrame(animate)
-        
-        time *= 0.001 // Convert to seconds
-        const deltaTime = time - lastTime
-        lastTime = time
-        
-        // Only update time uniform, theme changes less frequently
-        shaderMaterial.uniforms.iTime.value += deltaTime
-        
-        // Update theme only when it actually changes (performance optimization)
-        const currentTheme = isDark ? 1.0 : 0.0
-        if (shaderMaterial.uniforms.iTheme.value !== currentTheme) {
-          shaderMaterial.uniforms.iTheme.value = currentTheme
+        // Only continue animation if component is visible
+        if (isVisible) {
+          animationRef.current = requestAnimationFrame(animate)
+          
+          time *= 0.001 // Convert to seconds
+          const deltaTime = time - lastTime
+          lastTime = time
+          
+          // Only update time uniform, theme changes less frequently
+          shaderMaterial.uniforms.iTime.value += deltaTime
+          
+          // Update theme only when it actually changes (performance optimization)
+          const currentTheme = isDark ? 1.0 : 0.0
+          if (shaderMaterial.uniforms.iTheme.value !== currentTheme) {
+            shaderMaterial.uniforms.iTheme.value = currentTheme
+          }
+          
+          renderer.render(scene, camera)
+        } else {
+          // Component is not visible, stop animation but keep the frame request
+          animationRef.current = requestAnimationFrame(animate)
         }
-        
-        renderer.render(scene, camera)
       }
 
       // Handle window resize
@@ -215,7 +246,7 @@ export function TunnelShader() {
     return () => {
       cleanup.then(cleanupFn => cleanupFn?.())
     }
-  }, [isDark])
+  }, [isDark, isVisible])
 
   return (
     <canvas

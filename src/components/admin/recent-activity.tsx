@@ -53,13 +53,13 @@ const entityIcons = {
 }
 
 const actionColors = {
-  create: 'bg-green-100 text-green-800 border-green-200',
-  update: 'bg-blue-100 text-blue-800 border-blue-200',
-  delete: 'bg-red-100 text-red-800 border-red-200',
-  publish: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  unpublish: 'bg-orange-100 text-orange-800 border-orange-200',
-  login: 'bg-purple-100 text-purple-800 border-purple-200',
-  logout: 'bg-gray-100 text-gray-800 border-gray-200'
+  create: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800',
+  update: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800',
+  delete: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800',
+  publish: 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-800',
+  unpublish: 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-300 dark:border-orange-800',
+  login: 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-800',
+  logout: 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-800'
 }
 
 export function RecentActivity({ 
@@ -116,7 +116,7 @@ export function RecentActivity({
   }
 
   const getActionColor = (action: string) => {
-    return actionColors[action as keyof typeof actionColors] || 'bg-gray-100 text-gray-800 border-gray-200'
+    return actionColors[action as keyof typeof actionColors] || 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-800'
   }
 
   const truncateText = (text: string, maxLength: number = 60) => {

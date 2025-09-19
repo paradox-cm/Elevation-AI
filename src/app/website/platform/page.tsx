@@ -187,14 +187,14 @@ function SecuritySection({ data }: { data?: Record<string, unknown> }) {
   const securityFeatures: PlatformCarouselItem[] = features.map((feature: Record<string, unknown>) => ({
     id: feature.id,
     title: feature.title,
-    description: feature.description,
+    description: "",
       content: (
         <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
-          <Icon name={feature.icon} size="2xl" className="text-primary text-4xl" />
+            <Icon name={feature.icon} size="2xl" className="text-primary text-4xl" />
           </div>
           <P className="text-muted-foreground">
-          {feature.description}
+            {feature.description}
           </P>
         </div>
       )
@@ -261,8 +261,13 @@ function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
             </P>
           </div>
           
-          {/* Masonry/Pinterest Style Layout */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 relative">
+          {/* Full Width Grid Layout */}
+          <div 
+            className="grid gap-6 relative"
+            style={{
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
+            }}
+          >
             {/* Mobile connecting line - only visible on mobile */}
             <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border transform -translate-x-1/2 sm:hidden z-0"></div>
             
@@ -270,7 +275,7 @@ function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
               return (
                 <div
                   key={category.id}
-                  className="group break-inside-avoid border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-background flex flex-col relative z-10"
+                  className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-background flex flex-col relative z-10"
                 >
                   <div className="flex flex-col">
                     <div className="flex items-center gap-3 mb-4">
@@ -282,7 +287,7 @@ function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
                       </h3>
             </div>
                     <div className="border-b border-border/50 mb-4"></div>
-                    <div className="space-y-4 mb-4">
+                    <div className="space-y-4 mb-4 hidden">
                       {category.logos.map((logo, index) => (
                         <div
                           key={index}

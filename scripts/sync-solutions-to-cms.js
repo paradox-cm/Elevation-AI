@@ -81,8 +81,8 @@ async function syncSolutionsPageToCMS() {
         section_order: 2,
         title: 'Industry Solutions Section',
         section_data: {
-          section_title: "Industry Solutions",
-          section_description: "Tailored solutions for different industry sectors",
+          title: "Industry Solutions",
+          description: "Tailored solutions for different industry sectors",
           solutions: [
             {
               id: 'private-markets',
@@ -204,8 +204,8 @@ async function syncSolutionsPageToCMS() {
         section_order: 3,
         title: 'Stage Solutions Section',
         section_data: {
-          section_title: "Stage Solutions",
-          section_description: "Solutions for different business lifecycle stages",
+          title: "Stage Solutions",
+          description: "Solutions for different business lifecycle stages",
           solutions: [
             {
               id: 'creating-venture',
