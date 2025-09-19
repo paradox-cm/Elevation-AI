@@ -31,10 +31,6 @@ export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const supabase = createClient()
 
-  useEffect(() => {
-    fetchPosts()
-  }, [fetchPosts])
-
   const fetchPosts = useCallback(async () => {
     try {
       const { data, error } = await supabase
@@ -56,6 +52,10 @@ export default function BlogPage() {
       setIsLoading(false)
     }
   }, [supabase])
+
+  useEffect(() => {
+    fetchPosts()
+  }, [fetchPosts])
 
   const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||

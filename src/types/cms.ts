@@ -247,7 +247,8 @@ export interface Database {
           content: string
           featured_image: string | null
           category_id: string | null
-          author_id: string
+          author_name: string | null
+          author_email: string | null
           is_published: boolean
           published_at: string | null
           created_at: string
@@ -261,7 +262,8 @@ export interface Database {
           content: string
           featured_image?: string | null
           category_id?: string | null
-          author_id: string
+          author_name?: string | null
+          author_email?: string | null
           is_published?: boolean
           published_at?: string | null
           created_at?: string
@@ -275,7 +277,8 @@ export interface Database {
           content?: string
           featured_image?: string | null
           category_id?: string | null
-          author_id?: string
+          author_name?: string | null
+          author_email?: string | null
           is_published?: boolean
           published_at?: string | null
           created_at?: string

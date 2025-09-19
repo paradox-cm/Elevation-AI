@@ -125,11 +125,10 @@ export default function BlogPostEditPage() {
           slug: post.slug,
           excerpt: post.excerpt,
           content: post.content,
-          author: post.author,
-          author_role: post.author_role,
+          author_name: post.author_name,
+          author_email: post.author_email,
           category_id: post.category_id,
           featured_image: post.featured_image,
-          read_time: post.read_time,
           is_published: post.is_published,
           published_at: post.is_published ? (post.published_at || new Date().toISOString()) : null,
           updated_at: new Date().toISOString()
@@ -256,7 +255,7 @@ export default function BlogPostEditPage() {
                   <Label htmlFor="excerpt">Excerpt</Label>
                   <Textarea
                     id="excerpt"
-                    value={post.excerpt}
+                    value={post.excerpt || ''}
                     onChange={(e) => handleFieldChange('excerpt', e.target.value)}
                     placeholder="Brief description of the blog post"
                     rows={3}
@@ -322,22 +321,23 @@ export default function BlogPostEditPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="author">Author Name</Label>
+                  <Label htmlFor="author_name">Author Name</Label>
                   <Input
-                    id="author"
-                    value={post.author}
-                    onChange={(e) => handleFieldChange('author', e.target.value)}
+                    id="author_name"
+                    value={post.author_name || ''}
+                    onChange={(e) => handleFieldChange('author_name', e.target.value)}
                     placeholder="Author name"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="author_role">Author Role</Label>
+                  <Label htmlFor="author_email">Author Email</Label>
                   <Input
-                    id="author_role"
-                    value={post.author_role}
-                    onChange={(e) => handleFieldChange('author_role', e.target.value)}
-                    placeholder="Author role/title"
+                    id="author_email"
+                    type="email"
+                    value={post.author_email || ''}
+                    onChange={(e) => handleFieldChange('author_email', e.target.value)}
+                    placeholder="Author email"
                   />
                 </div>
               </CardContent>
@@ -414,26 +414,6 @@ export default function BlogPostEditPage() {
               </CardContent>
             </Card>
 
-            {/* Reading Time */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Reading Time</CardTitle>
-                <CardDescription>
-                  Estimated reading time
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <Label htmlFor="read_time">Reading Time</Label>
-                  <Input
-                    id="read_time"
-                    value={post.read_time}
-                    onChange={(e) => handleFieldChange('read_time', e.target.value)}
-                    placeholder="e.g., 5 min read"
-                  />
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>

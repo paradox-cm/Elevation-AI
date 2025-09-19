@@ -30,19 +30,6 @@ export default function FAQsPage() {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
   const supabase = createClient()
 
-  useEffect(() => {
-    fetchCategories()
-  }, [fetchCategories])
-
-  // Add refresh mechanism for when changes are made
-  useEffect(() => {
-    const handleRefresh = () => {
-      fetchCategories()
-    }
-    window.addEventListener('refresh-page', handleRefresh)
-    return () => window.removeEventListener('refresh-page', handleRefresh)
-  }, [fetchCategories])
-
   const fetchCategories = useCallback(async () => {
     try {
       const { data: categoriesData, error: categoriesError } = await supabase
@@ -82,6 +69,19 @@ export default function FAQsPage() {
       setIsLoading(false)
     }
   }, [supabase])
+
+  useEffect(() => {
+    fetchCategories()
+  }, [fetchCategories])
+
+  // Add refresh mechanism for when changes are made
+  useEffect(() => {
+    const handleRefresh = () => {
+      fetchCategories()
+    }
+    window.addEventListener('refresh-page', handleRefresh)
+    return () => window.removeEventListener('refresh-page', handleRefresh)
+  }, [fetchCategories])
 
   const toggleCategory = (categoryId: string) => {
     const newExpanded = new Set(expandedCategories)

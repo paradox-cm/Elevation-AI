@@ -110,14 +110,16 @@ export default function SectionEditPage() {
   const addArrayItem = (key: string, item: unknown) => {
     if (!section) return
     
-    const array = [...(section.section_data?.[key] || []), item]
+    const existingValue = section.section_data?.[key]
+    const array = [...(Array.isArray(existingValue) ? existingValue : []), item]
     handleSectionDataChange(key, array)
   }
 
   const removeArrayItem = (key: string, index: number) => {
     if (!section) return
     
-    const array = [...(section.section_data?.[key] || [])]
+    const existingValue = section.section_data?.[key]
+    const array = [...(Array.isArray(existingValue) ? existingValue : [])]
     array.splice(index, 1)
     handleSectionDataChange(key, array)
   }
@@ -125,7 +127,8 @@ export default function SectionEditPage() {
   const handleArrayFieldChange = (key: string, index: number, field: string, value: unknown) => {
     if (!section) return
     
-    const array = [...(section.section_data?.[key] || [])]
+    const existingValue = section.section_data?.[key]
+    const array = [...(Array.isArray(existingValue) ? existingValue : [])]
     array[index] = { ...array[index], [field]: value }
     handleSectionDataChange(key, array)
   }
@@ -133,12 +136,15 @@ export default function SectionEditPage() {
   const handleNestedFieldChange = (parentKey: string, childKey: string, value: unknown) => {
     if (!section) return
     
+    const existingParentValue = section.section_data?.[parentKey]
+    const parentObject = typeof existingParentValue === 'object' && existingParentValue !== null ? existingParentValue : {}
+    
     setSection({
       ...section,
       section_data: {
         ...section.section_data,
         [parentKey]: {
-          ...section.section_data?.[parentKey],
+          ...parentObject,
           [childKey]: value
         }
       }
@@ -225,7 +231,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Main Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="The Agentic Platform for"
                   />
@@ -235,7 +241,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="description">Description</Label>
                   <Textarea
                     id="description"
-                    value={section.section_data?.description || ''}
+                    value={String(section.section_data?.description || '')}
                     onChange={(e) => handleSectionDataChange('description', e.target.value)}
                     placeholder="Elevation AI is the agentic knowledge and work orchestration platform..."
                     rows={4}
@@ -259,7 +265,7 @@ export default function SectionEditPage() {
                     <Input
                       id="speed"
                       type="number"
-                      value={section.section_data?.speed || 100}
+                      value={String(section.section_data?.speed || 100)}
                       onChange={(e) => handleSectionDataChange('speed', parseInt(e.target.value))}
                       placeholder="100"
                     />
@@ -269,7 +275,7 @@ export default function SectionEditPage() {
                     <Input
                       id="delay"
                       type="number"
-                      value={section.section_data?.delay || 1000}
+                      value={String(section.section_data?.delay || 1000)}
                       onChange={(e) => handleSectionDataChange('delay', parseInt(e.target.value))}
                       placeholder="1000"
                     />
@@ -279,12 +285,12 @@ export default function SectionEditPage() {
                 <div className="space-y-4">
                   <Label>Typewriter Words</Label>
                   <div className="space-y-3">
-                    {(section.section_data?.words || []).map((word: unknown, index: number) => (
+                    {(Array.isArray(section.section_data?.words) ? section.section_data.words : []).map((word: unknown, index: number) => (
                       <div key={index} className="flex items-center space-x-2">
                         <Input
-                          value={word || ''}
+                          value={String(word || '')}
                           onChange={(e) => {
-                            const words = [...(section.section_data?.words || [])]
+                            const words = [...(Array.isArray(section.section_data?.words) ? section.section_data.words : [])]
                             words[index] = e.target.value
                             handleSectionDataChange('words', words)
                           }}
@@ -294,7 +300,7 @@ export default function SectionEditPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => {
-                            const words = [...(section.section_data?.words || [])]
+                            const words = [...(Array.isArray(section.section_data?.words) ? section.section_data.words : [])]
                             words.splice(index, 1)
                             handleSectionDataChange('words', words)
                           }}
@@ -334,7 +340,7 @@ export default function SectionEditPage() {
                   <Label htmlFor="title">Section Title</Label>
                   <Input
                     id="title"
-                    value={section.section_data?.title || ''}
+                    value={String(section.section_data?.title || '')}
                     onChange={(e) => handleSectionDataChange('title', e.target.value)}
                     placeholder="Why Elevation AI?"
                   />
@@ -343,7 +349,7 @@ export default function SectionEditPage() {
                 <div className="space-y-4">
                   <Label>Accordion Items</Label>
                   <div className="space-y-3">
-                    {(section.section_data?.accordionItems || []).map((item: unknown, index: number) => (
+                    {(Array.isArray(section.section_data?.accordionItems) ? section.section_data.accordionItems : []).map((item: unknown, index: number) => (
                       <Card key={index} className="border-dashed">
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between">
