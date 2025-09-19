@@ -18,6 +18,8 @@ import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
+import { renderNode, toText } from "@/lib/react"
+import { isRecord, asArray } from "@/lib/types"
 
 // Simple Typewriter Text Component for cycling complete statements
 function TypewriterText({ 
@@ -192,9 +194,10 @@ function TypewriterText({
 
 // Mission Section
 function MissionSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Our Mission"
-  const content = data?.content || "We're here to help complex organizations operate with clarity, precision and trust—unifying knowledge and orchestrating secure, agentic AI across their business."
-  const backgroundAnimation = data?.background_animation !== false
+  const d = isRecord(data) ? data : {}
+  const title = toText(d.title) || "Our Mission"
+  const content = toText(d.content) || "We're here to help complex organizations operate with clarity, precision and trust—unifying knowledge and orchestrating secure, agentic AI across their business."
+  const backgroundAnimation = d.background_animation !== false
 
   return (
     <Section id="mission-section" paddingY="lg" className="relative overflow-hidden pt-20 min-h-[60vh] flex items-center">
@@ -222,10 +225,11 @@ function MissionSection({ data }: { data?: Record<string, unknown> }) {
 
 // Problem & Solution Section
 function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
-  const badgeText = data?.badge_text || "Our Vision"
-  const badgeIcon = data?.badge_icon || "lightbulb-line"
-  const sectionTitle = data?.section_title || "The Problem We Solve"
-  const cards = data?.cards || [
+  const d = isRecord(data) ? data : {}
+  const badgeText = toText(d.badge_text) || "Our Vision"
+  const badgeIcon = toText(d.badge_icon) || "lightbulb-line"
+  const sectionTitle = toText(d.section_title) || "The Problem We Solve"
+  const cards = asArray(d.cards).length > 0 ? asArray(d.cards) : [
     {
       title: "The Challenge",
       description: "Leaders manage a universe of systems that don't talk to each other. Information is trapped in silos; context gets lost in personal AI chats; collaboration devolves into copy‑paste. The result: generic output, bottlenecks, and risk.",
@@ -238,7 +242,7 @@ function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
       icon: "check-line",
       order: 2
     }
-  ]
+  ]) as Record<string, unknown>[]
 
   return (
     <Section id="our-solution-section" paddingY="xl" className="relative overflow-hidden">
@@ -263,9 +267,9 @@ function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
                 <Card className="bg-transparent border border-border/50 h-full">
                   <CardContent className="p-6">
                     <div className="space-y-4">
-                      <H3>{card.title}</H3>
+                      <H3>{toText(card.title) || "Untitled"}</H3>
                       <P className="text-lg text-muted-foreground leading-relaxed">
-                        {card.description}
+                        {toText(card.description) || "No description available"}
                       </P>
                     </div>
                   </CardContent>
@@ -282,10 +286,11 @@ function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
 
 // Principles Section
 function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
-  const badgeText = data?.badge_text || "Our Foundation"
-  const badgeIcon = data?.badge_icon || "star-line"
-  const sectionTitle = data?.section_title || "Principles That Guide Us"
-  const features = data?.features || [
+  const d = isRecord(data) ? data : {}
+  const badgeText = toText(d.badge_text) || "Our Foundation"
+  const badgeIcon = toText(d.badge_icon) || "star-line"
+  const sectionTitle = toText(d.section_title) || "Principles That Guide Us"
+  const features = asArray(d.features).length > 0 ? asArray(d.features) : [
     {
       title: "Precision over noise",
       description: "Clarity, repeatability, and measurable outcomes drive everything we build.",
@@ -316,7 +321,7 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
       icon: "building-line",
       order: 5
     }
-  ]
+  ])
 
   // Default colors for principles
   const defaultColors = [
@@ -390,16 +395,16 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
                   <div className="space-y-6">
                     {/* Icon with enhanced styling */}
                       <div className={`w-16 h-16 ${principle.color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon name={principle.icon} size="2xl" className={principle.iconColor} />
+                        <Icon name={toText(principle.icon) || "check-line"} size="2xl" className={toText(principle.iconColor) || "text-gray-600 dark:text-gray-400"} />
                       </div>
                     
                     {/* Content */}
                     <div className="space-y-3">
                       <H3 className="text-foreground group-hover:text-primary transition-colors duration-300 dark:text-white dark:group-hover:text-primary">
-                        {principle.title}
+                        {toText(principle.title) || "Untitled"}
                       </H3>
                       <P className="text-muted-foreground leading-relaxed text-base dark:text-gray-300">
-                        {principle.description}
+                        {toText(principle.description) || "No description available"}
                       </P>
                     </div>
                     

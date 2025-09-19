@@ -24,6 +24,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { renderNode } from '@/lib/react'
 
 interface FormSubmission {
   id: string
@@ -430,11 +431,7 @@ export default function FormSubmissionsPage() {
                       
                       <div className="text-sm">
                         <span className="font-medium">{formTypeLabels[submission.form_type as keyof typeof formTypeLabels]}</span>
-                        {submission.form_data?.message && (
-                          <p className="text-muted-foreground mt-1 line-clamp-2">
-                            {typeof submission.form_data.message === 'string' ? submission.form_data.message : String(submission.form_data.message)}
-                          </p>
-                        )}
+                        {renderNode(submission.form_data?.message, "text-muted-foreground mt-1 line-clamp-2")}
                       </div>
                     </div>
                     
