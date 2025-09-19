@@ -14,7 +14,8 @@ import { Switch } from '@/components/ui/switch'
 import { FileUpload } from '@/components/ui/file-upload'
 import { 
   Save, 
-  ArrowLeft
+  ArrowLeft,
+  Eye
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
