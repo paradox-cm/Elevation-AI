@@ -8,6 +8,7 @@ import { H1, P } from '@/components/ui/typography'
 import Icon from '@/components/ui/icon'
 import Link from 'next/link'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { PageSection } from '@/types/cms'
 
 interface SolutionsCarouselSectionProps {
   data: {
@@ -21,7 +22,7 @@ interface SolutionsCarouselSectionProps {
     }>
     smallCards?: string[]
   }
-  section?: any
+  section?: PageSection
 }
 
 export function SolutionsCarouselSection({ data, section }: SolutionsCarouselSectionProps) {

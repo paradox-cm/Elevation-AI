@@ -25,9 +25,9 @@ export function DynamicPageClient({ page, sections, currentPage }: DynamicPageCl
   return (
     <PageWrapper>
       <MobileOnlyLayout
-        header={<MainHeader currentPage={currentPage as any} />}
+        header={<MainHeader currentPage={currentPage as string} />}
         footer={<WebsiteFooter />}
-        mobileMenu={<MobileMenuDrawer currentPage={currentPage as any} />}
+        mobileMenu={<MobileMenuDrawer currentPage={currentPage as string} />}
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>

@@ -176,7 +176,7 @@ export const activityService = {
     entityId?: string,
     entityTitle?: string,
     description?: string,
-    details?: Record<string, any>
+    details?: Record<string, unknown>
   ): Promise<ActivityLog> {
     const { data, error } = await supabase
       .from('activity_logs')
@@ -224,7 +224,7 @@ export const activityService = {
     sectionId: string,
     sectionTitle: string,
     pageTitle: string,
-    changes: Record<string, any>
+    changes: Record<string, unknown>
   ): Promise<ActivityLog> {
     return this.logActivity(
       'update',

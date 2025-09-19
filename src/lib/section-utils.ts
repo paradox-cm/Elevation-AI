@@ -87,12 +87,10 @@ export const gridConfigs = {
  */
 export function createSafeSection({
   paddingY = "xl",
-  className = "relative",
-  children
+  className = "relative"
 }: {
   paddingY?: "sm" | "md" | "lg" | "xl" | "2xl"
   className?: string
-  children: React.ReactNode
 }) {
   return {
     sectionProps: {
@@ -112,7 +110,7 @@ export function createSafeSection({
 /**
  * Helper function to create safe accordion structure
  */
-export function createSafeAccordion(items: Array<{
+export function createSafeAccordion(_items: Array<{
   title: string
   content: string
   value: string
