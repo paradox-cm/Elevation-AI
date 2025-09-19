@@ -20,6 +20,14 @@ export default function AnimationsPage() {
   // Animation components used across the application
   const animations = [
     {
+      name: "Loading Animation",
+      description: "Custom loading animation using the Elevation AI logo with tracing stroke effects and glowing blue highlights",
+      href: "/design-system/animations/loading-animation",
+      icon: "loader-line",
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10"
+    },
+    {
       name: "Perlin Logo Animation",
       description: "Dynamic plasma animation using Perlin noise within the Elevation AI logo shape",
       href: "/design-system/animations/perlin-logo",

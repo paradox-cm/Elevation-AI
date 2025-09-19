@@ -6,7 +6,7 @@ import { useThemeProvider } from '@/hooks/use-theme'
 export function TunnelShader() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
-  const { theme } = useThemeProvider()
+  const { isDark } = useThemeProvider()
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -36,7 +36,7 @@ export function TunnelShader() {
         uniforms: {
           iTime: { value: 0 },
           iResolution: { value: new THREE.Vector3(canvas.offsetWidth, canvas.offsetHeight, 1) },
-          iTheme: { value: theme === 'dark' ? 1.0 : 0.0 }, // 1.0 for dark mode, 0.0 for light mode
+          iTheme: { value: isDark ? 1.0 : 0.0 }, // 1.0 for dark mode, 0.0 for light mode
         },
         vertexShader: `
           void main() {
@@ -179,7 +179,7 @@ export function TunnelShader() {
         shaderMaterial.uniforms.iTime.value += deltaTime
         
         // Update theme only when it actually changes (performance optimization)
-        const currentTheme = theme === 'dark' ? 1.0 : 0.0
+        const currentTheme = isDark ? 1.0 : 0.0
         if (shaderMaterial.uniforms.iTheme.value !== currentTheme) {
           shaderMaterial.uniforms.iTheme.value = currentTheme
         }
@@ -215,7 +215,7 @@ export function TunnelShader() {
     return () => {
       cleanup.then(cleanupFn => cleanupFn?.())
     }
-  }, [theme])
+  }, [isDark])
 
   return (
     <canvas

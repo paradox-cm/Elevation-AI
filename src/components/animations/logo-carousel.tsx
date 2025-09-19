@@ -3,38 +3,38 @@
 import React from "react"
 import { cn } from "@/lib/utils"
 
-interface LogoCarouselProps {
-  className?: string
-}
-
 interface LogoItem {
   name: string
-  filename: string
-  showText?: boolean
+  logo: string
 }
 
-const logos: LogoItem[] = [
-  { name: "Accenture", filename: "Accenture.svg", showText: true },
-  { name: "Apple", filename: "Apple.svg", showText: false },
-  { name: "Bank of America", filename: "Bank-of-America.svg", showText: true },
-  { name: "BCG Consulting", filename: "BCG-Consulting.svg", showText: false },
-  { name: "Morgan Stanley", filename: "Morgan-Stanley.svg", showText: true },
-  { name: "Barclays", filename: "Barclays.svg", showText: true },
-  { name: "eBay", filename: "ebay.svg", showText: false },
-  { name: "Google", filename: "Google.svg", showText: true },
-  { name: "Indeed", filename: "Indeed.svg", showText: true },
-  { name: "JPM", filename: "JPM.svg", showText: true },
-  { name: "McKinsey", filename: "McKinsey.svg", showText: true },
-  { name: "Meta", filename: "Meta.svg", showText: true },
-  { name: "Tesla", filename: "Tesla.svg", showText: true },
-  { name: "Visa", filename: "Visa.svg", showText: true },
-  { name: "Microsoft", filename: "Windows.svg", showText: true }
+interface LogoCarouselProps {
+  className?: string
+  logos?: LogoItem[]
+}
+
+const defaultLogos: LogoItem[] = [
+  { name: "Accenture", logo: "/images/logos/Accenture.svg" },
+  { name: "Apple", logo: "/images/logos/Apple.svg" },
+  { name: "Bank of America", logo: "/images/logos/Bank-of-America.svg" },
+  { name: "BCG Consulting", logo: "/images/logos/BCG-Consulting.svg" },
+  { name: "Morgan Stanley", logo: "/images/logos/Morgan-Stanley.svg" },
+  { name: "Barclays", logo: "/images/logos/Barclays.svg" },
+  { name: "eBay", logo: "/images/logos/ebay.svg" },
+  { name: "Google", logo: "/images/logos/Google.svg" },
+  { name: "Indeed", logo: "/images/logos/Indeed.svg" },
+  { name: "JPM", logo: "/images/logos/JPM.svg" },
+  { name: "McKinsey", logo: "/images/logos/McKinsey.svg" },
+  { name: "Meta", logo: "/images/logos/Meta.svg" },
+  { name: "Tesla", logo: "/images/logos/Tesla.svg" },
+  { name: "Visa", logo: "/images/logos/Visa.svg" },
+  { name: "Microsoft", logo: "/images/logos/Windows.svg" }
 ]
 
 // Split logos responsively
 // Mobile (< 640px): 3 rows (5 logos each)
 // Small/Medium/Desktop (≥ 640px): 2 rows (7-8 logos each)
-const getResponsiveLogoDistribution = (isMobile: boolean) => {
+const getResponsiveLogoDistribution = (logos: LogoItem[], isMobile: boolean) => {
   if (isMobile) {
     // Mobile (< 640px): 3 rows of 5 logos each
     return {
@@ -52,7 +52,7 @@ const getResponsiveLogoDistribution = (isMobile: boolean) => {
   }
 }
 
-export function LogoCarousel({ className }: LogoCarouselProps) {
+export function LogoCarousel({ className, logos = defaultLogos }: LogoCarouselProps) {
   const [hoverState, setHoverState] = React.useState<'left' | 'right' | 'none'>('none')
   const [isInView, setIsInView] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false)
@@ -80,7 +80,7 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
   }, [])
   
   // Get responsive logo distribution
-  const logoDistribution = getResponsiveLogoDistribution(isMobile)
+  const logoDistribution = getResponsiveLogoDistribution(logos, isMobile)
   
   // Duplicate logos for seamless infinite scroll - more duplicates on desktop for better tiling
   const getDuplicatedLogos = (logos: LogoItem[]) => {
@@ -299,25 +299,23 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
         <div className="flex-shrink-0 w-4 sm:w-12 lg:w-16" />
         {duplicatedFirstRowLogos.map((logo, index) => (
           <div
-            key={`first-${logo.filename}-${index}`}
+            key={`first-${logo.name}-${index}`}
             className="flex-shrink-0 flex items-center gap-3 px-4 sm:px-6 lg:px-8"
           >
             {/* Logo */}
             <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center">
               <img
-                src={`/images/logos/${logo.filename}`}
+                src={logo.logo}
                 alt={`${logo.name} logo`}
                 className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
                 loading="lazy"
               />
             </div>
             
-            {/* Company name - only show if showText is true */}
-            {logo.showText && (
-              <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
-                {logo.name}
-              </span>
-            )}
+            {/* Company name */}
+            <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
+              {logo.name}
+            </span>
           </div>
         ))}
         {/* Extra padding at the end for smooth looping */}
@@ -330,25 +328,23 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
         <div className="flex-shrink-0 w-4 sm:w-12 lg:w-16" />
         {duplicatedSecondRowLogos.map((logo, index) => (
           <div
-            key={`second-${logo.filename}-${index}`}
+            key={`second-${logo.name}-${index}`}
             className="flex-shrink-0 flex items-center gap-3 px-4 sm:px-6 lg:px-8"
           >
             {/* Logo */}
             <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center">
               <img
-                src={`/images/logos/${logo.filename}`}
+                src={logo.logo}
                 alt={`${logo.name} logo`}
                 className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
                 loading="lazy"
               />
             </div>
             
-            {/* Company name - only show if showText is true */}
-            {logo.showText && (
-              <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
-                {logo.name}
-              </span>
-            )}
+            {/* Company name */}
+            <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
+              {logo.name}
+            </span>
           </div>
         ))}
         {/* Extra padding at the end for smooth looping */}
@@ -362,25 +358,23 @@ export function LogoCarousel({ className }: LogoCarouselProps) {
           <div className="flex-shrink-0 w-4 sm:w-12 lg:w-16" />
           {duplicatedThirdRowLogos.map((logo, index) => (
             <div
-              key={`third-${logo.filename}-${index}`}
+              key={`third-${logo.name}-${index}`}
               className="flex-shrink-0 flex items-center gap-3 px-4 sm:px-6 lg:px-8"
             >
               {/* Logo */}
               <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center">
                 <img
-                  src={`/images/logos/${logo.filename}`}
+                  src={logo.logo}
                   alt={`${logo.name} logo`}
                   className="w-full h-full object-contain filter dark:brightness-0 dark:invert opacity-80"
                   loading="lazy"
                 />
               </div>
               
-              {/* Company name - only show if showText is true */}
-              {logo.showText && (
-                <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
-                  {logo.name}
-                </span>
-              )}
+              {/* Company name */}
+              <span className="text-sm sm:text-base lg:text-lg font-medium text-muted-foreground whitespace-nowrap">
+                {logo.name}
+              </span>
             </div>
           ))}
           {/* Extra padding at the end for smooth looping */}

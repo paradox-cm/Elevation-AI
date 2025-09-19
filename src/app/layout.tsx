@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { AnimationProvider } from "@/contexts/animation-context";
 import { AnimationPreloader } from "@/components/ui/animation-preloader";
+import { Toaster } from "@/components/ui/sonner";
 
 // Helvetica Now Variable Fonts
 const helveticaNowVar = localFont({
@@ -115,6 +116,7 @@ export default function RootLayout({
             <AnimationPreloader />
             <ScrollToTop />
             {children}
+            <Toaster />
           </AnimationProvider>
         </ThemeProvider>
       </body>

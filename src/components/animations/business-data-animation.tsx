@@ -17,7 +17,7 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
     direction: number
     speed: number
   }>>([])
-  const { theme } = useThemeProvider()
+  const { isDark } = useThemeProvider()
 
   const cols = 8
   const rows = 24
@@ -59,7 +59,7 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
       // Use theme-aware color
-      const color = theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'
+      const color = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'
       ctx.fillStyle = color
 
       linesRef.current.forEach(line => {
@@ -91,7 +91,7 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
       }
       window.removeEventListener('resize', handleResize)
     }
-  }, [theme])
+  }, [isDark])
 
   return (
     <canvas

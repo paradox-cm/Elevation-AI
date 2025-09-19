@@ -30,7 +30,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   const mainNavigationLinks = [
     { href: "/", label: "Home", active: currentPage === "home" },
     { href: "/website/platform", label: "Platform", active: currentPage === "platform", hasDropdown: true },
-    { href: "/website/people", label: "People", active: currentPage === "people", hasDropdown: true },
+    { href: "/website/people-concierge", label: "People", active: (currentPage === "people-concierge" || currentPage === "people-experts"), hasDropdown: true },
     { href: "/website/solutions", label: "Solutions", active: currentPage === "solutions", hasDropdown: true },
     { href: "/website/pricing", label: "Pricing", active: currentPage === "pricing" },
     { href: "/website/resources", label: "Resources", active: currentPage === "resources", hasDropdown: true }
@@ -43,8 +43,8 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const peopleSubLinks = [
-    { href: "/website/people#our-solution-section", label: "Concierge Team" },
-    { href: "/website/people#expert-network", label: "Expert Network" }
+    { href: "/website/people-concierge", label: "Concierge Support" },
+    { href: "/website/people-experts", label: "Expert Network" }
   ]
 
   const solutionsSubLinks = [

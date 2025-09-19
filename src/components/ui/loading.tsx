@@ -6,35 +6,42 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import Icon from "@/components/ui/icon"
 import { H3, BodySmall } from "@/components/ui/typography"
+import { LoadingAnimation } from "@/components/animations/loading-animation"
+import { CSSSpinner } from "@/components/ui/css-spinner"
 
 // Loading Spinner Component
 interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg" | "xl"
   className?: string
   text?: string
+  variant?: "logo" | "css" // New prop to control spinner type
 }
 
 export function LoadingSpinner({ 
   size = "md", 
   className,
-  text 
+  text,
+  variant = "logo" // Default to logo animation for backward compatibility
 }: LoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: "h-4 w-4",
-    md: "h-6 w-6",
-    lg: "h-8 w-8",
-    xl: "h-12 w-12",
+  const sizeMap = {
+    sm: 24,
+    md: 32,
+    lg: 48,
+    xl: 64,
   }
 
   return (
     <div className={cn("flex flex-col items-center justify-center", className)}>
-      <Icon 
-        name="loader-4-line" 
-        className={cn(
-          "animate-spin text-primary",
-          sizeClasses[size]
-        )} 
-      />
+      {variant === "css" ? (
+        <CSSSpinner size={size} />
+      ) : (
+        <LoadingAnimation 
+          size={sizeMap[size]}
+          strokeWidth={4}
+          glowIntensity={0.15}
+          duration={1.0}
+        />
+      )}
       {text && (
         <BodySmall className="mt-2 text-muted-foreground">{text}</BodySmall>
       )}
@@ -174,7 +181,7 @@ export function LoadingStates() {
   return (
     <div className="space-y-8">
       <div>
-        <H3 className="mb-4">Loading Spinners</H3>
+        <H3 className="mb-4">Loading Animations</H3>
         <div className="flex items-center space-x-8">
           <LoadingSpinner size="sm" text="Small" />
           <LoadingSpinner size="md" text="Medium" />
