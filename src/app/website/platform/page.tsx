@@ -288,15 +288,15 @@ function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
             </div>
                     <div className="border-b border-border/50 mb-4"></div>
                     <div className="space-y-4 mb-4 hidden">
-                      {(Array.isArray(cat.logos) ? cat.logos : []).map((logo: any, index: number) => (
+                      {(Array.isArray(cat.logos) ? cat.logos : []).map((logo: { name?: string; url?: string; file?: string }, index: number) => (
                         <div
                           key={index}
                           className="flex items-center gap-3 text-xs text-muted-foreground"
                         >
                           <div className="w-10 h-10 flex items-center justify-center">
                             <Image
-                              src={`/images/platform-logos/${logo.file}`}
-                              alt={logo.name}
+                              src={`/images/platform-logos/${logo.file || 'default.png'}`}
+                               alt={logo.name || 'Logo'}
                               width={40}
                               height={40}
                               className="w-10 h-10 object-contain filter dark:brightness-0 dark:invert opacity-80"

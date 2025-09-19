@@ -41,7 +41,7 @@ export function HeroSimpleSection({ data, section }: HeroSimpleSectionProps) {
                   <Button
                     key={index}
                     asChild
-                    variant={buttonVariant as any}
+                    variant={buttonVariant as "default" | "outline" | "secondary" | "ghost" | "link" | "destructive"}
                     size="lg"
                   >
                     <Link href={buttonHref}>

@@ -1547,7 +1547,7 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
   ]
 
   // Convert solutions to CarouselItem format
-  const solutionsCarousel: CarouselItem[] = solutionsArray.map((solution: any) => ({
+  const solutionsCarousel: CarouselItem[] = solutionsArray.map((solution: { id?: string; title?: string; description?: string; icon?: string; href?: string }) => ({
     id: (typeof solution.id === 'string' ? solution.id : (typeof solution.title === 'string' ? solution.title.toLowerCase().replace(/\s+/g, '-') : 'default')),
     title: (typeof solution.title === 'string' ? solution.title : ''),
     description: (typeof solution.description === 'string' ? solution.description : ''),

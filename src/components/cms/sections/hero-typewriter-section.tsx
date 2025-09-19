@@ -150,7 +150,7 @@ export function HeroTypewriterSection({ data, section }: HeroTypewriterSectionPr
                     <Button
                       key={index}
                       asChild
-                      variant={buttonVariant as any}
+                      variant={buttonVariant as "default" | "outline" | "secondary" | "ghost" | "link" | "destructive"}
                       size="lg"
                       className="w-full sm:w-auto"
                     >

@@ -51,7 +51,7 @@ export function CTASection({ data, section }: CTASectionProps) {
                   <Button
                     key={index}
                     asChild
-                    variant={buttonVariant as any}
+                    variant={buttonVariant as "default" | "outline" | "secondary" | "ghost" | "link" | "destructive"}
                     size="lg"
                     className="w-full sm:w-auto"
                   >
