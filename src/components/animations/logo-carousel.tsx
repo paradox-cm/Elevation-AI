@@ -17,18 +17,18 @@ const defaultLogos: LogoItem[] = [
   { name: "Accenture", logo: "/images/logos/Accenture.svg" },
   { name: "Apple", logo: "/images/logos/Apple.svg" },
   { name: "Bank of America", logo: "/images/logos/Bank-of-America.svg" },
-  { name: "BCG Consulting", logo: "/images/logos/BCG-Consulting.svg" },
-  { name: "Morgan Stanley", logo: "/images/logos/Morgan-Stanley.svg" },
   { name: "Barclays", logo: "/images/logos/Barclays.svg" },
+  { name: "BCG Consulting", logo: "/images/logos/BCG-Consulting.svg" },
   { name: "eBay", logo: "/images/logos/ebay.svg" },
   { name: "Google", logo: "/images/logos/Google.svg" },
   { name: "Indeed", logo: "/images/logos/Indeed.svg" },
   { name: "JPM", logo: "/images/logos/JPM.svg" },
   { name: "McKinsey", logo: "/images/logos/McKinsey.svg" },
   { name: "Meta", logo: "/images/logos/Meta.svg" },
+  { name: "Morgan Stanley", logo: "/images/logos/Morgan-Stanley.svg" },
   { name: "Tesla", logo: "/images/logos/Tesla.svg" },
   { name: "Visa", logo: "/images/logos/Visa.svg" },
-  { name: "Microsoft", logo: "/images/logos/Windows.svg" }
+  { name: "Windows", logo: "/images/logos/Windows.svg" }
 ]
 
 // Split logos responsively

@@ -85,8 +85,6 @@ const homePageMasterContent = {
           { name: 'Bank of America', logo: '/images/logos/Bank-of-America.svg' },
           { name: 'Barclays', logo: '/images/logos/Barclays.svg' },
           { name: 'BCG Consulting', logo: '/images/logos/BCG-Consulting.svg' },
-          { name: 'Capital One', logo: '/images/logos/Capital-One.svg' },
-          { name: 'Deutsche Bank', logo: '/images/logos/Deutsche-Bank.svg' },
           { name: 'eBay', logo: '/images/logos/ebay.svg' },
           { name: 'Google', logo: '/images/logos/Google.svg' },
           { name: 'Indeed', logo: '/images/logos/Indeed.svg' },

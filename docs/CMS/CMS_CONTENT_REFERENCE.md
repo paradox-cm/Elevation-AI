@@ -1,6 +1,6 @@
 # Elevation AI CMS Content Reference
 
-**Generated:** January 2025  
+**Generated:** January 19, 2025  
 **Purpose:** Comprehensive reference of all current content in the Elevation AI CMS system  
 **Last Updated:** Current as of sync scripts execution
 
@@ -58,7 +58,7 @@
 
 #### 3. Logo Carousel Section (logo_carousel)
 - **Title:** Led by industry veterans from:
-- **Logos:** Accenture, Apple, Bank of America, Barclays, BCG Consulting, Capital One, Deutsche Bank, eBay, Google, Indeed, JPM, McKinsey, Meta, Morgan Stanley, Tesla, Visa, Windows
+- **Logos:** Accenture, Apple, Bank of America, Barclays, BCG Consulting, eBay, Google, Indeed, JPM, McKinsey, Meta, Morgan Stanley, Tesla, Visa, Windows
 
 #### 4. Problem Cards Section (problem_cards)
 - **Title:** Orchestrate Your Universe
@@ -385,7 +385,7 @@
 
 #### 5. Logo Carousel Section (logo_carousel)
 - **Title:** Led by industry veterans from:
-- **Logos:** Accenture, Apple, Bank of America, Barclays, BCG Consulting, Capital One, Deutsche Bank, eBay, Google, Indeed, JPM, McKinsey, Meta, Morgan Stanley, Tesla, Visa, Windows
+- **Logos:** Accenture, Apple, Bank of America, Barclays, BCG Consulting, eBay, Google, Indeed, JPM, McKinsey, Meta, Morgan Stanley, Tesla, Visa, Windows
 
 #### 6. People CTA Section (cta)
 - **Title:** Ready to Connect with Experts?
