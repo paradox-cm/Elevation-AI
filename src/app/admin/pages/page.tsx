@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Page } from '@/types/cms'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -31,11 +31,7 @@ export default function PagesPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const supabase = createClient()
 
-  useEffect(() => {
-    fetchPages()
-  }, [])
-
-  const fetchPages = async () => {
+  const fetchPages = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('pages')
@@ -58,7 +54,11 @@ export default function PagesPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchPages()
+  }, [fetchPages])
 
   // Define the custom page order
   const pageOrder = [

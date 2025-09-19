@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Page, PageSection } from '@/types/cms'
@@ -45,13 +45,7 @@ export default function EditPagePage() {
   const supabase = createClient()
   const { refreshCurrentPage } = useCMSRefresh()
 
-  useEffect(() => {
-    if (pageId) {
-      fetchPageData()
-    }
-  }, [pageId])
-
-  const fetchPageData = async () => {
+  const fetchPageData = useCallback(async () => {
     try {
       setIsLoading(true)
       
@@ -91,7 +85,13 @@ export default function EditPagePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [pageId, supabase, refreshCurrentPage])
+
+  useEffect(() => {
+    if (pageId) {
+      fetchPageData()
+    }
+  }, [pageId, fetchPageData])
 
   const handlePageUpdate = (field: string, value: string | number | boolean) => {
     if (!page) return
@@ -142,11 +142,6 @@ export default function EditPagePage() {
     window.location.href = `/admin/pages/${pageId}/sections/${section.id}/edit`
   }
 
-  const handleDeleteSection = (section: PageSection) => {
-    setDeletingSection(section)
-    setIsDeleteModalOpen(true)
-  }
-
   const confirmDeleteSection = async () => {
     if (!deletingSection) return
 
@@ -177,25 +172,6 @@ export default function EditPagePage() {
     }
   }
 
-  const handleReorderSections = async (reorderedSections: PageSection[]) => {
-    try {
-      // Update section order in database
-      for (let i = 0; i < reorderedSections.length; i++) {
-        const section = reorderedSections[i]
-        await pageSectionsService.update(section.id, {
-          section_order: i + 1
-        })
-      }
-
-      // Update local state
-      setSections(reorderedSections)
-      
-      toast.success('Sections reordered successfully')
-    } catch (error) {
-      console.error('Error reordering sections:', error)
-      toast.error('Failed to reorder sections')
-    }
-  }
 
   const getSectionIcon = (type: string) => {
     switch (type) {
@@ -224,7 +200,7 @@ export default function EditPagePage() {
     return (
       <div className="text-center py-8">
         <h2 className="text-xl font-semibold text-foreground mb-2">Page not found</h2>
-        <p className="text-muted-foreground mb-4">The page you're looking for doesn't exist.</p>
+        <p className="text-muted-foreground mb-4">The page you&apos;re looking for doesn&apos;t exist.</p>
         <Button asChild>
           <Link href="/admin/pages">
             <ArrowLeft className="h-4 w-4 mr-2" />

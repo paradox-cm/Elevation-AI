@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Settings, Save, AlertCircle, CheckCircle, Globe, Mail, Shield } from 'lucide-react'
+import { Save, AlertCircle, CheckCircle, Globe, Mail, Shield } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface SiteSetting {
@@ -23,7 +23,7 @@ interface SiteSetting {
 }
 
 export default function AdminSettingsPage() {
-  const [settings, setSettings] = useState<SiteSetting[]>([])
+  const [, setSettings] = useState<SiteSetting[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
@@ -40,11 +40,7 @@ export default function AdminSettingsPage() {
   const supabase = createClient()
   const router = useRouter()
 
-  useEffect(() => {
-    fetchSettings()
-  }, [])
-
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -78,7 +74,11 @@ export default function AdminSettingsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router])
+
+  useEffect(() => {
+    fetchSettings()
+  }, [fetchSettings])
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()

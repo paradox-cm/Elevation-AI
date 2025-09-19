@@ -8,6 +8,12 @@ interface Solution {
   icon: string;
 }
 
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 import { PageWrapper } from "@/components/page-wrapper"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
@@ -21,7 +27,7 @@ import { H1, H3, P, BodyLarge } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
-import React, { useEffect, useRef, Suspense, useState } from "react"
+import React, { useEffect, useRef, Suspense, useState, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 import * as THREE from "three"
 import Icon from "@/components/ui/icon"
@@ -643,7 +649,7 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
     }
   }
 
-  const handleNavigateUp = () => {
+  const handleNavigateUp = useCallback(() => {
     const currentIndex = industrySolutions.findIndex(sol => sol.id === openCardId)
     if (currentIndex > 0) {
       const prevCardId = industrySolutions[currentIndex - 1].id
@@ -662,9 +668,9 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
         }
       }, 100)
     }
-  }
+  }, [industrySolutions, openCardId])
 
-  const handleNavigateDown = () => {
+  const handleNavigateDown = useCallback(() => {
     const currentIndex = industrySolutions.findIndex(sol => sol.id === openCardId)
     if (currentIndex < industrySolutions.length - 1) {
       const nextCardId = industrySolutions[currentIndex + 1].id
@@ -683,7 +689,7 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
         }
       }, 100)
     }
-  }
+  }, [industrySolutions, openCardId])
 
   // Handle URL parameters on mount
   useEffect(() => {
@@ -771,7 +777,7 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [openCardId])
+  }, [openCardId, handleNavigateDown, handleNavigateUp])
 
   return (
     <Section id="industry-solutions" paddingY="lg">
@@ -845,7 +851,7 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
     }
   }
 
-  const handleNavigateUp = () => {
+  const handleNavigateUp = useCallback(() => {
     const currentIndex = stageSolutions.findIndex(sol => sol.id === openCardId)
     if (currentIndex > 0) {
       const prevCardId = stageSolutions[currentIndex - 1].id
@@ -864,9 +870,9 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
         }
       }, 100)
     }
-  }
+  }, [stageSolutions, openCardId])
 
-  const handleNavigateDown = () => {
+  const handleNavigateDown = useCallback(() => {
     const currentIndex = stageSolutions.findIndex(sol => sol.id === openCardId)
     if (currentIndex < stageSolutions.length - 1) {
       const nextCardId = stageSolutions[currentIndex + 1].id
@@ -885,7 +891,7 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
         }
       }, 100)
     }
-  }
+  }, [stageSolutions, openCardId])
 
   // Handle URL parameters on mount
   useEffect(() => {
@@ -973,7 +979,7 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [openCardId])
+  }, [openCardId, handleNavigateDown, handleNavigateUp])
 
   return (
     <Section id="stage-solutions" paddingY="lg">
@@ -1217,7 +1223,7 @@ function SolutionFeaturesSection({ data }: { data?: Record<string, unknown> }) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature: any, index: number) => (
+            {features.map((feature: Feature, index: number) => (
               <Card key={index} className="p-6 bg-primary/10 border-primary/20">
                 <div className="space-y-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
