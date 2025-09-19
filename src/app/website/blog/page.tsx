@@ -19,6 +19,8 @@ import React from "react"
 import { usePageCache } from '@/hooks/use-page-cache'
 import { useBlogListCache } from '@/hooks/use-blog-cache'
 import { LogoLoadingSpinner } from '@/components/ui/loading-spinner'
+import { isRecord } from "@/lib/types"
+import { toText } from "@/lib/react"
 
 // Mock blog data
 const featuredArticle = {
@@ -155,18 +157,20 @@ export default function BlogPage() {
   const ctaSection = pageData?.sections.find(s => s.section_type === 'cta')
 
   // Extract data with fallbacks
-  const pageTitle = headerSection?.section_data?.title || "Blog"
-  const pageDescription = headerSection?.section_data?.subtitle || "Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation"
-  const categories = categoriesSection?.section_data?.categories || [
-    "All Posts",
-    "AI & Technology", 
-    "Technical Insights",
-    "Business Intelligence",
-    "Security & Compliance",
-    "Data Strategy",
-    "Workplace Innovation",
-    "Industry Insights"
-  ]
+  const pageTitle = typeof headerSection?.section_data?.title === 'string' ? headerSection.section_data.title : "Blog"
+  const pageDescription = typeof headerSection?.section_data?.subtitle === 'string' ? headerSection.section_data.subtitle : "Insights, strategies, and thought leadership on AI, business orchestration, and digital transformation"
+  const categories = Array.isArray(categoriesSection?.section_data?.categories) 
+    ? categoriesSection.section_data.categories as string[]
+    : [
+        "All Posts",
+        "AI & Technology", 
+        "Technical Insights",
+        "Business Intelligence",
+        "Security & Compliance",
+        "Data Strategy",
+        "Workplace Innovation",
+        "Industry Insights"
+      ]
   // Use actual featured article from database, with fallback to static data
   const featuredArticle = blogPosts.length > 0 ? {
     id: blogPosts[0].id,
@@ -180,11 +184,11 @@ export default function BlogPage() {
       day: 'numeric'
     }) : '',
     readTime: "8 min read", // Default read time
-    category: blogPosts[0].category?.name || 'Uncategorized',
+    category: (blogPosts[0].category && typeof blogPosts[0].category === 'object' && 'name' in blogPosts[0].category && typeof blogPosts[0].category.name === 'string') ? blogPosts[0].category.name : 'Uncategorized',
     image: blogPosts[0].featured_image,
     featured: true,
     slug: blogPosts[0].slug
-  } : (featuredSection?.section_data?.featured_article || {
+  } : (typeof featuredSection?.section_data?.featured_article === 'object' && featuredSection?.section_data?.featured_article !== null ? featuredSection.section_data.featured_article as Record<string, unknown> : {
     id: 1,
     title: "The Future of Business Orchestration: How AI is Transforming Enterprise Operations",
     excerpt: "Explore how artificial intelligence is revolutionizing the way businesses orchestrate complex operations, from supply chain management to customer experience optimization.",
@@ -197,6 +201,27 @@ export default function BlogPage() {
     featured: true,
     slug: "future-business-orchestration"
   })
+
+  // Derived safe fields for featured article
+  const f = isRecord(featuredArticle) ? featuredArticle : {}
+  const featuredTitle = toText(f["title"])
+  const featuredExcerpt = toText(f["excerpt"])
+  const featuredSlug = toText(f["slug"])
+  const featuredImage = toText(f["cover_image"]) || toText(f["image"]) // support either key if present
+  const fc = isRecord(f["category"]) ? (f["category"] as Record<string, unknown>) : null
+  const featuredCategoryName = fc ? toText(fc["name"]) : toText(f["category"]) // fallback if category is a string
+
+  // Safe featured article reads
+  const fa = isRecord(featuredArticle) ? featuredArticle : {}
+  const faCategory = toText(fa['category'])
+  const faTitle = toText(fa['title'])
+  const faExcerpt = toText(fa['excerpt'])
+  const faAuthor = toText(fa['author'])
+  const faAuthorRole = toText(fa['authorRole'])
+  const faPublishDate = toText(fa['publishDate'])
+  const faReadTime = toText(fa['readTime'])
+  const faSlug = toText(fa['slug'])
+  const faImage = toText(fa['image'])
   // Use actual blog posts from database, with fallback to static data
   const blogArticles = blogPosts.length > 0 ? blogPosts.slice(1).map(post => ({
     id: post.id,
@@ -342,16 +367,16 @@ export default function BlogPage() {
                           Featured Article
                         </Badge>
                         <Badge variant="outline" className="text-xs">
-                          {featuredArticle.category}
+                          {featuredCategoryName}
                         </Badge>
                       </div>
                       
                       <H2 className="text-2xl lg:text-3xl leading-tight">
-                        {featuredArticle.title}
+                        {featuredTitle}
                       </H2>
                       
                       <P className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-                        {featuredArticle.excerpt}
+                        {featuredExcerpt}
                       </P>
                       
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -360,19 +385,19 @@ export default function BlogPage() {
                             <Icon name="user-line" className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <div className="font-medium text-foreground">{featuredArticle.author}</div>
-                            <div className="text-xs">{featuredArticle.authorRole}</div>
+                          <div className="font-medium text-foreground">{toText(f["author"])}</div>
+                          <div className="text-xs">{toText(f["authorRole"])}</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-4">
-                          <span>{featuredArticle.publishDate}</span>
+                          <span>{toText(f["publishDate"])}</span>
                           <span>•</span>
-                          <span>{featuredArticle.readTime}</span>
+                          <span>{toText(f["readTime"])}</span>
                         </div>
                       </div>
                       
                       <Button size="lg" className="w-fit" asChild>
-                        <Link href={`/website/blog/${featuredArticle.slug}`}>
+                        <Link href={`/website/blog/${featuredSlug || ''}`}>
                           Read Full Article
                           <Icon name="arrow-right-s-line" className="h-4 w-4 ml-2" />
                         </Link>
@@ -381,19 +406,22 @@ export default function BlogPage() {
                     
                     <div className="relative">
                       <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-xl flex items-center justify-center overflow-hidden">
-                        {featuredArticle.image ? (
+                        {featuredImage ? (
                           <img 
-                            src={featuredArticle.image} 
-                            alt={featuredArticle.title}
+                            src={featuredImage} 
+                            alt={featuredTitle || ""}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               // Fallback to placeholder if image fails to load
                               e.currentTarget.style.display = 'none'
-                              e.currentTarget.nextElementSibling.style.display = 'flex'
+                              const sib = e.currentTarget.nextElementSibling as HTMLElement | null
+                              if (sib) {
+                                sib.style.display = 'flex'
+                              }
                             }}
                           />
                         ) : null}
-                        <div className="text-center space-y-4" style={{ display: featuredArticle.image ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                        <div className="text-center space-y-4" style={{ display: featuredImage ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                           <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">
                             <Icon name="article-line" className="h-8 w-8 text-primary" />
                           </div>

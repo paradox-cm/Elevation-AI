@@ -16,11 +16,13 @@ import Link from "next/link"
 import Icon from "@/components/ui/icon"
 import { ArrowLeft, Calendar, User, Clock, Share2 } from "lucide-react"
 import { useBlogPostCache } from '@/hooks/use-blog-cache'
+import { isRecord } from "@/lib/types"
+import { toText } from "@/lib/react"
 
 // Fallback blog content for when CMS data is not available
-const fallbackBlogPosts: Record<string, BlogPostWithCategory> = {
+const fallbackBlogPosts: Record<string, Record<string, unknown>> = {
   "future-business-orchestration": {
-    id: 1,
+    id: "1",
     title: "The Future of Business Orchestration: How AI is Transforming Enterprise Operations",
     slug: "future-business-orchestration",
     excerpt: "Explore how artificial intelligence is revolutionizing the way businesses orchestrate complex operations, from supply chain management to customer experience optimization.",
@@ -100,14 +102,18 @@ The journey toward AI-powered business orchestration is not just about adopting 
     featured_image: "/images/blog/featured-article.jpg",
     read_time: "8 min read",
     category: {
-      id: 1,
+      id: "1",
       name: "AI & Technology",
       slug: "ai-technology",
-      description: "Articles about artificial intelligence and technology trends"
+      description: "Articles about artificial intelligence and technology trends",
+      color: null,
+      is_published: true,
+      created_at: "2025-01-15T00:00:00Z",
+      updated_at: "2025-01-15T00:00:00Z"
     }
   },
   "scalable-ai-workflows": {
-    id: 2,
+    id: "2",
     title: "Building Scalable AI Workflows: Best Practices for Enterprise Implementation",
     slug: "scalable-ai-workflows",
     excerpt: "Learn the key principles and strategies for implementing AI workflows that can scale with your organization's growth and evolving needs.",
@@ -311,10 +317,14 @@ The key to success lies in starting with solid foundations, implementing increme
     featured_image: "/images/blog/ai-workflows.jpg",
     read_time: "6 min read",
     category: {
-      id: 2,
+      id: "2",
       name: "Technical Insights",
       slug: "technical-insights",
-      description: "Technical articles and implementation guides"
+      description: "Technical articles and implementation guides",
+      color: null,
+      is_published: true,
+      created_at: "2025-01-15T00:00:00Z",
+      updated_at: "2025-01-15T00:00:00Z"
     }
   }
 }
@@ -391,6 +401,19 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
     )
   }
 
+  // Type guard for post data
+  const postData = (post && isRecord(post) ? post : {}) as Record<string, unknown>
+  const featuredImage = toText(postData['featured_image'])
+  const title = toText(postData['title'])
+  const excerpt = toText(postData['excerpt'])
+  const content = toText(postData['content'])
+  const author = toText(postData['author'])
+  const authorRole = toText(postData['author_role'])
+  const publishedAt = toText(postData['published_at'])
+  const readTime = toText(postData['read_time'])
+  const category = isRecord(postData['category']) ? postData['category'] : null
+  const categoryName = category ? toText(category['name']) : null
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -420,18 +443,21 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
               </Section>
 
               {/* Featured Image */}
-              {post.featured_image && (
+              {featuredImage && (
                 <Section paddingY="none">
                   <Container size="2xl">
                     <div className="aspect-[2/1] w-full bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-xl flex items-center justify-center mb-8 overflow-hidden">
                       <img 
-                        src={post.featured_image} 
-                        alt={post.title}
+                        src={featuredImage} 
+                        alt={title || ""}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           // Fallback to placeholder if image fails to load
                           e.currentTarget.style.display = 'none'
-                          e.currentTarget.nextElementSibling.style.display = 'flex'
+                          const nextSibling = e.currentTarget.nextElementSibling as HTMLElement
+                          if (nextSibling) {
+                            nextSibling.style.display = 'flex'
+                          }
                         }}
                       />
                       <div className="text-center space-y-4" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
@@ -450,19 +476,23 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
                 <div className="max-w-4xl mx-auto">
                   <div className="space-y-6">
                     {/* Category Badge */}
-                    <Badge variant="outline" className="text-sm">
-                      {post.category.name}
-                    </Badge>
+                    {categoryName && (
+                      <Badge variant="outline" className="text-sm">
+                        {categoryName}
+                      </Badge>
+                    )}
 
                     {/* Title */}
                     <H1 className="text-3xl lg:text-4xl font-bold leading-tight">
-                      {post.title}
+                      {title}
                     </H1>
 
                     {/* Excerpt */}
-                    <P className="text-lg text-muted-foreground leading-relaxed">
-                      {post.excerpt}
-                    </P>
+                    {excerpt && (
+                      <P className="text-lg text-muted-foreground leading-relaxed">
+                        {excerpt}
+                      </P>
+                    )}
 
                     {/* Author and Meta Info */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-border">
@@ -471,19 +501,19 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
                           <User className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <div className="font-semibold text-foreground">{post.author}</div>
-                          <div className="text-sm text-muted-foreground">{post.author_role}</div>
+                          <div className="font-semibold text-foreground">{author}</div>
+                          <div className="text-sm text-muted-foreground">{authorRole}</div>
                         </div>
                       </div>
                       
                       <div className="flex items-center gap-6 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4" />
-                          <span>{formatDate(post.published_at)}</span>
+                          <span>{publishedAt ? formatDate(publishedAt) : ""}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4" />
-                          <span>{post.read_time}</span>
+                          <span>{readTime}</span>
                         </div>
                         <Button variant="ghost" size="sm">
                           <Share2 className="h-4 w-4" />
@@ -501,7 +531,7 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
                     <div 
                       className="space-y-6"
                       dangerouslySetInnerHTML={{ 
-                        __html: post.content.replace(/\n/g, '<br>').replace(/#{1,6}\s/g, (match) => {
+                        __html: (content || "").replace(/\n/g, '<br>').replace(/#{1,6}\s/g, (match) => {
                           const level = match.trim().length
                           return `<h${level} class="text-${level === 1 ? '3xl' : level === 2 ? '2xl' : 'xl'} font-bold mt-8 mb-4">`
                         }).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>')
