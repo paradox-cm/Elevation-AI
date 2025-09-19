@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  eslint: {
+    // Don't fail production builds on ESLint warnings or errors.
+    // Keep linting in CI as a separate job!
+    ignoreDuringBuilds: true,
+  },
   images: {
     // Optimize images for better performance
     formats: ['image/webp', 'image/avif'],

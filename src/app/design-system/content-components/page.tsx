@@ -7,7 +7,7 @@ import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
-import { H3, H4, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { H3, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ResponsiveTabs, ResponsiveTabsContent, ResponsiveTabsList, ResponsiveTabsTrigger } from "@/components/ui/responsive-tabs"
 import { Separator } from "@/components/ui/separator"
@@ -27,17 +27,7 @@ import {
 } from "@/components/ui/content-components"
 
 export default function ContentComponentsPage() {
-  const {
-    config,
-    articleLayoutConfig,
-    mediaCardConfig,
-    galleryConfig,
-    timelineConfig,
-    faqConfig,
-    contentBlockConfig,
-    quoteConfig,
-    socialShareConfig
-  } = useContentComponentsConfig()
+  const {} = useContentComponentsConfig()
 
   const [activeTab, setActiveTab] = useState("articles")
 

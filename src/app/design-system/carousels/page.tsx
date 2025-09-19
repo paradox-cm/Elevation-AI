@@ -220,7 +220,7 @@ export default function CarouselsPage() {
                       Standard Carousel (Current Implementation)
                     </CardTitle>
                     <CardDescription>
-                      The current standard configuration used in "Intelligent Solutions for Every Domain" section. Features auto-play with manual interaction detection, responsive design, and smart progress indicators.
+                      The current standard configuration used in &ldquo;Intelligent Solutions for Every Domain&rdquo; section. Features auto-play with manual interaction detection, responsive design, and smart progress indicators.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -443,7 +443,7 @@ export default function CarouselsPage() {
 />`}
                     </div>
                     <div className="mt-3 text-sm text-muted-foreground">
-                      <strong>Use case:</strong> Current standard for "Intelligent Solutions for Every Domain" section - feature showcases, solution highlights, product benefits
+                      <strong>Use case:</strong> Current standard for &ldquo;Intelligent Solutions for Every Domain&rdquo; section - feature showcases, solution highlights, product benefits
                     </div>
                   </CardContent>
                 </Card>

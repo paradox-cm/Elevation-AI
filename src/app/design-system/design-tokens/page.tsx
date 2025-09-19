@@ -1,7 +1,6 @@
 "use client"
 
 
-import { useState } from "react"
 import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
@@ -515,7 +514,7 @@ export default function DesignTokensPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-muted p-4 rounded-lg font-mono text-sm space-y-1">
-                      <div className="text-muted-foreground">// tailwind.config.js</div>
+                      <div className="text-muted-foreground">{'// tailwind.config.js'}</div>
                       <div>module.exports = &#123;</div>
                       <div>  theme: &#123;</div>
                       <div>    extend: &#123;</div>

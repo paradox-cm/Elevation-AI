@@ -28,16 +28,7 @@ import {
 } from "@/components/ui/dashboard"
 
 export default function DashboardPage() {
-  const {
-    config,
-    dashboardLayoutConfig,
-    dashboardMetricConfig,
-    dashboardWidgetConfig,
-    dashboardChartConfig,
-    dashboardActivityConfig,
-    dashboardQuickActionsConfig,
-    dashboardNavigationConfig
-  } = useDashboardConfig()
+  const {} = useDashboardConfig()
 
   const [activeTab, setActiveTab] = useState("overview")
 

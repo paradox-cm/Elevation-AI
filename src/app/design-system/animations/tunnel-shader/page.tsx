@@ -5,7 +5,7 @@ import { PageWrapper } from "@/components/page-wrapper"
 import { AppShell } from "@/components/ui/layout/app-shell"
 import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
-import { H1, H2, H3, P, Code } from "@/components/ui/typography"
+import { H1, H3, P, Code } from "@/components/ui/typography"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Icon from "@/components/ui/icon"
@@ -139,7 +139,7 @@ export default function TunnelShaderPage() {
                           <tr className="border-b">
                             <td className="p-2 font-mono">className</td>
                             <td className="p-2">string</td>
-                            <td className="p-2">""</td>
+                            <td className="p-2">&ldquo;&rdquo;</td>
                             <td className="p-2">Additional CSS classes</td>
                           </tr>
                           <tr className="border-b">

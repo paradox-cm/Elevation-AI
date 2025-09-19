@@ -280,6 +280,7 @@ export default function MediaPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-8">
+              {/* eslint-disable-next-line jsx-a11y/alt-text -- Lucide React icon, not an image */}
               <Image className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">
                 {searchTerm ? 'No media found' : 'No media files yet'}

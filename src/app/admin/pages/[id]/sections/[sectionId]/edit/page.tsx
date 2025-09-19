@@ -15,13 +15,10 @@ import { FileUpload } from '@/components/ui/file-upload'
 import { 
   ArrowLeft, 
   Save, 
-  Eye, 
   Plus,
   Trash2,
-  HelpCircle,
   Loader2
 } from 'lucide-react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { pageSectionsService } from '@/lib/cms'
@@ -37,7 +34,6 @@ export default function SectionEditPage() {
   const [page, setPage] = useState<Page | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
-  const [hasChanges, setHasChanges] = useState(false)
   
   const supabase = createClient()
   const router = useRouter()
@@ -82,7 +78,7 @@ export default function SectionEditPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [sectionId, supabase, refreshCurrentPage])
+  }, [sectionId, pageId, supabase, refreshCurrentPage]) // eslint-disable-line react-hooks/exhaustive-deps -- refreshCurrentPage is used in the function
 
   useEffect(() => {
     if (sectionId) {
@@ -94,7 +90,6 @@ export default function SectionEditPage() {
     if (!section) return
     
     setSection({ ...section, [field]: value })
-    setHasChanges(true)
   }
 
   const handleSectionDataChange = (key: string, value: unknown) => {
@@ -107,7 +102,6 @@ export default function SectionEditPage() {
         [key]: value
       }
     })
-    setHasChanges(true)
   }
 
   const addArrayItem = (key: string, item: unknown) => {
@@ -152,7 +146,6 @@ export default function SectionEditPage() {
         }
       }
     })
-    setHasChanges(true)
   }
 
   const handleFileUpload = async (file: File): Promise<string> => {
@@ -198,7 +191,6 @@ export default function SectionEditPage() {
       })
       
       console.log('Section updated successfully:', updatedSection)
-      setHasChanges(false)
       toast.success('Section updated successfully! Changes will appear on the home page.')
       
       // Refresh the current page to show updated data

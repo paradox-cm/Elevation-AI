@@ -181,7 +181,7 @@ export function Carousel({
     if (maxHeight > 0) {
       setMaxCardHeight(maxHeight)
     }
-  }, [items.length])
+  }, [items.length]) // eslint-disable-line react-hooks/exhaustive-deps -- items.length triggers re-measurement
 
   // Measure heights when items change or screen size changes
   React.useEffect(() => {

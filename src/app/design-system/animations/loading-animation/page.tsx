@@ -6,11 +6,11 @@ import { Container } from "@/components/ui/layout/container"
 import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BodyLarge, H2, H3 } from "@/components/ui/typography"
+import { BodyLarge, H3 } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
-import { LoadingAnimation, PulsingLoadingAnimation, TravelingLoadingAnimation } from "@/components/animations/loading-animation"
+import { PulsingLoadingAnimation, TravelingLoadingAnimation } from "@/components/animations/loading-animation"
 import { useState } from "react"
 import { Play, Pause, RotateCcw, Settings } from "lucide-react"
 
@@ -259,7 +259,7 @@ export default function LoadingAnimationPage() {
                           <H3>Performance</H3>
                           <BodyLarge>
                             The animation is optimized for performance using CSS transitions and SVG path manipulation. 
-                            It's lightweight and suitable for use as a loading indicator across the application.
+                            It&apos;s lightweight and suitable for use as a loading indicator across the application.
                           </BodyLarge>
                         </div>
                       </div>
