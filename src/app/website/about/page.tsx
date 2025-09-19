@@ -264,20 +264,20 @@ function ProblemSolutionSection({ data }: { data?: Record<string, unknown> }) {
 
           {/* Problem & Solution Content */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {cards.map((card: Record<string, unknown>, index: number) => (
+            {cards.map((card: unknown, index: number) => { const c = card as Record<string, unknown>; return (
               <div key={index} className="space-y-6">
                 <Card className="bg-transparent border border-border/50 h-full">
                   <CardContent className="p-6">
                     <div className="space-y-4">
-                      <H3>{toText(card.title) || "Untitled"}</H3>
+                      <H3>{toText(c.title) || "Untitled"}</H3>
                       <P className="text-lg text-muted-foreground leading-relaxed">
-                        {toText(card.description) || "No description available"}
+                        {toText(c.description) || "No description available"}
                       </P>
                     </div>
                   </CardContent>
                 </Card>
               </div>
-            ))}
+            ); })}
           </div>
 
         </div>
@@ -397,7 +397,7 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {principles.map((principle: Record<string, unknown>, index: number) => (
+            {principles.map((principle: unknown, index: number) => { const p = principle as Record<string, unknown>; return (
                 <Card 
                   key={index} 
                   className="group relative overflow-hidden border-0 shadow-sm hover:shadow-xl transition-shadow duration-300 transition-transform duration-300 hover:-translate-y-2 bg-card/80 backdrop-blur-sm dark:bg-black/60 dark:backdrop-blur-md dark:border dark:border-white/10"
@@ -405,24 +405,24 @@ function PrinciplesSection({ data }: { data?: Record<string, unknown> }) {
                 <CardContent className="p-8 relative z-10">
                   <div className="space-y-6">
                     {/* Icon with enhanced styling */}
-                      <div className={`w-16 h-16 ${principle.color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon name={toText(principle.icon) || "check-line"} size="2xl" className={toText(principle.iconColor) || "text-gray-600 dark:text-gray-400"} />
+                      <div className={`w-16 h-16 ${p.color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                        <Icon name={toText(p.icon) || "check-line"} size="2xl" className={toText(p.iconColor) || "text-gray-600 dark:text-gray-400"} />
                       </div>
                     
                     {/* Content */}
                     <div className="space-y-3">
                       <H3 className="text-foreground group-hover:text-primary transition-colors duration-300 dark:text-white dark:group-hover:text-primary">
-                        {toText(principle.title) || "Untitled"}
+                        {toText(p.title) || "Untitled"}
                       </H3>
                       <P className="text-muted-foreground leading-relaxed text-base dark:text-gray-300">
-                        {toText(principle.description) || "No description available"}
+                        {toText(p.description) || "No description available"}
                       </P>
                     </div>
                     
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ); })}
           </div>
         </div>
       </Container>
@@ -471,10 +471,11 @@ function EcosystemSection({ data }: { data?: Record<string, unknown> }) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {accordionItems.map((item: Record<string, unknown>, index: number) => {
-              const icon = toText(item.icon) || "database-2-line"
-              const title = toText(item.title) || ""
-              const content = toText(item.content) || ""
+            {accordionItems.map((item: unknown, index: number) => { 
+              const i = item as Record<string, unknown>;
+              const icon = toText(i.icon) || "database-2-line"
+              const title = toText(i.title) || ""
+              const content = toText(i.content) || ""
               
               return (
                 <Card key={index} className="border border-border/50 bg-transparent h-80">
@@ -492,7 +493,7 @@ function EcosystemSection({ data }: { data?: Record<string, unknown> }) {
                   </div>
                 </CardContent>
               </Card>
-              )
+              );
             })}
           </div>
         </div>
@@ -657,8 +658,8 @@ export default function AboutPage() {
                 <div className="text-center flex-1 flex items-center justify-center">
                   <HeroHeading>
                     <TypewriterText 
-                      text={toText(pageData?.sections?.[0]?.section_data?.initial_text) || "Transforming business orchestration."}
-                      cyclingWords={asArray(pageData?.sections?.[0]?.section_data?.cycling_words) || [
+                      text={toText((pageData?.sections?.[0]?.section_data as any)?.initial_text) || "Transforming business orchestration."}
+                      cyclingWords={asArray((pageData?.sections?.[0]?.section_data as any)?.cycling_words) || [
                         "Transforming business orchestration.",
                         "Unifying knowledge across organizations.",
                         "Orchestrating secure, agentic AI.",

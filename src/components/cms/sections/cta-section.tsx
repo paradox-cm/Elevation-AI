@@ -14,16 +14,14 @@ interface CTASectionProps {
 }
 
 export function CTASection({ data, section }: CTASectionProps) {
-  const {
-    title = "Ready to Get Started?",
-    description = "Take the next step with Elevation AI and transform your business operations.",
-    ctaButtons = [
-      { text: "Get Started", href: "/demo", variant: "default" },
-      { text: "Learn More", href: "/platform", variant: "outline" }
-    ],
-    backgroundColor = "bg-gradient-to-r from-primary/10 to-primary/5",
-    textAlign = "center"
-  } = data
+  const title = typeof data?.title === 'string' ? data.title : "Ready to Get Started?"
+  const description = typeof data?.description === 'string' ? data.description : "Take the next step with Elevation AI and transform your business operations."
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as Record<string, unknown>[] : [
+    { text: "Get Started", href: "/demo", variant: "default" },
+    { text: "Learn More", href: "/platform", variant: "outline" }
+  ]
+  const backgroundColor = typeof data?.backgroundColor === 'string' ? data.backgroundColor : "bg-gradient-to-r from-primary/10 to-primary/5"
+  const textAlign = typeof data?.textAlign === 'string' ? data.textAlign : "center"
 
   return (
     <Section paddingY="xl" className={`relative ${backgroundColor}`}>
@@ -44,19 +42,25 @@ export function CTASection({ data, section }: CTASectionProps) {
           {/* CTA Buttons */}
           {ctaButtons && ctaButtons.length > 0 && (
             <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${textAlign === 'center' ? 'justify-center' : 'justify-start'}`}>
-              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
-                <Button
-                  key={index}
-                  asChild
-                  variant={button.variant || "default"}
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
-                  <Link href={button.href}>
-                    {button.text}
-                  </Link>
-                </Button>
-              ))}
+              {ctaButtons.map((button: Record<string, unknown>, index: number) => {
+                const buttonVariant = typeof button.variant === 'string' ? button.variant : "default"
+                const buttonHref = typeof button.href === 'string' ? button.href : "/"
+                const buttonText = typeof button.text === 'string' ? button.text : "Button"
+                
+                return (
+                  <Button
+                    key={index}
+                    asChild
+                    variant={buttonVariant as any}
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    <Link href={buttonHref}>
+                      {buttonText}
+                    </Link>
+                  </Button>
+                )
+              })}
             </div>
           )}
         </div>

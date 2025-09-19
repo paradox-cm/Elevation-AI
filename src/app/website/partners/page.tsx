@@ -19,8 +19,8 @@ import { PageWithSections } from "@/types/cms"
 
 // Hero Section Component
 function HeroSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Partner with Elevation AI"
-  const description = data?.description || "Join our ecosystem of trusted ambassadors, consulting firms, and experts to help bring the power of agentic AI to businesses everywhere."
+  const title = (typeof data?.title === 'string' ? data.title : "Partner with Elevation AI")
+  const description = (typeof data?.description === 'string' ? data.description : "Join our ecosystem of trusted ambassadors, consulting firms, and experts to help bring the power of agentic AI to businesses everywhere.")
 
   return (
     <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
@@ -34,10 +34,10 @@ function HeroSection({ data }: { data?: Record<string, unknown> }) {
 
 // Ambassador Program Section Component
 function AmbassadorSection({ data }: { data?: Record<string, unknown> }) {
-  const title = data?.title || "Become an Ambassador"
-  const content = data?.content || "Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem."
-  const ctaText = data?.cta_text || "Inquire About Our Ambassador Program"
-  const ctaUrl = data?.cta_url || "#ambassador"
+  const title = (typeof data?.title === 'string' ? data.title : "Become an Ambassador")
+  const content = (typeof data?.content === 'string' ? data.content : "Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem.")
+  const ctaText = (typeof data?.cta_text === 'string' ? data.cta_text : "Inquire About Our Ambassador Program")
+  const ctaUrl = (typeof data?.cta_url === 'string' ? data.cta_url : "#ambassador")
 
   return (
     <Section paddingY="lg">
@@ -56,9 +56,9 @@ function AmbassadorSection({ data }: { data?: Record<string, unknown> }) {
 
 // Partner Network Section Component
 function PartnerNetworkSection({ data }: { data?: Record<string, unknown> }) {
-  const sectionTitle = data?.section_title || "Join Our Partner Network"
-  const description = data?.description || "We are building a network of specialized consulting firms and individual experts who natively use our platform to serve their clients and extend their own capabilities. By partnering with us, you can:"
-  const features = data?.features || [
+  const sectionTitle = (typeof data?.section_title === 'string' ? data.section_title : "Join Our Partner Network")
+  const description = (typeof data?.description === 'string' ? data.description : "We are building a network of specialized consulting firms and individual experts who natively use our platform to serve their clients and extend their own capabilities. By partnering with us, you can:")
+  const features = (Array.isArray(data?.features) ? data.features : [
     {
       title: "Deliver AI-Powered Solutions",
       description: "Use our platform as the agentic backbone to build and deliver scalable, high-margin solutions for your clients.",
@@ -74,9 +74,9 @@ function PartnerNetworkSection({ data }: { data?: Record<string, unknown> }) {
       description: "Leverage our library of agents and tools to augment your own expertise and take on more complex challenges.",
       order: 3
     }
-  ]
-  const ctaText = data?.cta_text || "Apply to Our Partner Network"
-  const ctaUrl = data?.cta_url || "#partner-network"
+  ])
+  const ctaText = (typeof data?.cta_text === 'string' ? data.cta_text : "Apply to Our Partner Network")
+  const ctaUrl = (typeof data?.cta_url === 'string' ? data.cta_url : "#partner-network")
 
   return (
     <Section paddingY="lg">
@@ -84,16 +84,20 @@ function PartnerNetworkSection({ data }: { data?: Record<string, unknown> }) {
         <H2>{sectionTitle}</H2>
         <P>{description}</P>
         <div className="space-y-3 text-muted-foreground">
-          {features.map((feature: Record<string, unknown>, index: number) => (
+          {features.map((feature: unknown, index: number) => { const f = feature as Record<string, unknown>; return (
             <Card key={index} className="border-border">
               <CardHeader>
-                <CardTitle className="text-base sm:text-base md:text-lg">{feature.title}</CardTitle>
+                <CardTitle className="text-base sm:text-base md:text-lg">
+                  {typeof f.title === 'string' ? f.title : ''}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <P className="text-sm">{feature.description}</P>
+                <P className="text-sm">
+                  {typeof f.description === 'string' ? f.description : ''}
+                </P>
               </CardContent>
             </Card>
-          ))}
+          ); })}
         </div>
         <div className="pt-2">
           <Button size="lg" asChild>
@@ -159,9 +163,9 @@ export default function PartnersPage() {
                 </div>
               ) : (
                 <>
-                  <HeroSection data={pageData?.sections?.[0]?.section_data} />
-                  <AmbassadorSection data={pageData?.sections?.[1]?.section_data} />
-                  <PartnerNetworkSection data={pageData?.sections?.[2]?.section_data} />
+                  <HeroSection data={pageData?.sections?.[0]?.section_data || undefined} />
+                  <AmbassadorSection data={pageData?.sections?.[1]?.section_data || undefined} />
+                  <PartnerNetworkSection data={pageData?.sections?.[2]?.section_data || undefined} />
                 </>
               )}
             </Container>

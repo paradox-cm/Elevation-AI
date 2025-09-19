@@ -41,7 +41,8 @@ export function usePageCache({
   const isCacheValid = useCallback((cacheEntry: Record<string, unknown>) => {
     if (!cacheEntry) return false
     const now = Date.now()
-    return (now - cacheEntry.timestamp) < cacheExpiry
+    const timestamp = typeof cacheEntry.timestamp === 'number' ? cacheEntry.timestamp : 0
+    return (now - timestamp) < cacheExpiry
   }, [cacheExpiry])
 
   // Get data from cache or fetch from API
@@ -62,7 +63,8 @@ export function usePageCache({
     }
 
     // Mark as loading only if we don't have valid cached data
-    if (!pageCache.get(cacheKey) || !isCacheValid(pageCache.get(cacheKey))) {
+    const cachedEntry = pageCache.get(cacheKey)
+    if (!cachedEntry || !isCacheValid(cachedEntry)) {
       setIsLoading(true)
     }
     
@@ -168,5 +170,6 @@ export function getCacheStats() {
 function isCacheValid(cacheEntry: Record<string, unknown>): boolean {
   if (!cacheEntry) return false
   const now = Date.now()
-  return (now - cacheEntry.timestamp) < CACHE_EXPIRY
+  const timestamp = typeof cacheEntry.timestamp === 'number' ? cacheEntry.timestamp : 0
+  return (now - timestamp) < CACHE_EXPIRY
 }

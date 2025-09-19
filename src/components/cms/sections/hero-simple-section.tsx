@@ -14,13 +14,11 @@ interface HeroSimpleSectionProps {
 }
 
 export function HeroSimpleSection({ data, section }: HeroSimpleSectionProps) {
-  const {
-    title = "Welcome to Elevation AI",
-    description = "Your platform description here",
-    ctaButtons = [
-      { text: "Get Started", href: "/demo", variant: "default" }
-    ]
-  } = data
+  const title = typeof data?.title === 'string' ? data.title : "Welcome to Elevation AI"
+  const description = typeof data?.description === 'string' ? data.description : "Your platform description here"
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as Record<string, unknown>[] : [
+    { text: "Get Started", href: "/demo", variant: "default" }
+  ]
 
   return (
     <Section paddingY="xl" className="flex items-center min-h-[60vh]">
@@ -34,18 +32,24 @@ export function HeroSimpleSection({ data, section }: HeroSimpleSectionProps) {
           </P>
           {ctaButtons && ctaButtons.length > 0 && (
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
-                <Button
-                  key={index}
-                  asChild
-                  variant={button.variant || "default"}
-                  size="lg"
-                >
-                  <Link href={button.href}>
-                    {button.text}
-                  </Link>
-                </Button>
-              ))}
+              {ctaButtons.map((button: Record<string, unknown>, index: number) => {
+                const buttonVariant = typeof button.variant === 'string' ? button.variant : "default"
+                const buttonHref = typeof button.href === 'string' ? button.href : "/"
+                const buttonText = typeof button.text === 'string' ? button.text : "Button"
+                
+                return (
+                  <Button
+                    key={index}
+                    asChild
+                    variant={buttonVariant as any}
+                    size="lg"
+                  >
+                    <Link href={buttonHref}>
+                      {buttonText}
+                    </Link>
+                  </Button>
+                )
+              })}
             </div>
           )}
         </div>

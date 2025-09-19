@@ -96,26 +96,24 @@ interface HeroTypewriterSectionProps {
 }
 
 export function HeroTypewriterSection({ data, section }: HeroTypewriterSectionProps) {
-  const {
-    title = "The Agentic Platform for",
-    cyclingWords = [
-      "Intelligent Operations.",
-      "Seamless Workflows.", 
-      "Data-Driven Decisions.",
-      "Automated Processes.",
-      "Strategic Growth.",
-      "Operational Excellence.",
-      "Business Transformation.",
-      "Digital Innovation."
-    ],
-    description = "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated.",
-    ctaButtons = [
-      { text: "Get Started", href: "/demo", variant: "default" },
-      { text: "Learn More", href: "/platform", variant: "outline" }
-    ],
-    speed = 100,
-    delay = 500
-  } = data
+  const title = typeof data?.title === 'string' ? data.title : "The Agentic Platform for"
+  const cyclingWords = Array.isArray(data?.cyclingWords) ? data.cyclingWords as string[] : [
+    "Intelligent Operations.",
+    "Seamless Workflows.", 
+    "Data-Driven Decisions.",
+    "Automated Processes.",
+    "Strategic Growth.",
+    "Operational Excellence.",
+    "Business Transformation.",
+    "Digital Innovation."
+  ]
+  const description = typeof data?.description === 'string' ? data.description : "Elevation AI is the agentic knowledge and work orchestration platform, powered by a concierge team, unifying knowledge, streamlining workflows and securing your use of AI. Your universe, intelligently orchestrated."
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as Record<string, unknown>[] : [
+    { text: "Get Started", href: "/demo", variant: "default" },
+    { text: "Learn More", href: "/platform", variant: "outline" }
+  ]
+  const speed = typeof data?.speed === 'number' ? data.speed : 100
+  const delay = typeof data?.delay === 'number' ? data.delay : 500
 
   return (
     <Section 
@@ -143,19 +141,25 @@ export function HeroTypewriterSection({ data, section }: HeroTypewriterSectionPr
             {/* CTA Buttons */}
             {ctaButtons && ctaButtons.length > 0 && (
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                {ctaButtons.map((button: Record<string, unknown>, index: number) => (
-                  <Button
-                    key={index}
-                    asChild
-                    variant={button.variant || "default"}
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    <Link href={button.href}>
-                      {button.text}
-                    </Link>
-                  </Button>
-                ))}
+                {ctaButtons.map((button: Record<string, unknown>, index: number) => {
+                  const buttonVariant = typeof button.variant === 'string' ? button.variant : "default"
+                  const buttonHref = typeof button.href === 'string' ? button.href : "/"
+                  const buttonText = typeof button.text === 'string' ? button.text : "Button"
+                  
+                  return (
+                    <Button
+                      key={index}
+                      asChild
+                      variant={buttonVariant as any}
+                      size="lg"
+                      className="w-full sm:w-auto"
+                    >
+                      <Link href={buttonHref}>
+                        {buttonText}
+                      </Link>
+                    </Button>
+                  )
+                })}
               </div>
             )}
           </div>

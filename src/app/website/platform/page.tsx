@@ -32,10 +32,10 @@ function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   
   // Extract CMS data with fallbacks
-  const title = data?.title || 'The Operating System for'
-  const titleLine2 = data?.titleLine2 || 'the Agentic Era'
-  const description = data?.description || 'The Elevation AI platform is the central, agentic backbone that unifies your universe, provides intelligent workspaces, and securely connects you to the world of AI.'
-  const ctaButtons = data?.ctaButtons || [
+  const title = typeof data?.title === 'string' ? data.title : 'The Operating System for'
+  const titleLine2 = typeof data?.titleLine2 === 'string' ? data.titleLine2 : 'the Agentic Era'
+  const description = typeof data?.description === 'string' ? data.description : 'The Elevation AI platform is the central, agentic backbone that unifies your universe, provides intelligent workspaces, and securely connects you to the world of AI.'
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as unknown[] : [
     { text: 'Get Started', href: '/website/sign-up', variant: 'default' },
     { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
   ]
@@ -55,25 +55,25 @@ function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
                   <span className="block">{titleLine2}</span>
                </H1>
               <P className="text-muted-foreground max-w-2xl">
-                {description}
+                {typeof description === 'string' ? description : 'Description'}
               </P>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              {ctaButtons.map((button: Record<string, unknown>, index: number) => (
+              {ctaButtons.map((button: unknown, index: number) => { const btn = button as Record<string, unknown>; return (
                 <Button 
                   key={index}
                   size="lg" 
-                  variant={button.variant}
+                  variant={typeof btn.variant === 'string' ? btn.variant as any : 'default'}
                   asChild 
                   className="text-base sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto"
                 >
-                  <Link href={button.href}>
-                    {button.text}
+                  <Link href={typeof btn.href === 'string' ? btn.href : '/'}>
+                    {typeof btn.text === 'string' ? btn.text : 'Button'}
                 </Link>
               </Button>
-              ))}
+              )})}
             </div>
           </div>
 
@@ -127,35 +127,35 @@ function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
 // Platform Features Section
 function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Platform Features'
-  const description = data?.description || 'Our platform consists of five core features that work together to create a comprehensive AI-powered operating system for your organization.'
-  const features = data?.features || []
+  const title = typeof data?.title === 'string' ? data.title : 'Platform Features'
+  const description = typeof data?.description === 'string' ? data.description : 'Our platform consists of five core features that work together to create a comprehensive AI-powered operating system for your organization.'
+  const features = Array.isArray(data?.features) ? data.features as unknown[] : []
 
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-16">
           <div className="text-center space-y-4 max-w-4xl mx-auto">
-            <H1>{title}</H1>
+            <H1>{typeof title === 'string' ? title : 'Title'}</H1>
             <P className="text-muted-foreground">
-              {description}
+              {typeof description === 'string' ? description : 'Description'}
             </P>
           </div>
 
           {/* Dynamic Features */}
-          {features.map((feature: Record<string, unknown>, index: number) => (
+          {features.map((feature: unknown, index: number) => { const feat = feature as Record<string, unknown>; return (
             <div 
-              key={feature.id || index}
-              data-section={feature.id} 
-              className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px] ${feature.imagePosition === 'left' ? '' : ''}`}
+              key={typeof feat.id === 'string' ? feat.id : index}
+              data-section={feat.id} 
+              className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px] ${feat.imagePosition === 'left' ? '' : ''}`}
             >
-              <div className={`lg:col-span-6 space-y-6 flex flex-col justify-center ${feature.imagePosition === 'left' ? 'order-2 lg:order-2' : 'order-1 lg:order-1'}`}>
-                <H2>{feature.title}</H2>
+              <div className={`lg:col-span-6 space-y-6 flex flex-col justify-center ${feat.imagePosition === 'left' ? 'order-2 lg:order-2' : 'order-1 lg:order-1'}`}>
+                <H2>{typeof feat.title === 'string' ? feat.title : 'Feature'}</H2>
               <P className="text-muted-foreground">
-                  {feature.description}
+                  {typeof feat.description === 'string' ? feat.description : 'Description'}
               </P>
               <ul className="space-y-4">
-                  {feature.features?.map((item: string, itemIndex: number) => (
+                  {(Array.isArray(feat.features) ? feat.features : []).map((item: string, itemIndex: number) => (
                     <li key={itemIndex} className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
                       <P className="font-medium">{item}</P>
@@ -163,11 +163,11 @@ function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
                   ))}
               </ul>
             </div>
-              <div className={`lg:col-span-6 h-[300px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center ${feature.imagePosition === 'left' ? 'order-1 lg:order-1' : 'order-2 lg:order-2'}`}>
-                <P className="text-muted-foreground text-lg">{feature.imagePlaceholder}</P>
+              <div className={`lg:col-span-6 h-[300px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center ${feat.imagePosition === 'left' ? 'order-1 lg:order-1' : 'order-2 lg:order-2'}`}>
+                <P className="text-muted-foreground text-lg">{typeof feat.imagePlaceholder === 'string' ? feat.imagePlaceholder : 'Image Placeholder'}</P>
             </div>
           </div>
-          ))}
+          )})}
 
         </div>
       </Container>
@@ -178,36 +178,37 @@ function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
 // Security Section
 function SecuritySection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Enterprise-Grade Security & Compliance'
-  const description = data?.description || 'Your data security is our top priority. We implement industry-leading security measures and maintain compliance with the highest standards.'
-  const features = data?.features || []
-  const carouselSettings = data?.carouselSettings || {}
+  const title = typeof data?.title === 'string' ? data.title : 'Enterprise-Grade Security & Compliance'
+  const description = typeof data?.description === 'string' ? data.description : 'Your data security is our top priority. We implement industry-leading security measures and maintain compliance with the highest standards.'
+  const features = Array.isArray(data?.features) ? data.features as unknown[] : []
+  const carouselSettings = typeof data?.carouselSettings === 'object' && data.carouselSettings !== null ? data.carouselSettings as Record<string, unknown> : {}
 
   // Convert features to carousel items
-  const securityFeatures: PlatformCarouselItem[] = features.map((feature: Record<string, unknown>) => ({
-    id: feature.id,
-    title: feature.title,
+  const securityFeatures: PlatformCarouselItem[] = features.map((feature: unknown) => { const feat = feature as Record<string, unknown>; return {
+    id: typeof feat.id === 'string' ? feat.id : '',
+    title: typeof feat.title === 'string' ? feat.title : '',
     description: "",
       content: (
         <div className="p-6 bg-background/50 rounded-lg border border-border/50 h-full flex flex-col justify-start min-h-[200px]">
           <div className="flex justify-start mb-4">
-            <Icon name={feature.icon} size="2xl" className="text-primary text-4xl" />
+            <Icon name={typeof feat.icon === 'string' ? feat.icon : 'shield-check-line'} size="2xl" className="text-primary text-4xl" />
           </div>
           <P className="text-muted-foreground">
-            {feature.description}
+            {typeof feat.description === 'string' ? feat.description : ''}
           </P>
         </div>
       )
-  }))
+    };
+  })
 
   return (
     <Section paddingY="lg">
       <Container size="2xl">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H1>{title}</H1>
+            <H1>{typeof title === 'string' ? title : 'Title'}</H1>
             <P className="text-muted-foreground">
-              {description}
+              {typeof description === 'string' ? description : 'Description'}
             </P>
           </div>
           
@@ -215,19 +216,19 @@ function SecuritySection({ data }: { data?: Record<string, unknown> }) {
           <div className="-mx-4 sm:-mx-6 lg:-mx-8">
             <PlatformPageCarousel 
               items={securityFeatures}
-              autoPlay={carouselSettings.autoPlay ?? true}
-              autoPlayInterval={carouselSettings.autoPlayInterval ?? 4000}
-              showProgressIndicators={carouselSettings.showProgressIndicators ?? true}
-              showGradients={carouselSettings.showGradients ?? false}
-              cardWidth={carouselSettings.cardWidth ?? 320}
-              cardGap={carouselSettings.cardGap ?? 24}
+              autoPlay={(carouselSettings as any).autoPlay ?? true}
+              autoPlayInterval={(carouselSettings as any).autoPlayInterval ?? 4000}
+              showProgressIndicators={(carouselSettings as any).showProgressIndicators ?? true}
+              showGradients={(carouselSettings as any).showGradients ?? false}
+              cardWidth={(carouselSettings as any).cardWidth ?? 320}
+              cardGap={(carouselSettings as any).cardGap ?? 24}
               className="w-full"
-              highlightActiveCard={carouselSettings.highlightActiveCard ?? true}
-              hugContent={carouselSettings.hugContent ?? true}
-              minHeight={carouselSettings.minHeight ?? "320px"}
-              stopWhenAllVisible={carouselSettings.stopWhenAllVisible ?? false}
-              naturalScroll={carouselSettings.naturalScroll ?? false}
-              flexibleWidth={carouselSettings.flexibleWidth ?? true}
+              highlightActiveCard={(carouselSettings as any).highlightActiveCard ?? true}
+              hugContent={(carouselSettings as any).hugContent ?? true}
+              minHeight={(carouselSettings as any).minHeight ?? "320px"}
+              stopWhenAllVisible={(carouselSettings as any).stopWhenAllVisible ?? false}
+              naturalScroll={(carouselSettings as any).naturalScroll ?? false}
+              flexibleWidth={(carouselSettings as any).flexibleWidth ?? true}
               responsive={{
                 sm: { cardWidth: 320, cardGap: 16 },
                 md: { cardWidth: 320, cardGap: 20 },
@@ -246,18 +247,18 @@ function SecuritySection({ data }: { data?: Record<string, unknown> }) {
 // Integrations Section
 function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Connect Your Entire Universe'
-  const description = data?.description || 'Elevation AI is built to be the central hub of your operations. We connect with the tools you already use, bringing all your data and workflows into one secure control plane.'
-  const categories = data?.categories || []
+  const title = typeof data?.title === 'string' ? data.title : 'Connect Your Entire Universe'
+  const description = typeof data?.description === 'string' ? data.description : 'Elevation AI is built to be the central hub of your operations. We connect with the tools you already use, bringing all your data and workflows into one secure control plane.'
+  const categories = Array.isArray(data?.categories) ? data.categories as unknown[] : []
 
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H1>{title}</H1>
+            <H1>{typeof title === 'string' ? title : 'Title'}</H1>
             <P className="text-muted-foreground">
-              {description}
+              {typeof description === 'string' ? description : 'Description'}
             </P>
           </div>
           
@@ -271,24 +272,23 @@ function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
             {/* Mobile connecting line - only visible on mobile */}
             <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border transform -translate-x-1/2 sm:hidden z-0"></div>
             
-            {categories.map((category: Record<string, unknown>, index: number) => {
-              return (
+            {categories.map((category: unknown, index: number) => { const cat = category as Record<string, unknown>; return (
                 <div
-                  key={category.id}
+                  key={typeof cat.id === 'string' ? cat.id : index}
                   className="group border border-border rounded-lg p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-background flex flex-col relative z-10"
                 >
                   <div className="flex flex-col">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon name={category.icon} size="lg" className="text-primary" />
+                        <Icon name={typeof cat.icon === 'string' ? cat.icon : 'link-line'} size="lg" className="text-primary" />
               </div>
                       <h3 className="text-lg font-semibold text-foreground">
-                        {category.title}
+                        {typeof cat.title === 'string' ? cat.title : 'Category'}
                       </h3>
             </div>
                     <div className="border-b border-border/50 mb-4"></div>
                     <div className="space-y-4 mb-4 hidden">
-                      {category.logos.map((logo, index) => (
+                      {(Array.isArray(cat.logos) ? cat.logos : []).map((logo: any, index: number) => (
                         <div
                           key={index}
                           className="flex items-center gap-3 text-xs text-muted-foreground"
@@ -307,12 +307,11 @@ function IntegrationsSection({ data }: { data?: Record<string, unknown> }) {
                       ))}
               </div>
                     <p className="text-muted-foreground text-sm">
-                      {category.description}
+                      {typeof cat.description === 'string' ? cat.description : 'Description'}
                     </p>
             </div>
               </div>
-              )
-            })}
+            )})}
           </div>
         </div>
       </Container>
@@ -331,28 +330,28 @@ function UseCasesSection({ data }: { data?: Record<string, unknown> }) {
   }, [])
   
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Built for Every Industry, Every Team'
-  const description = data?.description || 'From startups to enterprises, Elevation AI adapts to your unique needs and industry requirements.'
-  const useCases = data?.useCases || []
+  const title = typeof data?.title === 'string' ? data.title : 'Built for Every Industry, Every Team'
+  const description = typeof data?.description === 'string' ? data.description : 'From startups to enterprises, Elevation AI adapts to your unique needs and industry requirements.'
+  const useCases = Array.isArray(data?.useCases) ? data.useCases as unknown[] : []
 
   // Determine which colors and component to use based on theme
   // Use default light mode during SSR to prevent hydration mismatch
   const isDarkMode = mounted ? isDark : false
   const ShaderComponent = isDarkMode ? ShaderAnimation : ShaderAnimationLight
 
-  const industryCategories: PlatformCarouselItem[] = useCases.map((useCase: Record<string, unknown>) => ({
-    id: useCase.id,
-    title: useCase.title,
-    description: useCase.description,
+  const industryCategories: PlatformCarouselItem[] = useCases.map((useCase: unknown) => { const uc = useCase as Record<string, unknown>; return {
+    id: typeof uc.id === 'string' ? uc.id : '',
+    title: typeof uc.title === 'string' ? uc.title : '',
+    description: typeof uc.description === 'string' ? uc.description : '',
       icon: () => (
-      <div className={`w-16 h-16 bg-gradient-to-br ${useCase.id === 'sales-marketing' ? 'from-blue-500/10 to-blue-600/10' : useCase.id === 'customer-support' ? 'from-green-500/10 to-green-600/10' : useCase.id === 'product-development' ? 'from-purple-500/10 to-purple-600/10' : useCase.id === 'operations' ? 'from-orange-500/10 to-orange-600/10' : 'from-indigo-500/10 to-indigo-600/10'} rounded-lg flex items-center justify-center`}>
-        <Icon name={useCase.icon} size="2xl" className={useCase.id === 'sales-marketing' ? 'text-blue-600' : useCase.id === 'customer-support' ? 'text-green-600' : useCase.id === 'product-development' ? 'text-purple-600' : useCase.id === 'operations' ? 'text-orange-600' : 'text-indigo-600'} />
+      <div className={`w-16 h-16 bg-gradient-to-br ${uc.id === 'sales-marketing' ? 'from-blue-500/10 to-blue-600/10' : uc.id === 'customer-support' ? 'from-green-500/10 to-green-600/10' : uc.id === 'product-development' ? 'from-purple-500/10 to-purple-600/10' : uc.id === 'operations' ? 'from-orange-500/10 to-orange-600/10' : 'from-indigo-500/10 to-indigo-600/10'} rounded-lg flex items-center justify-center`}>
+        <Icon name={typeof uc.icon === 'string' ? uc.icon : 'link-line'} size="2xl" className={uc.id === 'sales-marketing' ? 'text-blue-600' : uc.id === 'customer-support' ? 'text-green-600' : uc.id === 'product-development' ? 'text-purple-600' : uc.id === 'operations' ? 'text-orange-600' : 'text-indigo-600'} />
         </div>
       ),
       content: (
-      <Link href={useCase.href} className="block w-full h-full">
-        <div className={`w-full h-[120px] sm:h-[140px] md:h-[160px] lg:h-[200px] bg-gradient-to-br ${useCase.id === 'sales-marketing' ? 'from-blue-500 via-cyan-500 to-teal-600' : useCase.id === 'customer-support' ? 'from-green-500 via-emerald-500 to-teal-600' : useCase.id === 'product-development' ? 'from-purple-500 via-violet-500 to-indigo-600' : useCase.id === 'operations' ? 'from-orange-500 via-amber-500 to-yellow-500' : 'from-indigo-500 via-blue-500 to-cyan-500'} relative hover:opacity-90 transition-all duration-300 group overflow-hidden rounded-b-lg`}>
-          <div className={`absolute inset-0 bg-gradient-to-br ${useCase.id === 'sales-marketing' ? 'from-blue-300 via-cyan-300 to-teal-400' : useCase.id === 'customer-support' ? 'from-green-300 via-emerald-300 to-teal-400' : useCase.id === 'product-development' ? 'from-purple-300 via-violet-300 to-indigo-400' : useCase.id === 'operations' ? 'from-orange-300 via-amber-300 to-yellow-300' : 'from-indigo-300 via-blue-300 to-cyan-300'} opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform group-hover:scale-150 group-hover:rotate-3`}></div>
+      <Link href={typeof uc.href === 'string' ? uc.href : '/'} className="block w-full h-full">
+        <div className={`w-full h-[120px] sm:h-[140px] md:h-[160px] lg:h-[200px] bg-gradient-to-br ${uc.id === 'sales-marketing' ? 'from-blue-500 via-cyan-500 to-teal-600' : uc.id === 'customer-support' ? 'from-green-500 via-emerald-500 to-teal-600' : uc.id === 'product-development' ? 'from-purple-500 via-violet-500 to-indigo-600' : uc.id === 'operations' ? 'from-orange-500 via-amber-500 to-yellow-500' : 'from-indigo-500 via-blue-500 to-cyan-500'} relative hover:opacity-90 transition-all duration-300 group overflow-hidden rounded-b-lg`}>
+          <div className={`absolute inset-0 bg-gradient-to-br ${uc.id === 'sales-marketing' ? 'from-blue-300 via-cyan-300 to-teal-400' : uc.id === 'customer-support' ? 'from-green-300 via-emerald-300 to-teal-400' : uc.id === 'product-development' ? 'from-purple-300 via-violet-300 to-indigo-400' : uc.id === 'operations' ? 'from-orange-300 via-amber-300 to-yellow-300' : 'from-indigo-300 via-blue-300 to-cyan-300'} opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform group-hover:scale-150 group-hover:rotate-3`}></div>
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 transform group-hover:translate-x-full group-hover:-translate-y-full"></div>
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-10">
               <Icon name="arrow-right-line" size="lg" className="text-white" />
@@ -360,16 +359,17 @@ function UseCasesSection({ data }: { data?: Record<string, unknown> }) {
           </div>
         </Link>
       )
-  }))
+    };
+  })
 
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <H1>{title}</H1>
+            <H1>{typeof title === 'string' ? title : 'Title'}</H1>
             <P className="text-muted-foreground">
-              {description}
+              {typeof description === 'string' ? description : 'Description'}
             </P>
           </div>
           
@@ -402,13 +402,13 @@ function UseCasesSection({ data }: { data?: Record<string, unknown> }) {
                         </div>
                       </div>
                       <div className="absolute bottom-0 left-0 right-0">
-                        <Link href={useCase.href} className="block w-full h-full">
+                        <Link href={typeof (useCase as any)?.href === 'string' ? (useCase as any).href : '/'} className="block w-full h-full">
                           <div className="w-full h-[60px] relative hover:opacity-90 transition-all duration-300 group overflow-hidden rounded-b-lg">
                             <ShaderComponent 
                               className="absolute inset-0 w-full h-full"
                               width={320}
                               height={60}
-                              colors={useCase.colors}
+                              colors={(useCase as any)?.colors}
                             />
                             <div className={`absolute inset-0 ${isDarkMode ? 'bg-black/20' : 'bg-white/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
                             <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10">
@@ -492,13 +492,13 @@ function UseCasesSection({ data }: { data?: Record<string, unknown> }) {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0">
-                    <Link href={useCase.href} className="block w-full h-full">
+                    <Link href={typeof (useCase as any)?.href === 'string' ? (useCase as any).href : '/'} className="block w-full h-full">
                       <div className="w-full h-[60px] sm:h-[70px] md:h-[120px] lg:h-[180px] relative hover:opacity-90 transition-all duration-300 group overflow-hidden rounded-b-lg">
                         <ShaderComponent 
                           className="absolute inset-0 w-full h-full"
                           width={400}
                           height={180}
-                          colors={useCase.colors}
+                          colors={(useCase as any)?.colors}
                         />
                         <div className={`absolute inset-0 ${isDarkMode ? 'bg-black/20' : 'bg-white/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
                         <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10">
@@ -520,33 +520,37 @@ function UseCasesSection({ data }: { data?: Record<string, unknown> }) {
 // CTA Section
 function CTASection({ data }: { data?: Record<string, unknown> }) {
   // Extract CMS data with fallbacks
-  const title = data?.title || 'Ready to Transform Your Organization?'
-  const description = data?.description || 'Custom plans built for your organization\'s specific needs and growth trajectory. Join thousands of organizations already using Elevation AI to unlock the power of intelligent automation.'
-  const ctaButtons = data?.ctaButtons || [
+  const title = typeof data?.title === 'string' ? data.title : 'Ready to Transform Your Organization?'
+  const description = typeof data?.description === 'string' ? data.description : 'Custom plans built for your organization\'s specific needs and growth trajectory. Join thousands of organizations already using Elevation AI to unlock the power of intelligent automation.'
+  const ctaButtons = Array.isArray(data?.ctaButtons) ? data.ctaButtons as unknown[] : [
     { text: 'Get Started', href: '/website/sign-up', variant: 'default' },
     { text: 'Get Custom Pricing', href: '/website/pricing', variant: 'outline' }
   ]
-  const backgroundColor = data?.backgroundColor || 'bg-muted/30'
+  const backgroundColor = typeof data?.backgroundColor === 'string' ? data.backgroundColor : 'bg-muted/30'
 
   return (
     <Section paddingY="lg" className={backgroundColor}>
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
-            <H1>{title}</H1>
+            <H1>{typeof title === 'string' ? title : 'Title'}</H1>
             <P className="text-muted-foreground leading-relaxed">
-              {description}
+              {typeof description === 'string' ? description : 'Description'}
             </P>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {ctaButtons.map((button: Record<string, unknown>, index: number) => (
-              <Button key={index} size="lg" variant={button.variant} asChild>
-                <Link href={button.href}>
-                  {button.text}
-              </Link>
-            </Button>
-            ))}
+            {ctaButtons.map((button: unknown, index: number) => { 
+              const btn = button as Record<string, unknown>; 
+              const v = typeof btn.variant === "string" ? (btn.variant as any) : undefined;
+              return (
+              <Button key={index} size="lg" variant={v} asChild>
+                <Link href={typeof btn.href === 'string' ? btn.href : '/'}>
+                  {typeof btn.text === 'string' ? btn.text : 'Button'}
+                </Link>
+              </Button>
+              );
+            })}
           </div>
         </div>
       </Container>
@@ -616,28 +620,28 @@ export default function WireframesPlatformPage() {
             ) : (
               <>
                 {/* Platform Hero Section */}
-                <PlatformHeroSection data={pageData?.sections.find(s => s.section_type === 'platform_hero')?.section_data} />
+                <PlatformHeroSection data={pageData?.sections.find(s => s.section_type === 'platform_hero')?.section_data || undefined} />
 
                 {/* Platform Features Section */}
                 <div id="features" className="pt-14">
-                  <PlatformFeaturesSection data={pageData?.sections.find(s => s.section_type === 'platform_features')?.section_data} />
+                  <PlatformFeaturesSection data={pageData?.sections.find(s => s.section_type === 'platform_features')?.section_data || undefined} />
                 </div>
 
                 {/* Security Section */}
                 <div id="security" className="pt-14">
-                  <SecuritySection data={pageData?.sections.find(s => s.section_type === 'security_features')?.section_data} />
+                  <SecuritySection data={pageData?.sections.find(s => s.section_type === 'security_features')?.section_data || undefined} />
                 </div>
 
                 {/* Integrations Section */}
                 <div id="integrations" className="pt-14">
-                  <IntegrationsSection data={pageData?.sections.find(s => s.section_type === 'integrations_grid')?.section_data} />
+                  <IntegrationsSection data={pageData?.sections.find(s => s.section_type === 'integrations_grid')?.section_data || undefined} />
                 </div>
 
                 {/* Use Cases Section */}
-                <UseCasesSection data={pageData?.sections.find(s => s.section_type === 'use_cases_carousel')?.section_data} />
+                <UseCasesSection data={pageData?.sections.find(s => s.section_type === 'use_cases_carousel')?.section_data || undefined} />
 
                 {/* CTA Section */}
-                <CTASection data={pageData?.sections.find(s => s.section_type === 'platform_cta')?.section_data} />
+                <CTASection data={pageData?.sections.find(s => s.section_type === 'platform_cta')?.section_data || undefined} />
               </>
             )}
           </main>

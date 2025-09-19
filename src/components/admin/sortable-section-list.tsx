@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -46,9 +46,9 @@ function SortableSectionItem({ section, onEdit, onDelete }: SortableSectionItemP
       case 'hero-typewriter': return <Layout className="h-4 w-4" />
       case 'problem-cards': return <FileText className="h-4 w-4" />
       case 'cta': return <Type className="h-4 w-4" />
-      case 'platform-features': return <Image className="h-4 w-4" /> {/* eslint-disable-line jsx-a11y/alt-text -- Lucide React icon */}
+      case 'platform-features': return <Image className="h-4 w-4" />; {/* eslint-disable-line jsx-a11y/alt-text -- Lucide React icon */}
       case 'solutions-carousel': return <FileText className="h-4 w-4" />
-      case 'logo-carousel': return <Image className="h-4 w-4" /> {/* eslint-disable-line jsx-a11y/alt-text -- Lucide React icon */}
+      case 'logo-carousel': return <Image className="h-4 w-4" />; {/* eslint-disable-line jsx-a11y/alt-text -- Lucide React icon */}
       case 'introduction-accordion': return <Type className="h-4 w-4" />
       case 'approach-cards': return <FileText className="h-4 w-4" />
       default: return <FileText className="h-4 w-4" />
@@ -127,12 +127,12 @@ export function SortableSectionList({
     })
   )
 
-  const handleDragEnd = (event: { active: { id: string }; over: { id: string } }) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
 
-    if (active.id !== over.id) {
-      const oldIndex = sections.findIndex(section => section.id === active.id)
-      const newIndex = sections.findIndex(section => section.id === over.id)
+    if (over && active.id !== over.id) {
+      const oldIndex = sections.findIndex(section => section.id === String(active.id))
+      const newIndex = sections.findIndex(section => section.id === String(over.id))
       
       const reorderedSections = arrayMove(sections, oldIndex, newIndex)
       

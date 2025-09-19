@@ -51,12 +51,12 @@ export function WebsiteFooter() {
               
               {/* People */}
               <div className="space-y-4">
-                <Link href="/website/people" className="block">
+                <Link href="/website/people-concierge" className="block">
                   <H4 className="hover:text-primary transition-colors">People</H4>
                 </Link>
                 <ul className="space-y-2">
-                  <li><Link href="/website/people#our-solution-section" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
-                  <li><Link href="/website/people#expert-network" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
+                  <li><Link href="/website/people-concierge" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
+                  <li><Link href="/website/people-experts" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
                 </ul>
               </div>
             </div>
