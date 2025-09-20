@@ -413,7 +413,7 @@
 #### 2. Ambassador Program Section (introduction_accordion)
 - **Title:** Become an Ambassador
 - **Content:** Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem.
-- **CTA:** Inquire About Our Ambassador Program → `#ambassador`
+- **CTA:** Inquire About Our Ambassador Program → `/website/partnership?type=ambassador`
 
 #### 3. Partner Network Section (platform_features)
 - **Badge:** Partner Network
@@ -423,7 +423,7 @@
   - **Deliver AI-Powered Solutions:** Use our platform as the agentic backbone to build and deliver scalable, high-margin solutions for your clients.
   - **Seamlessly Embed with Clients:** Collaborate directly within your clients' workspaces, giving you an unprecedented level of integration and partnership.
   - **Extend Your Capacity:** Leverage our library of agents and tools to augment your own expertise and take on more complex challenges.
-- **CTA:** Apply to Our Partner Network → `#partner-network`
+- **CTA:** Apply to Our Partner Network → `/website/partnership?type=partner`
 
 ---
 

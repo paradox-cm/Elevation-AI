@@ -83,7 +83,7 @@ async function syncPartnersPageToCMS() {
           title: "Become an Ambassador",
           content: "Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem.",
           cta_text: "Inquire About Our Ambassador Program",
-          cta_url: "#ambassador"
+          cta_url: "/website/partnership?type=ambassador"
         }
       },
       {
@@ -116,7 +116,7 @@ async function syncPartnersPageToCMS() {
             }
           ],
           cta_text: "Apply to Our Partner Network",
-          cta_url: "#partner-network"
+          cta_url: "/website/partnership?type=partner"
         }
       }
     ]

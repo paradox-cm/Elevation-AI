@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { PageWrapper } from "@/components/page-wrapper"
 import { Container } from "@/components/ui/layout/container"
@@ -68,7 +68,8 @@ const initialFormData: FormData = {
   agreeToMarketing: false
 }
 
-export default function PartnershipPage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function PartnershipFormContent() {
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -561,5 +562,45 @@ export default function PartnershipPage() {
         </div>
       </MobileOnlyLayout>
     </PageWrapper>
+  )
+}
+
+// Loading component for Suspense fallback
+function PartnershipFormLoading() {
+  return (
+    <PageWrapper>
+      <MobileOnlyLayout
+        header={<MainHeader />}
+        footer={<WebsiteFooter />}
+        mobileMenu={<MobileMenuDrawer currentPage="partnership" />}
+      >
+        <div className="min-h-screen bg-background transition-colors duration-300">
+          <main>
+            <Container size="2xl">
+              <Section paddingY="lg">
+                <div className="max-w-2xl mx-auto text-center space-y-6">
+                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                    <Handshake className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <H1>Loading Partnership Form...</H1>
+                  <P className="text-lg text-muted-foreground">
+                    Please wait while we prepare the partnership application form.
+                  </P>
+                </div>
+              </Section>
+            </Container>
+          </main>
+        </div>
+      </MobileOnlyLayout>
+    </PageWrapper>
+  )
+}
+
+// Main export with Suspense boundary
+export default function PartnershipPage() {
+  return (
+    <Suspense fallback={<PartnershipFormLoading />}>
+      <PartnershipFormContent />
+    </Suspense>
   )
 }
