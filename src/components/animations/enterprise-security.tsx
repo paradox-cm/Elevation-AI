@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback, useState } from "react"
 import { useCanvasResize } from "@/hooks/use-canvas-resize"
 import { useVisibilityReset } from "@/hooks/use-visibility-reset"
 import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface SecurityLayer {
   points: number[][]
@@ -30,6 +31,9 @@ export function EnterpriseSecurity({
   const animationRef = useRef<number | null>(null)
   const layersRef = useRef<SecurityLayer[]>([])
   const [animationKey, setAnimationKey] = useState(0)
+  
+  // Detect mobile for scaling
+  const isMobile = useMediaQuery("(max-width: 1023px)")
 
   const initializeCanvas = useCallback(() => {
     const canvas = canvasRef.current
@@ -100,9 +104,12 @@ export function EnterpriseSecurity({
     const centerX = logicalWidth / 2
     const centerY = logicalHeight / 2
     
-    // Create 3 security layers (outer, middle, inner) - 20% smaller
+    // Apply mobile scaling: 25% smaller on mobile
+    const mobileScale = isMobile ? 0.75 : 1.0
+    
+    // Create 3 security layers (outer, middle, inner) - 20% smaller + mobile scaling
     for (let i = 0; i < 3; i++) {
-      const radius = (80 + i * 40) * 0.8 // 20% smaller: 64, 96, 128
+      const radius = (80 + i * 40) * 0.8 * mobileScale // 20% smaller + mobile scaling: 48, 72, 96 on mobile
       const points: number[][] = []
       
       // Create hexagon points for each layer
@@ -156,6 +163,9 @@ export function EnterpriseSecurity({
     
     const centerX = logicalWidth / 2
     const centerY = logicalHeight / 2
+
+    // Apply mobile scaling: 25% smaller on mobile
+    const mobileScale = isMobile ? 0.75 : 1.0
 
     // Create security layers
     layersRef.current = createSecurityLayers(canvas)
@@ -215,8 +225,9 @@ export function EnterpriseSecurity({
         ctx.stroke()
       })
       
-      // Draw central security core (small hexagon) with 30-degree rotation to face upward - 20% smaller
-      const coreRadius = 30 * 0.8 // 20% smaller: 24
+      // Draw central security core (small hexagon) with 30-degree rotation to face upward - 20% smaller + mobile scaling
+      const mobileScale = isMobile ? 0.75 : 1.0
+      const coreRadius = 30 * 0.8 * mobileScale // 20% smaller + mobile scaling: 18 on mobile
       const coreRotation = Math.PI / 6 // 30 degrees in radians - makes hexagon face upward
       const corePoints: number[][] = []
       for (let i = 0; i < 6; i++) {
@@ -246,7 +257,7 @@ export function EnterpriseSecurity({
       }
       observer.disconnect()
     }
-  }, [width, height, animationKey, initializeCanvas])
+  }, [width, height, animationKey, initializeCanvas, isMobile])
 
   return (
     <div ref={containerRef} className={`flex justify-center ${className}`}>
