@@ -38,6 +38,7 @@ import {
 } from "lucide-react"
 import Icon from "@/components/ui/icon"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormFieldGroup } from "@/components/ui/form"
+import { FormStatus, useFormStatus } from "@/components/ui/form-status"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 
 // Looping Typewriter Text Component
@@ -240,8 +241,8 @@ const stepTitles = [
 // Demo Request Form Component
 function DemoRequestForm() {
   const [currentStep, setCurrentStep] = React.useState(1)
-  const [isLoading, setIsLoading] = React.useState(false)
   const [isSubmitted, setIsSubmitted] = React.useState(false)
+  const { status, message, title, setLoading, setSuccess, setError, reset } = useFormStatus()
 
   const form = useForm<DemoFormData>({
     resolver: zodResolver(demoFormSchema),
@@ -273,14 +274,24 @@ function DemoRequestForm() {
   }
 
   const onSubmit = async (data: DemoFormData) => {
-    setIsSubmitted(true)
-    setIsLoading(true)
+    setLoading("Submitting your demo request...")
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-      // Here you would typically show a success message or redirect
-    }, 2000)
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Simulate success/error randomly for demo
+      if (Math.random() > 0.1) {
+        setSuccess("Demo Request Submitted!", "Thank you for your interest! Our team will contact you within 24 hours to schedule your demo.")
+        setIsSubmitted(true)
+        // Auto-reset status after 5 seconds
+        setTimeout(() => reset(), 5000)
+      } else {
+        setError("Failed to Submit Request", "Unable to submit your demo request at this time. Please try again later.")
+      }
+    } catch (error) {
+      setError("Failed to Submit Request", "Something went wrong. Please try again.")
+    }
   }
 
   const renderStepContent = () => {
@@ -566,9 +577,9 @@ function DemoRequestForm() {
                 <Button
                   type="submit"
                   className="ml-auto flex items-center gap-2"
-                  disabled={isLoading}
+                  disabled={status === "loading"}
                 >
-                  {isLoading ? (
+                  {status === "loading" ? (
                     <div className="flex items-center gap-2">
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                       Submitting request...
@@ -584,6 +595,14 @@ function DemoRequestForm() {
             </div>
           </form>
         </Form>
+        
+        <FormStatus
+          status={status}
+          title={title}
+          message={message}
+          onRetry={() => form.handleSubmit(onSubmit)()}
+          onDismiss={reset}
+        />
       </CardContent>
     </Card>
   )

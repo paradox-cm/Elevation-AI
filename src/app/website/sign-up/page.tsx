@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { AnimatedFavicon } from "@/components/ui/animated-favicon"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { FormStatus, useFormStatus } from "@/components/ui/form-status"
 import { GlobalHeader } from "@/components/ui/global-header"
 
 // Form validation schema
@@ -41,8 +42,8 @@ type SignUpFormData = z.infer<typeof signUpFormSchema>
 // Sign Up Form Component
 function SignUpForm() {
   const [showPassword, setShowPassword] = React.useState(false)
+  const { status, message, title, setLoading, setSuccess, setError, reset } = useFormStatus()
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
@@ -60,13 +61,24 @@ function SignUpForm() {
   })
 
   const onSubmit = async (data: SignUpFormData) => {
-    setIsLoading(true)
+    setLoading("Creating your account...")
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-      // Here you would typically show a success message or redirect
-    }, 2000)
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Simulate success/error randomly for demo
+      if (Math.random() > 0.1) {
+        setSuccess("Account Created Successfully!", "Welcome to Elevation AI! You can now access your account and start exploring our platform.")
+        form.reset()
+        // Auto-reset status after 5 seconds
+        setTimeout(() => reset(), 5000)
+      } else {
+        setError("Account Creation Failed", "Unable to create your account at this time. Please try again later.")
+      }
+    } catch (error) {
+      setError("Account Creation Failed", "Something went wrong. Please try again.")
+    }
   }
 
   return (
@@ -336,20 +348,30 @@ function SignUpForm() {
             </div>
 
             {/* Submit Button */}
-            <Button
-              type="submit"
-              className="w-full h-10 sm:h-11"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                  Creating account...
-                </div>
-              ) : (
-                "Create Account"
-              )}
-            </Button>
+            <div className="space-y-4">
+              <Button
+                type="submit"
+                className="w-full h-10 sm:h-11"
+                disabled={status === "loading"}
+              >
+                {status === "loading" ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Creating account...
+                  </div>
+                ) : (
+                  "Create Account"
+                )}
+              </Button>
+              
+              <FormStatus
+                status={status}
+                title={title}
+                message={message}
+                onRetry={() => form.handleSubmit(onSubmit)()}
+                onDismiss={reset}
+              />
+            </div>
           </form>
         </Form>
 

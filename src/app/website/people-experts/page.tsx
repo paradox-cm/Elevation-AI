@@ -49,8 +49,8 @@ function CreativeHeroSection({ data }: { data?: Record<string, unknown> | null }
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               {(Array.isArray(data?.ctaButtons) ? data.ctaButtons as unknown[] : [
-                { text: 'Explore the Expert Network', href: '#expert-network', variant: 'default' },
-                { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
+                { text: 'Learn More', href: '#challenge-solution', variant: 'default' },
+                { text: 'Learn More', href: '#challenge-solution', variant: 'outline' }
               ]).map((button: unknown, index: number) => {
                 const btn = button as Record<string, unknown>
                 return (

@@ -244,10 +244,10 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Notifications</h1>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Notifications</h1>
           <p className="text-sm sm:text-base text-muted-foreground">
             Manage your system notifications and alerts
           </p>
@@ -258,6 +258,7 @@ export default function NotificationsPage() {
             variant="outline"
             onClick={markAllAsRead}
             disabled={notifications.filter(n => !n.is_read).length === 0}
+            className="w-full sm:w-auto"
           >
             <CheckCircle className="h-4 w-4 mr-2" />
             Mark All Read
@@ -281,7 +282,7 @@ export default function NotificationsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Search</label>
               <div className="relative">
@@ -353,7 +354,7 @@ export default function NotificationsPage() {
       </Card>
 
       {/* Notifications List */}
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {filteredNotifications.length === 0 ? (
           <Card>
             <CardContent className="pt-6">

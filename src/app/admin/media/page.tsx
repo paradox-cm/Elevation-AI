@@ -167,14 +167,14 @@ export default function MediaPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Media Library</h1>
-          <p className="text-muted-foreground">Manage your uploaded images and files</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Media Library</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Manage your uploaded images and files</p>
         </div>
-        <div className="relative">
+        <div className="relative w-full sm:w-auto">
           <input
             type="file"
             multiple
@@ -182,7 +182,7 @@ export default function MediaPage() {
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             disabled={isUploading}
           />
-          <Button disabled={isUploading}>
+          <Button disabled={isUploading} className="w-full sm:w-auto">
             {isUploading ? (
               <>
                 <Upload className="h-4 w-4 mr-2 animate-spin" />
@@ -200,7 +200,7 @@ export default function MediaPage() {
 
       {/* Search */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="pt-4 sm:pt-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
@@ -214,7 +214,7 @@ export default function MediaPage() {
       </Card>
 
       {/* Media Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
         {filteredMedia.map((item) => (
           <Card key={item.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-2">

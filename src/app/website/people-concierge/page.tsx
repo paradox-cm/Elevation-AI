@@ -338,8 +338,8 @@ function CreativeHeroSection({ data }: { data?: Record<string, unknown> }) {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               {(Array.isArray(data?.ctaButtons) ? data.ctaButtons : [
-                { text: 'Learn More', href: '#concierge-team', variant: 'default' },
-                { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
+                { text: 'Learn More', href: '#challenge-solution', variant: 'default' },
+                { text: 'Learn More', href: '#challenge-solution', variant: 'outline' }
               ]).map((button: Record<string, unknown>, index: number) => (
                 <Button 
                   key={index}

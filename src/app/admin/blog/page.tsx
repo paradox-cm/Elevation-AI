@@ -104,21 +104,21 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Blog Posts</h1>
-          <p className="text-muted-foreground">Manage your blog content and articles</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Blog Posts</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Manage your blog content and articles</p>
         </div>
-        <div className="flex space-x-2">
-          <Button variant="outline" asChild>
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link href="/admin/blog/categories">
               <BookOpen className="h-4 w-4 mr-2" />
               Categories
             </Link>
           </Button>
-          <Button asChild>
+          <Button asChild className="w-full sm:w-auto">
             <Link href="/admin/blog/new">
               <Plus className="h-4 w-4 mr-2" />
               New Post
@@ -129,7 +129,7 @@ export default function BlogPage() {
 
       {/* Search and Filters */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="pt-4 sm:pt-6">
           <div className="flex items-center space-x-4">
             <div className="flex-1">
               <div className="relative">
@@ -147,7 +147,7 @@ export default function BlogPage() {
       </Card>
 
       {/* Blog Posts Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {filteredPosts.map((post) => (
           <Card key={post.id} className="hover:shadow-md transition-shadow">
             <CardHeader>

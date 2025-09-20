@@ -192,42 +192,44 @@ export function NotificationsDropdown() {
       </Button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-background border border-border rounded-lg shadow-lg z-50">
+        <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 lg:w-96 bg-background border border-border rounded-lg shadow-lg z-50">
           <Card className="border-0 shadow-none">
             <CardContent className="p-0">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <h3 className="font-semibold text-foreground">Notifications</h3>
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border">
+                <h3 className="font-semibold text-foreground text-sm sm:text-base">Notifications</h3>
+                <div className="flex items-center gap-1 sm:gap-2">
                   {unreadCount > 0 && (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={markAllAsRead}
-                      className="text-xs h-7 px-2"
+                      className="text-xs h-6 sm:h-7 px-1 sm:px-2"
                     >
-                      Mark all read
+                      <span className="hidden sm:inline">Mark all read</span>
+                      <span className="sm:hidden">All</span>
                     </Button>
                   )}
                   <Button
                     variant="ghost"
                     size="sm"
                     asChild
-                    className="text-xs h-7 px-2"
+                    className="text-xs h-6 sm:h-7 px-1 sm:px-2"
                   >
                     <Link href="/admin/notifications">
-                      View all
+                      <span className="hidden sm:inline">View all</span>
+                      <span className="sm:hidden">All</span>
                     </Link>
                   </Button>
                 </div>
               </div>
 
               {/* Notifications List */}
-              <div className="max-h-96 overflow-y-auto">
+              <div className="max-h-80 sm:max-h-96 overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-muted-foreground">
-                    <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">No notifications</p>
+                  <div className="p-4 sm:p-6 text-center text-muted-foreground">
+                    <Bell className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-xs sm:text-sm">No notifications</p>
                   </div>
                 ) : (
                   notifications.map((notification) => {
@@ -237,7 +239,7 @@ export function NotificationsDropdown() {
                     return (
                       <div
                         key={notification.id}
-                        className={`p-4 border-b border-border last:border-b-0 hover:bg-muted/50 transition-colors ${
+                        className={`p-3 sm:p-4 border-b border-border last:border-b-0 hover:bg-muted/50 transition-colors ${
                           !notification.is_read ? 'bg-blue-50/50 dark:bg-blue-950/20' : ''
                         }`}
                       >
@@ -303,12 +305,12 @@ export function NotificationsDropdown() {
 
               {/* Footer */}
               {notifications.length > 0 && (
-                <div className="p-3 border-t border-border bg-muted/30">
+                <div className="p-2 sm:p-3 border-t border-border bg-muted/30">
                   <Button
                     variant="ghost"
                     size="sm"
                     asChild
-                    className="w-full text-xs"
+                    className="w-full text-xs h-8 sm:h-9"
                   >
                     <Link href="/admin/notifications">
                       View all notifications

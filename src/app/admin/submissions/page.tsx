@@ -55,7 +55,9 @@ const formTypeLabels = {
   demo: 'Demo Request',
   consultation: 'Consultation',
   newsletter: 'Newsletter',
-  signup: 'Sign Up'
+  signup: 'Sign Up',
+  partnership_ambassador: 'Partner Program',
+  partnership_network: 'Partner Program'
 }
 
 const statusLabels = {
@@ -171,7 +173,12 @@ export default function FormSubmissionsPage() {
       submission.company?.toLowerCase().includes(searchTerm.toLowerCase())
     
     const matchesStatus = statusFilter === 'all' || submission.status === statusFilter
-    const matchesType = typeFilter === 'all' || submission.form_type === typeFilter
+    
+    // Handle partnership types grouping
+    const matchesType = typeFilter === 'all' || 
+      submission.form_type === typeFilter ||
+      (typeFilter === 'partnership_ambassador' && (submission.form_type === 'partnership_ambassador' || submission.form_type === 'partnership_network'))
+    
     const matchesPriority = priorityFilter === 'all' || submission.priority === priorityFilter
 
     return matchesSearch && matchesStatus && matchesType && matchesPriority
@@ -194,6 +201,8 @@ export default function FormSubmissionsPage() {
       case 'consultation': return <Phone className="h-4 w-4" />
       case 'newsletter': return <Mail className="h-4 w-4" />
       case 'signup': return <User className="h-4 w-4" />
+      case 'partnership_ambassador': return <Building className="h-4 w-4" />
+      case 'partnership_network': return <Building className="h-4 w-4" />
       default: return <MessageSquare className="h-4 w-4" />
     }
   }
@@ -207,9 +216,9 @@ export default function FormSubmissionsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Form Submissions</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Form Submissions</h1>
         <p className="text-sm sm:text-base text-muted-foreground">
           Manage and respond to all form submissions from your website
         </p>
@@ -227,11 +236,11 @@ export default function FormSubmissionsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-7 gap-2 sm:gap-3">
             {/* All Types Button - First */}
             <button
               onClick={() => setTypeFilter('all')}
-              className={`p-3 rounded-lg border transition-all duration-200 hover:scale-105 ${
+              className={`p-2 sm:p-3 rounded-lg border transition-all duration-200 hover:scale-105 ${
                 typeFilter === 'all' 
                   ? 'border-primary bg-primary/10 text-primary' 
                   : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5'
@@ -251,14 +260,19 @@ export default function FormSubmissionsPage() {
             </button>
 
             {Object.entries(formTypeLabels).map(([type, label]) => {
-              const count = submissions.filter(sub => sub.form_type === type).length
-              const isActive = typeFilter === type
+              // Group partnership types together
+              if (type === 'partnership_network') return null
+              
+              const count = type === 'partnership_ambassador' 
+                ? submissions.filter(sub => sub.form_type === 'partnership_ambassador' || sub.form_type === 'partnership_network').length
+                : submissions.filter(sub => sub.form_type === type).length
+              const isActive = typeFilter === type || (type === 'partnership_ambassador' && (typeFilter === 'partnership_ambassador' || typeFilter === 'partnership_network'))
               
               return (
                 <button
                   key={type}
                   onClick={() => setTypeFilter(type)}
-                  className={`p-3 rounded-lg border transition-all duration-200 hover:scale-105 ${
+                  className={`p-2 sm:p-3 rounded-lg border transition-all duration-200 hover:scale-105 ${
                     isActive 
                       ? 'border-primary bg-primary/10 text-primary' 
                       : 'border-border bg-card hover:border-primary/50 hover:bg-primary/5'
@@ -298,7 +312,7 @@ export default function FormSubmissionsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Search</label>
               <div className="relative">
@@ -341,6 +355,7 @@ export default function FormSubmissionsPage() {
                   <SelectItem value="consultation">Consultation</SelectItem>
                   <SelectItem value="newsletter">Newsletter</SelectItem>
                   <SelectItem value="signup">Sign Up</SelectItem>
+                  <SelectItem value="partnership_ambassador">Partner Program</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -372,9 +387,9 @@ export default function FormSubmissionsPage() {
       </Card>
 
       {/* Submissions List */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Submissions List */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-3 sm:space-y-4">
           {filteredSubmissions.length === 0 ? (
             <Card>
               <CardContent className="pt-6">
@@ -430,7 +445,17 @@ export default function FormSubmissionsPage() {
                       </div>
                       
                       <div className="text-sm">
-                        <span className="font-medium">{formTypeLabels[submission.form_type as keyof typeof formTypeLabels]}</span>
+                        <span className="font-medium">
+                          {formTypeLabels[submission.form_type as keyof typeof formTypeLabels]}
+                          {(() => {
+                            if ((submission.form_type === 'partnership_ambassador' || submission.form_type === 'partnership_network') && 
+                                submission.form_data?.partnershipType) {
+                              const partnershipType = submission.form_data.partnershipType as string
+                              return ` - ${partnershipType === 'ambassador' ? 'Ambassador' : 'Partner Network'}`
+                            }
+                            return ''
+                          })()}
+                        </span>
                         {renderNode(submission.form_data?.message, "text-muted-foreground mt-1 line-clamp-2")}
                       </div>
                     </div>

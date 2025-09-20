@@ -150,9 +150,9 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Site Settings</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Site Settings</h1>
         <p className="text-sm sm:text-base text-muted-foreground">
           Configure your site settings and preferences
         </p>
@@ -279,7 +279,7 @@ export default function AdminSettingsPage() {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSaving}>
+          <Button type="submit" disabled={isSaving} className="w-full sm:w-auto">
             {isSaving ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>

@@ -1,11 +1,91 @@
 "use client"
 
 import Link from "next/link"
+import { useState } from "react"
 import { Container } from "@/components/ui/layout/container"
 import { H3, H4, BodySmall } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Logo } from "@/components/ui/logo"
+import { FormStatus, useFormStatus } from "@/components/ui/form-status"
+import Icon from "@/components/ui/icon"
+
+// Newsletter Form Component
+function NewsletterForm() {
+  const [email, setEmail] = useState("")
+  const { status, message, title, setLoading, setSuccess, setError, reset } = useFormStatus()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!email) {
+      setError("Email Required", "Please enter your email address")
+      return
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Invalid Email", "Please enter a valid email address")
+      return
+    }
+
+    setLoading("Subscribing...")
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
+      // Simulate success/error randomly for demo
+      if (Math.random() > 0.1) {
+        setSuccess("Successfully Subscribed!", "Thank you for subscribing to our newsletter. You'll receive updates soon.")
+        setEmail("")
+        // Auto-reset after 5 seconds
+        setTimeout(() => reset(), 5000)
+      } else {
+        setError("Subscription Failed", "Unable to subscribe at this time. Please try again later.")
+      }
+    } catch (error) {
+      setError("Subscription Failed", "Something went wrong. Please try again.")
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto lg:flex-shrink-0">
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="flex-1 px-4 py-2 h-10 border border-border rounded-md bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          disabled={status === "loading"}
+        />
+        <Button 
+          type="submit" 
+          variant="secondary" 
+          className="px-6 h-10"
+          disabled={status === "loading"}
+        >
+          {status === "loading" ? (
+            <>
+              <Icon name="loader-2-line" className="w-4 h-4 mr-2 animate-spin" />
+              Subscribing...
+            </>
+          ) : (
+            "Subscribe"
+          )}
+        </Button>
+      </form>
+      
+      <FormStatus
+        status={status}
+        title={title}
+        message={message}
+        variant="inline"
+        onDismiss={reset}
+      />
+    </div>
+  )
+}
 
 export function WebsiteFooter() {
   return (
@@ -129,16 +209,7 @@ export function WebsiteFooter() {
             </div>
             
             {/* Newsletter Form */}
-            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto lg:flex-shrink-0">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 h-10 border border-border rounded-md bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-              />
-              <Button variant="secondary" className="px-6 h-10">
-                Subscribe
-              </Button>
-            </div>
+            <NewsletterForm />
           </div>
           
           <Separator className="my-4 lg:my-6 bg-border/60" />

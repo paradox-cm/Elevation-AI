@@ -37,7 +37,7 @@ function AmbassadorSection({ data }: { data?: Record<string, unknown> }) {
   const title = (typeof data?.title === 'string' ? data.title : "Become an Ambassador")
   const content = (typeof data?.content === 'string' ? data.content : "Our Ambassador program is for well-connected leaders who can provide warm introductions to their network. We believe that the best partnerships start with trust, and we value your ability to open the right doors. In return, we offer a generous referral program and the opportunity to be at the center of the agentic AI ecosystem.")
   const ctaText = (typeof data?.cta_text === 'string' ? data.cta_text : "Inquire About Our Ambassador Program")
-  const ctaUrl = (typeof data?.cta_url === 'string' ? data.cta_url : "#ambassador")
+  const ctaUrl = (typeof data?.cta_url === 'string' ? data.cta_url : "/website/partnership?type=ambassador")
 
   return (
     <Section paddingY="lg">
@@ -76,7 +76,7 @@ function PartnerNetworkSection({ data }: { data?: Record<string, unknown> }) {
     }
   ])
   const ctaText = (typeof data?.cta_text === 'string' ? data.cta_text : "Apply to Our Partner Network")
-  const ctaUrl = (typeof data?.cta_url === 'string' ? data.cta_url : "#partner-network")
+  const ctaUrl = (typeof data?.cta_url === 'string' ? data.cta_url : "/website/partnership?type=partner")
 
   return (
     <Section paddingY="lg">

@@ -24,12 +24,15 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { LoadingSpinner } from '@/components/ui/loading'
+import { useSearchParams } from 'next/navigation'
 
 export default function PagesPage() {
   const [pages, setPages] = useState<Page[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedPageSlug, setSelectedPageSlug] = useState<string | null>(null)
   const supabase = createClient()
+  const searchParams = useSearchParams()
 
   const fetchPages = useCallback(async () => {
     try {
@@ -60,6 +63,16 @@ export default function PagesPage() {
   useEffect(() => {
     fetchPages()
   }, [fetchPages])
+
+  // Handle URL parameter for specific page filtering
+  useEffect(() => {
+    const pageParam = searchParams.get('page')
+    if (pageParam) {
+      setSelectedPageSlug(pageParam)
+    } else {
+      setSelectedPageSlug(null)
+    }
+  }, [searchParams])
 
   // Define the custom page order
   const pageOrder = [
@@ -104,15 +117,19 @@ export default function PagesPage() {
     })
   }
 
-  const filteredOtherPages = sortPages(otherPages.filter(page =>
-    page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    page.slug.toLowerCase().includes(searchTerm.toLowerCase())
-  ))
+  const filteredOtherPages = sortPages(otherPages.filter(page => {
+    const matchesSearch = page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      page.slug.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSelectedPage = selectedPageSlug ? page.slug === selectedPageSlug : true
+    return matchesSearch && matchesSelectedPage
+  }))
 
-  const filteredPeoplePages = peoplePages.filter(page =>
-    page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    page.slug.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredPeoplePages = peoplePages.filter(page => {
+    const matchesSearch = page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      page.slug.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSelectedPage = selectedPageSlug ? page.slug === selectedPageSlug : true
+    return matchesSearch && matchesSelectedPage
+  })
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -251,24 +268,45 @@ export default function PagesPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Pages</h1>
-          <p className="text-sm sm:text-base text-muted-foreground">Manage your website pages and content</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
+            {selectedPageSlug ? `Pages - ${selectedPageSlug.charAt(0).toUpperCase() + selectedPageSlug.slice(1).replace('-', ' ')}` : 'Pages'}
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            {selectedPageSlug ? `Managing ${selectedPageSlug} page` : 'Manage your website pages and content'}
+          </p>
         </div>
-        <Button asChild>
-          <Link href="/admin/pages/new">
-            <Plus className="h-4 w-4 mr-2" />
-            New Page
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          {selectedPageSlug && (
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setSelectedPageSlug(null)
+                // Update URL without page parameter
+                const url = new URL(window.location.href)
+                url.searchParams.delete('page')
+                window.history.replaceState({}, '', url.toString())
+              }}
+              className="w-full sm:w-auto"
+            >
+              Show All Pages
+            </Button>
+          )}
+          <Button asChild className="w-full sm:w-auto">
+            <Link href="/admin/pages/new">
+              <Plus className="h-4 w-4 mr-2" />
+              New Page
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Search and Filters */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="pt-4 sm:pt-6">
           <div className="flex items-center space-x-4">
             <div className="flex-1">
               <div className="relative">
@@ -286,7 +324,7 @@ export default function PagesPage() {
       </Card>
 
       {/* Pages Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {/* Render pages in custom order */}
         {filteredOtherPages.map((page, index) => {
           // Show People card after Platform (index 1) if it exists and matches search

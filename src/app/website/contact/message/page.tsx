@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { FormStatus, useFormStatus } from "@/components/ui/form-status"
 import Icon from "@/components/ui/icon"
 import { Mail, Phone, MessageSquare, Building } from "lucide-react"
 
@@ -44,7 +45,7 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>
 
 export default function ContactMessagePage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { status, message, title, setLoading, setSuccess, setError, reset } = useFormStatus()
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -65,16 +66,24 @@ export default function ContactMessagePage() {
   })
 
   const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true)
+    setLoading("Sending your message...")
+    
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000))
-      // Reset form on success
-      form.reset()
+      
+      // Simulate success/error randomly for demo
+      if (Math.random() > 0.1) {
+        setSuccess("Message Sent Successfully!", "Thank you for your message. We'll get back to you within 24 hours.")
+        form.reset()
+        // Auto-reset status after 5 seconds
+        setTimeout(() => reset(), 5000)
+      } else {
+        setError("Failed to Send Message", "Unable to send your message at this time. Please try again later.")
+      }
     } catch (error) {
       console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
+      setError("Failed to Send Message", "Something went wrong. Please try again.")
     }
   }
 
@@ -373,19 +382,29 @@ export default function ContactMessagePage() {
                             />
                           </FormFieldGroup>
 
-                          <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                            {isSubmitting ? (
-                              <>
-                                <Icon name="loader-2-line" className="w-4 h-4 mr-2 animate-spin" />
-                                Sending Message...
-                              </>
-                            ) : (
-                              <>
-                                <MessageSquare className="w-4 h-4 mr-2" />
-                                Send Message
-                              </>
-                            )}
-                          </Button>
+                          <div className="space-y-4">
+                            <Button type="submit" size="lg" className="w-full" disabled={status === "loading"}>
+                              {status === "loading" ? (
+                                <>
+                                  <Icon name="loader-2-line" className="w-4 h-4 mr-2 animate-spin" />
+                                  Sending Message...
+                                </>
+                              ) : (
+                                <>
+                                  <MessageSquare className="w-4 h-4 mr-2" />
+                                  Send Message
+                                </>
+                              )}
+                            </Button>
+                            
+                            <FormStatus
+                              status={status}
+                              title={title}
+                              message={message}
+                              onRetry={() => form.handleSubmit(onSubmit)()}
+                              onDismiss={reset}
+                            />
+                          </div>
                         </form>
                       </Form>
                     </CardContent>

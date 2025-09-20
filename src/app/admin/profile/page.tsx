@@ -184,9 +184,9 @@ export default function AdminProfilePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Profile Settings</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Profile Settings</h1>
         <p className="text-sm sm:text-base text-muted-foreground">
           Manage your admin profile information
         </p>
@@ -270,18 +270,18 @@ export default function AdminProfilePage() {
               </div>
             </div>
 
-            <div className="flex justify-between pt-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 pt-4">
               <Button 
                 type="button" 
                 variant="destructive" 
                 onClick={handleLogout}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 w-full sm:w-auto"
               >
                 <LogOut className="h-4 w-4" />
                 Logout
               </Button>
               
-              <Button type="submit" disabled={isSaving}>
+              <Button type="submit" disabled={isSaving} className="w-full sm:w-auto">
                 {isSaving ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>

@@ -176,11 +176,12 @@ export function RecentActivity({
             Recent Activity
           </CardTitle>
           {showFilters && (
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               <Button
                 variant={filter === 'all' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilter('all')}
+                className="text-xs h-7 sm:h-8 px-2 sm:px-3"
               >
                 All
               </Button>
@@ -188,6 +189,7 @@ export function RecentActivity({
                 variant={filter === 'create' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilter('create')}
+                className="text-xs h-7 sm:h-8 px-2 sm:px-3"
               >
                 Created
               </Button>
@@ -195,6 +197,7 @@ export function RecentActivity({
                 variant={filter === 'update' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilter('update')}
+                className="text-xs h-7 sm:h-8 px-2 sm:px-3"
               >
                 Updated
               </Button>
@@ -204,17 +207,17 @@ export function RecentActivity({
       </CardHeader>
       <CardContent>
         {activities.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            <Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
-            <p>No recent activity</p>
-            <p className="text-sm">Activities will appear here as you make changes</p>
+          <div className="text-center py-6 sm:py-8 text-muted-foreground">
+            <Clock className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-muted-foreground/50" />
+            <p className="text-sm sm:text-base">No recent activity</p>
+            <p className="text-xs sm:text-sm">Activities will appear here as you make changes</p>
           </div>
         ) : (
-          <div className="max-h-96 overflow-y-auto pr-2 space-y-4">
+          <div className="max-h-80 sm:max-h-96 overflow-y-auto pr-1 sm:pr-2 space-y-3 sm:space-y-4">
             {activities.map((activity) => (
-              <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg border bg-card">
+              <div key={activity.id} className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg border bg-card">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-muted flex items-center justify-center">
                     {getActionIcon(activity.action)}
                   </div>
                 </div>

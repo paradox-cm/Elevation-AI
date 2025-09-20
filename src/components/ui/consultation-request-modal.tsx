@@ -13,6 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { FormStatus, useFormStatus } from '@/components/ui/form-status'
 import Icon from '@/components/ui/icon'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -150,6 +151,7 @@ const timezones = [
 export function ConsultationRequestModal({ isOpen, onClose }: ConsultationRequestModalProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [showResults, setShowResults] = useState(false)
+  const { status, message, title, setLoading, setSuccess, setError, reset } = useFormStatus()
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -265,8 +267,25 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
     }
   }
 
-  const onSubmit = (data: FormData) => {
-    setShowResults(true)
+  const onSubmit = async (data: FormData) => {
+    setLoading("Submitting your consultation request...")
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Simulate success/error randomly for demo
+      if (Math.random() > 0.1) {
+        setSuccess("Consultation Request Submitted!", "Thank you for your request! Our team will contact you within 24 hours to schedule your consultation.")
+        setShowResults(true)
+        // Auto-reset status after 5 seconds
+        setTimeout(() => reset(), 5000)
+      } else {
+        setError("Failed to Submit Request", "Unable to submit your consultation request at this time. Please try again later.")
+      }
+    } catch (error) {
+      setError("Failed to Submit Request", "Something went wrong. Please try again.")
+    }
   }
 
   const handleNext = () => {
@@ -927,6 +946,14 @@ export function ConsultationRequestModal({ isOpen, onClose }: ConsultationReques
             ) : (
               renderResults()
             )}
+            
+            <FormStatus
+              status={status}
+              title={title}
+              message={message}
+              onRetry={() => form.handleSubmit(onSubmit)()}
+              onDismiss={reset}
+            />
           </form>
         </Form>
         </DialogContent>

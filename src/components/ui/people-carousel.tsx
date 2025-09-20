@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { PlatformCarousel, PlatformCarouselItem } from "./platform-carousel"
 
 export type { PlatformCarouselItem }
@@ -37,13 +37,28 @@ export interface PeopleCarouselProps {
 }
 
 export function PeopleCarousel(props: PeopleCarouselProps) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768) // sm breakpoint
+    }
+    
+    checkIsMobile()
+    window.addEventListener('resize', checkIsMobile)
+    return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
+
   // Override the cardStyle to always use blue for people page
   // and use custom padding that matches the original Carousel component
+  // Disable gradients on mobile devices
   const peopleProps = {
     ...props,
     cardStyle: 'blue' as const,
     customPadding: 'p-6', // Use the same padding as original Carousel component
-    customContentPadding: 'p-6 pt-0' // People page needs separate content padding for badges
+    customContentPadding: 'p-6 pt-0', // People page needs separate content padding for badges
+    showGradients: isMobile ? false : (props.showGradients ?? true) // Disable gradients on mobile
   }
 
   return <PlatformCarousel {...peopleProps} />
