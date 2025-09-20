@@ -9,9 +9,10 @@ export function AnimationPreloader() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // Pre-calculate color values for better performance
+  // IMPORTANT: Blue (Elevation) is first to ensure it shows first in the animation
   const brandColors = [
-    { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } },
-    { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } },
+    { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } }, // Blue first
+    { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } }, // Purple second
     { name: 'Green', hex: '#12c55d', rgb: { r: 18, g: 197, b: 93 } },
     { name: 'Red', hex: '#df3523', rgb: { r: 223, g: 53, b: 35 } },
     { name: 'Gold', hex: '#ebbc48', rgb: { r: 235, g: 188, b: 72 } },
@@ -203,14 +204,15 @@ export function AnimationPreloader() {
     p.init(() => rctx.random(0, 255))
 
     // Initialize animation state
+    // IMPORTANT: colorIndex starts at 0 to ensure blue shows first
     const animationState = {
       perlin: p,
       prng: rctx,
-      colorIndex: 0,
-      colorTransition: 0,
-      currentR: brandColors[0].rgb.r,
-      currentG: brandColors[0].rgb.g,
-      currentB: brandColors[0].rgb.b,
+      colorIndex: 0, // Start with first color (blue)
+      colorTransition: 0, // Start with no transition
+      currentR: brandColors[0].rgb.r, // Blue R value: 14
+      currentG: brandColors[0].rgb.g, // Blue G value: 98
+      currentB: brandColors[0].rgb.b, // Blue B value: 253
       startTime: Date.now(),
       brandColors: brandColors
     }

@@ -445,29 +445,27 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
               {/* Featured Image */}
               {featuredImage && (
                 <Section paddingY="none">
-                  <Container size="2xl">
-                    <div className="aspect-[2/1] w-full bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-xl flex items-center justify-center mb-8 overflow-hidden">
-                      <img 
-                        src={featuredImage} 
-                        alt={title || ""}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          // Fallback to placeholder if image fails to load
-                          e.currentTarget.style.display = 'none'
-                          const nextSibling = e.currentTarget.nextElementSibling as HTMLElement
-                          if (nextSibling) {
-                            nextSibling.style.display = 'flex'
-                          }
-                        }}
-                      />
-                      <div className="text-center space-y-4" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-                        <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">
-                          <Icon name="article-line" className="h-8 w-8 text-primary" />
-                        </div>
-                        <div className="text-sm text-muted-foreground">Article Image</div>
+                  <div className="aspect-[2/1] w-full bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-xl flex items-center justify-center mb-8 overflow-hidden">
+                    <img 
+                      src={featuredImage} 
+                      alt={title || ""}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to placeholder if image fails to load
+                        e.currentTarget.style.display = 'none'
+                        const nextSibling = e.currentTarget.nextElementSibling as HTMLElement
+                        if (nextSibling) {
+                          nextSibling.style.display = 'flex'
+                        }
+                      }}
+                    />
+                    <div className="text-center space-y-4" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                      <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">
+                        <Icon name="article-line" className="h-8 w-8 text-primary" />
                       </div>
+                      <div className="text-sm text-muted-foreground">Article Image</div>
                     </div>
-                  </Container>
+                  </div>
                 </Section>
               )}
 

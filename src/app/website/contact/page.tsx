@@ -12,7 +12,7 @@ import { H1, H2, H3, P, BodyLarge, BodySmall } from "@/components/ui/typography"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
-import { Mail, Phone, MapPin, Clock, MessageSquare, Users, Building, Globe, FileText } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, MessageSquare, Users, Building, Globe, FileText, TrendingUp } from "lucide-react"
 import React from "react"
 
 
@@ -42,7 +42,7 @@ export default function ContactPage() {
               {/* Contact Options Section */}
               <Section paddingY="lg">
                 <div className="max-w-6xl mx-auto">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {/* Sales Card */}
                     <Card className="hover:shadow-lg transition-shadow duration-200">
                       <CardHeader>
@@ -106,6 +106,29 @@ export default function ContactPage() {
                         <Button className="w-full" asChild>
                           <a href="mailto:press@elevationai.com">
                             Visit newsroom
+                            <Icon name="arrow-right-line" className="w-4 h-4 ml-2" />
+                          </a>
+                        </Button>
+                      </CardContent>
+                    </Card>
+
+                    {/* Investors Card */}
+                    <Card className="hover:shadow-lg transition-shadow duration-200">
+                      <CardHeader>
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <TrendingUp className="w-5 h-5 text-primary" />
+                          </div>
+                          <CardTitle className="text-base sm:text-base md:text-lg">Investors</CardTitle>
+                        </div>
+                        <CardDescription>
+                          Investment opportunities and investor relations inquiries.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Button className="w-full" asChild>
+                          <a href="mailto:investors@elevationai.com">
+                            Contact investors
                             <Icon name="arrow-right-line" className="w-4 h-4 ml-2" />
                           </a>
                         </Button>

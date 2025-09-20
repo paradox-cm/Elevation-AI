@@ -796,13 +796,13 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                             />
                           )}
                         </div>
-                        {/* Calculate Your Plan Link */}
+                        {/* Get a Custom Quote Link */}
                         <div className="mt-4 text-left">
                           <Link 
                             href="/website/pricing" 
                             className="text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
                           >
-                            Calculate Your Plan →
+                            Get a Custom Quote →
                           </Link>
                         </div>
                       </CardContent>
@@ -886,13 +886,13 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                               />
                             )}
                           </div>
-                          {/* Calculate Your Plan Link */}
+                          {/* Get a Custom Quote Link */}
                           <div className="mt-4 text-left">
                             <Link 
                               href="/website/pricing" 
                               className="text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
                             >
-                              Calculate Your Plan →
+                              Get a Custom Quote →
                             </Link>
                           </div>
                         </CardContent>

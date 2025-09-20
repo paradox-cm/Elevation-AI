@@ -67,13 +67,14 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
     { href: "/website/partners", label: "Partners" },
     { href: "/website/investors", label: "Investors" },
     { href: "/website/developers", label: "For Developers & Platforms" },
-    { href: "/website/blog", label: "Blog + News" },
+    { href: "/website/blog", label: "Blog" },
     { href: "/website/knowledge-base", label: "Knowledge Base" }
   ]
 
   const quickLinks = [
     { href: "/website/about", label: "About" },
     { href: "/website/investors", label: "Investors" },
+    { href: "/website/press", label: "Press" },
     { href: "/website/contact", label: "Contact" },
     { href: "/website/privacy", label: "Privacy Policy" },
     { href: "/website/terms-of-service", label: "Terms of Service" }

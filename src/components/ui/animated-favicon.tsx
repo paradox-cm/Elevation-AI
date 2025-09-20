@@ -101,11 +101,12 @@ export function AnimatedFavicon({ className, width = 100, height = 100, preset =
       const threshold = currentPreset.threshold
 
       // Local animation state that syncs with global state
-      let colorIndex = initialColorIndex
-      let colorTransition = 0
-      let currentR = sharedBrandColors[0].rgb.r
-      let currentG = sharedBrandColors[0].rgb.g
-      let currentB = sharedBrandColors[0].rgb.b
+      // IMPORTANT: Ensure we start with the first color (blue)
+      let colorIndex = initialColorIndex // Should be 0 for blue
+      let colorTransition = 0 // Start with no transition
+      let currentR = sharedBrandColors[0].rgb.r // Blue R value: 14
+      let currentG = sharedBrandColors[0].rgb.g // Blue G value: 98
+      let currentB = sharedBrandColors[0].rgb.b // Blue B value: 253
       
       const animate = (currentTime: number) => {
         // Throttle animation when tab is not visible
@@ -374,9 +375,10 @@ export function AnimatedFavicon({ className, width = 100, height = 100, preset =
     p.init(() => rctx.random(0, 255))
 
     // Fallback brand colors (same as shared ones)
+    // IMPORTANT: Blue (Elevation) is first to ensure it shows first in the animation
     const fallbackBrandColors = [
-      { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } },
-      { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } },
+      { name: 'Elevation', hex: '#0e62fd', rgb: { r: 14, g: 98, b: 253 } }, // Blue first
+      { name: 'Periwinkle', hex: '#7458f4', rgb: { r: 116, g: 88, b: 244 } }, // Purple second
       { name: 'Green', hex: '#12c55d', rgb: { r: 18, g: 197, b: 93 } },
       { name: 'Red', hex: '#df3523', rgb: { r: 223, g: 53, b: 35 } },
       { name: 'Gold', hex: '#ebbc48', rgb: { r: 235, g: 188, b: 72 } },
@@ -394,11 +396,12 @@ export function AnimatedFavicon({ className, width = 100, height = 100, preset =
     const threshold = currentPreset.threshold
 
     // Performance optimization: Cache color calculations
-    let colorIndex = 0
-    let colorTransition = 0
-    let currentR = fallbackBrandColors[0].rgb.r
-    let currentG = fallbackBrandColors[0].rgb.g
-    let currentB = fallbackBrandColors[0].rgb.b
+    // IMPORTANT: Start with first color (blue) to ensure it shows first
+    let colorIndex = 0 // Start with first color (blue)
+    let colorTransition = 0 // Start with no transition
+    let currentR = fallbackBrandColors[0].rgb.r // Blue R value: 14
+    let currentG = fallbackBrandColors[0].rgb.g // Blue G value: 98
+    let currentB = fallbackBrandColors[0].rgb.b // Blue B value: 253
 
     // Performance optimization: Throttled animation function
     const animate = (currentTime: number) => {

@@ -141,7 +141,7 @@ function CTASection({ data }: { data?: Record<string, unknown> }) {
   const title = (typeof data?.title === 'string' ? data.title : "")
   const description = (typeof data?.description === 'string' ? data.description : "")
   const ctaText = (typeof data?.cta_primary_text === 'string' ? data.cta_primary_text : "Contact Us")
-  const ctaUrl = (typeof data?.cta_primary_url === 'string' ? data.cta_primary_url : "/website/contact")
+  const ctaUrl = (typeof data?.cta_primary_url === 'string' ? data.cta_primary_url : "mailto:investors@elevationai.com")
 
   return (
     <Section paddingY="xl">
