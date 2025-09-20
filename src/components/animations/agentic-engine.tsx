@@ -230,17 +230,114 @@ export function AgenticEngine({
       // Limit maximum connections to prevent buildup (doubled for more density)
       if (baseInternalLines.length > 16) return
       
-      // AI Engine: More often create multiple connections at once
-      const connectionCount = Math.random() < 0.5 ? 2 : 1 // 50% chance for 2 connections
+      // Ensure minimum activity: if very few connections exist, increase probability
+      const minConnections = 2
+      const shouldForceConnection = baseInternalLines.length < minConnections
       
-      for (let c = 0; c < connectionCount; c++) {
-        // Pick two random base nodes with weighted selection (prefer certain nodes)
+      // Ensure minimum activity: if no connections exist, force at least one
+      if (baseInternalLines.length === 0) {
+        // Force create a connection to prevent empty gaps
         const startIdx = Math.floor(Math.random() * baseNodes.length)
         let endIdx = Math.floor(Math.random() * baseNodes.length)
+        while (endIdx === startIdx) {
+          endIdx = Math.floor(Math.random() * baseNodes.length)
+        }
+        // Create connection without additional randomization when forcing
+        const startNode = baseNodes[startIdx]
+        const endNode = baseNodes[endIdx]
+        const distance = Math.sqrt(
+          Math.pow(startNode.x - endNode.x, 2) + 
+          Math.pow(startNode.y - endNode.y, 2)
+        )
+        const maxConnectionDistance = Math.min(nodeBoundary.width, nodeBoundary.height) * 0.8
+        if (distance <= maxConnectionDistance) {
+          // Create the forced connection
+          const maxOpacity = 0.3 + Math.random() * 0.6
+          const fadeInSpeed = 0.012 // Consistent fade in speed for all lines
+          const fadeOutSpeed = 0.010 // Consistent fade out speed for all lines
+          const scaleX = nodeBoundary.width / 88
+          const scaleY = nodeBoundary.height / 84.4
+          const scale = Math.min(scaleX, scaleY) * 1.04
+          const lineWidth = 0.7 * scale
+          
+          const internalLine = {
+            start: { x: startNode.x, y: startNode.y },
+            end: { x: endNode.x, y: endNode.y },
+            opacity: 0,
+            maxOpacity,
+            fadeInSpeed,
+            fadeOutSpeed,
+            lineWidth,
+            isFadingIn: true,
+            lifespan: 0,
+            maxLifespan: 80, // Consistent lifespan for all lines (80 frames)
+            draw() {
+              if (!ctx) return
+              ctx.beginPath()
+              ctx.moveTo(this.start.x, this.start.y)
+              ctx.lineTo(this.end.x, this.end.y)
+              ctx.strokeStyle = `${lineColor}${this.opacity})`
+              ctx.lineWidth = this.lineWidth
+              ctx.stroke()
+            },
+            update() {
+              this.lifespan++
+              if (this.lifespan >= this.maxLifespan) {
+                this.isFadingIn = false
+                this.opacity -= this.fadeOutSpeed * 2
+                if (this.opacity <= 0) {
+                  this.opacity = 0
+                }
+                return
+              }
+              if (this.isFadingIn) {
+                this.opacity += this.fadeInSpeed
+                if (this.opacity >= this.maxOpacity) {
+                  this.opacity = this.maxOpacity
+                  this.isFadingIn = false
+                }
+              } else {
+                this.opacity -= this.fadeOutSpeed
+                if (this.opacity <= 0) {
+                  this.opacity = 0
+                }
+              }
+            }
+          }
+          baseInternalLines.push(internalLine)
+        }
+        return
+      }
+      
+      // AI Engine: More often create multiple connections at once (increased by 33%)
+      const connectionCount = Math.random() < 0.29 ? 2 : 1 // 29% chance for 2 connections (increased by 33%)
+      
+      for (let c = 0; c < connectionCount; c++) {
+        // Enhanced randomization to break X patterns
+        // Weighted selection: prefer certain node positions to avoid repetitive patterns
+        const getWeightedRandomNode = () => {
+          const weights = [0.15, 0.1, 0.15, 0.1, 0.15, 0.1, 0.15, 0.1] // Vary weights for different nodes
+          const random = Math.random()
+          let cumulative = 0
+          for (let i = 0; i < weights.length; i++) {
+            cumulative += weights[i]
+            if (random <= cumulative) return i
+          }
+          return Math.floor(Math.random() * baseNodes.length) // Fallback
+        }
+        
+        const startIdx = getWeightedRandomNode()
+        let endIdx = getWeightedRandomNode()
         
         // Ensure we don't connect a node to itself
         while (endIdx === startIdx) {
-          endIdx = Math.floor(Math.random() * baseNodes.length)
+          endIdx = getWeightedRandomNode()
+        }
+        
+        // Add extra randomization: reduce skip chance when few connections exist
+        const skipChance = shouldForceConnection ? 0.02 : 0.1 // 2% skip when forcing, 10% normally
+        if (Math.random() < skipChance) {
+          continue
         }
       
       const startNode = baseNodes[startIdx]
@@ -252,9 +349,14 @@ export function AgenticEngine({
         Math.pow(startNode.y - endNode.y, 2)
       )
       
-      // Only create connection if nodes are reasonably close (increased range for more connections)
-      const maxConnectionDistance = Math.min(nodeBoundary.width, nodeBoundary.height) * 0.8
-      if (distance > maxConnectionDistance) return
+      // Variable connection distance with randomization to break X patterns
+      const baseMaxDistance = Math.min(nodeBoundary.width, nodeBoundary.height) * 0.8
+      const distanceVariation = 0.3 + Math.random() * 0.4 // 30-70% of base distance
+      const maxConnectionDistance = baseMaxDistance * distanceVariation
+      
+      // Additional randomization: 20% chance to allow longer connections
+      const allowLongConnection = Math.random() < 0.2
+      if (distance > maxConnectionDistance && !allowLongConnection) return
       
       // Check if this connection already exists
       const connectionExists = baseInternalLines.some(line => 
@@ -268,8 +370,8 @@ export function AgenticEngine({
       
       // Create new internal connection with AI engine characteristics
       const maxOpacity = 0.3 + Math.random() * 0.6 // Vary opacity between 0.3 and 0.9
-      const fadeInSpeed = 0.02 + Math.random() * 0.008 // Random fade in speed 0.02-0.028 (slowed by 25%)
-      const fadeOutSpeed = 0.016 + Math.random() * 0.008 // Random fade out speed 0.016-0.024 (slowed by 25%)
+      const fadeInSpeed = 0.012 // Consistent fade in speed for all lines
+      const fadeOutSpeed = 0.010 // Consistent fade out speed for all lines
       // Calculate scale to match base network line thickness
       const scaleX = nodeBoundary.width / 88
       const scaleY = nodeBoundary.height / 84.4
@@ -286,7 +388,7 @@ export function AgenticEngine({
         lineWidth,
         isFadingIn: true, // Track fade state
         lifespan: 0, // Track how long connection has existed
-        maxLifespan: 60 + Math.random() * 40, // Random lifespan 60-100 frames
+            maxLifespan: 80, // Consistent lifespan for all lines (80 frames)
         draw() {
           if (!ctx) return
           ctx.beginPath()
@@ -437,17 +539,25 @@ export function AgenticEngine({
         // Initialize with complex starting state
         initializeComplexState()
 
-        // AI Engine: Double density - slowed down by 25%
-        const baseInternalInterval = setInterval(addBaseInternalConnection, 125) // Slowed down - every 125ms (100 * 1.25)
-        const baseInternalInterval2 = setInterval(addBaseInternalConnection, 150) // Second interval - 120 * 1.25
-        const baseInternalInterval3 = setInterval(addBaseInternalConnection, 188) // Third interval - 150 * 1.25
-        const baseInternalInterval4 = setInterval(addBaseInternalConnection, 225) // Fourth interval - 180 * 1.25
-        const baseInternalInterval5 = setInterval(addBaseInternalConnection, 275) // Fifth interval - 220 * 1.25
+        // AI Engine: Randomized intervals to break X patterns (reduced gaps)
+        const createRandomInterval = (baseMs: number) => {
+          return setInterval(() => {
+            // 15% chance to skip this interval entirely (reduced to prevent gaps)
+            if (Math.random() < 0.15) return
+            addBaseInternalConnection()
+          }, baseMs + Math.random() * 30) // Reduced variation for more consistent timing
+        }
         
-        // AI Engine: Enhanced burst effect - create many connections at once
+        const baseInternalInterval = createRandomInterval(125) // Base 125ms + variation
+        const baseInternalInterval2 = createRandomInterval(150) // Base 150ms + variation
+        const baseInternalInterval3 = createRandomInterval(188) // Base 188ms + variation
+        const baseInternalInterval4 = createRandomInterval(225) // Base 225ms + variation
+        const baseInternalInterval5 = createRandomInterval(275) // Base 275ms + variation
+        
+        // AI Engine: Enhanced burst effect - create many connections at once (increased by 33%)
         const burstInterval = setInterval(() => {
-          if (Math.random() < 0.6) { // 60% chance for burst (increased)
-            for (let i = 0; i < 4 + Math.floor(Math.random() * 4); i++) { // 4-7 connections (increased)
+          if (Math.random() < 0.36) { // 36% chance for burst (increased by 33%)
+            for (let i = 0; i < 3 + Math.floor(Math.random() * 2); i++) { // 3-4 connections (increased by 33%)
               addBaseInternalConnection()
             }
           }
