@@ -1,6 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useCallback, useState } from "react"
+import { useCanvasResize } from "@/hooks/use-canvas-resize"
+import { useVisibilityReset } from "@/hooks/use-visibility-reset"
+import { useBreakpointReset } from "@/hooks/use-breakpoint-reset"
 
 interface SecurityLayer {
   points: number[][]
@@ -23,26 +26,83 @@ export function EnterpriseSecurity({
   showBorder = true 
 }: EnterpriseSecurityProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const layersRef = useRef<SecurityLayer[]>([])
-  const [isPlaying, _setIsPlaying] = useState(true)
+  const [animationKey, setAnimationKey] = useState(0)
 
-  // Theme-aware colors - will be set in useEffect
-  let isDark = false
-  let lineColor = '#000000'
-  let backgroundColor = 'transparent'
+  const initializeCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return { canvas: null, ctx: null }
 
-  // Theme change observer - will be created in useEffect
-  let observer: MutationObserver
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return { canvas: null, ctx: null }
+
+    // High-DPI support for mobile devices
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    
+    // Set canvas size accounting for device pixel ratio
+    canvas.width = rect.width * devicePixelRatio
+    canvas.height = rect.height * devicePixelRatio
+    
+    // Scale the drawing context to match device pixel ratio
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    
+    // Enable antialiasing for smoother lines
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    
+    // Set the canvas CSS size to the logical size
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+
+    return { canvas, ctx }
+  }, [])
+
+  // Initialize canvas and start animation
+  const initializeAndStartAnimation = useCallback(() => {
+    // Stop any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+      animationRef.current = null
+    }
+    
+    // Force animation restart by updating the key
+    setAnimationKey((prev: number) => prev + 1)
+  }, [])
+
+  // Use canvas resize hook
+  useCanvasResize(canvasRef, initializeAndStartAnimation, {
+    debounceDelay: 150,
+    preserveAspectRatio: true
+  })
+
+  // Use visibility reset hook to detect when component becomes visible again
+  useVisibilityReset(containerRef, (isVisible) => {
+    if (isVisible) {
+      initializeAndStartAnimation()
+    }
+  })
+
+  // Alternative approach: Use breakpoint reset hook
+  useBreakpointReset(containerRef, () => {
+    // Animation restart triggered by breakpoint change
+    initializeAndStartAnimation()
+  })
 
   const createSecurityLayers = (canvas: HTMLCanvasElement) => {
     const layers: SecurityLayer[] = []
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
     
-    // Create 3 security layers (outer, middle, inner) - 10% smaller
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    const centerX = logicalWidth / 2
+    const centerY = logicalHeight / 2
+    
+    // Create 3 security layers (outer, middle, inner) - 20% smaller
     for (let i = 0; i < 3; i++) {
-      const radius = (80 + i * 40) * 0.9 // 10% smaller: 72, 108, 144
+      const radius = (80 + i * 40) * 0.8 // 20% smaller: 64, 96, 128
       const points: number[][] = []
       
       // Create hexagon points for each layer
@@ -57,99 +117,29 @@ export function EnterpriseSecurity({
         points,
         opacity: 0.3 + (i * 0.2),
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: 0.002 + (i * 0.001) // Very slow rotation for performance
+        rotationSpeed: 0.003 + (i * 0.001) // Match Personal Copilot rotation speeds
       })
     }
     
     return layers
   }
 
-  const animateSecurityLayers = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
-    if (!isPlaying) return
-
-    // Clear canvas completely for transparent background
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const layers = layersRef.current
-    
-    // Draw security layers (hexagons)
-    layers.forEach(layer => {
-      // Update rotation
-      layer.rotation += layer.rotationSpeed
-      
-      // Calculate rotated points
-      const rotatedPoints = layer.points.map(([x, y]) => {
-        const dx = x - centerX
-        const dy = y - centerY
-        const cos = Math.cos(layer.rotation)
-        const sin = Math.sin(layer.rotation)
-        return [
-          centerX + dx * cos - dy * sin,
-          centerY + dx * sin + dy * cos
-        ]
-      })
-      
-      // Draw hexagon
-      ctx.strokeStyle = lineColor
-      ctx.lineWidth = 1 // Match Personal Copilot line thickness
-      
-      ctx.beginPath()
-      ctx.moveTo(rotatedPoints[0][0], rotatedPoints[0][1])
-      for (let i = 1; i < rotatedPoints.length; i++) {
-        ctx.lineTo(rotatedPoints[i][0], rotatedPoints[i][1])
-      }
-      ctx.closePath()
-      ctx.stroke()
-    })
-    
-    // Draw central security core (small hexagon) with 30-degree rotation to face upward - 10% smaller
-    const coreRadius = 30 * 0.9 // 10% smaller: 27
-    const coreRotation = Math.PI / 6 // 30 degrees in radians - makes hexagon face upward
-    const corePoints: number[][] = []
-    for (let i = 0; i < 6; i++) {
-      const angle = (i * Math.PI) / 3 + coreRotation // Add 30-degree rotation
-      const x = centerX + Math.cos(angle) * coreRadius
-      const y = centerY + Math.sin(angle) * coreRadius
-      corePoints.push([x, y])
-    }
-    
-    ctx.strokeStyle = lineColor
-    ctx.lineWidth = 1 // Match Personal Copilot line thickness
-    ctx.beginPath()
-    ctx.moveTo(corePoints[0][0], corePoints[0][1])
-    for (let i = 1; i < corePoints.length; i++) {
-      ctx.lineTo(corePoints[i][0], corePoints[i][1])
-    }
-    ctx.closePath()
-    ctx.stroke()
-
-    animationRef.current = requestAnimationFrame(() => animateSecurityLayers(canvas, ctx))
-  }
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const canvasData = initializeCanvas()
+    if (!canvasData || !canvasData.canvas || !canvasData.ctx) return
+    const { canvas, ctx } = canvasData
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    // Theme-aware colors
+    let isDark = document.documentElement.classList.contains('dark')
+    let lineColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'
 
-    // Set canvas size
-    canvas.width = width
-    canvas.height = height
-
-    // Initialize theme-aware colors
-    isDark = document.documentElement.classList.contains('dark')
-    lineColor = isDark ? '#ffffff' : '#000000'
-    backgroundColor = 'transparent'
-
-    // Create theme change observer
-    observer = new MutationObserver((mutations) => {
+    // Theme change observer
+    const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           isDark = document.documentElement.classList.contains('dark')
-          lineColor = isDark ? '#ffffff' : '#000000'
+          lineColor = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'
         }
       })
     })
@@ -159,24 +149,107 @@ export function EnterpriseSecurity({
       attributeFilter: ['class']
     })
 
+    // Performance optimization: Pre-calculate constants
+    // Get the logical dimensions (CSS size) for positioning calculations
+    const logicalWidth = canvas.width / (window.devicePixelRatio || 1)
+    const logicalHeight = canvas.height / (window.devicePixelRatio || 1)
+    
+    const centerX = logicalWidth / 2
+    const centerY = logicalHeight / 2
+
     // Create security layers
     layersRef.current = createSecurityLayers(canvas)
 
-    // Start animation
-    animateSecurityLayers(canvas, ctx)
+    // Performance optimization: Frame rate limiting
+    let lastTime = 0
+    const targetFPS = 60
+    const frameInterval = 1000 / targetFPS
+
+    function animate(currentTime: number) {
+      if (!ctx || !canvas) return
+      
+      // Frame rate limiting for consistent performance
+      if (currentTime - lastTime < frameInterval) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastTime = currentTime
+      
+      // Clear canvas completely for transparent background
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      
+      const layers = layersRef.current
+      
+      // Set styles once for all hexagons
+      ctx.strokeStyle = lineColor
+      ctx.lineWidth = 1 // Match Personal Copilot line thickness exactly
+      ctx.lineCap = 'round' // Smooth line endings
+      ctx.lineJoin = 'round' // Smooth line connections
+      
+      // Draw security layers (hexagons)
+      layers.forEach(layer => {
+        // Update rotation
+        layer.rotation += layer.rotationSpeed
+        
+        // Pre-calculate trigonometric values for performance
+        const cos = Math.cos(layer.rotation)
+        const sin = Math.sin(layer.rotation)
+        
+        // Calculate rotated points
+        const rotatedPoints = layer.points.map(([x, y]) => {
+          const dx = x - centerX
+          const dy = y - centerY
+          return [
+            centerX + dx * cos - dy * sin,
+            centerY + dx * sin + dy * cos
+          ]
+        })
+        
+        // Draw hexagon
+        ctx.beginPath()
+        ctx.moveTo(rotatedPoints[0][0], rotatedPoints[0][1])
+        for (let i = 1; i < rotatedPoints.length; i++) {
+          ctx.lineTo(rotatedPoints[i][0], rotatedPoints[i][1])
+        }
+        ctx.closePath()
+        ctx.stroke()
+      })
+      
+      // Draw central security core (small hexagon) with 30-degree rotation to face upward - 20% smaller
+      const coreRadius = 30 * 0.8 // 20% smaller: 24
+      const coreRotation = Math.PI / 6 // 30 degrees in radians - makes hexagon face upward
+      const corePoints: number[][] = []
+      for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3 + coreRotation // Add 30-degree rotation
+        const x = centerX + Math.cos(angle) * coreRadius
+        const y = centerY + Math.sin(angle) * coreRadius
+        corePoints.push([x, y])
+      }
+      
+      // Draw central core with same styling
+      ctx.beginPath()
+      ctx.moveTo(corePoints[0][0], corePoints[0][1])
+      for (let i = 1; i < corePoints.length; i++) {
+        ctx.lineTo(corePoints[i][0], corePoints[i][1])
+      }
+      ctx.closePath()
+      ctx.stroke()
+      
+      animationRef.current = requestAnimationFrame(animate)
+    }
+
+    animate(performance.now())
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
-      if (observer) {
-        observer.disconnect()
-      }
+      observer.disconnect()
     }
-  }, [width, height, isPlaying])
+  }, [width, height, animationKey, initializeCanvas])
 
   return (
-    <div className={`flex justify-center ${className}`}>
+    <div ref={containerRef} className={`flex justify-center ${className}`}>
       <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}

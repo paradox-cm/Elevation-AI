@@ -99,6 +99,20 @@ export function AgenticEngine({
 
     const nodes: Array<{ x: number; y: number; vx: number; vy: number; opacity: number; radius: number; draw: () => void; update: () => void }> = []
     const lines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; opacity: number; draw: () => void; update: () => void }> = []
+    
+    // Persistent base network that doesn't fade
+    const baseNodes: Array<{ x: number; y: number; radius: number; draw: () => void }> = []
+    const baseLines: Array<{ start: { x: number; y: number }; end: { x: number; y: number }; draw: () => void }> = []
+    
+    // Internal base network connections (dynamic)
+    const baseInternalLines: Array<{ 
+      start: { x: number; y: number }; 
+      end: { x: number; y: number }; 
+      opacity: number; 
+      maxOpacity: number;
+      draw: () => void; 
+      update: () => void;
+    }> = []
 
     class Node {
       x: number
@@ -181,12 +195,12 @@ export function AgenticEngine({
       // Generate nodes only within the smaller boundary area
       const x = nodeBoundary.x + Math.random() * nodeBoundary.width
       const y = nodeBoundary.y + Math.random() * nodeBoundary.height
-      const newNode = { 
-        x, 
-        y, 
-        vx: 0, 
-        vy: 0, 
-        opacity: 1.0, 
+      const newNode = {
+        x,
+        y,
+        vx: 0,
+        vy: 0,
+        opacity: 1.0,
         radius: Math.random() * 3 + 1,
         draw() {
           if (!ctx) return
@@ -198,16 +212,199 @@ export function AgenticEngine({
         update() {
           this.x += this.vx
           this.y += this.vy
-          this.opacity -= 0.010
+          this.opacity -= 0.015 // Faster fade for dynamic nodes
         }
       }
       nodes.push(newNode)
-      
+
       for (let i = 0; i < 3; i++) { // Reduced from 6 to 3 connections per node
         if (nodes.length > i + 1) {
           lines.push(new Line({ x: newNode.x, y: newNode.y }, { x: nodes[nodes.length - (i + 2)].x, y: nodes[nodes.length - (i + 2)].y }))
         }
       }
+    }
+
+    function addBaseInternalConnection() {
+      if (baseNodes.length < 2) return
+      
+      // Limit maximum connections to prevent buildup (doubled for more density)
+      if (baseInternalLines.length > 16) return
+      
+      // AI Engine: More often create multiple connections at once
+      const connectionCount = Math.random() < 0.5 ? 2 : 1 // 50% chance for 2 connections
+      
+      for (let c = 0; c < connectionCount; c++) {
+        // Pick two random base nodes with weighted selection (prefer certain nodes)
+        const startIdx = Math.floor(Math.random() * baseNodes.length)
+        let endIdx = Math.floor(Math.random() * baseNodes.length)
+        
+        // Ensure we don't connect a node to itself
+        while (endIdx === startIdx) {
+          endIdx = Math.floor(Math.random() * baseNodes.length)
+        }
+      
+      const startNode = baseNodes[startIdx]
+      const endNode = baseNodes[endIdx]
+      
+      // Calculate distance between nodes
+      const distance = Math.sqrt(
+        Math.pow(startNode.x - endNode.x, 2) + 
+        Math.pow(startNode.y - endNode.y, 2)
+      )
+      
+      // Only create connection if nodes are reasonably close (increased range for more connections)
+      const maxConnectionDistance = Math.min(nodeBoundary.width, nodeBoundary.height) * 0.8
+      if (distance > maxConnectionDistance) return
+      
+      // Check if this connection already exists
+      const connectionExists = baseInternalLines.some(line => 
+        (line.start.x === startNode.x && line.start.y === startNode.y && 
+         line.end.x === endNode.x && line.end.y === endNode.y) ||
+        (line.start.x === endNode.x && line.start.y === endNode.y && 
+         line.end.x === startNode.x && line.end.y === startNode.y)
+      )
+      
+      if (connectionExists) return
+      
+      // Create new internal connection with AI engine characteristics
+      const maxOpacity = 0.3 + Math.random() * 0.6 // Vary opacity between 0.3 and 0.9
+      const fadeInSpeed = 0.02 + Math.random() * 0.008 // Random fade in speed 0.02-0.028 (slowed by 25%)
+      const fadeOutSpeed = 0.016 + Math.random() * 0.008 // Random fade out speed 0.016-0.024 (slowed by 25%)
+      // Calculate scale to match base network line thickness
+      const scaleX = nodeBoundary.width / 88
+      const scaleY = nodeBoundary.height / 84.4
+      const scale = Math.min(scaleX, scaleY) * 1.04 // Same as base network
+      const lineWidth = 0.7 * scale // Match base network line thickness
+      
+      const internalLine = {
+        start: { x: startNode.x, y: startNode.y },
+        end: { x: endNode.x, y: endNode.y },
+        opacity: 0,
+        maxOpacity,
+        fadeInSpeed,
+        fadeOutSpeed,
+        lineWidth,
+        isFadingIn: true, // Track fade state
+        lifespan: 0, // Track how long connection has existed
+        maxLifespan: 60 + Math.random() * 40, // Random lifespan 60-100 frames
+        draw() {
+          if (!ctx) return
+          ctx.beginPath()
+          ctx.moveTo(this.start.x, this.start.y)
+          ctx.lineTo(this.end.x, this.end.y)
+          ctx.strokeStyle = `${lineColor}${this.opacity})`
+          ctx.lineWidth = this.lineWidth
+          ctx.stroke()
+        },
+        update() {
+          this.lifespan++
+          
+          // Force fade out after max lifespan
+          if (this.lifespan >= this.maxLifespan) {
+            this.isFadingIn = false
+            this.opacity -= this.fadeOutSpeed * 2 // Faster fade out when expired
+            if (this.opacity <= 0) {
+              this.opacity = 0
+            }
+            return
+          }
+          
+          // AI Engine: Clear fade in/out states
+          if (this.isFadingIn) {
+            this.opacity += this.fadeInSpeed
+            if (this.opacity >= this.maxOpacity) {
+              this.opacity = this.maxOpacity
+              this.isFadingIn = false // Switch to fade out
+            }
+          } else {
+            this.opacity -= this.fadeOutSpeed
+            if (this.opacity <= 0) {
+              this.opacity = 0
+            }
+          }
+        }
+      }
+      
+        baseInternalLines.push(internalLine)
+      }
+    }
+
+    function initializeComplexState() {
+      // Create base network from E-Arrow-Nodes.svg
+      // Scale factor to fit within nodeBoundary (SVG viewBox: 88 x 84.4)
+      const scaleX = nodeBoundary.width / 88
+      const scaleY = nodeBoundary.height / 84.4
+      const scale = Math.min(scaleX, scaleY) * 1.04 // 80% * 1.3 = 104% for 30% increase
+      
+      // Center the E-Arrow shape within the boundary
+      const centerX = nodeBoundary.x + nodeBoundary.width / 2
+      const centerY = nodeBoundary.y + nodeBoundary.height / 2
+      const offsetX = centerX - (88 * scale) / 2
+      const offsetY = centerY - (84.4 * scale) / 2
+      
+      // Define E-Arrow-Nodes shape key points (from SVG analysis)
+      // This creates an upside-down L with nodes at key positions
+      const eArrowNodesPoints = [
+        // From SVG circles (cx, cy, r=1.1)
+        { x: 42.3, y: 44.9 },  // Inner corner (cutout boundary)
+        { x: 42.3, y: 79.7 },  // Bottom-left corner
+        { x: 82.9, y: 79.7 },  // Bottom-right corner
+        { x: 82.9, y: 4.6 },   // Top-right corner
+        { x: 5.2, y: 4.6 },    // Top-left corner
+        { x: 5.2, y: 44.9 },   // Left edge middle
+        { x: 82.9, y: 43.8 },  // Right edge middle
+        { x: 42.3, y: 4.6 },   // Top edge middle
+      ]
+      
+      // Create base nodes at E-Arrow key points
+      eArrowNodesPoints.forEach(point => {
+        const baseNode = { 
+          x: offsetX + point.x * scale, 
+          y: offsetY + point.y * scale, 
+          radius: 1.1 * scale, // Scale the radius from SVG
+          draw() {
+            if (!ctx) return
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+            ctx.fillStyle = `${nodeColor}0.9)` // Match animation color
+            ctx.fill()
+          }
+        }
+        baseNodes.push(baseNode)
+      })
+      
+      // Create connections based on SVG polygon path
+      // The polygon creates the outline: "42.5 45 42.5 79.7 82.9 79.7 82.9 62.4 82.9 60.8 82.9 55.7 82.9 45 82.9 4.6 5.2 4.6 5.2 45 42.5 45"
+      const eArrowConnections = [
+        // Main outline connections (following the polygon path)
+        [0, 1], // Inner corner to bottom-left
+        [1, 2], // Bottom-left to bottom-right
+        [2, 3], // Bottom-right to top-right
+        [3, 7], // Top-right to top-middle
+        [7, 4], // Top-middle to top-left
+        [4, 5], // Top-left to left-middle
+        [5, 0], // Left-middle to inner corner
+      ]
+      
+      // Create base lines for E-Arrow shape
+      eArrowConnections.forEach(([startIdx, endIdx]) => {
+        if (startIdx < baseNodes.length && endIdx < baseNodes.length) {
+          const baseLine = {
+            start: { x: baseNodes[startIdx].x, y: baseNodes[startIdx].y },
+            end: { x: baseNodes[endIdx].x, y: baseNodes[endIdx].y },
+            draw() {
+              if (!ctx) return
+              ctx.beginPath()
+              ctx.moveTo(this.start.x, this.start.y)
+              ctx.lineTo(this.end.x, this.end.y)
+              ctx.strokeStyle = `${lineColor}0.8)` // Match animation color
+              ctx.lineWidth = 0.7 * scale // Scale stroke width from SVG
+              ctx.stroke()
+            }
+          }
+          baseLines.push(baseLine)
+        }
+      })
     }
 
 
@@ -217,26 +414,53 @@ export function AgenticEngine({
       // Clear completely each frame
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
-      nodes.forEach((node, index) => {
-        node.draw()
-        node.update()
-        if (node.opacity <= 0) nodes.splice(index, 1)
-      })
+      // Draw persistent base network first (always visible)
+      baseLines.forEach(line => line.draw())
+      baseNodes.forEach(node => node.draw())
       
-      lines.forEach((line, index) => {
+      // Draw and update internal base network connections
+      for (let i = baseInternalLines.length - 1; i >= 0; i--) {
+        const line = baseInternalLines[i]
         line.draw()
         line.update()
-        if (line.opacity <= 0) lines.splice(index, 1)
-      })
+        if (line.opacity <= 0) {
+          baseInternalLines.splice(i, 1) // Remove faded connections
+          // console.log('Removed connection, remaining:', baseInternalLines.length)
+        }
+      }
+      
+      // Dynamic nodes and lines animation removed - only base network now
       
       animationRef.current = requestAnimationFrame(animate)
     }
 
-    const nodeInterval = setInterval(addNode, 300) // Faster generation for more active animation
-    animate()
+        // Initialize with complex starting state
+        initializeComplexState()
+
+        // AI Engine: Double density - slowed down by 25%
+        const baseInternalInterval = setInterval(addBaseInternalConnection, 125) // Slowed down - every 125ms (100 * 1.25)
+        const baseInternalInterval2 = setInterval(addBaseInternalConnection, 150) // Second interval - 120 * 1.25
+        const baseInternalInterval3 = setInterval(addBaseInternalConnection, 188) // Third interval - 150 * 1.25
+        const baseInternalInterval4 = setInterval(addBaseInternalConnection, 225) // Fourth interval - 180 * 1.25
+        const baseInternalInterval5 = setInterval(addBaseInternalConnection, 275) // Fifth interval - 220 * 1.25
+        
+        // AI Engine: Enhanced burst effect - create many connections at once
+        const burstInterval = setInterval(() => {
+          if (Math.random() < 0.6) { // 60% chance for burst (increased)
+            for (let i = 0; i < 4 + Math.floor(Math.random() * 4); i++) { // 4-7 connections (increased)
+              addBaseInternalConnection()
+            }
+          }
+        }, 1875) // Check for burst every 1.875 seconds (1500 * 1.25)
+        animate()
 
     return () => {
-      clearInterval(nodeInterval)
+      clearInterval(baseInternalInterval)
+      clearInterval(baseInternalInterval2)
+      clearInterval(baseInternalInterval3)
+      clearInterval(baseInternalInterval4)
+      clearInterval(baseInternalInterval5)
+      clearInterval(burstInterval)
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
@@ -246,7 +470,7 @@ export function AgenticEngine({
 
   return (
     <div className={`flex justify-center ${className}`}>
-      <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
+      <div className={`${showBorder ? 'rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
           className="rounded-lg"

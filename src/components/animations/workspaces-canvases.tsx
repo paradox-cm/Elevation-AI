@@ -79,7 +79,6 @@ export function WorkspacesCanvases({
 
     // Theme-aware colors
     let isDark = document.documentElement.classList.contains('dark')
-    let backgroundColor = isDark ? 'rgba(15, 15, 15, 0.1)' : 'rgba(250, 250, 250, 0.1)'
     let windowColor = isDark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)' // Reversed: dark windows for dark mode, light windows for light mode
     let windowBorderColor = isDark ? 'rgba(82, 82, 91, 0.8)' : 'rgba(161, 161, 170, 0.8)' // Reversed border colors
     let dataColor = isDark ? 'rgba(59, 130, 246, 0.8)' : 'rgba(37, 99, 235, 0.8)'
@@ -90,7 +89,6 @@ export function WorkspacesCanvases({
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           isDark = document.documentElement.classList.contains('dark')
-          backgroundColor = isDark ? 'rgba(15, 15, 15, 0.1)' : 'rgba(250, 250, 250, 0.1)'
           windowColor = isDark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)' // Reversed: dark windows for dark mode, light windows for light mode
           windowBorderColor = isDark ? 'rgba(82, 82, 91, 0.8)' : 'rgba(161, 161, 170, 0.8)' // Reversed border colors
           dataColor = isDark ? 'rgba(59, 130, 246, 0.8)' : 'rgba(37, 99, 235, 0.8)'
@@ -288,9 +286,7 @@ export function WorkspacesCanvases({
       
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
-      // Draw background
-      ctx.fillStyle = backgroundColor
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      // No background fill - transparent background
       
       // Draw static elements
       drawConnections()
@@ -319,7 +315,7 @@ export function WorkspacesCanvases({
 
   return (
     <div ref={containerRef} className={`flex justify-center ${className}`}>
-      <div className={`${showBorder ? 'bg-muted/50 rounded-lg p-4 border border-border' : ''}`}>
+      <div className={`${showBorder ? 'rounded-lg p-4 border border-border' : ''}`}>
         <canvas 
           ref={canvasRef}
           className="rounded-lg"
