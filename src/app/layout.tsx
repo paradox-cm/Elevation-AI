@@ -7,6 +7,7 @@ import { ScrollToTop } from "@/components/scroll-to-top";
 import { AnimationProvider } from "@/contexts/animation-context";
 import { AnimationPreloader } from "@/components/ui/animation-preloader";
 import { Toaster } from "@/components/ui/sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Helvetica Now Variable Fonts
 const helveticaNowVar = localFont({
@@ -117,6 +118,7 @@ export default function RootLayout({
             <ScrollToTop />
             {children}
             <Toaster />
+            <SpeedInsights />
           </AnimationProvider>
         </ThemeProvider>
       </body>
