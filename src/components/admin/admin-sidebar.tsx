@@ -19,10 +19,13 @@ import {
   Bell,
   Mail,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  CheckSquare,
+  LifeBuoy
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { SupportModal } from '@/components/admin/support-modal'
 
 interface AdminSidebarProps {
   isOpen: boolean
@@ -58,6 +61,7 @@ const navigation = [
   { name: 'Submissions', href: '/admin/submissions', icon: MessageSquare },
   { name: 'Emails', href: '/admin/emails', icon: Mail },
   { name: 'Notifications', href: '/admin/notifications', icon: Bell },
+  { name: 'To-Do', href: '/admin/todo', icon: CheckSquare },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
@@ -67,6 +71,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
   const router = useRouter()
   const [expandedMenus, setExpandedMenus] = useState<Set<string>>(new Set())
   const [pageIdMap, setPageIdMap] = useState<Record<string, string>>({})
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false)
 
   // Fetch page IDs for direct edit navigation
   useEffect(() => {
@@ -174,7 +179,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                       {/* Main clickable area - links to the main page */}
                       <Link
                         href={item.href}
-                        className="flex-1 flex items-center px-3 py-3 sm:py-2 text-sm font-medium"
+                        className="flex-1 flex items-center px-2 py-3 sm:py-2 text-sm font-medium"
                         onClick={() => {
                           // Close mobile sidebar when navigating
                           if (window.innerWidth < 1024) {
@@ -194,7 +199,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                       {/* Expand/collapse button */}
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className="px-3 py-3 sm:py-2 text-sm font-medium flex items-center justify-center min-w-[44px] hover:bg-black/10 rounded-r-md"
+                        className="px-2 py-3 sm:py-2 text-sm font-medium flex items-center justify-center min-w-[44px] hover:bg-black/10 rounded-r-md"
                       >
                         {isExpanded ? (
                           <ChevronDown className="h-4 w-4 flex-shrink-0" />
@@ -267,7 +272,15 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
           </nav>
 
           {/* Footer */}
-          <div className="border-t border-border p-2 sm:p-3 lg:p-4">
+          <div className="border-t border-border p-2 sm:p-3 lg:p-4 space-y-2">
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-muted-foreground hover:text-foreground py-3 sm:py-2"
+              onClick={() => setIsSupportModalOpen(true)}
+            >
+              <LifeBuoy className="mr-3 h-4 w-4 sm:h-5 sm:w-5" />
+              Support
+            </Button>
             <Button
               variant="ghost"
               className="w-full justify-start text-muted-foreground hover:text-foreground py-3 sm:py-2"
@@ -279,6 +292,12 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
           </div>
         </div>
       </div>
+
+      {/* Support Modal */}
+      <SupportModal 
+        isOpen={isSupportModalOpen} 
+        onClose={() => setIsSupportModalOpen(false)} 
+      />
     </>
   )
 }
