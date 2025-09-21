@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -29,6 +29,19 @@ interface AdminSidebarProps {
   onClose: () => void
 }
 
+const pageSlugs = [
+  { name: 'Home', slug: 'home' },
+  { name: 'Platform', slug: 'platform' },
+  { name: 'People - Concierge', slug: 'people-concierge' },
+  { name: 'People - Experts', slug: 'people-experts' },
+  { name: 'Solutions', slug: 'solutions' },
+  { name: 'Pricing', slug: 'pricing' },
+  { name: 'About', slug: 'about' },
+  { name: 'Partners', slug: 'partners' },
+  { name: 'Investors', slug: 'investors' },
+  { name: 'Developers', slug: 'developers' }
+]
+
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: Home },
   { 
@@ -36,18 +49,7 @@ const navigation = [
     href: '/admin/pages', 
     icon: FileText,
     hasSubmenu: true,
-    submenu: [
-      { name: 'Home', href: '/admin/pages', slug: 'home' },
-      { name: 'Platform', href: '/admin/pages', slug: 'platform' },
-      { name: 'People - Concierge', href: '/admin/pages', slug: 'people-concierge' },
-      { name: 'People - Experts', href: '/admin/pages', slug: 'people-experts' },
-      { name: 'Solutions', href: '/admin/pages', slug: 'solutions' },
-      { name: 'Pricing', href: '/admin/pages', slug: 'pricing' },
-      { name: 'About', href: '/admin/pages', slug: 'about' },
-      { name: 'Partners', href: '/admin/pages', slug: 'partners' },
-      { name: 'Investors', href: '/admin/pages', slug: 'investors' },
-      { name: 'Developers', href: '/admin/pages', slug: 'developers' }
-    ]
+    submenu: pageSlugs
   },
   { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Blog', href: '/admin/blog', icon: BookOpen },
@@ -63,6 +65,39 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
   const supabase = createClient()
   const router = useRouter()
   const [expandedMenus, setExpandedMenus] = useState<Set<string>>(new Set())
+  const [pageIdMap, setPageIdMap] = useState<Record<string, string>>({})
+
+  // Fetch page IDs for direct edit navigation
+  useEffect(() => {
+    const fetchPageIds = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('pages')
+          .select('id, slug')
+          .in('slug', pageSlugs.map(p => p.slug))
+
+        if (error) {
+          console.error('Error fetching page IDs:', error)
+          return
+        }
+
+        const idMap: Record<string, string> = {}
+        data?.forEach(page => {
+          idMap[page.slug] = page.id
+        })
+        setPageIdMap(idMap)
+      } catch (error) {
+        console.error('Error fetching page IDs:', error)
+      }
+    }
+
+    fetchPageIds()
+  }, [supabase])
+
+  const getEditUrl = (slug: string) => {
+    const pageId = pageIdMap[slug]
+    return pageId ? `/admin/pages/${pageId}/edit` : '/admin/pages'
+  }
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -129,16 +164,16 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
               if (item.hasSubmenu) {
                 return (
                   <div key={item.name}>
-                    <div className="flex items-center">
+                    <div className={cn(
+                      "flex items-center rounded-md transition-colors",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}>
                       {/* Main clickable area - links to the main page */}
                       <Link
                         href={item.href}
-                        className={cn(
-                          "flex-1 flex items-center px-2 py-3 sm:py-2 text-sm font-medium rounded-l-md transition-colors",
-                          isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        )}
+                        className="flex-1 flex items-center px-3 py-3 sm:py-2 text-sm font-medium"
                         onClick={() => {
                           // Close mobile sidebar when navigating
                           if (window.innerWidth < 1024) {
@@ -155,15 +190,10 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                         {item.name}
                       </Link>
                       
-                      {/* Separate expand/collapse button */}
+                      {/* Expand/collapse button */}
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className={cn(
-                          "px-2 py-3 sm:py-2 text-sm font-medium rounded-r-md border-l border-border/20 transition-colors",
-                          isActive
-                            ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        )}
+                        className="px-3 py-3 sm:py-2 text-sm font-medium flex items-center justify-center min-w-[44px] hover:bg-black/10 rounded-r-md"
                       >
                         {isExpanded ? (
                           <ChevronDown className="h-4 w-4 flex-shrink-0" />
@@ -176,11 +206,12 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                     {isExpanded && item.submenu && (
                       <div className="ml-6 mt-1 space-y-1">
                         {item.submenu.map((subItem) => {
-                          const isSubActive = pathname.includes('/admin/pages') && pathname.includes(subItem.slug)
+                          const editUrl = getEditUrl(subItem.slug)
+                          const isSubActive = pathname === editUrl
                           return (
                             <Link
                               key={subItem.slug}
-                              href={`${subItem.href}?page=${subItem.slug}`}
+                              href={editUrl}
                               className={cn(
                                 "group flex items-center px-2 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors",
                                 isSubActive
