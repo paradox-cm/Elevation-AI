@@ -456,7 +456,9 @@ export default function FormSubmissionsPage() {
                             return ''
                           })()}
                         </span>
-                        {renderNode(submission.form_data?.message, "text-muted-foreground mt-1 line-clamp-2")}
+                        <span className="text-muted-foreground mt-1 line-clamp-2">
+                          {renderNode(submission.form_data?.message)}
+                        </span>
                       </div>
                     </div>
                     

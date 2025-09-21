@@ -47,12 +47,13 @@ const navigation = [
   { 
     name: 'Pages', 
     href: '/admin/pages', 
-    icon: FileText,
-    hasSubmenu: true,
-    submenu: pageSlugs
+    icon: FileText, 
+    hasSubmenu: true, 
+    submenu: pageSlugs 
   },
   { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Blog', href: '/admin/blog', icon: BookOpen },
+  { name: 'Press', href: '/admin/press', icon: FileText },
   { name: 'Media', href: '/admin/media', icon: Image },
   { name: 'Submissions', href: '/admin/submissions', icon: MessageSquare },
   { name: 'Emails', href: '/admin/emails', icon: Mail },
@@ -82,7 +83,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         }
 
         const idMap: Record<string, string> = {}
-        data?.forEach(page => {
+        data?.forEach((page: { slug: string; id: string }) => {
           idMap[page.slug] = page.id
         })
         setPageIdMap(idMap)

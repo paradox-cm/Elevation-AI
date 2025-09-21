@@ -12,111 +12,310 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { H1, H2, H3, P, BodyLarge, BodySmall } from "@/components/ui/typography"
+import { LoadingSpinner } from "@/components/ui/loading"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
-import React from "react"
+import Image from "next/image"
+import React, { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
-export default function PressPage() {
-  const pressReleases = [
-    {
-      id: 1,
-      title: "Elevation AI Raises $25M Series A to Accelerate Agentic AI Platform Development",
-      date: "2024-01-15",
-      category: "Funding",
-      excerpt: "Company announces major funding round led by leading venture capital firms to expand platform capabilities and accelerate market adoption.",
-      readTime: "3 min read"
-    },
-    {
-      id: 2,
-      title: "Elevation AI Launches Revolutionary Knowledge Graph Technology for Enterprise AI",
-      date: "2024-01-10",
-      category: "Product",
-      excerpt: "New proprietary technology enables enterprises to unify scattered data sources into intelligent, actionable knowledge graphs for enhanced AI performance.",
-      readTime: "4 min read"
-    },
-    {
-      id: 3,
-      title: "Elevation AI Partners with Leading Private Equity Firm to Transform Portfolio Operations",
-      date: "2024-01-05",
-      category: "Partnership",
-      excerpt: "Strategic partnership will deploy Elevation AI's platform across portfolio companies to drive operational efficiency and data-driven decision making.",
-      readTime: "3 min read"
-    },
-    {
-      id: 4,
-      title: "Elevation AI Appoints Former Microsoft Executive as Chief Technology Officer",
-      date: "2023-12-20",
-      category: "Leadership",
-      excerpt: "Industry veteran brings 15+ years of enterprise AI experience to lead technical strategy and platform development.",
-      readTime: "2 min read"
-    }
-  ]
+interface PressArticle {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  content: string | null
+  article_type: 'press_release' | 'media_coverage'
+  category: string | null
+  source: string | null
+  external_url: string | null
+  read_time: string | null
+  featured_image_url: string | null
+  is_published: boolean
+  published_at: string | null
+  created_at: string
+  updated_at: string
+}
 
-  const mediaCoverage = [
-    {
-      id: 1,
-      title: "The Future of Enterprise AI: How Elevation AI is Redefining Business Operations",
-      source: "TechCrunch",
-      date: "2024-01-12",
-      category: "Feature",
-      excerpt: "Deep dive into how Elevation AI's platform is transforming how enterprises approach AI implementation and data orchestration.",
-      readTime: "8 min read"
-    },
-    {
-      id: 2,
-      title: "Agentic AI: The Next Frontier in Business Automation",
-      source: "Forbes",
-      date: "2024-01-08",
-      category: "Analysis",
-      excerpt: "Industry analysis featuring Elevation AI's approach to agentic AI and its potential impact on enterprise operations.",
-      readTime: "6 min read"
-    },
-    {
-      id: 3,
-      title: "Elevation AI's $25M Series A Signals Growing Interest in Enterprise AI Platforms",
-      source: "VentureBeat",
-      date: "2024-01-16",
-      category: "News",
-      excerpt: "Coverage of Elevation AI's recent funding round and what it means for the enterprise AI market.",
-      readTime: "4 min read"
-    },
-    {
-      id: 4,
-      title: "How Knowledge Graphs are Revolutionizing Enterprise AI",
-      source: "MIT Technology Review",
-      date: "2024-01-03",
-      category: "Technology",
-      excerpt: "Technical deep dive into Elevation AI's knowledge graph technology and its applications in enterprise environments.",
-      readTime: "10 min read"
-    }
-  ]
+// Press Releases Section Component
+function PressReleasesSection({ articles }: { articles: PressArticle[] }) {
+  const pressReleases = articles.filter(article => article.article_type === 'press_release')
 
+  return (
+    <Section paddingY="lg">
+      <div className="max-w-4xl mx-auto">
+        <H2 className="mb-8">Press Releases</H2>
+        <P className="text-muted-foreground mb-8">Latest announcements and news from Elevation AI</P>
+        <div className="space-y-6">
+          {pressReleases.map((release) => (
+            <Card key={release.id} className="group hover:shadow-lg transition-all duration-200 overflow-hidden">
+              <div className="flex flex-col lg:flex-row">
+                <div className="flex-1 p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        {release.category && (
+                          <Badge variant="secondary" className="text-xs">
+                            {release.category}
+                          </Badge>
+                        )}
+                        <span className="text-sm text-muted-foreground">
+                          {release.published_at ? new Date(release.published_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          }) : ''}
+                        </span>
+                      </div>
+                      <CardTitle className="text-lg sm:text-xl mb-3 group-hover:text-primary transition-colors">
+                        {release.title}
+                      </CardTitle>
+                    </div>
+                    <div className="flex-shrink-0">
+                      {release.read_time && (
+                        <span className="text-sm text-muted-foreground">{release.read_time}</span>
+                      )}
+                    </div>
+                  </div>
+                  {release.excerpt && (
+                    <BodySmall className="text-muted-foreground mb-4">
+                      {release.excerpt}
+                    </BodySmall>
+                  )}
+                  <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors" asChild>
+                    <Link href={`/website/press/press-releases/${release.slug}`}>
+                      Read More
+                      <Icon name="arrow-right-line" className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+                {release.featured_image_url && (
+                  <div className="relative w-full lg:w-80 h-48 lg:h-auto lg:min-h-full p-4">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden">
+                      <Image
+                        src={release.featured_image_url}
+                        alt={release.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </Section>
+  )
+}
+
+// Media Coverage Section Component
+function MediaCoverageSection({ articles }: { articles: PressArticle[] }) {
+  const mediaCoverage = articles.filter(article => article.article_type === 'media_coverage')
+
+  return (
+    <Section paddingY="lg">
+      <div className="max-w-4xl mx-auto">
+        <H2 className="mb-8">Media Coverage</H2>
+        <P className="text-muted-foreground mb-8">Recent coverage and analysis of Elevation AI in the media</P>
+        <div className="space-y-6">
+          {mediaCoverage.map((article) => (
+            <Card key={article.id} className="group hover:shadow-lg transition-all duration-200 overflow-hidden">
+              <div className="flex flex-col lg:flex-row">
+                <div className="flex-1 p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    {article.category && (
+                      <Badge variant="outline" className="text-xs">
+                        {article.category}
+                      </Badge>
+                    )}
+                    <span className="text-sm text-muted-foreground">
+                      {article.published_at ? new Date(article.published_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      }) : ''}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl mb-3 group-hover:text-primary transition-colors">
+                    {article.title}
+                  </CardTitle>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                    {article.source && <span className="font-medium">{article.source}</span>}
+                    {article.source && article.read_time && <span>•</span>}
+                    {article.read_time && <span>{article.read_time}</span>}
+                  </div>
+                  {article.excerpt && (
+                    <BodySmall className="text-muted-foreground mb-4">
+                      {article.excerpt}
+                    </BodySmall>
+                  )}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                    asChild
+                  >
+                    <Link href={`/website/press/media-coverage/${article.slug}`}>
+                      Read Article
+                      <Icon name="arrow-right-line" className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+                {article.featured_image_url && (
+                  <div className="relative w-full lg:w-80 h-48 lg:h-auto lg:min-h-full p-4">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden">
+                      <Image
+                        src={article.featured_image_url}
+                        alt={article.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </Section>
+  )
+}
+
+// Media Resources Section Component (Hardcoded)
+function MediaResourcesSection() {
   const mediaResources = [
     {
       title: "Company Logo Package",
       description: "High-resolution logos in various formats",
       format: "ZIP",
       size: "15.2 MB"
-    },
-    {
-      title: "Executive Headshots",
-      description: "Professional photos of leadership team",
-      format: "ZIP",
-      size: "8.7 MB"
-    },
-    {
-      title: "Product Screenshots",
-      description: "Platform interface and feature screenshots",
-      format: "ZIP",
-      size: "12.4 MB"
-    },
-    {
-      title: "Brand Guidelines",
-      description: "Complete brand identity and usage guidelines",
-      format: "PDF",
-      size: "3.1 MB"
     }
   ]
+
+  return (
+    <Section paddingY="lg">
+      <div className="max-w-4xl mx-auto">
+        <H2 className="mb-8">Media Resources</H2>
+        <P className="text-muted-foreground mb-8">Downloadable assets and resources for media and press</P>
+        <div className="grid gap-4 md:grid-cols-2">
+          {mediaResources.map((resource, index) => (
+            <Card key={index} className="group hover:shadow-lg transition-all duration-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-base mb-1 group-hover:text-primary transition-colors">
+                      {resource.title}
+                    </CardTitle>
+                    <BodySmall className="text-muted-foreground">
+                      {resource.description}
+                    </BodySmall>
+                  </div>
+                  <div className="flex-shrink-0 ml-4">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Badge variant="secondary" className="text-xs">
+                        {resource.format}
+                      </Badge>
+                      <span>{resource.size}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Icon name="download-line" className="mr-2 h-4 w-4" />
+                  Download
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </Section>
+  )
+}
+
+// Media Contact Section Component (Hardcoded)
+function MediaContactSection() {
+  return (
+    <Section paddingY="lg">
+      <div className="max-w-4xl mx-auto">
+        <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+          <CardHeader className="text-center">
+            <CardTitle className="text-base sm:text-2xl font-semibold tracking-tight text-foreground">
+              Media Inquiries
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <P className="text-muted-foreground text-sm sm:text-base">
+              For media inquiries, interview requests, or additional information about Elevation AI, please contact our press team.
+            </P>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button size="lg" asChild>
+                <Link href="/website/contact">
+                  <Icon name="mail-line" className="mr-2 h-4 w-4" />
+                  Contact Press Team
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="mailto:press@elevationai.com">
+                  <Icon name="mail-line" className="mr-2 h-4 w-4" />
+                  press@elevationai.com
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </Section>
+  )
+}
+
+export default function PressPage() {
+  const [articles, setArticles] = useState<PressArticle[]>([])
+  const [loading, setLoading] = useState(true)
+  const supabase = createClient()
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('press_articles')
+          .select('*')
+          .eq('is_published', true)
+          .order('published_at', { ascending: false })
+
+        if (error) {
+          if (error.code === 'PGRST205') {
+            console.log('Press articles table does not exist yet. Please create it first.')
+            setArticles([])
+            return
+          }
+          throw error
+        }
+        setArticles(data || [])
+      } catch (error) {
+        console.error('Error fetching press articles:', error)
+        setArticles([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchArticles()
+  }, [supabase])
+
+  if (loading) {
+    return (
+      <PageWrapper>
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <LoadingSpinner size="lg" text="Loading press page..." />
+        </div>
+      </PageWrapper>
+    )
+  }
 
   return (
     <PageWrapper>
@@ -131,175 +330,18 @@ export default function PressPage() {
               {/* Page Header */}
               <div className="w-full flex items-center justify-center min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]">
                 <div className="text-center space-y-1">
-                  <H1>
-                    Press
-                  </H1>
+                  <H1>Press</H1>
                   <P className="max-w-[42rem] mx-auto">
                     Latest news, press releases, and media resources about Elevation AI
                   </P>
                 </div>
               </div>
 
-              {/* Press Releases Section */}
-              <Section paddingY="lg">
-                <div className="max-w-4xl mx-auto">
-                  <H2 className="mb-8">Press Releases</H2>
-                  <div className="space-y-6">
-                    {pressReleases.map((release) => (
-                      <Card key={release.id} className="group hover:shadow-lg transition-all duration-200">
-                        <CardHeader>
-                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Badge variant="secondary" className="text-xs">
-                                  {release.category}
-                                </Badge>
-                                <span className="text-sm text-muted-foreground">
-                                  {new Date(release.date).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                  })}
-                                </span>
-                              </div>
-                              <CardTitle className="text-base sm:text-xl mb-3 group-hover:text-primary transition-colors">
-                                {release.title}
-                              </CardTitle>
-                            </div>
-                            <div className="flex-shrink-0">
-                              <span className="text-sm text-muted-foreground">{release.readTime}</span>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <BodySmall className="text-muted-foreground mb-4">
-                            {release.excerpt}
-                          </BodySmall>
-                          <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                            Read More
-                            <Icon name="arrow-right-line" className="ml-2 h-4 w-4" />
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </Section>
-
-              {/* Media Coverage Section */}
-              <Section paddingY="lg">
-                <div className="max-w-4xl mx-auto">
-                  <H2 className="mb-8">Media Coverage</H2>
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {mediaCoverage.map((article) => (
-                      <Card key={article.id} className="group hover:shadow-lg transition-all duration-200 h-full">
-                        <CardHeader>
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="outline" className="text-xs">
-                              {article.category}
-                            </Badge>
-                            <span className="text-sm text-muted-foreground">
-                              {new Date(article.date).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric'
-                              })}
-                            </span>
-                          </div>
-                          <CardTitle className="text-base sm:text-base md:text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                            {article.title}
-                          </CardTitle>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <span className="font-medium">{article.source}</span>
-                            <span>•</span>
-                            <span>{article.readTime}</span>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <BodySmall className="text-muted-foreground mb-4 line-clamp-3">
-                            {article.excerpt}
-                          </BodySmall>
-                          <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                            Read Article
-                            <Icon name="external-link-line" className="ml-2 h-4 w-4" />
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </Section>
-
-              {/* Media Resources Section */}
-              <Section paddingY="lg">
-                <div className="max-w-4xl mx-auto">
-                  <H2 className="mb-8">Media Resources</H2>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {mediaResources.map((resource, index) => (
-                      <Card key={index} className="group hover:shadow-lg transition-all duration-200">
-                        <CardHeader className="pb-3">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <CardTitle className="text-base mb-1 group-hover:text-primary transition-colors">
-                                {resource.title}
-                              </CardTitle>
-                              <BodySmall className="text-muted-foreground">
-                                {resource.description}
-                              </BodySmall>
-                            </div>
-                            <div className="flex-shrink-0 ml-4">
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Badge variant="secondary" className="text-xs">
-                                  {resource.format}
-                                </Badge>
-                                <span>{resource.size}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0">
-                          <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                            <Icon name="download-line" className="mr-2 h-4 w-4" />
-                            Download
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </Section>
-
-              {/* Contact Section */}
-              <Section paddingY="lg">
-                <div className="max-w-4xl mx-auto">
-                  <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-                    <CardHeader className="text-center">
-                      <CardTitle className="text-base sm:text-2xl font-semibold tracking-tight text-foreground">
-                        Media Inquiries
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-center space-y-4">
-                      <P className="text-muted-foreground text-sm sm:text-base">
-                        For media inquiries, interview requests, or additional information about Elevation AI, please contact our press team.
-                      </P>
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Button size="lg" asChild>
-                          <Link href="/website/contact">
-                            <Icon name="mail-line" className="mr-2 h-4 w-4" />
-                            Contact Press Team
-                          </Link>
-                        </Button>
-                        <Button variant="outline" size="lg" asChild>
-                          <a href="mailto:press@elevationai.com">
-                            <Icon name="mail-line" className="mr-2 h-4 w-4" />
-                            press@elevationai.com
-                          </a>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </Section>
+              {/* Press Sections */}
+              <PressReleasesSection articles={articles} />
+              <MediaCoverageSection articles={articles} />
+              <MediaResourcesSection />
+              <MediaContactSection />
             </Container>
           </main>
         </div>

@@ -280,14 +280,14 @@ export default function SectionEditPage() {
                 <div className="space-y-4">
                   <Label>Typewriter Words</Label>
                   <div className="space-y-3">
-                    {(Array.isArray(section.section_data?.words) ? section.section_data.words : []).map((word: unknown, index: number) => (
+                    {(Array.isArray(section.section_data?.cyclingWords) ? section.section_data.cyclingWords : []).map((word: unknown, index: number) => (
                       <div key={index} className="flex items-center space-x-2">
                         <Input
                           value={String(word || '')}
                           onChange={(e) => {
-                            const words = [...(Array.isArray(section.section_data?.words) ? section.section_data.words : [])]
-                            words[index] = e.target.value
-                            handleSectionDataChange('words', words)
+                            const cyclingWords = [...(Array.isArray(section.section_data?.cyclingWords) ? section.section_data.cyclingWords : [])]
+                            cyclingWords[index] = e.target.value
+                            handleSectionDataChange('cyclingWords', cyclingWords)
                           }}
                           placeholder={`Word ${index + 1}`}
                         />
@@ -295,9 +295,9 @@ export default function SectionEditPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => {
-                            const words = [...(Array.isArray(section.section_data?.words) ? section.section_data.words : [])]
-                            words.splice(index, 1)
-                            handleSectionDataChange('words', words)
+                            const cyclingWords = [...(Array.isArray(section.section_data?.cyclingWords) ? section.section_data.cyclingWords : [])]
+                            cyclingWords.splice(index, 1)
+                            handleSectionDataChange('cyclingWords', cyclingWords)
                           }}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -305,14 +305,35 @@ export default function SectionEditPage() {
                       </div>
                     ))}
                   </div>
-                  <Button
-                    variant="outline"
-                    onClick={() => addArrayItem('words', '')}
-                    className="w-full"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Word
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => addArrayItem('cyclingWords', '')}
+                      className="flex-1"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Word
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        const defaultWords = [
+                          "Intelligent Operations.",
+                          "Seamless Workflows.",
+                          "Data-Driven Decisions.",
+                          "Automated Processes.",
+                          "Strategic Growth.",
+                          "Operational Excellence.",
+                          "Business Transformation.",
+                          "Digital Innovation."
+                        ]
+                        handleSectionDataChange('cyclingWords', defaultWords)
+                      }}
+                      className="flex-1"
+                    >
+                      Load Default Words
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -2668,6 +2689,472 @@ export default function SectionEditPage() {
         )
 
       case 'custom':
+        // Check if this is a press section
+        const pressSectionType = section.section_data?.press_section_type
+        if (pressSectionType === 'press_releases') {
+          return (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Press Releases</CardTitle>
+                  <CardDescription>
+                    Manage press releases and company announcements
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Section Title</Label>
+                    <Input
+                      id="title"
+                      value={String(section.section_data?.title || 'Press Releases')}
+                      onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                      placeholder="Press Releases"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Section Description</Label>
+                    <Textarea
+                      id="description"
+                      value={String(section.section_data?.description || '')}
+                      onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                      placeholder="Latest announcements and news from Elevation AI"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <Label>Press Releases</Label>
+                    <div className="space-y-3">
+                      {(Array.isArray(section.section_data?.releases) ? section.section_data.releases : []).map((release: any, index: number) => (
+                        <Card key={index} className="p-4">
+                          <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label htmlFor={`release-title-${index}`}>Title</Label>
+                                <Input
+                                  id={`release-title-${index}`}
+                                  value={String(release.title || '')}
+                                  onChange={(e) => {
+                                    const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                    releases[index] = { ...releases[index], title: e.target.value }
+                                    handleSectionDataChange('releases', releases)
+                                  }}
+                                  placeholder="Press release title"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`release-category-${index}`}>Category</Label>
+                                <Input
+                                  id={`release-category-${index}`}
+                                  value={String(release.category || '')}
+                                  onChange={(e) => {
+                                    const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                    releases[index] = { ...releases[index], category: e.target.value }
+                                    handleSectionDataChange('releases', releases)
+                                  }}
+                                  placeholder="Funding, Product, Partnership, etc."
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label htmlFor={`release-date-${index}`}>Date</Label>
+                                <Input
+                                  id={`release-date-${index}`}
+                                  type="date"
+                                  value={String(release.date || '')}
+                                  onChange={(e) => {
+                                    const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                    releases[index] = { ...releases[index], date: e.target.value }
+                                    handleSectionDataChange('releases', releases)
+                                  }}
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`release-readTime-${index}`}>Read Time</Label>
+                                <Input
+                                  id={`release-readTime-${index}`}
+                                  value={String(release.readTime || '')}
+                                  onChange={(e) => {
+                                    const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                    releases[index] = { ...releases[index], readTime: e.target.value }
+                                    handleSectionDataChange('releases', releases)
+                                  }}
+                                  placeholder="3 min read"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <Label htmlFor={`release-excerpt-${index}`}>Excerpt</Label>
+                              <Textarea
+                                id={`release-excerpt-${index}`}
+                                value={String(release.excerpt || '')}
+                                onChange={(e) => {
+                                  const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                  releases[index] = { ...releases[index], excerpt: e.target.value }
+                                  handleSectionDataChange('releases', releases)
+                                }}
+                                placeholder="Brief description of the press release"
+                              />
+                            </div>
+                            <div className="flex justify-end">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                  releases.splice(index, 1)
+                                  handleSectionDataChange('releases', releases)
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => addArrayItem('releases', { title: '', category: '', date: '', excerpt: '', readTime: '' })}
+                      className="w-full"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Press Release
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )
+        }
+        
+        if (pressSectionType === 'media_coverage') {
+          return (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Media Coverage</CardTitle>
+                  <CardDescription>
+                    Manage media coverage and external articles
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Section Title</Label>
+                    <Input
+                      id="title"
+                      value={String(section.section_data?.title || 'Media Coverage')}
+                      onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                      placeholder="Media Coverage"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Section Description</Label>
+                    <Textarea
+                      id="description"
+                      value={String(section.section_data?.description || '')}
+                      onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                      placeholder="Recent coverage and analysis of Elevation AI in the media"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <Label>Media Articles</Label>
+                    <div className="space-y-3">
+                      {(Array.isArray(section.section_data?.articles) ? section.section_data.articles : []).map((article: any, index: number) => (
+                        <Card key={index} className="p-4">
+                          <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label htmlFor={`article-title-${index}`}>Title</Label>
+                                <Input
+                                  id={`article-title-${index}`}
+                                  value={String(article.title || '')}
+                                  onChange={(e) => {
+                                    const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                    articles[index] = { ...articles[index], title: e.target.value }
+                                    handleSectionDataChange('articles', articles)
+                                  }}
+                                  placeholder="Article title"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`article-source-${index}`}>Source</Label>
+                                <Input
+                                  id={`article-source-${index}`}
+                                  value={String(article.source || '')}
+                                  onChange={(e) => {
+                                    const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                    articles[index] = { ...articles[index], source: e.target.value }
+                                    handleSectionDataChange('articles', articles)
+                                  }}
+                                  placeholder="TechCrunch, Forbes, etc."
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                              <div>
+                                <Label htmlFor={`article-category-${index}`}>Category</Label>
+                                <Input
+                                  id={`article-category-${index}`}
+                                  value={String(article.category || '')}
+                                  onChange={(e) => {
+                                    const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                    articles[index] = { ...articles[index], category: e.target.value }
+                                    handleSectionDataChange('articles', articles)
+                                  }}
+                                  placeholder="Feature, Analysis, News, etc."
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`article-date-${index}`}>Date</Label>
+                                <Input
+                                  id={`article-date-${index}`}
+                                  type="date"
+                                  value={String(article.date || '')}
+                                  onChange={(e) => {
+                                    const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                    articles[index] = { ...articles[index], date: e.target.value }
+                                    handleSectionDataChange('articles', articles)
+                                  }}
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`article-readTime-${index}`}>Read Time</Label>
+                                <Input
+                                  id={`article-readTime-${index}`}
+                                  value={String(article.readTime || '')}
+                                  onChange={(e) => {
+                                    const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                    articles[index] = { ...articles[index], readTime: e.target.value }
+                                    handleSectionDataChange('articles', articles)
+                                  }}
+                                  placeholder="8 min read"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <Label htmlFor={`article-excerpt-${index}`}>Excerpt</Label>
+                              <Textarea
+                                id={`article-excerpt-${index}`}
+                                value={String(article.excerpt || '')}
+                                onChange={(e) => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles[index] = { ...articles[index], excerpt: e.target.value }
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                                placeholder="Brief description of the article"
+                              />
+                            </div>
+                            <div className="flex justify-end">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles.splice(index, 1)
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => addArrayItem('articles', { title: '', source: '', category: '', date: '', excerpt: '', readTime: '' })}
+                      className="w-full"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Media Article
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )
+        }
+        
+        if (pressSectionType === 'media_resources') {
+          return (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Media Resources</CardTitle>
+                  <CardDescription>
+                    Manage downloadable assets and resources for media
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Section Title</Label>
+                    <Input
+                      id="title"
+                      value={String(section.section_data?.title || 'Media Resources')}
+                      onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                      placeholder="Media Resources"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Section Description</Label>
+                    <Textarea
+                      id="description"
+                      value={String(section.section_data?.description || '')}
+                      onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                      placeholder="Downloadable assets and resources for media and press"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <Label>Resources</Label>
+                    <div className="space-y-3">
+                      {(Array.isArray(section.section_data?.resources) ? section.section_data.resources : []).map((resource: any, index: number) => (
+                        <Card key={index} className="p-4">
+                          <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label htmlFor={`resource-title-${index}`}>Title</Label>
+                                <Input
+                                  id={`resource-title-${index}`}
+                                  value={String(resource.title || '')}
+                                  onChange={(e) => {
+                                    const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                    resources[index] = { ...resources[index], title: e.target.value }
+                                    handleSectionDataChange('resources', resources)
+                                  }}
+                                  placeholder="Resource title"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`resource-format-${index}`}>Format</Label>
+                                <Input
+                                  id={`resource-format-${index}`}
+                                  value={String(resource.format || '')}
+                                  onChange={(e) => {
+                                    const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                    resources[index] = { ...resources[index], format: e.target.value }
+                                    handleSectionDataChange('resources', resources)
+                                  }}
+                                  placeholder="ZIP, PDF, etc."
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label htmlFor={`resource-description-${index}`}>Description</Label>
+                                <Input
+                                  id={`resource-description-${index}`}
+                                  value={String(resource.description || '')}
+                                  onChange={(e) => {
+                                    const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                    resources[index] = { ...resources[index], description: e.target.value }
+                                    handleSectionDataChange('resources', resources)
+                                  }}
+                                  placeholder="Brief description of the resource"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`resource-size-${index}`}>Size</Label>
+                                <Input
+                                  id={`resource-size-${index}`}
+                                  value={String(resource.size || '')}
+                                  onChange={(e) => {
+                                    const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                    resources[index] = { ...resources[index], size: e.target.value }
+                                    handleSectionDataChange('resources', resources)
+                                  }}
+                                  placeholder="15.2 MB"
+                                />
+                              </div>
+                            </div>
+                            <div className="flex justify-end">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                  resources.splice(index, 1)
+                                  handleSectionDataChange('resources', resources)
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => addArrayItem('resources', { title: '', description: '', format: '', size: '' })}
+                      className="w-full"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Resource
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )
+        }
+        
+        if (pressSectionType === 'media_contact') {
+          return (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Media Contact</CardTitle>
+                  <CardDescription>
+                    Manage media contact information and CTAs
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Section Title</Label>
+                    <Input
+                      id="title"
+                      value={String(section.section_data?.title || 'Media Inquiries')}
+                      onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                      placeholder="Media Inquiries"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      value={String(section.section_data?.description || '')}
+                      onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                      placeholder="For media inquiries, interview requests, or additional information about Elevation AI, please contact our press team."
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="contactEmail">Contact Email</Label>
+                      <Input
+                        id="contactEmail"
+                        value={String(section.section_data?.contactEmail || '')}
+                        onChange={(e) => handleSectionDataChange('contactEmail', e.target.value)}
+                        placeholder="press@elevationai.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="contactPage">Contact Page URL</Label>
+                      <Input
+                        id="contactPage"
+                        value={String(section.section_data?.contactPage || '')}
+                        onChange={(e) => handleSectionDataChange('contactPage', e.target.value)}
+                        placeholder="/website/contact"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )
+        }
+        
+        // Default custom section editor
         return (
           <div className="space-y-6">
             <Card>
@@ -2696,6 +3183,465 @@ export default function SectionEditPage() {
               </CardHeader>
               <CardContent>
                 <p>FAQ content</p>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'press_releases':
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Press Releases</CardTitle>
+                <CardDescription>
+                  Manage press releases and company announcements
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Section Title</Label>
+                  <Input
+                    id="title"
+                    value={String(section.section_data?.title || 'Press Releases')}
+                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                    placeholder="Press Releases"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Section Description</Label>
+                  <Textarea
+                    id="description"
+                    value={String(section.section_data?.description || '')}
+                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                    placeholder="Latest announcements and news from Elevation AI"
+                  />
+                </div>
+                <div className="space-y-4">
+                  <Label>Press Releases</Label>
+                  <div className="space-y-3">
+                    {(Array.isArray(section.section_data?.releases) ? section.section_data.releases : []).map((release: any, index: number) => (
+                      <Card key={index} className="p-4">
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor={`release-title-${index}`}>Title</Label>
+                              <Input
+                                id={`release-title-${index}`}
+                                value={String(release.title || '')}
+                                onChange={(e) => {
+                                  const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                  releases[index] = { ...releases[index], title: e.target.value }
+                                  handleSectionDataChange('releases', releases)
+                                }}
+                                placeholder="Press release title"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`release-category-${index}`}>Category</Label>
+                              <Input
+                                id={`release-category-${index}`}
+                                value={String(release.category || '')}
+                                onChange={(e) => {
+                                  const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                  releases[index] = { ...releases[index], category: e.target.value }
+                                  handleSectionDataChange('releases', releases)
+                                }}
+                                placeholder="Funding, Product, Partnership, etc."
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor={`release-date-${index}`}>Date</Label>
+                              <Input
+                                id={`release-date-${index}`}
+                                type="date"
+                                value={String(release.date || '')}
+                                onChange={(e) => {
+                                  const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                  releases[index] = { ...releases[index], date: e.target.value }
+                                  handleSectionDataChange('releases', releases)
+                                }}
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`release-readTime-${index}`}>Read Time</Label>
+                              <Input
+                                id={`release-readTime-${index}`}
+                                value={String(release.readTime || '')}
+                                onChange={(e) => {
+                                  const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                  releases[index] = { ...releases[index], readTime: e.target.value }
+                                  handleSectionDataChange('releases', releases)
+                                }}
+                                placeholder="3 min read"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor={`release-excerpt-${index}`}>Excerpt</Label>
+                            <Textarea
+                              id={`release-excerpt-${index}`}
+                              value={String(release.excerpt || '')}
+                              onChange={(e) => {
+                                const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                releases[index] = { ...releases[index], excerpt: e.target.value }
+                                handleSectionDataChange('releases', releases)
+                              }}
+                              placeholder="Brief description of the press release"
+                            />
+                          </div>
+                          <div className="flex justify-end">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                const releases = [...(Array.isArray(section.section_data?.releases) ? section.section_data.releases : [])]
+                                releases.splice(index, 1)
+                                handleSectionDataChange('releases', releases)
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => addArrayItem('releases', { title: '', category: '', date: '', excerpt: '', readTime: '' })}
+                    className="w-full"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Press Release
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'media_coverage':
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Media Coverage</CardTitle>
+                <CardDescription>
+                  Manage media coverage and external articles
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Section Title</Label>
+                  <Input
+                    id="title"
+                    value={String(section.section_data?.title || 'Media Coverage')}
+                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                    placeholder="Media Coverage"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Section Description</Label>
+                  <Textarea
+                    id="description"
+                    value={String(section.section_data?.description || '')}
+                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                    placeholder="Recent coverage and analysis of Elevation AI in the media"
+                  />
+                </div>
+                <div className="space-y-4">
+                  <Label>Media Articles</Label>
+                  <div className="space-y-3">
+                    {(Array.isArray(section.section_data?.articles) ? section.section_data.articles : []).map((article: any, index: number) => (
+                      <Card key={index} className="p-4">
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor={`article-title-${index}`}>Title</Label>
+                              <Input
+                                id={`article-title-${index}`}
+                                value={String(article.title || '')}
+                                onChange={(e) => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles[index] = { ...articles[index], title: e.target.value }
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                                placeholder="Article title"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`article-source-${index}`}>Source</Label>
+                              <Input
+                                id={`article-source-${index}`}
+                                value={String(article.source || '')}
+                                onChange={(e) => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles[index] = { ...articles[index], source: e.target.value }
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                                placeholder="TechCrunch, Forbes, etc."
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-3 gap-3">
+                            <div>
+                              <Label htmlFor={`article-category-${index}`}>Category</Label>
+                              <Input
+                                id={`article-category-${index}`}
+                                value={String(article.category || '')}
+                                onChange={(e) => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles[index] = { ...articles[index], category: e.target.value }
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                                placeholder="Feature, Analysis, News, etc."
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`article-date-${index}`}>Date</Label>
+                              <Input
+                                id={`article-date-${index}`}
+                                type="date"
+                                value={String(article.date || '')}
+                                onChange={(e) => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles[index] = { ...articles[index], date: e.target.value }
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`article-readTime-${index}`}>Read Time</Label>
+                              <Input
+                                id={`article-readTime-${index}`}
+                                value={String(article.readTime || '')}
+                                onChange={(e) => {
+                                  const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                  articles[index] = { ...articles[index], readTime: e.target.value }
+                                  handleSectionDataChange('articles', articles)
+                                }}
+                                placeholder="8 min read"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor={`article-excerpt-${index}`}>Excerpt</Label>
+                            <Textarea
+                              id={`article-excerpt-${index}`}
+                              value={String(article.excerpt || '')}
+                              onChange={(e) => {
+                                const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                articles[index] = { ...articles[index], excerpt: e.target.value }
+                                handleSectionDataChange('articles', articles)
+                              }}
+                              placeholder="Brief description of the article"
+                            />
+                          </div>
+                          <div className="flex justify-end">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                const articles = [...(Array.isArray(section.section_data?.articles) ? section.section_data.articles : [])]
+                                articles.splice(index, 1)
+                                handleSectionDataChange('articles', articles)
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => addArrayItem('articles', { title: '', source: '', category: '', date: '', excerpt: '', readTime: '' })}
+                    className="w-full"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Media Article
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'media_resources':
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Media Resources</CardTitle>
+                <CardDescription>
+                  Manage downloadable assets and resources for media
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Section Title</Label>
+                  <Input
+                    id="title"
+                    value={String(section.section_data?.title || 'Media Resources')}
+                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                    placeholder="Media Resources"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Section Description</Label>
+                  <Textarea
+                    id="description"
+                    value={String(section.section_data?.description || '')}
+                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                    placeholder="Downloadable assets and resources for media and press"
+                  />
+                </div>
+                <div className="space-y-4">
+                  <Label>Resources</Label>
+                  <div className="space-y-3">
+                    {(Array.isArray(section.section_data?.resources) ? section.section_data.resources : []).map((resource: any, index: number) => (
+                      <Card key={index} className="p-4">
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor={`resource-title-${index}`}>Title</Label>
+                              <Input
+                                id={`resource-title-${index}`}
+                                value={String(resource.title || '')}
+                                onChange={(e) => {
+                                  const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                  resources[index] = { ...resources[index], title: e.target.value }
+                                  handleSectionDataChange('resources', resources)
+                                }}
+                                placeholder="Resource title"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`resource-format-${index}`}>Format</Label>
+                              <Input
+                                id={`resource-format-${index}`}
+                                value={String(resource.format || '')}
+                                onChange={(e) => {
+                                  const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                  resources[index] = { ...resources[index], format: e.target.value }
+                                  handleSectionDataChange('resources', resources)
+                                }}
+                                placeholder="ZIP, PDF, etc."
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor={`resource-description-${index}`}>Description</Label>
+                              <Input
+                                id={`resource-description-${index}`}
+                                value={String(resource.description || '')}
+                                onChange={(e) => {
+                                  const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                  resources[index] = { ...resources[index], description: e.target.value }
+                                  handleSectionDataChange('resources', resources)
+                                }}
+                                placeholder="Brief description of the resource"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`resource-size-${index}`}>Size</Label>
+                              <Input
+                                id={`resource-size-${index}`}
+                                value={String(resource.size || '')}
+                                onChange={(e) => {
+                                  const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                  resources[index] = { ...resources[index], size: e.target.value }
+                                  handleSectionDataChange('resources', resources)
+                                }}
+                                placeholder="15.2 MB"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-end">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                const resources = [...(Array.isArray(section.section_data?.resources) ? section.section_data.resources : [])]
+                                resources.splice(index, 1)
+                                handleSectionDataChange('resources', resources)
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => addArrayItem('resources', { title: '', description: '', format: '', size: '' })}
+                    className="w-full"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Resource
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'media_contact':
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Media Contact</CardTitle>
+                <CardDescription>
+                  Manage media contact information and CTAs
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Section Title</Label>
+                  <Input
+                    id="title"
+                    value={String(section.section_data?.title || 'Media Inquiries')}
+                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                    placeholder="Media Inquiries"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={String(section.section_data?.description || '')}
+                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                    placeholder="For media inquiries, interview requests, or additional information about Elevation AI, please contact our press team."
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="contactEmail">Contact Email</Label>
+                    <Input
+                      id="contactEmail"
+                      value={String(section.section_data?.contactEmail || '')}
+                      onChange={(e) => handleSectionDataChange('contactEmail', e.target.value)}
+                      placeholder="press@elevationai.com"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="contactPage">Contact Page URL</Label>
+                    <Input
+                      id="contactPage"
+                      value={String(section.section_data?.contactPage || '')}
+                      onChange={(e) => handleSectionDataChange('contactPage', e.target.value)}
+                      placeholder="/website/contact"
+                    />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
