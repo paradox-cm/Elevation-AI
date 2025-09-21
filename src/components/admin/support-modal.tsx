@@ -26,12 +26,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 const supportTicketSchema = z.object({
-  type: z.enum(['bug', 'feature', 'question', 'other'], {
-    required_error: 'Please select a ticket type'
-  }),
-  priority: z.enum(['low', 'medium', 'high', 'urgent'], {
-    required_error: 'Please select a priority level'
-  }),
+  type: z.enum(['bug', 'feature', 'question', 'other']),
+  priority: z.enum(['low', 'medium', 'high', 'urgent']),
   subject: z.string().min(5, 'Subject must be at least 5 characters'),
   description: z.string().min(20, 'Description must be at least 20 characters'),
   stepsToReproduce: z.string().optional(),
@@ -40,8 +36,8 @@ const supportTicketSchema = z.object({
   browser: z.string().optional(),
   operatingSystem: z.string().optional(),
   url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
-  includeSystemInfo: z.boolean().default(false),
-  includeScreenshots: z.boolean().default(false)
+  includeSystemInfo: z.boolean(),
+  includeScreenshots: z.boolean()
 })
 
 type SupportTicketData = z.infer<typeof supportTicketSchema>
