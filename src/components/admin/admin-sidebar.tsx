@@ -21,7 +21,8 @@ import {
   ChevronDown,
   ChevronRight,
   CheckSquare,
-  LifeBuoy
+  LifeBuoy,
+  Clock
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -32,28 +33,18 @@ interface AdminSidebarProps {
   onClose: () => void
 }
 
-const pageSlugs = [
-  { name: 'Home', slug: 'home' },
-  { name: 'Platform', slug: 'platform' },
-  { name: 'People - Concierge', slug: 'people-concierge' },
-  { name: 'People - Experts', slug: 'people-experts' },
-  { name: 'Solutions', slug: 'solutions' },
-  { name: 'Pricing', slug: 'pricing' },
-  { name: 'About', slug: 'about' },
-  { name: 'Partners', slug: 'partners' },
-  { name: 'Investors', slug: 'investors' },
-  { name: 'Developers', slug: 'developers' }
-]
+interface NavigationItem {
+  name: string
+  href: string
+  icon: any
+  hasSubmenu?: boolean
+  submenu?: Array<{ name: string; slug: string }>
+}
 
-const navigation = [
+// Base navigation items (without dynamic pages)
+const baseNavigation = [
   { name: 'Dashboard', href: '/admin', icon: Home },
-  { 
-    name: 'Pages', 
-    href: '/admin/pages', 
-    icon: FileText, 
-    hasSubmenu: true, 
-    submenu: pageSlugs 
-  },
+  { name: 'Activity', href: '/admin/activity', icon: Clock },
   { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Blog', href: '/admin/blog', icon: BookOpen },
   { name: 'Press', href: '/admin/press', icon: FileText },
@@ -72,33 +63,62 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
   const [expandedMenus, setExpandedMenus] = useState<Set<string>>(new Set())
   const [pageIdMap, setPageIdMap] = useState<Record<string, string>>({})
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false)
+  const [pages, setPages] = useState<Array<{ id: string; title: string; slug: string }>>([])
 
-  // Fetch page IDs for direct edit navigation
+  // Fetch all pages for dynamic sidebar
   useEffect(() => {
-    const fetchPageIds = async () => {
+    const fetchPages = async () => {
       try {
         const { data, error } = await supabase
           .from('pages')
-          .select('id, slug')
-          .in('slug', pageSlugs.map(p => p.slug))
+          .select('id, title, slug')
+          .eq('is_published', true)
+          .order('title', { ascending: true })
 
         if (error) {
-          console.error('Error fetching page IDs:', error)
+          console.error('Error fetching pages:', error)
           return
         }
 
+        // Filter out blog, FAQ, and knowledge base pages since they have their own admin sections
+        const filteredPages = (data || []).filter((page: any) => 
+          page.slug !== 'blog' && 
+          page.slug !== 'faq' && 
+          page.slug !== 'faqs' &&
+          page.slug !== 'knowledge-base'
+        )
+
+        setPages(filteredPages)
+
+        // Create ID map for direct edit navigation
         const idMap: Record<string, string> = {}
-        data?.forEach((page: { slug: string; id: string }) => {
+        filteredPages.forEach((page: { slug: string; id: string }) => {
           idMap[page.slug] = page.id
         })
         setPageIdMap(idMap)
       } catch (error) {
-        console.error('Error fetching page IDs:', error)
+        console.error('Error fetching pages:', error)
       }
     }
 
-    fetchPageIds()
+    fetchPages()
   }, [supabase])
+
+  // Create dynamic navigation with pages
+  const navigation: NavigationItem[] = [
+    ...baseNavigation.slice(0, 1), // Dashboard
+    { 
+      name: 'Pages', 
+      href: '/admin/pages', 
+      icon: FileText, 
+      hasSubmenu: true, 
+      submenu: pages.map(page => ({
+        name: page.title,
+        slug: page.slug
+      }))
+    },
+    ...baseNavigation.slice(1) // Rest of the navigation items
+  ]
 
   const getEditUrl = (slug: string) => {
     const pageId = pageIdMap[slug]

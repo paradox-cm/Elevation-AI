@@ -20,13 +20,16 @@ import {
   Eye,
   EyeOff,
   Clock,
-  MoreHorizontal
+  MoreHorizontal,
+  ArrowRight
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import Link from 'next/link'
 
 interface RecentActivityProps {
   limit?: number
   showFilters?: boolean
+  showViewAll?: boolean
   className?: string
 }
 
@@ -65,6 +68,7 @@ const actionColors = {
 export function RecentActivity({ 
   limit = 10, 
   showFilters = false, 
+  showViewAll = true,
   className = '' 
 }: RecentActivityProps) {
   const [activities, setActivities] = useState<ActivityLog[]>([])
@@ -175,34 +179,44 @@ export function RecentActivity({
             <Clock className="h-5 w-5" />
             Recent Activity
           </CardTitle>
-          {showFilters && (
-            <div className="flex flex-wrap gap-1 sm:gap-2">
-              <Button
-                variant={filter === 'all' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setFilter('all')}
-                className="text-xs h-7 sm:h-8 px-2 sm:px-3"
-              >
-                All
+          <div className="flex items-center gap-2">
+            {showFilters && (
+              <div className="flex flex-wrap gap-1 sm:gap-2">
+                <Button
+                  variant={filter === 'all' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilter('all')}
+                  className="text-xs h-7 sm:h-8 px-2 sm:px-3"
+                >
+                  All
+                </Button>
+                <Button
+                  variant={filter === 'create' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilter('create')}
+                  className="text-xs h-7 sm:h-8 px-2 sm:px-3"
+                >
+                  Created
+                </Button>
+                <Button
+                  variant={filter === 'update' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilter('update')}
+                  className="text-xs h-7 sm:h-8 px-2 sm:px-3"
+                >
+                  Updated
+                </Button>
+              </div>
+            )}
+            {showViewAll && (
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/admin/activity">
+                  View all activity
+                  <ArrowRight className="h-3 w-3 ml-1" />
+                </Link>
               </Button>
-              <Button
-                variant={filter === 'create' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setFilter('create')}
-                className="text-xs h-7 sm:h-8 px-2 sm:px-3"
-              >
-                Created
-              </Button>
-              <Button
-                variant={filter === 'update' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setFilter('update')}
-                className="text-xs h-7 sm:h-8 px-2 sm:px-3"
-              >
-                Updated
-              </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </CardHeader>
       <CardContent>

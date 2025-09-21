@@ -19,7 +19,11 @@ import {
   Image,
   Type,
   Layout,
-  Edit
+  Edit,
+  Plus,
+  Trash2,
+  GripVertical,
+  MoreVertical
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -40,6 +44,8 @@ export default function EditPagePage() {
   const [deletingSection, setDeletingSection] = useState<PageSection | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isAddingSection, setIsAddingSection] = useState(false)
+  const [showAddSectionModal, setShowAddSectionModal] = useState(false)
   
   const supabase = createClient()
   const { refreshCurrentPage } = useCMSRefresh()
@@ -171,6 +177,78 @@ export default function EditPagePage() {
     }
   }
 
+  const handleAddSection = async (sectionType: string, title: string) => {
+    if (!page) return
+
+    setIsAddingSection(true)
+    try {
+      const newSection = {
+        page_id: page.id,
+        section_type: sectionType,
+        title: title,
+        section_order: sections.length,
+        content: '',
+        metadata: {},
+        is_published: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+
+      const { data, error } = await supabase
+        .from('page_sections')
+        .insert(newSection)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Error adding section:', error)
+        toast.error('Failed to add section')
+        return
+      }
+
+      // Add to local state
+      setSections([...sections, data])
+      setShowAddSectionModal(false)
+      
+      toast.success('Section added successfully')
+    } catch (error) {
+      console.error('Error adding section:', error)
+      toast.error('Failed to add section')
+    } finally {
+      setIsAddingSection(false)
+    }
+  }
+
+  const handleReorderSections = async (newOrder: PageSection[]) => {
+    try {
+      // Update local state immediately for better UX
+      setSections(newOrder)
+
+      // Update database
+      const updates = newOrder.map((section, index) => ({
+        id: section.id,
+        section_order: index
+      }))
+
+      for (const update of updates) {
+        await supabase
+          .from('page_sections')
+          .update({ 
+            section_order: update.section_order,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', update.id)
+      }
+
+      toast.success('Sections reordered successfully')
+    } catch (error) {
+      console.error('Error reordering sections:', error)
+      toast.error('Failed to reorder sections')
+      // Revert local state on error
+      fetchPageData()
+    }
+  }
+
 
   const getSectionIcon = (type: string) => {
     switch (type) {
@@ -213,7 +291,7 @@ export default function EditPagePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm" asChild>
             <Link href="/admin/pages">
@@ -222,22 +300,24 @@ export default function EditPagePage() {
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Edit Page</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Edit Page</h1>
             <p className="text-sm sm:text-base text-muted-foreground">
               {page.title} • /{page.slug}
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <Button variant="outline" asChild>
+        <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2">
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link href={`/website/${page.slug}`} target="_blank">
               <Eye className="h-4 w-4 mr-2" />
-              Preview {page.title} Page
+              <span className="hidden sm:inline">Preview {page.title} Page</span>
+              <span className="sm:hidden">Preview</span>
             </Link>
           </Button>
           <Button 
             onClick={handleSave} 
             disabled={!hasChanges || isSaving}
+            className="w-full sm:w-auto"
           >
             <Save className="h-4 w-4 mr-2" />
             {isSaving ? 'Saving...' : 'Save Changes'}
@@ -318,44 +398,66 @@ export default function EditPagePage() {
           {/* Page Sections */}
           <Card>
             <CardHeader>
-              <div>
-                <CardTitle>{page.title} Page Sections</CardTitle>
-                <CardDescription>
-                  Manage the content sections for the {page.title.toLowerCase()} page. All sections are connected to the CMS.
-                </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>{page.title} Page Sections</CardTitle>
+                  <CardDescription>
+                    Manage the content sections for the {page.title.toLowerCase()} page. All sections are connected to the CMS.
+                  </CardDescription>
+                </div>
+                <Button
+                  onClick={() => setShowAddSectionModal(true)}
+                  disabled={isAddingSection}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  {isAddingSection ? 'Adding...' : 'Add Section'}
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
               {sections.length > 0 ? (
                 <div className="space-y-3">
                   {sections.map((section, index) => (
-                    <div key={section.id} className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+                    <div key={section.id} className="flex flex-col space-y-3 p-4 border rounded-lg bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
                       <div className="flex items-center space-x-3">
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-medium flex-shrink-0">
                           {index + 1}
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 min-w-0 flex-1">
                           {getSectionIcon(section.section_type)}
-                          <div>
-                            <h4 className="font-medium text-foreground">{section.title}</h4>
-                            <p className="text-sm text-muted-foreground capitalize">
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-medium text-foreground truncate">{section.title}</h4>
+                            <p className="text-sm text-muted-foreground capitalize truncate">
                               {section.section_type.replace(/-/g, ' ')}
                             </p>
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center justify-between space-x-2 sm:justify-end">
                         <Badge variant="secondary" className="text-xs">
                           CMS Connected
                         </Badge>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEditSection(section)}
-                        >
-                          <Edit className="h-4 w-4 mr-2" />
-                          Edit
-                        </Button>
+                        <div className="flex items-center space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditSection(section)}
+                            className="flex-shrink-0"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setDeletingSection(section)
+                              setIsDeleteModalOpen(true)
+                            }}
+                            className="flex-shrink-0 text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -366,9 +468,16 @@ export default function EditPagePage() {
                   <h3 className="text-lg font-medium text-foreground mb-2">
                     No sections found
                   </h3>
-                  <p className="text-muted-foreground">
-                    The {page.title.toLowerCase()} page sections will appear here once they are created.
+                  <p className="text-muted-foreground mb-4">
+                    Add your first section to start building your page content.
                   </p>
+                  <Button
+                    onClick={() => setShowAddSectionModal(true)}
+                    disabled={isAddingSection}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    {isAddingSection ? 'Adding...' : 'Add First Section'}
+                  </Button>
                 </div>
               )}
             </CardContent>
@@ -439,6 +548,16 @@ export default function EditPagePage() {
         </div>
       </div>
 
+      {/* Add Section Modal */}
+      {showAddSectionModal && (
+        <AddSectionModal
+          isOpen={showAddSectionModal}
+          onClose={() => setShowAddSectionModal(false)}
+          onAdd={handleAddSection}
+          isLoading={isAddingSection}
+        />
+      )}
+
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog
         isOpen={isDeleteModalOpen}
@@ -451,6 +570,105 @@ export default function EditPagePage() {
         description={`Are you sure you want to delete "${deletingSection?.title}"? This action cannot be undone.`}
         isLoading={isDeleting}
       />
+    </div>
+  )
+}
+
+// Add Section Modal Component
+function AddSectionModal({ 
+  isOpen, 
+  onClose, 
+  onAdd, 
+  isLoading 
+}: { 
+  isOpen: boolean
+  onClose: () => void
+  onAdd: (sectionType: string, title: string) => void
+  isLoading: boolean
+}) {
+  const [sectionType, setSectionType] = useState('hero_simple')
+  const [title, setTitle] = useState('')
+
+  const sectionTypes = [
+    { value: 'hero_simple', label: 'Hero Section', description: 'Main page header with title and description' },
+    { value: 'hero_typewriter', label: 'Animated Hero', description: 'Hero with typewriter animation effect' },
+    { value: 'introduction_accordion', label: 'Introduction', description: 'Expandable content sections' },
+    { value: 'problem_cards', label: 'Problem Cards', description: 'Cards highlighting problems and solutions' },
+    { value: 'logo_carousel', label: 'Logo Carousel', description: 'Rotating display of partner/client logos' },
+    { value: 'cta', label: 'Call to Action', description: 'Buttons and forms for user engagement' },
+    { value: 'platform_features', label: 'Platform Features', description: 'Feature showcase with icons and descriptions' },
+    { value: 'faq', label: 'FAQ Section', description: 'Frequently asked questions and answers' },
+    { value: 'team_members', label: 'Team Members', description: 'Team member profiles and bios' },
+    { value: 'custom', label: 'Custom Section', description: 'Flexible content block for custom layouts' }
+  ]
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (title.trim()) {
+      onAdd(sectionType, title.trim())
+      setTitle('')
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="bg-background rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <h2 className="text-lg font-semibold mb-4">Add New Section</h2>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Section Type</label>
+              <select
+                value={sectionType}
+                onChange={(e) => setSectionType(e.target.value)}
+                className="w-full p-2 border rounded-md"
+              >
+                {sectionTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground mt-1">
+                {sectionTypes.find(t => t.value === sectionType)?.description}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Section Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter section title"
+                className="w-full p-2 border rounded-md"
+                required
+              />
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm border rounded-md hover:bg-muted"
+                disabled={isLoading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading || !title.trim()}
+                className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+              >
+                {isLoading ? 'Adding...' : 'Add Section'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }
