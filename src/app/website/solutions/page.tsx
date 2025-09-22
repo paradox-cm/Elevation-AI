@@ -664,9 +664,9 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
   }
 
   const handleNavigateUp = useCallback(() => {
-    const currentIndex = industrySolutions.findIndex(sol => sol.id === openCardId)
+    const currentIndex = solutions.findIndex(sol => sol.id === openCardId)
     if (currentIndex > 0) {
-      const prevCardId = industrySolutions[currentIndex - 1].id
+      const prevCardId = solutions[currentIndex - 1].id
       setOpenCardId(prevCardId)
       setTimeout(() => {
         const cardElement = cardRefs.current[prevCardId]
@@ -682,12 +682,12 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
         }
       }, 100)
     }
-  }, [industrySolutions, openCardId])
+  }, [solutions, openCardId])
 
   const handleNavigateDown = useCallback(() => {
-    const currentIndex = industrySolutions.findIndex(sol => sol.id === openCardId)
-    if (currentIndex < industrySolutions.length - 1) {
-      const nextCardId = industrySolutions[currentIndex + 1].id
+    const currentIndex = solutions.findIndex(sol => sol.id === openCardId)
+    if (currentIndex < solutions.length - 1) {
+      const nextCardId = solutions[currentIndex + 1].id
       setOpenCardId(nextCardId)
       setTimeout(() => {
         const cardElement = cardRefs.current[nextCardId]
@@ -703,12 +703,12 @@ function IndustrySolutionsSection({ data }: { data?: Record<string, unknown> }) 
         }
       }, 100)
     }
-  }, [industrySolutions, openCardId])
+  }, [solutions, openCardId])
 
   // Handle URL parameters on mount
   useEffect(() => {
     const openParam = searchParams.get('open')
-    if (openParam && industrySolutions.some(s => s.id === openParam)) {
+    if (openParam && solutions.some(s => s.id === openParam)) {
       setOpenCardId(openParam)
       
       // Function to attempt scrolling with retries
@@ -866,9 +866,9 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
   }
 
   const handleNavigateUp = useCallback(() => {
-    const currentIndex = stageSolutions.findIndex(sol => sol.id === openCardId)
+    const currentIndex = solutions.findIndex(sol => sol.id === openCardId)
     if (currentIndex > 0) {
-      const prevCardId = stageSolutions[currentIndex - 1].id
+      const prevCardId = solutions[currentIndex - 1].id
       setOpenCardId(prevCardId)
       setTimeout(() => {
         const cardElement = cardRefs.current[prevCardId]
@@ -884,12 +884,12 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
         }
       }, 100)
     }
-  }, [stageSolutions, openCardId])
+  }, [solutions, openCardId])
 
   const handleNavigateDown = useCallback(() => {
-    const currentIndex = stageSolutions.findIndex(sol => sol.id === openCardId)
-    if (currentIndex < stageSolutions.length - 1) {
-      const nextCardId = stageSolutions[currentIndex + 1].id
+    const currentIndex = solutions.findIndex(sol => sol.id === openCardId)
+    if (currentIndex < solutions.length - 1) {
+      const nextCardId = solutions[currentIndex + 1].id
       setOpenCardId(nextCardId)
       setTimeout(() => {
         const cardElement = cardRefs.current[nextCardId]
@@ -905,12 +905,12 @@ function StageSolutionsSection({ data }: { data?: Record<string, unknown> }) {
         }
       }, 100)
     }
-  }, [stageSolutions, openCardId])
+  }, [solutions, openCardId])
 
   // Handle URL parameters on mount
   useEffect(() => {
     const openParam = searchParams.get('open')
-    if (openParam && stageSolutions.some(s => s.id === openParam)) {
+    if (openParam && solutions.some(s => s.id === openParam)) {
       setOpenCardId(openParam)
       
       // Function to attempt scrolling with retries

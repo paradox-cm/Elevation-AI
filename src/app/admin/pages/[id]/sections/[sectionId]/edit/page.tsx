@@ -130,6 +130,24 @@ export default function SectionEditPage() {
     handleSectionDataChange(key, array)
   }
 
+  const handleNestedArrayFieldChange = (key: string, index: number, nestedKey: string, field: string, value: unknown) => {
+    if (!section) return
+    
+    const existingValue = section.section_data?.[key]
+    const array = [...(Array.isArray(existingValue) ? existingValue : [])]
+    const item = array[index] || {}
+    const nestedObject = typeof item[nestedKey] === 'object' && item[nestedKey] !== null ? item[nestedKey] : {}
+    
+    array[index] = {
+      ...item,
+      [nestedKey]: {
+        ...nestedObject,
+        [field]: value
+      }
+    }
+    handleSectionDataChange(key, array)
+  }
+
   const handleNestedFieldChange = (parentKey: string, childKey: string, value: unknown) => {
     if (!section) return
     
@@ -3642,6 +3660,368 @@ export default function SectionEditPage() {
                     />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'industry_solutions_detailed':
+        return (
+          <div className="space-y-6">
+            {/* Main Content */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Main Content</CardTitle>
+                <CardDescription>
+                  Title and description for the Industry Solutions section
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Section Title</Label>
+                  <Input
+                    id="title"
+                    value={String(section.section_data?.title || '')}
+                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                    placeholder="Industry Solutions"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={String(section.section_data?.description || '')}
+                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                    placeholder="Every industry faces unique challenges in the agentic era..."
+                    rows={3}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Industry Solutions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Industry Solutions</CardTitle>
+                <CardDescription>
+                  Manage the industry solutions displayed in the section
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-4">
+                  {((section.section_data?.solutions as unknown[]) || []).map((solution: unknown, index: number) => (
+                    <Card key={index} className="border-dashed">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-sm">Solution {index + 1}</CardTitle>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeArrayItem('solutions', index)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="space-y-2">
+                            <Label>ID</Label>
+                            <Input
+                              value={String((solution as { id?: string })?.id || '')}
+                              onChange={(e) => handleArrayFieldChange('solutions', index, 'id', e.target.value)}
+                              placeholder="private-markets"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Title</Label>
+                            <Input
+                              value={String((solution as { title?: string })?.title || '')}
+                              onChange={(e) => handleArrayFieldChange('solutions', index, 'title', e.target.value)}
+                              placeholder="Private Market Organizations"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Input
+                            value={String((solution as { subtitle?: string })?.subtitle || '')}
+                            onChange={(e) => handleArrayFieldChange('solutions', index, 'subtitle', e.target.value)}
+                            placeholder="The Agentic Backbone for the Private Capital Lifecycle"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={String((solution as { description?: string })?.description || '')}
+                            onChange={(e) => handleArrayFieldChange('solutions', index, 'description', e.target.value)}
+                            placeholder="Elevation AI provides a unified platform..."
+                            rows={3}
+                          />
+                        </div>
+                        
+                        {/* Challenge Section */}
+                        <div className="space-y-3 p-3 border rounded-lg bg-muted/30">
+                          <Label className="text-sm font-medium">Challenge</Label>
+                          <div className="space-y-2">
+                            <Label className="text-xs">Challenge Title</Label>
+                            <Input
+                              value={String(((solution as { challenge?: { title?: string } })?.challenge as { title?: string })?.title || '')}
+                              onChange={(e) => handleNestedArrayFieldChange('solutions', index, 'challenge', 'title', e.target.value)}
+                              placeholder="From Disconnected Deals to an Orchestrated Universe"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-xs">Challenge Content</Label>
+                            <Textarea
+                              value={String(((solution as { challenge?: { content?: string } })?.challenge as { content?: string })?.content || '')}
+                              onChange={(e) => handleNestedArrayFieldChange('solutions', index, 'challenge', 'content', e.target.value)}
+                              placeholder="Private market firms operate in a high-stakes environment..."
+                              rows={3}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Solutions List */}
+                        <div className="space-y-2">
+                          <Label>Solutions (one per line)</Label>
+                          <Textarea
+                            value={((solution as { solutions?: string[] })?.solutions || []).join('\n')}
+                            onChange={(e) => {
+                              const solutions = e.target.value.split('\n').filter(s => s.trim())
+                              handleArrayFieldChange('solutions', index, 'solutions', solutions)
+                            }}
+                            placeholder="Deal Sourcing & Due Diligence: AI-powered market analysis...&#10;Portfolio Management: Intelligent monitoring..."
+                            rows={4}
+                          />
+                        </div>
+
+                        {/* Use Cases */}
+                        <div className="space-y-2">
+                          <Label>Use Cases (one per line)</Label>
+                          <Textarea
+                            value={((solution as { useCases?: string[] })?.useCases || []).join('\n')}
+                            onChange={(e) => {
+                              const useCases = e.target.value.split('\n').filter(s => s.trim())
+                              handleArrayFieldChange('solutions', index, 'useCases', useCases)
+                            }}
+                            placeholder="Sourcing: Deploy agents to continuously scan the market...&#10;Investing: Accelerate due diligence by using AI..."
+                            rows={4}
+                          />
+                        </div>
+
+                        {/* Integrations */}
+                        <div className="space-y-2">
+                          <Label>Integrations</Label>
+                          <Textarea
+                            value={String((solution as { integrations?: string })?.integrations || '')}
+                            onChange={(e) => handleArrayFieldChange('solutions', index, 'integrations', e.target.value)}
+                            placeholder="We integrate with the tools that are essential to your workflow..."
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => addArrayItem('solutions', { 
+                    id: '', 
+                    title: '', 
+                    subtitle: '',
+                    description: '',
+                    challenge: { title: '', content: '' },
+                    solutions: [],
+                    useCases: [],
+                    integrations: ''
+                  })}
+                  className="w-full"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Industry Solution
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'stage_solutions_detailed':
+        return (
+          <div className="space-y-6">
+            {/* Main Content */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Main Content</CardTitle>
+                <CardDescription>
+                  Title and description for the Stage Solutions section
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Section Title</Label>
+                  <Input
+                    id="title"
+                    value={String(section.section_data?.title || '')}
+                    onChange={(e) => handleSectionDataChange('title', e.target.value)}
+                    placeholder="By Stage Solutions"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={String(section.section_data?.description || '')}
+                    onChange={(e) => handleSectionDataChange('description', e.target.value)}
+                    placeholder="Every organization goes through distinct stages of growth..."
+                    rows={3}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Stage Solutions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Stage Solutions</CardTitle>
+                <CardDescription>
+                  Manage the stage solutions displayed in the section
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-4">
+                  {((section.section_data?.solutions as unknown[]) || []).map((solution: unknown, index: number) => (
+                    <Card key={index} className="border-dashed">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-sm">Solution {index + 1}</CardTitle>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeArrayItem('solutions', index)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="space-y-2">
+                            <Label>ID</Label>
+                            <Input
+                              value={String((solution as { id?: string })?.id || '')}
+                              onChange={(e) => handleArrayFieldChange('solutions', index, 'id', e.target.value)}
+                              placeholder="creating-venture"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Title</Label>
+                            <Input
+                              value={String((solution as { title?: string })?.title || '')}
+                              onChange={(e) => handleArrayFieldChange('solutions', index, 'title', e.target.value)}
+                              placeholder="Creating a New Venture"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Input
+                            value={String((solution as { subtitle?: string })?.subtitle || '')}
+                            onChange={(e) => handleArrayFieldChange('solutions', index, 'subtitle', e.target.value)}
+                            placeholder="Build Your Next Venture on an Agentic Foundation"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={String((solution as { description?: string })?.description || '')}
+                            onChange={(e) => handleArrayFieldChange('solutions', index, 'description', e.target.value)}
+                            placeholder="For established private market organizations..."
+                            rows={3}
+                          />
+                        </div>
+                        
+                        {/* Challenge Section */}
+                        <div className="space-y-3 p-3 border rounded-lg bg-muted/30">
+                          <Label className="text-sm font-medium">Challenge</Label>
+                          <div className="space-y-2">
+                            <Label className="text-xs">Challenge Title</Label>
+                            <Input
+                              value={String(((solution as { challenge?: { title?: string } })?.challenge as { title?: string })?.title || '')}
+                              onChange={(e) => handleNestedArrayFieldChange('solutions', index, 'challenge', 'title', e.target.value)}
+                              placeholder="Avoiding the 'Startup Trap'"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-xs">Challenge Content</Label>
+                            <Textarea
+                              value={String(((solution as { challenge?: { content?: string } })?.challenge as { content?: string })?.content || '')}
+                              onChange={(e) => handleNestedArrayFieldChange('solutions', index, 'challenge', 'content', e.target.value)}
+                              placeholder="Launching a new venture, even with the backing..."
+                              rows={3}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Solutions List */}
+                        <div className="space-y-2">
+                          <Label>Solutions (one per line)</Label>
+                          <Textarea
+                            value={((solution as { solutions?: string[] })?.solutions || []).join('\n')}
+                            onChange={(e) => {
+                              const solutions = e.target.value.split('\n').filter(s => s.trim())
+                              handleArrayFieldChange('solutions', index, 'solutions', solutions)
+                            }}
+                            placeholder="Market Research: AI-powered market analysis...&#10;Business Planning: Intelligent business plan development..."
+                            rows={4}
+                          />
+                        </div>
+
+                        {/* Use Cases */}
+                        <div className="space-y-2">
+                          <Label>Use Cases (one per line)</Label>
+                          <Textarea
+                            value={((solution as { useCases?: string[] })?.useCases || []).join('\n')}
+                            onChange={(e) => {
+                              const useCases = e.target.value.split('\n').filter(s => s.trim())
+                              handleArrayFieldChange('solutions', index, 'useCases', useCases)
+                            }}
+                            placeholder="Unified Command Center: Start with a central place...&#10;Build Your Knowledge Graph from Day One..."
+                            rows={4}
+                          />
+                        </div>
+
+                        {/* Integrations */}
+                        <div className="space-y-2">
+                          <Label>Integrations</Label>
+                          <Textarea
+                            value={String((solution as { integrations?: string })?.integrations || '')}
+                            onChange={(e) => handleArrayFieldChange('solutions', index, 'integrations', e.target.value)}
+                            placeholder="We integrate with the tools essential for launching..."
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => addArrayItem('solutions', { 
+                    id: '', 
+                    title: '', 
+                    subtitle: '',
+                    description: '',
+                    challenge: { title: '', content: '' },
+                    solutions: [],
+                    useCases: [],
+                    integrations: ''
+                  })}
+                  className="w-full"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Stage Solution
+                </Button>
               </CardContent>
             </Card>
           </div>
