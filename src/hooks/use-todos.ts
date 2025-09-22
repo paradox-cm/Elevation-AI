@@ -36,7 +36,17 @@ export function useTodos() {
       }
       
       const data = await response.json()
-      setTodos(data.todos || [])
+      // Map database field names to camelCase
+      const mappedTodos = (data.todos || []).map((todo: any) => ({
+        ...todo,
+        estimatedEffort: todo.estimated_effort || todo.estimatedEffort,
+        createdAt: todo.created_at,
+        updatedAt: todo.updated_at,
+        completedAt: todo.completed_at,
+        createdBy: todo.created_by,
+        assignedTo: todo.assigned_to
+      }))
+      setTodos(mappedTodos)
     } catch (err) {
       console.error('Error fetching todos:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch todos')
@@ -61,8 +71,18 @@ export function useTodos() {
       }
 
       const data = await response.json()
-      setTodos(prev => [data.todo, ...prev])
-      return data.todo
+      // Map database field names to camelCase
+      const mappedTodo = {
+        ...data.todo,
+        estimatedEffort: data.todo.estimated_effort || data.todo.estimatedEffort,
+        createdAt: data.todo.created_at,
+        updatedAt: data.todo.updated_at,
+        completedAt: data.todo.completed_at,
+        createdBy: data.todo.created_by,
+        assignedTo: data.todo.assigned_to
+      }
+      setTodos(prev => [mappedTodo, ...prev])
+      return mappedTodo
     } catch (err) {
       console.error('Error creating todo:', err)
       setError(err instanceof Error ? err.message : 'Failed to create todo')
@@ -86,10 +106,20 @@ export function useTodos() {
       }
 
       const data = await response.json()
+      // Map database field names to camelCase
+      const mappedTodo = {
+        ...data.todo,
+        estimatedEffort: data.todo.estimated_effort || data.todo.estimatedEffort,
+        createdAt: data.todo.created_at,
+        updatedAt: data.todo.updated_at,
+        completedAt: data.todo.completed_at,
+        createdBy: data.todo.created_by,
+        assignedTo: data.todo.assigned_to
+      }
       setTodos(prev => prev.map(todo => 
-        todo.id === id ? data.todo : todo
+        todo.id === id ? mappedTodo : todo
       ))
-      return data.todo
+      return mappedTodo
     } catch (err) {
       console.error('Error updating todo:', err)
       setError(err instanceof Error ? err.message : 'Failed to update todo')
