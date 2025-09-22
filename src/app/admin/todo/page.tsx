@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,7 @@ import {
   Trash2,
   ExternalLink
 } from 'lucide-react'
+import { TodoCreationForm } from '@/components/admin/todo-creation-form'
 import { cn } from '@/lib/utils'
 
 interface TodoItem {
@@ -115,6 +116,19 @@ const todoItems: TodoItem[] = [
     priority: 'high',
     estimatedEffort: 'quick',
     tags: ['monitoring', 'errors', 'sentry']
+  },
+
+  // Authentication integration
+  {
+    id: 'auth-forms-backend-integration',
+    title: 'Connect Login and Create Account forms to backend and dashboard',
+    description: 'Wire up Login and Create Account to real auth backend (sessions/tokens), route authenticated users to the production admin dashboard, and handle errors/edge cases.',
+    phase: 'critical',
+    category: 'Authentication',
+    status: 'pending',
+    priority: 'urgent',
+    estimatedEffort: 'medium',
+    tags: ['auth', 'login', 'signup', 'sessions']
   },
 
   // Phase 2: SEO & Performance
@@ -286,6 +300,127 @@ const todoItems: TodoItem[] = [
     priority: 'high',
     estimatedEffort: 'extensive',
     tags: ['security', 'audit', 'penetration-testing']
+  },
+
+  // Phase 5: Handoff & Site Delivery
+  {
+    id: 'comprehensive-handoff',
+    title: 'Comprehensive handoff and site delivery',
+    description: 'Complete transfer of codebase, documentation, and operational knowledge to in-house team',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'urgent',
+    estimatedEffort: 'extensive',
+    tags: ['handoff', 'delivery', 'documentation', 'knowledge-transfer']
+  },
+  {
+    id: 'codebase-documentation',
+    title: 'Complete codebase documentation',
+    description: 'Create comprehensive technical documentation including architecture, deployment, and maintenance guides',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'urgent',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'extensive',
+    tags: ['documentation', 'architecture', 'technical-writing']
+  },
+  {
+    id: 'github-repository-transfer',
+    title: 'GitHub repository transfer and access setup',
+    description: 'Transfer repository ownership, set up team access, and configure branch protection rules',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'urgent',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'medium',
+    tags: ['github', 'repository', 'access-control', 'collaboration']
+  },
+  {
+    id: 'deployment-documentation',
+    title: 'Deployment and infrastructure documentation',
+    description: 'Document deployment processes, environment setup, and infrastructure management procedures',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'urgent',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'extensive',
+    tags: ['deployment', 'infrastructure', 'devops', 'documentation']
+  },
+  {
+    id: 'monitoring-alerting-setup',
+    title: 'Monitoring and alerting system setup',
+    description: 'Configure monitoring dashboards, alerting rules, and incident response procedures',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'high',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'medium',
+    tags: ['monitoring', 'alerting', 'incident-response', 'operations']
+  },
+  {
+    id: 'team-training-sessions',
+    title: 'Team training and knowledge transfer sessions',
+    description: 'Conduct training sessions for in-house team on codebase, deployment, and maintenance procedures',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'high',
+    dependencies: ['codebase-documentation', 'deployment-documentation'],
+    estimatedEffort: 'extensive',
+    tags: ['training', 'knowledge-transfer', 'team-education']
+  },
+  {
+    id: 'maintenance-runbooks',
+    title: 'Create maintenance and troubleshooting runbooks',
+    description: 'Develop step-by-step guides for common maintenance tasks and troubleshooting procedures',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'high',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'extensive',
+    tags: ['runbooks', 'maintenance', 'troubleshooting', 'procedures']
+  },
+  {
+    id: 'security-credentials-transfer',
+    title: 'Security credentials and access management',
+    description: 'Transfer API keys, certificates, and configure proper access management for production systems',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'urgent',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'medium',
+    tags: ['security', 'credentials', 'access-management', 'api-keys']
+  },
+  {
+    id: 'backup-recovery-procedures',
+    title: 'Backup and recovery procedures documentation',
+    description: 'Document and test backup procedures, recovery processes, and disaster recovery protocols',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'high',
+    dependencies: ['comprehensive-handoff'],
+    estimatedEffort: 'medium',
+    tags: ['backup', 'recovery', 'disaster-recovery', 'procedures']
+  },
+  {
+    id: 'final-acceptance-testing',
+    title: 'Final acceptance testing with in-house team',
+    description: 'Conduct comprehensive acceptance testing with the in-house team to ensure all systems are working correctly',
+    phase: 'critical',
+    category: 'Handoff & Delivery',
+    status: 'pending',
+    priority: 'urgent',
+    dependencies: ['team-training-sessions', 'maintenance-runbooks'],
+    estimatedEffort: 'extensive',
+    tags: ['acceptance-testing', 'final-testing', 'team-validation']
   }
 ]
 
@@ -315,6 +450,39 @@ export default function TodoPage() {
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [showCompleted, setShowCompleted] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | null>(null)
+  const [showCreateForm, setShowCreateForm] = useState(false)
+
+  // Load todos from localStorage on component mount
+  useEffect(() => {
+    const savedTodos = localStorage.getItem('elevation-ai-todos')
+    if (savedTodos) {
+      try {
+        const parsedTodos = JSON.parse(savedTodos)
+        // Merge saved todos with default todos to handle new items
+        const mergedTodos = todoItems.map(defaultTodo => {
+          const savedTodo = parsedTodos.find((t: TodoItem) => t.id === defaultTodo.id)
+          return savedTodo ? { ...defaultTodo, ...savedTodo } : defaultTodo
+        })
+        setTodos(mergedTodos)
+      } catch (error) {
+        console.error('Error loading todos from localStorage:', error)
+      }
+    }
+    setIsLoading(false)
+  }, [])
+
+  // Save todos to localStorage whenever todos change
+  useEffect(() => {
+    if (!isLoading) {
+      setSaveStatus('saving')
+      localStorage.setItem('elevation-ai-todos', JSON.stringify(todos))
+      setSaveStatus('saved')
+      // Clear the saved status after 2 seconds
+      setTimeout(() => setSaveStatus(null), 2000)
+    }
+  }, [todos, isLoading])
 
   const filteredTodos = todos.filter(todo => {
     const matchesPhase = filterPhase === 'all' || todo.phase === filterPhase
@@ -325,6 +493,10 @@ export default function TodoPage() {
     const matchesCompleted = showCompleted || todo.status !== 'completed'
     
     return matchesPhase && matchesStatus && matchesSearch && matchesCompleted
+  }).sort((a, b) => {
+    // Sort by status: completed first, then in_progress, then pending
+    const statusOrder = { completed: 0, in_progress: 1, pending: 2 }
+    return statusOrder[a.status] - statusOrder[b.status]
   })
 
   const toggleTodoStatus = (id: string) => {
@@ -339,6 +511,22 @@ export default function TodoPage() {
     ))
   }
 
+  const handleSaveNewTodo = async (newTodo: TodoItem) => {
+    try {
+      // Add the new todo to the list
+      setTodos(prev => [...prev, newTodo])
+      
+      // Close the form
+      setShowCreateForm(false)
+      
+      // Show success message
+      setSaveStatus('saved')
+      setTimeout(() => setSaveStatus(null), 2000)
+    } catch (error) {
+      console.error('Error saving new todo:', error)
+    }
+  }
+
   const getPhaseStats = () => {
     const stats = { critical: 0, high: 0, medium: 0, low: 0 }
     todos.forEach(todo => {
@@ -349,19 +537,104 @@ export default function TodoPage() {
     return stats
   }
 
+  const getStatusStats = () => {
+    const stats = { pending: 0, in_progress: 0, completed: 0 }
+    todos.forEach(todo => {
+      stats[todo.status]++
+    })
+    return stats
+  }
+
   const phaseStats = getPhaseStats()
+  const statusStats = getStatusStats()
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Production Readiness To-Do</h1>
+          <p className="text-muted-foreground">
+            Loading your saved progress...
+          </p>
+        </div>
+        <div className="flex items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Production Readiness To-Do</h1>
-        <p className="text-muted-foreground">
-          Comprehensive checklist of items to complete before deploying to production
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Production Readiness To-Do</h1>
+            <p className="text-muted-foreground">
+              Comprehensive checklist of items to complete before deploying to production
+            </p>
+          </div>
+          <div className="flex items-center space-x-4">
+            {saveStatus && (
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                {saveStatus === 'saving' && (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                    <span>Saving...</span>
+                  </>
+                )}
+                {saveStatus === 'saved' && (
+                  <>
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span className="text-green-600">Saved</span>
+                  </>
+                )}
+              </div>
+            )}
+            <Button 
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center space-x-2"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Todo</span>
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Stats Overview */}
+      {/* Status Overview */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <Card className={cn("border-orange-200", statusStats.in_progress > 0 && "bg-orange-50/50")}>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Clock className="h-4 w-4 text-orange-600" />
+              <span className="text-sm font-medium">In Progress</span>
+            </div>
+            <div className="text-2xl font-bold mt-1 text-orange-600">{statusStats.in_progress}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Circle className="h-4 w-4 text-gray-600" />
+              <span className="text-sm font-medium">Pending</span>
+            </div>
+            <div className="text-2xl font-bold mt-1">{statusStats.pending}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <span className="text-sm font-medium">Completed</span>
+            </div>
+            <div className="text-2xl font-bold mt-1 text-green-600">{statusStats.completed}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Phase Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
@@ -456,8 +729,15 @@ export default function TodoPage() {
       <div className="space-y-4">
         {filteredTodos.map((todo) => {
           const StatusIcon = statusIcons[todo.status]
+          const isInProgress = todo.status === 'in_progress'
           return (
-            <Card key={todo.id} className="hover:shadow-md transition-shadow">
+            <Card 
+              key={todo.id} 
+              className={cn(
+                "hover:shadow-md transition-shadow",
+                isInProgress && "border-orange-200 bg-orange-50/50 shadow-orange-100"
+              )}
+            >
               <CardContent className="p-6">
                 <div className="flex items-start space-x-4">
                   <button
@@ -466,6 +746,13 @@ export default function TodoPage() {
                   >
                     {todo.status === 'completed' ? (
                       <CheckSquare className="h-5 w-5 text-green-600" />
+                    ) : todo.status === 'in_progress' ? (
+                      <div className="relative">
+                        <Square className="h-5 w-5 text-orange-500" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                        </div>
+                      </div>
                     ) : (
                       <Square className="h-5 w-5" />
                     )}
@@ -538,6 +825,19 @@ export default function TodoPage() {
             <p className="text-muted-foreground">No todos match your current filters.</p>
           </CardContent>
         </Card>
+      )}
+
+      {/* Todo Creation Form */}
+      {showCreateForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <TodoCreationForm
+              onSave={handleSaveNewTodo}
+              onCancel={() => setShowCreateForm(false)}
+              existingTodos={todos}
+            />
+          </div>
+        </div>
       )}
     </div>
   )
