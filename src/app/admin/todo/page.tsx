@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -21,20 +21,8 @@ import {
   ExternalLink
 } from 'lucide-react'
 import { TodoCreationForm } from '@/components/admin/todo-creation-form'
+import { useTodos, TodoItem } from '@/hooks/use-todos'
 import { cn } from '@/lib/utils'
-
-interface TodoItem {
-  id: string
-  title: string
-  description: string
-  phase: 'critical' | 'high' | 'medium' | 'low'
-  category: string
-  status: 'pending' | 'in_progress' | 'completed'
-  priority: 'urgent' | 'high' | 'medium' | 'low'
-  dependencies?: string[]
-  estimatedEffort: 'quick' | 'medium' | 'extensive'
-  tags: string[]
-}
 
 const todoItems: TodoItem[] = [
   // Phase 1: Critical Infrastructure
@@ -445,44 +433,21 @@ const statusIcons = {
 }
 
 export default function TodoPage() {
-  const [todos, setTodos] = useState<TodoItem[]>(todoItems)
+  const { todos, isLoading, error, createTodo, updateTodo, toggleTodoStatus } = useTodos()
   const [filterPhase, setFilterPhase] = useState<string>('all')
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [showCompleted, setShowCompleted] = useState(true)
-  const [isLoading, setIsLoading] = useState(true)
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | null>(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
 
-  // Load todos from localStorage on component mount
-  useEffect(() => {
-    const savedTodos = localStorage.getItem('elevation-ai-todos')
-    if (savedTodos) {
-      try {
-        const parsedTodos = JSON.parse(savedTodos)
-        // Merge saved todos with default todos to handle new items
-        const mergedTodos = todoItems.map(defaultTodo => {
-          const savedTodo = parsedTodos.find((t: TodoItem) => t.id === defaultTodo.id)
-          return savedTodo ? { ...defaultTodo, ...savedTodo } : defaultTodo
-        })
-        setTodos(mergedTodos)
-      } catch (error) {
-        console.error('Error loading todos from localStorage:', error)
-      }
-    }
-    setIsLoading(false)
-  }, [])
-
-  // Save todos to localStorage whenever todos change
-  useEffect(() => {
-    if (!isLoading) {
-      setSaveStatus('saving')
-      localStorage.setItem('elevation-ai-todos', JSON.stringify(todos))
-      setSaveStatus('saved')
-      // Clear the saved status after 2 seconds
+  // Handle save status feedback
+  const handleSaveStatus = (status: 'saving' | 'saved') => {
+    setSaveStatus(status)
+    if (status === 'saved') {
       setTimeout(() => setSaveStatus(null), 2000)
     }
-  }, [todos, isLoading])
+  }
 
   const filteredTodos = todos.filter(todo => {
     const matchesPhase = filterPhase === 'all' || todo.phase === filterPhase
@@ -499,29 +464,22 @@ export default function TodoPage() {
     return statusOrder[a.status] - statusOrder[b.status]
   })
 
-  const toggleTodoStatus = (id: string) => {
-    setTodos(prev => prev.map(todo => 
-      todo.id === id 
-        ? { 
-            ...todo, 
-            status: todo.status === 'completed' ? 'pending' : 
-                   todo.status === 'pending' ? 'in_progress' : 'completed'
-          }
-        : todo
-    ))
+  const handleToggleTodoStatus = async (id: string) => {
+    try {
+      handleSaveStatus('saving')
+      await toggleTodoStatus(id)
+      handleSaveStatus('saved')
+    } catch (error) {
+      console.error('Error toggling todo status:', error)
+    }
   }
 
-  const handleSaveNewTodo = async (newTodo: TodoItem) => {
+  const handleSaveNewTodo = async (newTodo: Omit<TodoItem, 'id' | 'status' | 'created_at' | 'updated_at'>) => {
     try {
-      // Add the new todo to the list
-      setTodos(prev => [...prev, newTodo])
-      
-      // Close the form
+      handleSaveStatus('saving')
+      await createTodo(newTodo)
       setShowCreateForm(false)
-      
-      // Show success message
-      setSaveStatus('saved')
-      setTimeout(() => setSaveStatus(null), 2000)
+      handleSaveStatus('saved')
     } catch (error) {
       console.error('Error saving new todo:', error)
     }
@@ -560,6 +518,31 @@ export default function TodoPage() {
         <div className="flex items-center justify-center p-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Production Readiness To-Do</h1>
+          <p className="text-muted-foreground">
+            Error loading todos
+          </p>
+        </div>
+        <Card>
+          <CardContent className="p-8 text-center">
+            <div className="flex items-center justify-center space-x-2 text-red-600 mb-4">
+              <AlertTriangle className="h-5 w-5" />
+              <span className="font-medium">Failed to load todos</span>
+            </div>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Try Again
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -741,7 +724,7 @@ export default function TodoPage() {
               <CardContent className="p-6">
                 <div className="flex items-start space-x-4">
                   <button
-                    onClick={() => toggleTodoStatus(todo.id)}
+                    onClick={() => handleToggleTodoStatus(todo.id)}
                     className="mt-1 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {todo.status === 'completed' ? (
