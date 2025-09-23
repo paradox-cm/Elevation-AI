@@ -158,8 +158,9 @@ export function StarfieldAnimation({
           ctx.fillStyle = starColor
           ctx.globalAlpha = opacity
           
-          // Use slightly smaller stars for better balance
-          const starSize = Math.max(1, Math.floor(1.5 + (1 - star.z / zMax) * 1.5))
+          // Use theme-aware star sizes: smaller on dark mode, current size on light mode
+          const baseSize = isDark ? 1.2 : 1.5
+          const starSize = Math.max(1, Math.floor(baseSize + (1 - star.z / zMax) * (isDark ? 1.2 : 1.5)))
           const halfSize = Math.floor(starSize / 2)
           
           ctx.fillRect(

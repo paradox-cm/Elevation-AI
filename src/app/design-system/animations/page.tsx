@@ -178,14 +178,6 @@ export default function AnimationsPage() {
       icon: "grid-line",
       color: "text-violet-600",
       bgColor: "bg-violet-600/10"
-    },
-    {
-      name: "Pixel Animation Light",
-      description: "Light mode optimized version of the pixel animation designed for white backgrounds. Features softer colors, subtle transparency, and enhanced visibility in light themes with automatic color adaptation.",
-      href: "/design-system/animations/pixel-animation-light",
-      icon: "sun-line",
-      color: "text-amber-600",
-      bgColor: "bg-amber-600/10"
     }
   ]
 

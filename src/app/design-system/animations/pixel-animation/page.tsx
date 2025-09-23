@@ -8,7 +8,6 @@ import { Section } from "@/components/ui/layout/section"
 import { PageHeader } from "@/components/ui/marketing/page-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PixelAnimation } from "@/components/ui/pixel-animation"
-import { PixelAnimationLight } from "@/components/ui/pixel-animation-light"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
 import { Button } from "@/components/ui/button"
@@ -23,7 +22,7 @@ import Icon from "@/components/ui/icon"
 import { useThemeProvider } from "@/hooks/use-theme"
 
 export default function PixelAnimationPage() {
-  const { isDark, isLight } = useThemeProvider()
+  const { isDark } = useThemeProvider()
   const [width, setWidth] = useState(400)
   const [height, setHeight] = useState(300)
   const [gap, setGap] = useState(6)
@@ -142,43 +141,21 @@ export default function PixelAnimationPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-center">
-                    {isLight ? (
-                      <PixelAnimationLight
-                        width={width}
-                        height={height}
-                        gap={gap}
-                        speed={speed}
-                        maxSize={maxSize}
-                        colors={customColors}
-                        autoPlay={autoPlay}
-                        className="w-full max-w-2xl"
-                      />
-                    ) : (
-                      <PixelAnimation
-                        width={width}
-                        height={height}
-                        gap={gap}
-                        speed={speed}
-                        maxSize={maxSize}
-                        colors={customColors}
-                        autoPlay={autoPlay}
-                        className="w-full max-w-2xl"
-                      />
-                    )}
+                    <PixelAnimation
+                      width={width}
+                      height={height}
+                      gap={gap}
+                      speed={speed}
+                      maxSize={maxSize}
+                      colors={customColors}
+                      autoPlay={autoPlay}
+                      className="w-full max-w-2xl"
+                    />
                   </div>
                   <div className="mt-4 text-center">
                     <BodySmall className="text-muted-foreground">
-                      {isLight ? (
-                        <>
-                          <Icon name="sun-line" className="h-4 w-4 inline mr-1" />
-                          Light mode optimized for white backgrounds
-                        </>
-                      ) : (
-                        <>
-                          <Icon name="moon-line" className="h-4 w-4 inline mr-1" />
-                          Standard mode optimized for dark backgrounds
-                        </>
-                      )}
+                      <Icon name="palette-line" className="h-4 w-4 inline mr-1" />
+                      Theme-aware animation that adapts to light and dark modes
                     </BodySmall>
                   </div>
                 </CardContent>
@@ -392,24 +369,6 @@ export default function PixelAnimationPage() {
                   </div>
                 </div>
 
-                <div>
-                  <BodyLarge className="font-medium mb-2">Light Mode Usage</BodyLarge>
-                  <div className="bg-muted p-4 rounded-lg">
-                    <pre className="text-sm overflow-x-auto">
-{`import { PixelAnimationLight } from "@/components/ui/pixel-animation-light"
-
-<PixelAnimationLight
-  width={400}
-  height={300}
-  gap={6}
-  speed={0.1}
-  maxSize={2}
-  colors={['#3B82F6', '#8B5CF6', '#06B6D4']}
-  autoPlay={true}
-/>`}
-                    </pre>
-                  </div>
-                </div>
 
                 <div>
                   <BodyLarge className="font-medium mb-2">Custom Configuration</BodyLarge>

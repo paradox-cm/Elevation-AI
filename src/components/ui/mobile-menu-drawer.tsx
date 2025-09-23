@@ -65,6 +65,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const resourcesSubLinks = [
+    { href: "/website/about", label: "About" },
     { href: "/website/partners", label: "Partners" },
     { href: "/website/investors", label: "Investors" },
     { href: "/website/developers", label: "For Developers & Platforms" },
@@ -73,8 +74,7 @@ export function MobileMenuDrawer({ currentPage, onClose }: MobileMenuDrawerProps
   ]
 
   const quickLinks = [
-    { href: "/website/about", label: "About" },
-    { href: "/website/investors", label: "Investors" },
+    { href: "/website/careers", label: "Careers" },
     { href: "/website/press", label: "Press" },
     { href: "/website/contact", label: "Contact" },
     { href: "/website/privacy", label: "Privacy Policy" },
