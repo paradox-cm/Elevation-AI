@@ -239,7 +239,7 @@ export function WorkspacesCanvases({
       
       // Draw solid connection lines between workspaces (no transparency)
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)' // White for dark mode, black for light mode
-      ctx.lineWidth = 1
+      ctx.lineWidth = 1.0
       
       // Fixed connections to prevent flashing - each workspace connects to 2 specific others
       const fixedConnections = [

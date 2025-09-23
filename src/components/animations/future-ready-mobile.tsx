@@ -132,7 +132,7 @@ export function FutureReadyMobile({
     
     // Set stroke color and opacity
     ctx.strokeStyle = arrowColorRef.current
-    ctx.lineWidth = 2 // Thicker line for better visibility on mobile
+    ctx.lineWidth = 1.0 // Standardized stroke width
     ctx.globalAlpha = arrow.opacity
     
     // Draw the arrow path as stroke only

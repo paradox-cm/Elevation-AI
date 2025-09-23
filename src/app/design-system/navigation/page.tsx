@@ -71,6 +71,9 @@ function StaticMainHeader() {
                 <Link href="/website/people-experts" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Expert Network
                 </Link>
+                <Link href="/website/people-partners" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Partner Network
+                </Link>
               </div>
             </div>
           </div>

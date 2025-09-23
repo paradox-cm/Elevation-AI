@@ -27,7 +27,7 @@ const peopleExpertsPageMasterContent = {
         title: 'On-Demand Expertise, Natively Integrated',
         description: 'Augment your team with world-class, on-demand subject matter experts. Our network of vetted specialists can be embedded directly into your Workspaces to solve specific challenges with precision and speed.',
         ctaButtons: [
-          { text: 'Explore the Expert Network', href: '#expert-network', variant: 'default', isScrollButton: true },
+          { text: 'Learn More', href: '#challenge-solution', variant: 'default', isScrollButton: true },
           { text: 'Request a Demo', href: '/website/demo', variant: 'outline' }
         ],
         logoImage: '/images/branding/E-AI-Squircle.svg'
@@ -121,7 +121,7 @@ const peopleExpertsPageMasterContent = {
         icon: 'team-line',
         badgeText: 'Expert Network',
         badgeColor: 'primary',
-        backgroundColor: 'bg-blue-500/10',
+        backgroundColor: 'bg-purple-500/10 dark:bg-purple-500/15',
         expertCategories: [
           {
             id: 'ai-ml',

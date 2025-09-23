@@ -170,6 +170,22 @@ export default function AnimationsPage() {
       icon: "bar-chart-2-line",
       color: "text-blue-600",
       bgColor: "bg-blue-600/10"
+    },
+    {
+      name: "Pixel Animation",
+      description: "Dynamic pixel-based animation creating mesmerizing patterns through procedural generation. Each pixel grows, flickers, and fades in wave-like motion, perfect for backgrounds and loading states with customizable colors and timing.",
+      href: "/design-system/animations/pixel-animation",
+      icon: "grid-line",
+      color: "text-violet-600",
+      bgColor: "bg-violet-600/10"
+    },
+    {
+      name: "Pixel Animation Light",
+      description: "Light mode optimized version of the pixel animation designed for white backgrounds. Features softer colors, subtle transparency, and enhanced visibility in light themes with automatic color adaptation.",
+      href: "/design-system/animations/pixel-animation-light",
+      icon: "sun-line",
+      color: "text-amber-600",
+      bgColor: "bg-amber-600/10"
     }
   ]
 

@@ -255,7 +255,7 @@ export function UnifiedKnowledge({
         ctx.fillStyle = sourceColor
         ctx.fillRect(x - halfSize, topY - halfSize, squareSize, squareSize)
         ctx.strokeStyle = sourceColor
-        ctx.lineWidth = 2
+        ctx.lineWidth = 1.0
         ctx.strokeRect(x - halfSize, topY - halfSize, squareSize, squareSize)
       })
     }
@@ -281,7 +281,7 @@ export function UnifiedKnowledge({
       
       // Draw diagonal lines representing data flow
       ctx.strokeStyle = columnColor + '60'
-      ctx.lineWidth = 1
+      ctx.lineWidth = 1.0
       
       // Connect each source to multiple destinations with diagonal lines (centered horizontally)
       const sources = [logicalWidth * 0.16, logicalWidth * 0.39, logicalWidth * 0.61, logicalWidth * 0.84]

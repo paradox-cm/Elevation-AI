@@ -167,7 +167,7 @@ export function PersonalCopilot({
         ctx.fillStyle = exchangeColor
         ctx.fill()
         ctx.strokeStyle = connectionColor
-        ctx.lineWidth = 1
+        ctx.lineWidth = 1.0
         ctx.stroke()
       }
     }
@@ -235,7 +235,7 @@ export function PersonalCopilot({
       // Performance optimization: Batch drawing operations
       // Set styles once for connections
       ctx.strokeStyle = connectionColor
-      ctx.lineWidth = 1
+      ctx.lineWidth = 1.0
       
       // Draw all connections first (batched)
       connections1.forEach(connection => connection.draw())

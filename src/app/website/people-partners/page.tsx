@@ -16,7 +16,7 @@ import { LoadingSpinner } from "@/components/ui/loading"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { Users, Search, Shield, Zap, Target, Sparkles, CheckCircle, ArrowRight, Star, Award, UserCheck, Brain, Globe } from "lucide-react"
+import { Users, Building2, Shield, Zap, Target, Sparkles, CheckCircle, ArrowRight, Star, Award, UserCheck, Brain, Globe, Handshake } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import Icon from "@/components/ui/icon"
@@ -39,10 +39,10 @@ function CreativeHeroSection({ data }: { data?: Record<string, unknown> | null }
           <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4 sm:space-y-6">
               <H1>
-                {typeof data?.title === 'string' ? data.title : 'On-Demand Expertise, Natively Integrated'}
+                {typeof data?.title === 'string' ? data.title : 'Scale Your Execution with a Trusted Ecosystem of Specialized Firms'}
               </H1>
               <BodyLarge className="text-muted-foreground max-w-2xl">
-                {typeof data?.description === 'string' ? data.description : 'Augment your team with world-class, on-demand subject matter experts. Our network of vetted specialists can be embedded directly into your Workspaces to solve specific challenges with precision and speed.'}
+                {typeof data?.description === 'string' ? data.description : 'For large-scale initiatives, leverage our Partner Network—a curated ecosystem of specialized consulting firms and agencies that bring deep domain expertise and a full team of resources to solve your most complex challenges.'}
               </BodyLarge>
             </div>
 
@@ -135,17 +135,17 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> | null }
   )
 }
 
-export default function PeopleExpertsPage() {
+export default function PeoplePartnersPage() {
   const [pageData, setPageData] = useState<PageWithSections | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchPageData = async () => {
       try {
-        const data = await pagesService.getWithSections('people-experts')
+        const data = await pagesService.getWithSections('people-partners')
         setPageData(data)
       } catch (error) {
-        console.error('Error fetching people experts page data:', error)
+        console.error('Error fetching people partners page data:', error)
         setPageData(null) // Fallback to static content
       } finally {
         setLoading(false)
@@ -158,10 +158,10 @@ export default function PeopleExpertsPage() {
     const handleRefresh = () => {
       const fetchPageData = async () => {
         try {
-          const data = await pagesService.getWithSections('people-experts')
+          const data = await pagesService.getWithSections('people-partners')
           setPageData(data)
         } catch (error) {
-          console.error('Error fetching people experts page data:', error)
+          console.error('Error fetching people partners page data:', error)
           setPageData(null)
         }
       }
@@ -171,20 +171,18 @@ export default function PeopleExpertsPage() {
     return () => window.removeEventListener('refresh-page', handleRefresh)
   }, [])
 
-  // No custom scroll behavior - let browser handle all scrolling naturally
-
   return (
     <PageWrapper>
       <MobileOnlyLayout
-        header={<MainHeader currentPage="people-experts" />}
+        header={<MainHeader currentPage="people-partners" />}
         footer={<WebsiteFooter />}
-        mobileMenu={<MobileMenuDrawer currentPage="people-experts" />}
+        mobileMenu={<MobileMenuDrawer currentPage="people-partners" />}
       >
         <div className="min-h-screen bg-background transition-colors duration-300">
           <main>
             {loading ? (
               <div className="flex items-center justify-center h-64">
-                <LoadingSpinner size="lg" text="Loading experts page..." />
+                <LoadingSpinner size="lg" text="Loading partners page..." />
               </div>
             ) : (
               <>
@@ -209,7 +207,7 @@ export default function PeopleExpertsPage() {
                                   </span>
                                 </div>
                                 <H2>
-                                  {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.challenge?.title || 'The Friction of Finding and Integrating Expertise'}
+                                  {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.challenge?.title || 'The Disconnect of Traditional Consulting'}
                                 </H2>
                               </div>
                               
@@ -218,7 +216,7 @@ export default function PeopleExpertsPage() {
                                 <div className="relative p-8 sm:p-12 lg:p-16 rounded-3xl border border-orange-500/20 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm">
                                   <div className="max-w-5xl lg:max-w-[1144px] mx-auto">
                                     <P className="text-lg leading-relaxed text-center">
-                                      {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.challenge?.statement || "Sometimes you don't need a full-time hire or a large consulting firm; you just need a few hours with a world-class expert. However, the process of finding, vetting, onboarding, and securely integrating external specialists for short-term engagements is filled with friction and security risks."}
+                                      {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.challenge?.statement || "Large-scale projects often require the horsepower of a dedicated consulting firm. However, traditional engagements can be disjointed. External firms often work in their own systems, leading to siloed communication, a painful knowledge transfer process at the end of the project, and a lack of real integration with your team."}
                                     </P>
                                   </div>
                                 </div>
@@ -237,16 +235,16 @@ export default function PeopleExpertsPage() {
                                       <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 rounded-full border border-primary/20">
                                         <Users className="w-5 h-5 text-primary" />
                                         <span className="text-sm font-semibold text-primary">
-                                          {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.badgeText || 'Our Solution: A Frictionless Flow of Knowledge'}
+                                          {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.badgeText || 'Our Solution: A Natively Integrated Partnership'}
                                         </span>
                                       </div>
                                       <H2>
-                                        {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.subtitle || 'The Right Expert, in the Right Context, at the Right Time'}
+                                        {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.subtitle || 'A New Model for Consulting Engagement'}
                                       </H2>
                                     </div>
                                     
                                     <BodyLarge className="text-muted-foreground leading-relaxed text-center text-lg max-w-5xl mx-auto">
-                                      {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.description || 'The Elevation AI Expert Network removes the friction from sourcing specialized talent. Our experts are native to our platform, allowing them to be seamlessly and securely "parachuted" into your projects as needed.'}
+                                      {(pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.description || 'Our Partner Network consists of leading, highly specialized consulting firms who are experts on the Elevation AI platform. This creates a fundamentally better engagement model, providing a level of integrated expertise that a single expert cannot offer.'}
                                     </BodyLarge>
                                   </div>
 
@@ -256,18 +254,18 @@ export default function PeopleExpertsPage() {
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                       {((pageData?.sections.find(s => s.section_type === 'problem_cards')?.section_data as any)?.solution?.processSteps || [
                                         {
-                                          title: 'Discover & Select',
-                                          description: 'Browse our curated network of vetted experts across dozens of domains—from go-to-market strategy and legal review to financial modeling and cybersecurity.',
-                                          icon: 'search-line'
+                                          title: 'A Unified Workspace',
+                                          description: 'Instead of working in separate systems, our partners embed directly into your Elevation AI Workspaces. This creates a single, shared environment for all communication, deliverables, and project management, providing you with unprecedented transparency.',
+                                          icon: 'building-2-line'
                                         },
                                         {
-                                          title: 'Securely Embed',
-                                          description: 'With one click, grant an expert temporary, secure access to a specific Workspace. They get the full context of the project\'s Knowledge Base without ever gaining access to your broader company universe.',
+                                          title: 'No Lost Knowledge',
+                                          description: 'Because the entire engagement happens on your platform, all of the work product, research, and strategic insights generated by the consulting team are automatically captured in your private Knowledge Base. When the project ends, the knowledge stays with you.',
                                           icon: 'shield-check-line'
                                         },
                                         {
-                                          title: 'Execute & Deliver',
-                                          description: 'The expert collaborates with your team directly within your existing workflows, providing their insights where they\'re most valuable. When the engagement is complete, their access is cleanly revoked, and all the knowledge they created remains securely in your Knowledge Base.',
+                                          title: 'Accelerated Execution',
+                                          description: 'Our partners leverage our platform\'s library of pre-built agents and workflows to deliver results faster. They spend less time on manual data gathering and more time on high-value strategic work, resulting in a more efficient and impactful engagement.',
                                           icon: 'zap-line'
                                         }
                                       ]).map((step: Record<string, unknown>, index: number) => (
@@ -278,7 +276,7 @@ export default function PeopleExpertsPage() {
                                           <CardHeader className="pb-4 relative z-10">
                                             <div className="flex items-center gap-3 mb-3">
                                               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                                                {step.icon === 'search-line' && <Search className="w-5 h-5 text-primary" />}
+                                                {step.icon === 'building-2-line' && <Building2 className="w-5 h-5 text-primary" />}
                                                 {step.icon === 'shield-check-line' && <Shield className="w-5 h-5 text-primary" />}
                                                 {step.icon === 'zap-line' && <Zap className="w-5 h-5 text-primary" />}
                                               </div>
@@ -318,10 +316,10 @@ export default function PeopleExpertsPage() {
                                     
                                     <div>
                                       <H2>
-                                        {(pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data as any)?.title || 'Targeted Expertise for High-Stakes Moments'}
+                                        {(pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data as any)?.title || 'Strategic Horsepower for Your Biggest Initiatives'}
                                       </H2>
                                       <P className="text-muted-foreground leading-relaxed text-lg">
-                                        {(pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data as any)?.description || 'Our Embedded Experts are ideal for teams who need:'}
+                                        {(pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data as any)?.description || 'Our Partner Network is ideal for organizations undertaking:'}
                                       </P>
                                     </div>
                                   </div>
@@ -352,23 +350,23 @@ export default function PeopleExpertsPage() {
                                   {((pageData?.sections.find(s => s.section_type === 'approach_cards')?.section_data as any)?.characteristics || [
                                     {
                                       number: '1',
-                                      title: 'Senior-Level Sounding Board',
-                                      description: 'A senior-level sounding board for a key strategic decision.'
+                                      title: 'Large-Scale Transformation',
+                                      description: 'Large-scale digital or agentic transformation projects.'
                                     },
                                     {
                                       number: '2',
-                                      title: 'Specialized Expertise',
-                                      description: 'Specialized expertise to unblock a critical phase of a project.'
+                                      title: 'Post-Merger Integration',
+                                      description: 'Post-merger integration for a newly acquired company.'
                                     },
                                     {
                                       number: '3',
-                                      title: 'Fractional Executive',
-                                      description: 'A fractional executive to fill a short-term leadership gap.'
+                                      title: 'New Market Entry',
+                                      description: 'The rollout of a new product or entry into a new market.'
                                     },
                                     {
                                       number: '4',
-                                      title: 'Objective Review',
-                                      description: 'An objective third-party review of a plan or document.'
+                                      title: 'Operational Overhaul',
+                                      description: 'A comprehensive operational overhaul to prepare for an exit.'
                                     }
                                   ]).map((characteristic: Record<string, unknown>, index: number) => (
                                     <Card key={index} className="border-border/50 bg-transparent">
@@ -395,50 +393,107 @@ export default function PeopleExpertsPage() {
                   </Section>
                 </div>
 
-                {/* Expert Network Section */}
-                <div id="expert-network">
-                  <Section paddingY="lg" className={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.backgroundColor || 'bg-purple-500/10 dark:bg-purple-500/15'}>
+                {/* Partner Network Section */}
+                <div id="partner-network">
+                  <Section paddingY="lg" className={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.backgroundColor || 'bg-green-500/10 dark:bg-green-500/15'}>
                     <Container size="2xl">
                       <div className="space-y-12">
                         {/* Header */}
                         <div className="text-center space-y-6">
-                          <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500/10 rounded-full border border-purple-500/20">
-                            <Users className="w-5 h-5 text-purple-500" />
-                            <span className="text-sm font-semibold text-purple-500">
-                              {(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.badgeText || 'Expert Network'}
+                          <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/10 rounded-full border border-green-500/20">
+                            <Handshake className="w-5 h-5 text-green-500" />
+                            <span className="text-sm font-semibold text-green-500">
+                              {(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.badgeText || 'Partner Network'}
                             </span>
                           </div>
                           <H1>
-                            {(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.title || 'Access World-Class Expertise'}
+                            {(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.title || 'Trusted Consulting Partners'}
                           </H1>
                           <BodyLarge className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-lg">
-                            {(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.description || 'Tap into our curated network of specialists across AI, enterprise architecture, and industry domains. These are independent experts who have been vetted and integrated into our ecosystem.'}
+                            {(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.description || 'Our Partner Network consists of leading consulting firms and agencies that are experts on the Elevation AI platform, bringing deep domain expertise and full team resources to solve your most complex challenges.'}
                           </BodyLarge>
                         </div>
 
-                        {/* Expert Categories Carousel */}
+                        {/* Partner Categories Carousel */}
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
                           <PeopleCarousel
-                            cardStyle="purple"
-                            indicatorColor="purple"
-                            items={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.expertCategories?.map((category: Record<string, unknown>) => ({
+                            cardStyle="green"
+                            indicatorColor="green"
+                            items={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.partnerCategories?.map((category: Record<string, unknown>) => ({
                               id: category.id,
                               title: category.title,
                               description: category.description,
-                              icon: category.icon === 'brain-line' ? Brain : 
+                              icon: category.icon === 'building-2-line' ? Building2 : 
                                     category.icon === 'shield-check-line' ? Shield : 
                                     category.icon === 'global-line' ? Globe : 
-                                    category.icon === 'award-line' ? Award : Brain,
+                                    category.icon === 'handshake-line' ? Handshake : Building2,
                               content: (
                                 <div className="flex flex-wrap gap-2">
                                   {(Array.isArray(category.specialties) ? category.specialties : []).map((specialty: string) => (
-                                    <Badge key={specialty} variant="secondary" className="text-sm bg-purple-500/10 text-purple-500 border-purple-500/20">
+                                    <Badge key={specialty} variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">
                                       {specialty}
                                     </Badge>
                                   ))}
                                 </div>
                               )
-                            })) || []}
+                            })) || [
+                              {
+                                id: 'digital-transformation',
+                                title: 'Digital Transformation',
+                                description: 'Strategic guidance on large-scale digital transformation initiatives and change management.',
+                                icon: Building2,
+                                content: (
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Strategy</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Change Management</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Implementation</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">ROI Analysis</Badge>
+                                  </div>
+                                )
+                              },
+                              {
+                                id: 'merger-integration',
+                                title: 'Merger & Integration',
+                                description: 'Expert support for post-merger integration and organizational restructuring.',
+                                icon: Shield,
+                                content: (
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Integration Planning</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Due Diligence</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Cultural Alignment</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">System Integration</Badge>
+                                  </div>
+                                )
+                              },
+                              {
+                                id: 'market-expansion',
+                                title: 'Market Expansion',
+                                description: 'Strategic support for new market entry and product rollout initiatives.',
+                                icon: Globe,
+                                content: (
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Market Research</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Go-to-Market</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Partnership Development</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Launch Strategy</Badge>
+                                  </div>
+                                )
+                              },
+                              {
+                                id: 'exit-preparation',
+                                title: 'Exit Preparation',
+                                description: 'Comprehensive operational overhaul and preparation for successful exits.',
+                                icon: Handshake,
+                                content: (
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Operational Excellence</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Financial Optimization</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Due Diligence Prep</Badge>
+                                    <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Value Maximization</Badge>
+                                  </div>
+                                )
+                              }
+                            ]}
                             autoPlay={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.carouselSettings?.autoPlay ?? true}
                             autoPlayInterval={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.carouselSettings?.autoPlayInterval || 5000}
                             showProgressIndicators={(pageData?.sections.find(s => s.section_type === 'solutions_carousel')?.section_data as any)?.carouselSettings?.showProgressIndicators ?? true}
@@ -466,22 +521,22 @@ export default function PeopleExpertsPage() {
                 <LogoCarouselSection data={pageData?.sections.find(s => s.section_type === 'logo_carousel')?.section_data} />
 
                 {/* CTA Section */}
-                <div id="connect-experts">
+                <div id="connect-partners">
                   <Section paddingY="lg" className={(pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.backgroundColor || 'bg-muted/30'}>
                     <Container size="2xl">
                       <div className="max-w-4xl mx-auto text-center space-y-8">
                         <div className="space-y-4">
                           <H2>
-                            {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.title || 'Augment Your Team with On-Demand Talent'}
+                            {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.title || 'Find the Right Partner for Your Next Big Move'}
                           </H2>
                           <P className="text-muted-foreground leading-relaxed">
-                            {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.description || 'Explore our network of subject matter experts and see how they can help you solve your next big challenge.'}
+                            {(pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.description || 'Discover our ecosystem of trusted consulting firms and agencies.'}
                           </P>
                         </div>
                         
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                           {((pageData?.sections.find(s => s.section_type === 'cta')?.section_data as any)?.ctaButtons || [
-                            { text: 'Explore the Expert Network', href: '/website/demo', variant: 'default' },
+                            { text: 'Meet Our Partners', href: '/website/demo', variant: 'default' },
                             { text: 'About Us', href: '/website/about', variant: 'outline' }
                           ]).map((button: Record<string, unknown>, index: number) => (
                             <Button key={index} size="lg" variant={typeof button.variant === 'string' && ["default", "link", "destructive", "outline", "secondary", "ghost"].includes(button.variant) ? button.variant as "default" | "link" | "destructive" | "outline" | "secondary" | "ghost" : "default"} asChild>

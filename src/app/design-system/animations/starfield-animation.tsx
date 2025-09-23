@@ -28,8 +28,11 @@ export function StarfieldAnimation({
   const [mounted, setMounted] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationFrameId = useRef<number>(0)
-  const starsRef = useRef<{ x: number; y: number; z: number }[]>([])
+  const starsRef = useRef<{ x: number; y: number; z: number; originalX: number; originalY: number }[]>([])
   const lastCanvasSizeRef = useRef<{ width: number; height: number } | null>(null)
+  const lastFrameTimeRef = useRef(0)
+  const frameInterval = 1000 / 30 // 30 FPS for better performance
+  const { isDark } = useThemeProvider()
 
   useEffect(() => {
     setMounted(true)
@@ -84,10 +87,14 @@ export function StarfieldAnimation({
         if (dimensionsChanged || forceRecreate) {
           starsRef.current.length = 0
           for (let i = 0; i < starCount; i++) {
+            const x = Math.random() * canvas.width - canvas.width / 2
+            const y = Math.random() * canvas.height - canvas.height / 2
             starsRef.current.push({
-              x: Math.random() * canvas.width - canvas.width / 2,
-              y: Math.random() * canvas.height - canvas.height / 2,
+              x: x,
+              y: y,
               z: Math.random() * zMax,
+              originalX: x,
+              originalY: y,
             })
           }
         }
@@ -104,35 +111,65 @@ export function StarfieldAnimation({
     let animationRunning = false
 
     const animate = () => {
+      // Frame rate limiting for better performance
+      const currentTime = performance.now()
+      if (currentTime - lastFrameTimeRef.current < frameInterval) {
+        animationFrameId.current = requestAnimationFrame(animate)
+        return
+      }
+      lastFrameTimeRef.current = currentTime
+      
       if (canvas.width === 0 || canvas.height === 0) {
         if (!initializeCanvasAndStars()) {
           return
         }
       }
 
-      ctx.fillStyle = backgroundColor
+      // Clear canvas with fade effect - shorter trails in light mode
+      const fadeBackgroundColor = isDark 
+        ? 'rgba(0, 0, 0, 0.2)' 
+        : 'rgba(255, 255, 255, 0.3)'
+      ctx.fillStyle = fadeBackgroundColor
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       const centerX = canvas.width / 2
       const centerY = canvas.height / 2
 
+      // Use theme-aware star color
+      const starColor = isDark ? '#FFFFFF' : '#000000'
+
       for (let i = 0; i < starsRef.current.length; i++) {
         const star = starsRef.current[i]
         star.z -= speed
-        if (star.z <= 0) {
+        
+        // Reset star to create seamless loop
+        if (star.z <= 0.1) {
           star.z = zMax
-          star.x = Math.random() * canvas.width - canvas.width / 2
-          star.y = Math.random() * canvas.height - canvas.height / 2
+          star.x = star.originalX
+          star.y = star.originalY
         }
 
         const projectedX = (star.x / star.z) * perspectiveFactor + centerX
         const projectedY = (star.y / star.z) * perspectiveFactor + centerY
-        const opacity = 1 - star.z / zMax
+        const opacity = Math.max(0, Math.min(1, 1 - star.z / zMax))
 
-        ctx.fillStyle = starColor
-        ctx.globalAlpha = opacity
-        ctx.fillRect(Math.floor(projectedX), Math.floor(projectedY), 1, 1)
-        ctx.globalAlpha = 1
+        // Only draw stars that are within canvas bounds
+        if (projectedX >= 0 && projectedX < canvas.width && projectedY >= 0 && projectedY < canvas.height) {
+          ctx.fillStyle = starColor
+          ctx.globalAlpha = opacity
+          
+          // Use slightly smaller stars for better balance
+          const starSize = Math.max(1, Math.floor(1.5 + (1 - star.z / zMax) * 1.5))
+          const halfSize = Math.floor(starSize / 2)
+          
+          ctx.fillRect(
+            Math.floor(projectedX) - halfSize, 
+            Math.floor(projectedY) - halfSize, 
+            starSize, 
+            starSize
+          )
+          ctx.globalAlpha = 1
+        }
       }
       animationFrameId.current = requestAnimationFrame(animate)
     }
@@ -164,7 +201,7 @@ export function StarfieldAnimation({
       animationRunning = false
       lastCanvasSizeRef.current = null
     }
-  }, [mounted, starCount, speed, zMax, perspectiveFactor, backgroundColor, starColor])
+  }, [mounted, starCount, speed, zMax, perspectiveFactor, backgroundColor, starColor, isDark])
 
   if (!mounted) {
     return null

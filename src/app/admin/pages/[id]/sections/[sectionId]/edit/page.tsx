@@ -727,7 +727,7 @@ export default function SectionEditPage() {
         }
         
         // Check if this is a People page challenge/solution section
-        if (page?.slug === 'people' || page?.slug === 'people-concierge' || page?.slug === 'people-experts') {
+        if (page?.slug === 'people' || page?.slug === 'people-concierge' || page?.slug === 'people-experts' || page?.slug === 'people-partners') {
           return (
             <div className="space-y-6">
               {/* Challenge Section */}
@@ -1063,7 +1063,8 @@ export default function SectionEditPage() {
 
       case 'solutions_carousel':
         // Check if this is a People page expert network section
-        if (page?.slug === 'people-concierge' || page?.slug === 'people-experts') {
+        if (page?.slug === 'people-concierge' || page?.slug === 'people-experts' || page?.slug === 'people-partners') {
+          const isPartnersPage = page?.slug === 'people-partners'
           return (
             <div className="space-y-6">
               {/* Main Content */}
@@ -1071,7 +1072,7 @@ export default function SectionEditPage() {
                 <CardHeader>
                   <CardTitle>Main Content</CardTitle>
                   <CardDescription>
-                    Title and description for the Expert Network section
+                    Title and description for the {isPartnersPage ? 'Partner Network' : 'Expert Network'} section
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1081,7 +1082,7 @@ export default function SectionEditPage() {
                       id="badgeText"
                       value={String(section.section_data?.badgeText || '')}
                       onChange={(e) => handleSectionDataChange('badgeText', e.target.value)}
-                      placeholder="Expert Network"
+                      placeholder={isPartnersPage ? "Partner Network" : "Expert Network"}
                     />
                   </div>
                   <div className="space-y-2">
@@ -1090,7 +1091,7 @@ export default function SectionEditPage() {
                       id="title"
                       value={String(section.section_data?.title || '')}
                       onChange={(e) => handleSectionDataChange('title', e.target.value)}
-                      placeholder="Access World-Class Expertise"
+                      placeholder={isPartnersPage ? "Trusted Consulting Partners" : "Access World-Class Expertise"}
                     />
                   </div>
                   <div className="space-y-2">
@@ -1099,7 +1100,7 @@ export default function SectionEditPage() {
                       id="description"
                       value={String(section.section_data?.description || '')}
                       onChange={(e) => handleSectionDataChange('description', e.target.value)}
-                      placeholder="Tap into our curated network of specialists across AI, enterprise architecture, and industry domains."
+                      placeholder={isPartnersPage ? "Our Partner Network consists of leading consulting firms and agencies that are experts on the Elevation AI platform, bringing deep domain expertise and full team resources to solve your most complex challenges." : "Tap into our curated network of specialists across AI, enterprise architecture, and industry domains."}
                       rows={3}
                     />
                   </div>
@@ -1115,17 +1116,17 @@ export default function SectionEditPage() {
                 </CardContent>
               </Card>
 
-              {/* Expert Categories */}
+              {/* Expert/Partner Categories */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Expert Categories</CardTitle>
+                  <CardTitle>{isPartnersPage ? 'Partner Categories' : 'Expert Categories'}</CardTitle>
                   <CardDescription>
-                    Manage the expert categories displayed in the carousel
+                    Manage the {isPartnersPage ? 'partner' : 'expert'} categories displayed in the carousel
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-4">
-                    {(Array.isArray(section.section_data?.expertCategories) ? section.section_data.expertCategories : []).map((category: unknown, index: number) => (
+                    {(Array.isArray(section.section_data?.[isPartnersPage ? 'partnerCategories' : 'expertCategories']) ? section.section_data[isPartnersPage ? 'partnerCategories' : 'expertCategories'] as unknown[] : []).map((category: unknown, index: number) => (
                       <Card key={index} className="border-dashed">
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between">
@@ -1133,7 +1134,7 @@ export default function SectionEditPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => removeArrayItem('expertCategories', index)}
+                              onClick={() => removeArrayItem(isPartnersPage ? 'partnerCategories' : 'expertCategories', index)}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -1145,7 +1146,7 @@ export default function SectionEditPage() {
                               <Label>Title</Label>
                               <Input
                                 value={String((category as { title?: string })?.title || '')}
-                                onChange={(e) => handleArrayFieldChange('expertCategories', index, 'title', e.target.value)}
+                                onChange={(e) => handleArrayFieldChange(isPartnersPage ? 'partnerCategories' : 'expertCategories', index, 'title', e.target.value)}
                                 placeholder="AI & Machine Learning"
                               />
                             </div>
@@ -1153,13 +1154,15 @@ export default function SectionEditPage() {
                               <Label>Icon</Label>
                               <select
                                 value={String((category as { icon?: string })?.icon || 'brain-line')}
-                                onChange={(e) => handleArrayFieldChange('expertCategories', index, 'icon', e.target.value)}
+                                onChange={(e) => handleArrayFieldChange(isPartnersPage ? 'partnerCategories' : 'expertCategories', index, 'icon', e.target.value)}
                                 className="w-full px-3 py-2 border border-input bg-background rounded-md"
                               >
                                 <option value="brain-line">Brain</option>
                                 <option value="shield-check-line">Shield</option>
                                 <option value="global-line">Globe</option>
                                 <option value="award-line">Award</option>
+                                <option value="building-2-line">Building</option>
+                                <option value="handshake-line">Handshake</option>
                               </select>
                             </div>
                           </div>
@@ -1167,7 +1170,7 @@ export default function SectionEditPage() {
                             <Label>Description</Label>
                             <Textarea
                               value={String((category as { description?: string })?.description || '')}
-                              onChange={(e) => handleArrayFieldChange('expertCategories', index, 'description', e.target.value)}
+                              onChange={(e) => handleArrayFieldChange(isPartnersPage ? 'partnerCategories' : 'expertCategories', index, 'description', e.target.value)}
                               placeholder="Specialists in artificial intelligence, machine learning, and advanced automation technologies."
                               rows={3}
                             />
@@ -1178,7 +1181,7 @@ export default function SectionEditPage() {
                               value={((category as { specialties?: string[] })?.specialties || []).join('\n')}
                               onChange={(e) => {
                                 const specialties = e.target.value.split('\n').filter(s => s.trim())
-                                handleArrayFieldChange('expertCategories', index, 'specialties', specialties)
+                                handleArrayFieldChange(isPartnersPage ? 'partnerCategories' : 'expertCategories', index, 'specialties', specialties)
                               }}
                               placeholder="Natural Language Processing&#10;Computer Vision&#10;Predictive Analytics&#10;Robotic Process Automation"
                               rows={4}
@@ -1190,7 +1193,7 @@ export default function SectionEditPage() {
                   </div>
                   <Button
                     variant="outline"
-                    onClick={() => addArrayItem('expertCategories', { 
+                    onClick={() => addArrayItem(isPartnersPage ? 'partnerCategories' : 'expertCategories', { 
                       title: '', 
                       description: '', 
                       icon: 'brain-line',
@@ -1361,7 +1364,7 @@ export default function SectionEditPage() {
 
       case 'approach_cards':
         // Check if this is a People page approach section
-        if (page?.slug === 'people-concierge' || page?.slug === 'people-experts') {
+        if (page?.slug === 'people-concierge' || page?.slug === 'people-experts' || page?.slug === 'people-partners') {
           return (
             <div className="space-y-6">
               {/* Main Content */}
@@ -1745,7 +1748,7 @@ export default function SectionEditPage() {
         }
         
         // Check if this is a People page CTA section
-        if (page?.slug === 'people-concierge' || page?.slug === 'people-experts') {
+        if (page?.slug === 'people-concierge' || page?.slug === 'people-experts' || page?.slug === 'people-partners') {
           return (
             <div className="space-y-6">
               {/* Main Content */}
@@ -2028,7 +2031,7 @@ export default function SectionEditPage() {
         }
         
         // Check if this is a People page hero section
-        if (page?.slug === 'people' || page?.slug === 'people-concierge' || page?.slug === 'people-experts') {
+        if (page?.slug === 'people' || page?.slug === 'people-concierge' || page?.slug === 'people-experts' || page?.slug === 'people-partners') {
           return (
             <div className="space-y-6">
               {/* Main Content */}

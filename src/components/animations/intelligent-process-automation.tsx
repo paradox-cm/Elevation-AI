@@ -127,7 +127,7 @@ export function IntelligentProcessAutomation({
       
       // Draw individual line with fade effect
       ctx.strokeStyle = fadeColor
-      ctx.lineWidth = 2
+      ctx.lineWidth = 1.0
       ctx.lineCap = 'round'
       ctx.beginPath()
       
@@ -412,7 +412,7 @@ export function IntelligentProcessAutomationMobile({
       
       // Draw individual line with fade effect
       ctx.strokeStyle = fadeColor
-      ctx.lineWidth = 2
+      ctx.lineWidth = 1.0
       ctx.lineCap = 'round'
       ctx.beginPath()
       

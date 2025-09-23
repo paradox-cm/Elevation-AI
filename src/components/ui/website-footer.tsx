@@ -137,6 +137,7 @@ export function WebsiteFooter() {
                 <ul className="space-y-2">
                   <li><Link href="/website/people-concierge" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Concierge Team</Link></li>
                   <li><Link href="/website/people-experts" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Expert Network</Link></li>
+                  <li><Link href="/website/people-partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Partner Network</Link></li>
                 </ul>
               </div>
             </div>

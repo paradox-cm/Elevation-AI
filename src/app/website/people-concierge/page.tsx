@@ -690,7 +690,7 @@ export default function PeopleConciergePage() {
 
                 {/* Expert Network Section */}
                 <div id="expert-network">
-                  <Section paddingY="lg" className={'bg-blue-500/10'}>
+                  <Section paddingY="lg" className={'bg-blue-500/10 dark:bg-blue-500/15'}>
                     <Container size="2xl">
                       <div className="space-y-12">
                         {/* Header */}

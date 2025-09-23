@@ -117,7 +117,7 @@ export function FutureReady({
     
     // Set stroke color and opacity
     ctx.strokeStyle = arrowColorRef.current
-    ctx.lineWidth = 2 / scale // Adjust line width for scale
+    ctx.lineWidth = 1.0 / scale // Adjust line width for scale
     ctx.globalAlpha = arrow.opacity
     
     // Draw the arrow path as stroke only

@@ -10,7 +10,7 @@ import { H2, H3, P } from "@/components/ui/typography"
 import { Button } from "@/components/ui/button"
 import { DesignSystemSidebar } from "@/components/ui/design-system-sidebar"
 import { DesignSystemNavigation } from "@/components/ui/design-system-navigation"
-import { StarFieldAnimation } from "@/components/animations/star-field-animation"
+import { StarfieldAnimation } from "@/app/design-system/animations/starfield-animation"
 import { Badge } from "@/components/ui/badge"
 import Icon from "@/components/ui/icon"
 import Link from "next/link"
@@ -47,7 +47,7 @@ export default function StarfieldAnimationPage() {
               <Card className="overflow-hidden">
                 <CardContent className="p-0">
                   <div className="relative h-[400px] sm:h-[500px] lg:h-[600px]">
-                    <StarFieldAnimation className="w-full h-full" />
+                    <StarfieldAnimation className="w-full h-full" />
                     
                     {/* Theme Toggle Instructions */}
                     <div className="absolute top-4 right-4">
@@ -247,7 +247,7 @@ export default function StarfieldAnimationPage() {
                 <CardContent className="space-y-4">
                   <div className="bg-muted/50 p-4 rounded-lg">
                     <pre className="text-sm overflow-x-auto">
-{`import { StarFieldAnimation } from "@/components/animations/star-field-animation"
+{`import { StarfieldAnimation } from "@/app/design-system/animations/starfield-animation"
 
 // Basic usage
 <StarFieldAnimation className="w-full h-full" />

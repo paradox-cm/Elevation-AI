@@ -58,8 +58,8 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
     const animateLines = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
-      // Use theme-aware color
-      const color = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'
+      // Use theme-aware color with better contrast
+      const color = isDark ? 'rgba(255, 255, 255, 1.0)' : 'rgba(0, 0, 0, 1.0)'
       ctx.fillStyle = color
 
       linesRef.current.forEach(line => {
@@ -68,7 +68,7 @@ export function BusinessDataAnimation({ className = "" }: BusinessDataAnimationP
           line.direction *= -1
         }
 
-        ctx.fillRect(line.x + line.offset, line.y, 0.5, 3)
+        ctx.fillRect(line.x + line.offset, line.y, 1, 4)
       })
 
       animationRef.current = requestAnimationFrame(animateLines)

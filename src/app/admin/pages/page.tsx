@@ -80,6 +80,7 @@ export default function PagesPage() {
     'platform', 
     'people-concierge',
     'people-experts',
+    'people-partners',
     'solutions',
     'pricing',
     'about',
@@ -90,11 +91,11 @@ export default function PagesPage() {
 
   // Separate People pages from other pages
   const peoplePages = pages.filter(page => 
-    page.slug === 'people-concierge' || page.slug === 'people-experts'
+    page.slug === 'people-concierge' || page.slug === 'people-experts' || page.slug === 'people-partners'
   )
   
   const otherPages = pages.filter(page => 
-    page.slug !== 'people-concierge' && page.slug !== 'people-experts'
+    page.slug !== 'people-concierge' && page.slug !== 'people-experts' && page.slug !== 'people-partners'
   )
 
   // Custom sort function for pages
@@ -145,6 +146,7 @@ export default function PagesPage() {
 
     const conciergePage = peoplePages.find(p => p.slug === 'people-concierge')
     const expertsPage = peoplePages.find(p => p.slug === 'people-experts')
+    const partnersPage = peoplePages.find(p => p.slug === 'people-partners')
     
     return (
       <Card className="hover:shadow-md transition-shadow">
@@ -155,7 +157,7 @@ export default function PagesPage() {
               <div>
                 <CardTitle className="text-lg">People</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">
-                  Concierge Support & Expert Network
+                  Concierge Support, Expert Network & Partner Network
                 </CardDescription>
               </div>
             </div>
@@ -176,10 +178,12 @@ export default function PagesPage() {
                 <span>
                   Updated {Math.max(
                     conciergePage ? new Date(conciergePage.updated_at).getTime() : 0,
-                    expertsPage ? new Date(expertsPage.updated_at).getTime() : 0
+                    expertsPage ? new Date(expertsPage.updated_at).getTime() : 0,
+                    partnersPage ? new Date(partnersPage.updated_at).getTime() : 0
                   ) ? formatDate(new Date(Math.max(
                     conciergePage ? new Date(conciergePage.updated_at).getTime() : 0,
-                    expertsPage ? new Date(expertsPage.updated_at).getTime() : 0
+                    expertsPage ? new Date(expertsPage.updated_at).getTime() : 0,
+                    partnersPage ? new Date(partnersPage.updated_at).getTime() : 0
                   )).toISOString()) : 'Never'}
                 </span>
               </div>
@@ -217,6 +221,17 @@ export default function PagesPage() {
                       </Link>
                     </DropdownMenuItem>
                   )}
+                  {partnersPage && (
+                    <DropdownMenuItem asChild>
+                      <Link href={`/admin/pages/${partnersPage.id}/edit`} className="flex items-center">
+                        <Edit className="h-4 w-4 mr-2" />
+                        <div>
+                          <div className="font-medium">Partner Network</div>
+                          <div className="text-xs text-muted-foreground">Trusted consulting firms</div>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
               
@@ -245,6 +260,17 @@ export default function PagesPage() {
                         <Eye className="h-4 w-4 mr-2" />
                         <div>
                           <div className="font-medium">View Experts</div>
+                          <div className="text-xs text-muted-foreground">Preview page</div>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  {partnersPage && (
+                    <DropdownMenuItem asChild>
+                      <Link href={`/website/${partnersPage.slug}`} target="_blank" className="flex items-center">
+                        <Eye className="h-4 w-4 mr-2" />
+                        <div>
+                          <div className="font-medium">View Partners</div>
                           <div className="text-xs text-muted-foreground">Preview page</div>
                         </div>
                       </Link>
@@ -428,7 +454,7 @@ export default function PagesPage() {
                       </Link>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href={`/${page.slug}`} target="_blank">
+                      <Link href={page.slug === 'home' ? '/' : `/website/${page.slug}`} target="_blank">
                         <Eye className="h-3 w-3" />
                       </Link>
                     </Button>

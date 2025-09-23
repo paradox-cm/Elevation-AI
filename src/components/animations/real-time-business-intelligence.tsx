@@ -277,7 +277,7 @@ export function RealTimeBusinessIntelligence({
       
       // Animated line chart - ensure it stays within chart boundaries
       ctx.strokeStyle = dataColor
-      ctx.lineWidth = 2
+      ctx.lineWidth = 1.0
       ctx.beginPath()
       
       for (let i = 0; i < chartWidth; i += 2) {
@@ -386,7 +386,7 @@ export function RealTimeBusinessIntelligence({
         
         // Outer ring
         ctx.strokeStyle = metricColor
-        ctx.lineWidth = 2
+        ctx.lineWidth = 1.0
         ctx.beginPath()
         ctx.arc(x, y, size, 0, Math.PI * 2)
         ctx.stroke()
@@ -413,7 +413,7 @@ export function RealTimeBusinessIntelligence({
       const needleAngle = Math.PI + (Math.sin(progress) * 0.5)
       
       ctx.strokeStyle = metricColor
-      ctx.lineWidth = 2
+      ctx.lineWidth = 1.0
       ctx.beginPath()
       ctx.moveTo(centerX, centerY)
       ctx.lineTo(

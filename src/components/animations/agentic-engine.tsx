@@ -181,7 +181,7 @@ export function AgenticEngine({
         ctx.moveTo(this.start.x, this.start.y)
         ctx.lineTo(this.end.x, this.end.y)
         ctx.strokeStyle = `${lineColor}${this.opacity})`
-        ctx.lineWidth = 1
+        ctx.lineWidth = 1.0
         ctx.stroke()
       }
 
@@ -376,7 +376,7 @@ export function AgenticEngine({
       const scaleX = nodeBoundary.width / 88
       const scaleY = nodeBoundary.height / 84.4
       const scale = Math.min(scaleX, scaleY) * 1.04 // Same as base network
-      const lineWidth = 0.7 * scale // Match base network line thickness
+      const lineWidth = 1.0 // Standardized stroke width
       
       const internalLine = {
         start: { x: startNode.x, y: startNode.y },
@@ -500,7 +500,7 @@ export function AgenticEngine({
               ctx.moveTo(this.start.x, this.start.y)
               ctx.lineTo(this.end.x, this.end.y)
               ctx.strokeStyle = `${lineColor}0.8)` // Match animation color
-              ctx.lineWidth = 0.7 * scale // Scale stroke width from SVG
+              ctx.lineWidth = 1.0 // Standardized stroke width
               ctx.stroke()
             }
           }

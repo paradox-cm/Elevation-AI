@@ -72,7 +72,7 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
             <button className="text-sm font-medium transition-colors hover:text-foreground/80 hover:bg-muted/50 px-3 py-2 rounded-md flex items-center gap-1 relative">
               People
               <Icon name="arrow-down-s-line" className="h-4 w-4" />
-              {(currentPage === 'people-concierge' || currentPage === 'people-experts') && (
+              {(currentPage === 'people-concierge' || currentPage === 'people-experts' || currentPage === 'people-partners') && (
                 <div className="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary"></div>
               )}
             </button>
@@ -84,6 +84,9 @@ export function MainHeader({ showLogin = true, showDemo = true, currentPage }: M
                 </Link>
                 <Link href="/website/people-experts" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
                   Expert Network
+                </Link>
+                <Link href="/website/people-partners" className="block text-sm hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted/50">
+                  Partner Network
                 </Link>
               </div>
             </div>

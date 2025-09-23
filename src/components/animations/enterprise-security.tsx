@@ -107,9 +107,9 @@ export function EnterpriseSecurity({
     // Apply mobile scaling: 25% smaller on mobile
     const mobileScale = isMobile ? 0.75 : 1.0
     
-    // Create 3 security layers (outer, middle, inner) - 20% smaller + mobile scaling
+    // Create 3 security layers (outer, middle, inner) - reduced to match Personal Co-pilot scale
     for (let i = 0; i < 3; i++) {
-      const radius = (80 + i * 40) * 0.8 * mobileScale // 20% smaller + mobile scaling: 48, 72, 96 on mobile
+      const radius = (50 + i * 25) * 0.8 * mobileScale // Reduced sizes: 32, 48, 64 on mobile
       const points: number[][] = []
       
       // Create hexagon points for each layer
@@ -192,7 +192,7 @@ export function EnterpriseSecurity({
       
       // Set styles once for all hexagons
       ctx.strokeStyle = lineColor
-      ctx.lineWidth = 1 // Match Personal Copilot line thickness exactly
+      ctx.lineWidth = 1.0 // Standardized stroke width
       ctx.lineCap = 'round' // Smooth line endings
       ctx.lineJoin = 'round' // Smooth line connections
       
@@ -225,9 +225,9 @@ export function EnterpriseSecurity({
         ctx.stroke()
       })
       
-      // Draw central security core (small hexagon) with 30-degree rotation to face upward - 20% smaller + mobile scaling
+      // Draw central security core (small hexagon) with 30-degree rotation to face upward - reduced to match Personal Co-pilot scale
       const mobileScale = isMobile ? 0.75 : 1.0
-      const coreRadius = 30 * 0.8 * mobileScale // 20% smaller + mobile scaling: 18 on mobile
+      const coreRadius = 18 * 0.8 * mobileScale // Reduced size: 10.8 on mobile
       const coreRotation = Math.PI / 6 // 30 degrees in radians - makes hexagon face upward
       const corePoints: number[][] = []
       for (let i = 0; i < 6; i++) {

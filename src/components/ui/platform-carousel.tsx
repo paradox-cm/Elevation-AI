@@ -23,7 +23,8 @@ export interface PlatformCarouselProps {
   onSlideChange?: (index: number) => void
   indicatorStyle?: 'progress' | 'thin-lines'
   highlightActiveCard?: boolean
-  cardStyle?: 'filled' | 'outline' | 'blue' | 'neutral-blue'
+  cardStyle?: 'filled' | 'outline' | 'blue' | 'neutral-blue' | 'green' | 'purple'
+  indicatorColor?: 'primary' | 'green' | 'purple' | 'blue'
   minHeight?: string
   responsiveMinHeight?: {
     sm?: string
@@ -58,6 +59,7 @@ export function PlatformCarousel({
   indicatorStyle = 'progress',
   highlightActiveCard = true,
   cardStyle = 'filled',
+  indicatorColor = 'primary',
   minHeight = '320px',
   responsiveMinHeight,
   hugContent = false,
@@ -802,7 +804,15 @@ export function PlatformCarousel({
                         ? highlightActiveCard && index === activeCardIndex
                           ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                           : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                        : cardStyle === 'neutral-blue'
+                        : cardStyle === 'green'
+                          ? highlightActiveCard && index === activeCardIndex
+                            ? 'border-green-500/30 bg-green-500/10 dark:bg-green-500/15 shadow-green-500/20 shadow-sm'
+                            : 'border-green-500/20 bg-green-500/5 dark:bg-green-500/8 hover:bg-green-500/10 hover:border-green-500/30'
+                          : cardStyle === 'purple'
+                            ? highlightActiveCard && index === activeCardIndex
+                              ? 'border-purple-500/30 bg-purple-500/10 dark:bg-purple-500/15 shadow-purple-500/20 shadow-sm'
+                              : 'border-purple-500/20 bg-purple-500/5 dark:bg-purple-500/8 hover:bg-purple-500/10 hover:border-purple-500/30'
+                            : cardStyle === 'neutral-blue'
                           ? highlightActiveCard && index === activeCardIndex
                             ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
                             : 'bg-card border-border'
@@ -813,8 +823,20 @@ export function PlatformCarousel({
                   <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
                     <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
                       {item.icon && (
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
-                          <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
+                        <div className={cn(
+                          "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0",
+                          cardStyle === 'blue' ? 'bg-blue-500/10' :
+                          cardStyle === 'green' ? 'bg-green-500/10' :
+                          cardStyle === 'purple' ? 'bg-purple-500/10' :
+                          'bg-primary/10'
+                        )}>
+                          <item.icon className={cn(
+                            "text-4xl sm:text-5xl md:text-6xl",
+                            cardStyle === 'blue' ? 'text-blue-500' :
+                            cardStyle === 'green' ? 'text-green-500' :
+                            cardStyle === 'purple' ? 'text-purple-500' :
+                            'text-primary'
+                          )} />
                         </div>
                       )}
                       <div className="flex flex-col flex-1">
@@ -846,10 +868,16 @@ export function PlatformCarousel({
                 "w-2 h-2 rounded-full transition-all duration-300",
                 indicatorStyle === 'progress'
                   ? index === activeCardIndex 
-                    ? "bg-primary w-8" 
+                    ? indicatorColor === 'green' ? "bg-green-500 w-8" :
+                      indicatorColor === 'purple' ? "bg-purple-500 w-8" :
+                      indicatorColor === 'blue' ? "bg-blue-500 w-8" :
+                      "bg-primary w-8"
                     : "bg-muted-foreground/30"
                   : index === activeCardIndex
-                    ? "bg-primary h-1 w-6"
+                    ? indicatorColor === 'green' ? "bg-green-500 h-1 w-6" :
+                      indicatorColor === 'purple' ? "bg-purple-500 h-1 w-6" :
+                      indicatorColor === 'blue' ? "bg-blue-500 h-1 w-6" :
+                      "bg-primary h-1 w-6"
                     : "bg-muted-foreground/30 h-1 w-2"
               )}
             />

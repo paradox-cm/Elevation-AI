@@ -22,7 +22,8 @@ import {
   ChevronRight,
   CheckSquare,
   LifeBuoy,
-  Clock
+  Clock,
+  Palette
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -53,6 +54,7 @@ const baseNavigation = [
   { name: 'Emails', href: '/admin/emails', icon: Mail },
   { name: 'Notifications', href: '/admin/notifications', icon: Bell },
   { name: 'To-Do', href: '/admin/todo', icon: CheckSquare },
+  { name: 'Design System', href: '/design-system', icon: Palette },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 

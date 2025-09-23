@@ -210,7 +210,7 @@ export function KnowledgeBlocks({
     
     // Draw connections as individual lines (not batched to avoid solid shapes)
     ctx.strokeStyle = connectionColorRef.current
-    ctx.lineWidth = 2
+    ctx.lineWidth = 1.0
     
     connections.forEach(connection => {
       const startBlock = blocks[connection.start]
@@ -526,7 +526,7 @@ export function KnowledgeBlocksMobile({
     
     // Draw connections as individual lines (not batched to avoid solid shapes)
     ctx.strokeStyle = connectionColorRef.current
-    ctx.lineWidth = 2
+    ctx.lineWidth = 1.0
     
     connections.forEach(connection => {
       const startBlock = blocks[connection.start]

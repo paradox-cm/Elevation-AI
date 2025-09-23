@@ -123,7 +123,17 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
         if (projectedX >= 0 && projectedX < canvas.width && projectedY >= 0 && projectedY < canvas.height) {
           ctx.fillStyle = starColor
           ctx.globalAlpha = opacity
-          ctx.fillRect(Math.floor(projectedX), Math.floor(projectedY), 1, 1)
+          
+          // Make stars larger in light mode for better visibility
+          const starSize = theme === 'dark' ? 1 : Math.max(1, Math.floor(2 + (1 - star.z / Z_MAX) * 2))
+          const halfSize = Math.floor(starSize / 2)
+          
+          ctx.fillRect(
+            Math.floor(projectedX) - halfSize, 
+            Math.floor(projectedY) - halfSize, 
+            starSize, 
+            starSize
+          )
           ctx.globalAlpha = 1
         }
       }

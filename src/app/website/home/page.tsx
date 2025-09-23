@@ -58,6 +58,7 @@ import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { StarfieldAnimationPlatform } from "@/app/design-system/animations/starfield-animation"
 import { usePageCache } from '@/hooks/use-page-cache'
+import { useViewportAutoPlay } from '@/hooks/use-viewport-auto-play'
 import { 
   UnifiedKnowledge, 
   IntelligentProcessAutomation, 
@@ -761,12 +762,12 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                       <CardContent className="flex-1 flex flex-col pb-6 px-4 min-h-0">
                         {/* Spacer to push animation to bottom */}
                         <div className="flex-1"></div>
-                        {/* Animation Container */}
+                        {/* Animation Container - Standardized height */}
                         <div className="h-[220px] sm:h-[260px] md:h-[300px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden mt-4">
                           {index === 0 && (
                             <UnifiedKnowledge 
-                              width={220} 
-                              height={220} 
+                              width={176} 
+                              height={176} 
                               showBorder={false}
                               className=""
                             />
@@ -781,16 +782,16 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                           )}
                           {index === 2 && (
                             <RealTimeBusinessIntelligenceMobile 
-                              width={200} 
-                              height={200} 
+                              width={198} 
+                              height={198} 
                               showBorder={false}
                               className=""
                             />
                           )}
                           {index === 3 && (
                             <FutureReadyMobile 
-                              width={200} 
-                              height={160} 
+                              width={220} 
+                              height={220} 
                               showBorder={false}
                               className=""
                             />
@@ -855,12 +856,12 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                           </div>
                         </CardHeader>
                         <CardContent className="flex-1 flex flex-col pb-6 px-6 min-h-0">
-                          {/* Animation Container - Fixed position */}
+                          {/* Animation Container - Standardized height */}
                           <div className="h-[280px] lg:h-[320px] xl:h-[360px] 2xl:h-[400px] rounded-lg flex items-center justify-center border border-border/50 relative overflow-hidden">
                             {index === 0 && (
                               <UnifiedKnowledge 
-                                width={308} 
-                                height={308} 
+                                width={256} 
+                                height={224} 
                                 showBorder={false}
                               />
                             )}
@@ -873,17 +874,28 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
                             )}
                             {index === 2 && (
                               <RealTimeBusinessIntelligence 
-                                width={308} 
-                                height={308} 
+                                width={288} 
+                                height={252} 
                                 showBorder={false}
                               />
                             )}
                             {index === 3 && (
-                              <FutureReady 
-                                width={420} 
-                                height={280} 
-                                showBorder={false}
-                              />
+                              <div className="hidden lg:block transform -translate-y-4">
+                                <FutureReady 
+                                  width={320} 
+                                  height={280} 
+                                  showBorder={false}
+                                />
+                              </div>
+                            )}
+                            {index === 3 && (
+                              <div className="block lg:hidden">
+                                <FutureReady 
+                                  width={320} 
+                                  height={280} 
+                                  showBorder={false}
+                                />
+                              </div>
                             )}
                           </div>
                           {/* Get a Custom Quote Link */}
@@ -914,9 +926,7 @@ function ProblemSection({ data }: { data?: Record<string, unknown> }) {
 
 // Platform Overview Section
 function PlatformSection({ data }: { data?: Record<string, unknown> }) {
-  const [activeTab, setActiveTab] = React.useState(0)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
-  const sectionRef = React.useRef<HTMLDivElement>(null)
   
   const {
     title: rawTitle = "The Agentic Platform",
@@ -980,93 +990,26 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
     }
   ]
 
-  // Mobile scroll-based card activation - REMOVED for normal scrolling
-  // Cards now expand/collapse normally without scroll interference
-
-  // Desktop scroll-triggered tab interface with standardized behavior (matching ProblemSection)
-  React.useEffect(() => {
-    // Only run on desktop - use a more reliable check
-    if (typeof window === 'undefined' || window.innerWidth < 1024) return
-    
-    const handleScroll = () => {
-      if (!sectionRef.current) return
-      
-      const rect = sectionRef.current.getBoundingClientRect()
-      // Responsive container height calculation matching actual container heights
-      let containerHeight
-      if (window.innerWidth >= 1536) { // 2XL
-        containerHeight = 550 // matches h-[550px] for PlatformSection
-      } else if (window.innerWidth >= 1400) { // XL
-        containerHeight = 500 // matches h-[500px] for PlatformSection
-      } else { // LG
-        containerHeight = 450 // matches h-[450px] for PlatformSection
-      }
-      
-      // Calculate which tab should be active based on scroll position
-      if (rect.top <= 0 && rect.bottom >= containerHeight) {
-        // Section is in viewport, use custom calculation for PlatformSection
-        const scrollProgress = Math.abs(rect.top) / containerHeight
-        
-        // Custom logic: All tabs get 400px more scroll space, fourth and fifth tabs get additional 100px (500px total each)
-        const baseTabHeight = containerHeight
-        const firstTabHeight = baseTabHeight + 400 // 400px extra for first tab
-        const secondTabHeight = baseTabHeight + 400 // 400px extra for second tab
-        const thirdTabHeight = baseTabHeight + 400 // 400px extra for third tab
-        const fourthTabHeight = baseTabHeight + 500 // 500px extra for fourth tab (400px + 100px additional)
-        const fifthTabHeight = baseTabHeight + 500 // 500px extra for fifth tab (400px + 100px additional)
-        
-        let activeTab = 0
-        if (scrollProgress < (firstTabHeight / containerHeight)) {
-          // First tab
-          activeTab = 0
-        } else if (scrollProgress < ((firstTabHeight + secondTabHeight) / containerHeight)) {
-          // Second tab
-          activeTab = 1
-        } else if (scrollProgress < ((firstTabHeight + secondTabHeight + thirdTabHeight) / containerHeight)) {
-          // Third tab
-          activeTab = 2
-        } else if (scrollProgress < ((firstTabHeight + secondTabHeight + thirdTabHeight + fourthTabHeight) / containerHeight)) {
-          // Fourth tab
-          activeTab = 3
-        } else if (scrollProgress < ((firstTabHeight + secondTabHeight + thirdTabHeight + fourthTabHeight + fifthTabHeight) / containerHeight)) {
-          // Fifth tab
-          activeTab = 4
-        } else {
-          // Section complete, stay on last tab
-          activeTab = 4
-        }
-        
-        setActiveTab(activeTab)
-      } else if (rect.top > 0) {
-        // Section is above viewport
-        setActiveTab(0)
-      } else {
-        // Section is below viewport
-        setActiveTab(featuresArray.length - 1)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [featuresArray.length])
-
-  // Handle manual tab clicks
-  const handleTabClick = (tabIndex: number) => {
-    setActiveTab(tabIndex)
-  }
-
   return (
     <Section paddingY="lg" className="relative">
       {/* Background Animation - Centralized Starfield */}
       <div className="absolute inset-0 z-0">
-        <div className={`${isDesktop ? 'sticky top-0 h-screen' : 'h-full'}`}>
+        <div className="h-full">
           <StarfieldAnimationPlatform className="w-full h-full" />
         </div>
       </div>
       
       <Container size="2xl" className="relative z-10">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
-          {/* Mobile Layout */}
+          {/* Section Headline */}
+          <div className="text-center space-y-3 lg:space-y-2 mb-8 lg:mb-12">
+            <H1>{title}</H1>
+            <P className="text-muted-foreground max-w-4xl mx-auto">
+              {description}
+            </P>
+          </div>
+
+          {/* Mobile/Tablet Layout - Original Scroll-triggered Tabbed Interface */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
             <div className="text-left lg:text-center space-y-3 lg:space-y-2 mb-4 sm:mb-6 md:mb-8 pl-4 sm:pl-6 lg:pl-8">
@@ -1083,7 +1026,7 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                     data-platform-card
                     className="w-[320px] sm:w-[380px] flex-shrink-0"
                   >
-                                         <Card className="h-[500px] sm:h-[550px] md:h-[600px] xl:h-[650px] 2xl:h-[700px] border-border/50 transition-colors duration-300 flex flex-col gap-0">
+                    <Card className="h-[500px] sm:h-[550px] md:h-[600px] xl:h-[650px] 2xl:h-[700px] border-border/50 transition-colors duration-300 flex flex-col gap-0">
                       <CardHeader className="pt-4 pb-4 px-4 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -1157,117 +1100,190 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
             </div>
           </div>
 
-          {/* Desktop Layout - Scroll-triggered Tabbed Interface */}
-          <div className="hidden lg:block relative" ref={sectionRef}>
-            {/* Sticky Tab Container */}
-            <div className="sticky top-20 h-[calc(100vh-8rem)] lg:h-[calc(100vh-7rem)] xl:h-[calc(100vh-7rem)] 2xl:h-[calc(100vh-6rem)] flex items-center py-2 lg:py-2 xl:py-3 2xl:py-4">
-              <div className="w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-9rem)] xl:h-[calc(100vh-8rem)] 2xl:h-[calc(100vh-7rem)] relative flex items-center">
-                                  <div className="w-full flex flex-col items-center justify-center">
-                  {/* Section Headline */}
-                  <div className="text-center space-y-3 lg:space-y-2 mb-4 lg:mb-6 xl:mb-8">
-                    <H1>{title}</H1>
-                    <P className="text-muted-foreground max-w-4xl mx-auto">
-                      {description}
-                    </P>
-                  </div>
-                  {/* Tab Content Container */}
-                  <div className="relative w-full h-[500px] lg:h-[600px] xl:h-[650px] 2xl:h-[700px] pb-6">
-                    {featuresArray.map((feature: Feature, index: number) => (
-                      <div
-                        key={index}
-                        className={`absolute inset-0 pb-6 ${
-                          activeTab === index
-                            ? 'opacity-100'
-                            : 'opacity-0 pointer-events-none'
-                        }`}
-                      >
-                        <Card className="border-border/50 transition-colors duration-300 h-full">
-                          <CardHeader className="h-full flex flex-col pt-2 px-6 pb-6 lg:pt-4 lg:px-8 lg:pb-8 xl:pt-6 xl:px-10 xl:pb-10 2xl:pt-8 2xl:px-12 2xl:pb-12">
-                            {/* Tab Navigation - Positioned at top of card with proper spacing */}
-                            <div className="flex flex-wrap justify-center gap-2 lg:gap-4 xl:gap-6 mb-2 lg:mb-4 xl:mb-6 2xl:mb-8">
-                              {featuresArray.map((featureTab: Feature, tabIndex: number) => (
-                                <button
-                                  key={tabIndex}
-                                  onClick={() => handleTabClick(tabIndex)}
-                                  className={`px-4 py-2 lg:px-5 lg:py-2.5 xl:px-6 xl:py-3 rounded-lg text-sm lg:text-base xl:text-lg font-medium transition-all duration-300 ${
-                                    activeTab === tabIndex
-                                      ? 'bg-blue-600 text-white shadow-lg'
-                                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
-                                  }`}
-                                >
-                                  {featureTab.title}
-                                </button>
-                              ))}
-                            </div>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 items-center justify-center flex-1 w-full min-h-0 overflow-hidden">
-                              <div className="space-y-3 lg:space-y-4 xl:space-y-5 2xl:space-y-6 w-full">
-                                <H1>{feature.title}</H1>
-                                <BodyLarge className="text-muted-foreground text-sm lg:text-base xl:text-lg 2xl:text-xl leading-relaxed">
-                                  {feature.description}
-                                </BodyLarge>
-                                {/* View Platform Link */}
-                                <div className="pt-2">
-                                  <Link 
-                                    href="/website/platform" 
-                                    className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
-                                  >
-                                    View Platform →
-                                  </Link>
-                                </div>
-                              </div>
-                              <div className="h-[320px] lg:h-[370px] xl:h-[420px] 2xl:h-[470px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
-                                {activeTab === 0 && (
-                                  <KnowledgeBlocks 
-                                    key={isDesktop ? "lg" : "sm"}
-                                    width={480} 
-                                    height={320} 
-                                    showBorder={false}
-                                  />
-                                )}
-                                {activeTab === 1 && (
-                                  <WorkspacesCanvases 
-                                    key={isDesktop ? "lg" : "sm"}
-                                    width={440} 
-                                    height={440} 
-                                    showBorder={false}
-                                  />
-                                )}
-                                {activeTab === 2 && (
-                                  <AgenticEngine 
-                                    key={isDesktop ? "lg" : "sm"}
-                                    width={440} 
-                                    height={440} 
-                                    showBorder={false}
-                                  />
-                                )}
-                                {activeTab === 3 && (
-                                  <PersonalCopilot 
-                                    key={isDesktop ? "lg" : "sm"}
-                                    width={352} 
-                                    height={352} 
-                                    showBorder={false}
-                                  />
-                                )}
-                                {activeTab === 4 && (
-                                  <EnterpriseSecurity 
-                                    width={440} 
-                                    height={440} 
-                                    showBorder={false}
-                                  />
-                                )}
-                              </div>
-                            </div>
-                          </CardHeader>
-                        </Card>
+          {/* Desktop Layout - Bento Grid */}
+          <div className="hidden lg:block">
+            <div className="flex gap-6 lg:gap-8 items-stretch">
+              {/* Left Column - Two Large Cards */}
+              <div className="flex-1 flex flex-col space-y-6 lg:space-y-8">
+                {/* Knowledge Blocks - Large card */}
+                <Card className="flex-1 border-border/50 transition-colors duration-300 flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <CardHeader className="flex-shrink-0 pt-6 px-6 pb-4">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center">
+                        <Icon name={featuresArray[0].icon} size="2xl" className="text-blue-600" />
                       </div>
-                    ))}
-                  </div>
-                </div>
+                      <CardTitle className="text-xl lg:text-2xl font-semibold">{featuresArray[0].title}</CardTitle>
+                    </div>
+                    <BodyLarge className="text-muted-foreground text-base lg:text-lg leading-relaxed">
+                      {featuresArray[0].description}
+                    </BodyLarge>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col px-6 pb-6">
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="h-full w-full rounded-xl flex items-center justify-center border border-border/50 relative">
+                        <KnowledgeBlocks 
+                          key={isDesktop ? "lg" : "sm"}
+                          width={400} 
+                          height={400} 
+                          showBorder={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-4">
+                      <Link 
+                        href="/website/platform" 
+                        className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
+                      >
+                        Learn more →
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Agentic Engine - Large card */}
+                <Card className="flex-1 border-border/50 transition-colors duration-300 flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <CardHeader className="flex-shrink-0 pt-6 px-6 pb-4">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center">
+                        <Icon name={featuresArray[2].icon} size="2xl" className="text-blue-600" />
+                      </div>
+                      <CardTitle className="text-xl lg:text-2xl font-semibold">{featuresArray[2].title}</CardTitle>
+                    </div>
+                    <BodyLarge className="text-muted-foreground text-base lg:text-lg leading-relaxed">
+                      {featuresArray[2].description}
+                    </BodyLarge>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col px-6 pb-6">
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="h-full w-full rounded-xl flex items-center justify-center border border-border/50 relative">
+                        <AgenticEngine 
+                          key={isDesktop ? "lg" : "sm"}
+                          width={400} 
+                          height={400} 
+                          showBorder={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-4">
+                      <Link 
+                        href="/website/platform" 
+                        className="text-primary hover:text-primary/80 text-sm lg:text-base font-medium transition-colors duration-200"
+                      >
+                        Learn more →
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Right Column - Three Compact Cards Stacked Naturally */}
+              <div className="w-96 lg:w-[28rem] xl:w-[32rem] space-y-4 lg:space-y-6">
+                {/* Workspaces & Canvases */}
+                <Card className="border-border/50 transition-colors duration-300 flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <CardHeader className="flex-shrink-0 pt-4 px-4 pb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center">
+                        <Icon name={featuresArray[1].icon} size="lg" className="text-blue-600" />
+                      </div>
+                      <CardTitle className="text-base font-semibold">{featuresArray[1].title}</CardTitle>
+                    </div>
+                    <BodyLarge className="text-muted-foreground text-xs leading-relaxed">
+                      {featuresArray[1].description}
+                    </BodyLarge>
+                  </CardHeader>
+                  <CardContent className="flex flex-col px-4 pb-4">
+                    <div className="flex items-center justify-center">
+                      <div className="h-[200px] lg:h-[240px] xl:h-[280px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
+                        <WorkspacesCanvases 
+                          key={isDesktop ? "lg" : "sm"}
+                          width={200} 
+                          height={200} 
+                          showBorder={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-2">
+                      <Link 
+                        href="/website/platform" 
+                        className="text-primary hover:text-primary/80 text-xs font-medium transition-colors duration-200"
+                      >
+                        Learn more →
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Personal Co-pilot */}
+                <Card className="border-border/50 transition-colors duration-300 flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <CardHeader className="flex-shrink-0 pt-4 px-4 pb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center">
+                        <Icon name={featuresArray[3].icon} size="lg" className="text-blue-600" />
+                      </div>
+                      <CardTitle className="text-base font-semibold">{featuresArray[3].title}</CardTitle>
+                    </div>
+                    <BodyLarge className="text-muted-foreground text-xs leading-relaxed">
+                      {featuresArray[3].description}
+                    </BodyLarge>
+                  </CardHeader>
+                  <CardContent className="flex flex-col px-4 pb-4">
+                    <div className="flex items-center justify-center">
+                      <div className="h-[200px] lg:h-[240px] xl:h-[280px] w-full rounded-xl flex items-center justify-center border border-border/50 relative">
+                        <PersonalCopilot 
+                          key={isDesktop ? "lg" : "sm"}
+                          width={200} 
+                          height={200} 
+                          showBorder={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-2">
+                      <Link 
+                        href="/website/platform" 
+                        className="text-primary hover:text-primary/80 text-xs font-medium transition-colors duration-200"
+                      >
+                        Learn more →
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Enterprise Security */}
+                <Card className="border-border/50 transition-colors duration-300 flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <CardHeader className="flex-shrink-0 pt-4 px-4 pb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg flex items-center justify-center">
+                        <Icon name={featuresArray[4].icon} size="lg" className="text-blue-600" />
+                      </div>
+                      <CardTitle className="text-base font-semibold">{featuresArray[4].title}</CardTitle>
+                    </div>
+                    <BodyLarge className="text-muted-foreground text-xs leading-relaxed">
+                      {featuresArray[4].description}
+                    </BodyLarge>
+                  </CardHeader>
+                  <CardContent className="flex flex-col px-4 pb-4">
+                    <div className="flex items-center justify-center">
+                      <div className="h-[200px] lg:h-[240px] xl:h-[280px] w-full rounded-xl flex items-center justify-center border border-border/50 relative overflow-visible">
+                        <EnterpriseSecurity 
+                          key={isDesktop ? "lg" : "sm"}
+                          width={280} 
+                          height={260} 
+                          showBorder={false}
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-2">
+                      <Link 
+                        href="/website/platform" 
+                        className="text-primary hover:text-primary/80 text-xs font-medium transition-colors duration-200"
+                      >
+                        Learn more →
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
-            
-            {/* Scroll Spacer */}
-            <div style={{ height: `${850 + 850 + 850 + 950 + 950 + 200}px` }}></div>
           </div>
         </div>
       </Container>
@@ -1446,6 +1462,8 @@ function HowWeDoItSection({ data }: { data?: Record<string, unknown> }) {
 
 // Who We Serve Section
 function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
+  const { elementRef, isInViewport } = useViewportAutoPlay({ threshold: 0.1 })
+  
   const {
     title: rawTitle = "Intelligent Solutions for Every Domain",
     description: rawDescription = "Powered by Elevation AI and guided by experts.",
@@ -1587,12 +1605,12 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
             </P>
           </div>
           {/* Carousel Layout */}
-          <div className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
-            {/* Mobile & Tablet Carousel - Scrolls horizontally with auto-play */}
+          <div ref={elementRef} className="mt-8 lg:mt-12 -mx-4 sm:-mx-6 lg:-mx-8">
+            {/* Mobile & Tablet Carousel - Scrolls horizontally with viewport-based auto-play */}
             <div className="block lg:hidden pt-8">
               <Carousel 
                 items={solutionsCarousel}
-                autoPlay={true}
+                autoPlay={isInViewport}
                 autoPlayInterval={4000}
                 showProgressIndicators={true}
                 showGradients={false}
@@ -1609,11 +1627,11 @@ function WhoWeServeSection({ data }: { data?: Record<string, unknown> }) {
               />
             </div>
 
-            {/* Desktop Carousel - Shows 3.5 cards with auto-scroll */}
+            {/* Desktop Carousel - Shows 3.5 cards with viewport-based auto-scroll */}
             <div className="hidden lg:block">
               <Carousel 
                 items={solutionsCarousel}
-                autoPlay={true}
+                autoPlay={isInViewport}
                 autoPlayInterval={4000}
                 showProgressIndicators={true}
                 showGradients={false}

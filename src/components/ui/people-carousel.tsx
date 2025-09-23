@@ -17,6 +17,8 @@ export interface PeopleCarouselProps {
   onSlideChange?: (index: number) => void
   indicatorStyle?: 'progress' | 'thin-lines'
   highlightActiveCard?: boolean
+  cardStyle?: 'filled' | 'outline' | 'blue' | 'neutral-blue' | 'green' | 'purple'
+  indicatorColor?: 'primary' | 'green' | 'purple' | 'blue'
   minHeight?: string
   responsiveMinHeight?: {
     sm?: string
@@ -50,12 +52,12 @@ export function PeopleCarousel(props: PeopleCarouselProps) {
     return () => window.removeEventListener('resize', checkIsMobile)
   }, [])
 
-  // Override the cardStyle to always use blue for people page
-  // and use custom padding that matches the original Carousel component
+  // Use custom padding that matches the original Carousel component
   // Disable gradients on mobile devices
   const peopleProps = {
     ...props,
-    cardStyle: 'blue' as const,
+    cardStyle: props.cardStyle || 'blue', // Default to blue if not specified
+    indicatorColor: props.indicatorColor || 'primary', // Default to primary if not specified
     customPadding: 'p-6', // Use the same padding as original Carousel component
     customContentPadding: 'p-6 pt-0', // People page needs separate content padding for badges
     showGradients: isMobile ? false : (props.showGradients ?? true) // Disable gradients on mobile
