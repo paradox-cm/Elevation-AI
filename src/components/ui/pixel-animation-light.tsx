@@ -70,7 +70,7 @@ export function PixelAnimationLight({
   const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
   const pixelsRef = useRef<Pixel[]>([])
-  const lastTimeRef = useRef<number>()
+  const lastTimeRef = useRef<number | null>(null)
   const tickerRef = useRef<number>(0)
   const animationDirectionRef = useRef<number>(1)
   const maxTickerRef = useRef<number>(360)
