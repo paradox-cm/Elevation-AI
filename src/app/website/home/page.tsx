@@ -56,7 +56,6 @@ import Link from "next/link"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { StarfieldAnimationPlatform } from "@/app/design-system/animations/starfield-animation"
 import { usePageCache } from '@/hooks/use-page-cache'
 import { useViewportAutoPlay } from '@/hooks/use-viewport-auto-play'
 import { 
@@ -991,15 +990,8 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
   ]
 
   return (
-    <Section paddingY="lg" className="relative">
-      {/* Background Animation - Centralized Starfield */}
-      <div className="absolute inset-0 z-0">
-        <div className="h-full">
-          <StarfieldAnimationPlatform className="w-full h-full" />
-        </div>
-      </div>
-      
-      <Container size="2xl" className="relative z-10">
+    <Section paddingY="lg">
+      <Container size="2xl">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
           {/* Section Headline */}
           <div className="text-center space-y-3 lg:space-y-2 mb-8 lg:mb-12">
@@ -1042,12 +1034,12 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                         {/* Spacer to push animation to bottom */}
                         <div className="flex-1"></div>
                         {/* Animation Container */}
-                        <div className="rounded-xl flex items-center justify-center border border-border/50 relative overflow-hidden mb-2">
+                        <div className="h-[220px] rounded-xl flex items-center justify-center border border-border/50 relative overflow-hidden mb-2">
                           {index === 0 && (
                             <KnowledgeBlocksMobile 
                               key={isDesktop ? "lg" : "sm"}
-                              width={220} 
-                              height={220} 
+                              width={176} 
+                              height={176} 
                               showBorder={false}
                             />
                           )}
@@ -1070,13 +1062,14 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
                           {index === 3 && (
                             <PersonalCopilot 
                               key={isDesktop ? "lg" : "sm"}
-                              width={220} 
-                              height={220} 
+                              width={176} 
+                              height={176} 
                               showBorder={false}
                             />
                           )}
                           {index === 4 && (
                             <EnterpriseSecurity 
+                              key={isDesktop ? "lg" : "sm"}
                               width={220} 
                               height={220} 
                               showBorder={false}
