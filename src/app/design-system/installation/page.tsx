@@ -28,7 +28,7 @@ cd my-app`,
       step: "2",
       title: "Install Core Dependencies",
       description: "Install all required packages for the design system",
-      code: `npm install @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-select @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-accordion @radix-ui/react-alert-dialog @radix-ui/react-avatar @radix-ui/react-checkbox @radix-ui/react-collapsible @radix-ui/react-context-menu @radix-ui/react-hover-card @radix-ui/react-label @radix-ui/react-menubar @radix-ui/react-navigation-menu @radix-ui/react-popover @radix-ui/react-progress @radix-ui/react-radio-group @radix-ui/react-scroll-area @radix-ui/react-separator @radix-ui/react-slider @radix-ui/react-switch @radix-ui/react-toggle @radix-ui/react-toggle-group class-variance-authority clsx tailwind-merge lucide-react framer-motion next-themes sonner zod react-hook-form @hookform/resolvers`,
+      code: `npm install @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-select @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-accordion @radix-ui/react-alert-dialog @radix-ui/react-avatar @radix-ui/react-checkbox @radix-ui/react-collapsible @radix-ui/react-context-menu @radix-ui/react-hover-card @radix-ui/react-label @radix-ui/react-menubar @radix-ui/react-navigation-menu @radix-ui/react-popover @radix-ui/react-progress @radix-ui/react-radio-group @radix-ui/react-scroll-area @radix-ui/react-separator @radix-ui/react-slider @radix-ui/react-switch @radix-ui/react-toggle @radix-ui/react-toggle-group class-variance-authority clsx tailwind-merge remixicon framer-motion next-themes sonner zod react-hook-form @hookform/resolvers`,
       language: "bash"
     },
     {
@@ -110,7 +110,7 @@ cd my-app`,
         { name: "class-variance-authority", version: "^0.7.1", description: "Component variant management" },
         { name: "clsx", version: "^2.1.1", description: "Conditional className utility" },
         { name: "tailwind-merge", version: "^3.3.1", description: "Tailwind class merging utility" },
-        { name: "lucide-react", version: "^0.541.0", description: "Icon library" },
+        { name: "remixicon", version: "^3.5.0", description: "Icon library" },
         { name: "next-themes", version: "^0.4.6", description: "Theme management" }
       ]
     },
@@ -397,7 +397,7 @@ module.exports = {
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "remix"
 }`}</pre>
                     </div>
                   </CardContent>

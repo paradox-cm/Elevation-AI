@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Card } from "@/components/ui/collapsible-card";
+import { Card } from "@/components/ui/card";
 
 type WithClassName = { className?: string };
 
