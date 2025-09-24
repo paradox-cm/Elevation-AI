@@ -1,0 +1,5 @@
+.infographic-grid-gap-24 { gap: 24px; }
+.infographic-inner-pad-16 { padding: 16px; }
+.infographic-chip-gap-8 > * + * { margin-left: 8px; }
+
+
