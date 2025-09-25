@@ -148,7 +148,7 @@ The new page creation form is fully responsive:
 ### **1. Database Migration**
 ```bash
 # Run the navigation schema update
-psql -d your_database -f scripts/update-pages-navigation-schema.sql
+psql -d your_database -f scripts/database/update-pages-navigation-schema.sql
 ```
 
 ### **2. Service Integration**

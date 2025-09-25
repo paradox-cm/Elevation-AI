@@ -12,7 +12,7 @@ async function setupPressAdmin() {
     console.log('🔄 Setting up Press Admin system...')
 
     // Read and execute the database schema
-    const schemaSQL = fs.readFileSync('scripts/create-press-schema.sql', 'utf8')
+    const schemaSQL = fs.readFileSync('scripts/database/create-press-schema.sql', 'utf8')
     console.log('📋 Database schema loaded')
 
     // Create the press_articles table

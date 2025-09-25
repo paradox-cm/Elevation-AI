@@ -24,6 +24,8 @@ export default function Icon({ name, className, size = "md" }: IconProps) {
         "inline-flex items-center justify-center",
         className
       )} 
+      aria-hidden="true"
+      focusable="false"
     />
   )
 }

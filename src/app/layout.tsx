@@ -8,6 +8,7 @@ import { AnimationProvider } from "@/contexts/animation-context";
 import { AnimationPreloader } from "@/components/ui/animation-preloader";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Helvetica Now Variable Fonts
 const helveticaNowVar = localFont({
@@ -95,6 +96,31 @@ export const metadata: Metadata = {
 
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Elevation AI",
+  url: "https://elevationai.com",
+  logo: "https://elevationai.com/images/branding/E-AI-Arrow.svg",
+  sameAs: [
+    "https://www.linkedin.com/company/elevation-ai",
+    "https://twitter.com/elevationai"
+  ],
+  description: "Elevation AI helps organizations orchestrate operations with agentic AI, expert resources, and secure knowledge infrastructure."
+} as const
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Elevation AI",
+  url: "https://elevationai.com",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://elevationai.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+} as const
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -102,6 +128,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={websiteSchema} />
+      </head>
       <body
         className={`${helveticaNowVar.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning

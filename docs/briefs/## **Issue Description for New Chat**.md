@@ -47,7 +47,7 @@ case 1:
 - **Expected**: Form fields should have the same visual spacing as `/wireframes/login` component
 - **Actual**: Fields appear too close together, creating a cramped appearance
 
-### **Design System Standards (from docs/FORM_IMPLEMENTATION_STANDARDS.md)**
+### **Design System Standards (from docs/guides/FORM_IMPLEMENTATION_STANDARDS.md)**
 - **Label to Input**: `space-y-2` (8px) - Automatically provided by `FormItem`
 - **Between Form Fields**: `space-y-6` (24px) - Automatically provided by `Form` component
 - **Form Sections**: `space-y-5` (20px) - Between major form sections
@@ -64,7 +64,7 @@ case 1:
 - `src/app/wireframes/login/page.tsx` - Reference implementation  
 - `src/app/design-system/forms/page.tsx` - Design system examples
 - `src/components/ui/form.tsx` - Form component definitions
-- `docs/FORM_IMPLEMENTATION_STANDARDS.md` - Spacing standards
+- `docs/guides/FORM_IMPLEMENTATION_STANDARDS.md` - Spacing standards
 
 ### **Current State**
 The form is functional but visually cramped. All spacing classes have been applied according to the design system, but the visual result doesn't match the expected spacing from the login component.

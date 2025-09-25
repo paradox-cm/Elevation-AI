@@ -20,6 +20,7 @@ import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
 import { renderNode, toText } from "@/lib/react"
 import { isRecord, asArray } from "@/lib/types"
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Simple Typewriter Text Component for cycling complete statements
 function TypewriterText({ 
@@ -644,8 +645,46 @@ export default function AboutPage() {
     }
   }, [])
 
+  const heroSectionData = pageData?.sections?.[0]?.section_data as Record<string, unknown> | undefined
+  const missionSectionData = pageData?.sections?.[1]?.section_data as Record<string, unknown> | undefined
+
+  const heroPrimaryText = toText(heroSectionData?.initial_text) || 'About Elevation AI'
+  const missionDescription = toText(missionSectionData?.description) || toText(missionSectionData?.content) || 'Elevation AI builds the agentic backbone for modern organizations.'
+
+  const aboutStructuredData = React.useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: heroPrimaryText,
+    description: missionDescription,
+    url: "https://elevationai.com/website/about",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://elevationai.com/"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "About",
+          item: "https://elevationai.com/website/about"
+        }
+      ]
+    },
+    mainEntity: {
+      "@type": "Organization",
+      name: "Elevation AI",
+      url: "https://elevationai.com",
+      description: missionDescription
+    }
+  }), [heroPrimaryText, missionDescription])
+
   return (
     <PageWrapper>
+      <JsonLd data={aboutStructuredData} />
       <MobileOnlyLayout
         header={<MainHeader currentPage="resources" />}
         footer={<WebsiteFooter />}
@@ -730,4 +769,3 @@ export default function AboutPage() {
     </PageWrapper>
   )
 }
-

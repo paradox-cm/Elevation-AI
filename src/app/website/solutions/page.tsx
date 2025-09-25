@@ -49,6 +49,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { SolutionsSubNav } from "@/components/ui/solutions-sub-nav"
 import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Solutions Hero Section Component
 function SolutionsHeroSection({ data }: { data?: Record<string, unknown> }) {
@@ -1341,8 +1342,50 @@ export default function WireframesSolutionsPage() {
     }
   }, [])
 
+  const heroSectionData = pageData?.sections?.[0]?.section_data as Record<string, unknown> | undefined
+  const heroTitle = typeof heroSectionData?.title === 'string' ? heroSectionData.title : 'Solutions Tailored to Every Industry'
+  const heroDescription = typeof heroSectionData?.description === 'string'
+    ? heroSectionData.description
+    : 'Elevation AI delivers industry-specific solutions that combine agentic automation with expert guidance.'
+
+  const solutionsStructuredData = React.useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: heroTitle,
+    description: heroDescription,
+    url: "https://elevationai.com/website/solutions",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://elevationai.com/"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Solutions",
+          item: "https://elevationai.com/website/solutions"
+        }
+      ]
+    },
+    about: {
+      "@type": "ItemList",
+      itemListElement: (heroSectionData && Array.isArray((heroSectionData as any).solutions)
+        ? ((heroSectionData as any).solutions as unknown[]).slice(0, 6).map((solution, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: typeof solution === 'string' ? solution : `Solution ${index + 1}`
+          }))
+        : [])
+    }
+  }), [heroTitle, heroDescription, heroSectionData])
+
   return (
     <PageWrapper>
+      <JsonLd data={solutionsStructuredData} />
       <MobileOnlyLayout
         header={<MainHeader currentPage="solutions" />}
         footer={<WebsiteFooter />}

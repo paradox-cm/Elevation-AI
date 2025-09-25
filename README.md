@@ -25,7 +25,10 @@ All project documentation is organized in the `/docs` directory:
 - **CMS Documentation** (`/docs/cms/`) - Content management system guides and references
 - **Setup Guides** (`/docs/setup/`) - Configuration and setup instructions  
 - **Database Schemas** (`/docs/database/`) - Database structure and migration files
-- **Design System** (`/docs/`) - Design guidelines and typography standards
+- **Design System** (`/docs/guides/`) - Design guidelines and typography standards
+- **Briefs** (`/docs/briefs/`) - Project briefs and specifications
+- **Performance** (`/docs/performance/`) - Performance optimization guides
+- **Animations** (`/docs/animations/`) - Animation system documentation
 
 👉 **Start here**: [`/docs/README.md`](./docs/README.md) for a complete documentation overview.
 

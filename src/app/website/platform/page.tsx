@@ -49,6 +49,7 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import { usePageCache } from '@/hooks/use-page-cache'
 import { motion, AnimatePresence } from "framer-motion"
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion"
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Platform Hero Section Component
 function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
@@ -1121,8 +1122,50 @@ export default function WireframesPlatformPage() {
     }
   }, [])
 
+  const heroSectionData = pageData?.sections?.find(section => section.section_type === 'platform_hero')?.section_data as Record<string, unknown> | undefined
+  const heroTitle = typeof heroSectionData?.title === 'string' ? heroSectionData.title : 'Elevation AI Platform'
+  const heroDescription = typeof heroSectionData?.description === 'string'
+    ? heroSectionData.description
+    : 'The Elevation AI platform orchestrates secure, intelligent operations across teams, systems, and AI agents.'
+
+  const platformStructuredData = React.useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: heroTitle,
+    description: heroDescription,
+    url: "https://elevationai.com/website/platform",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://elevationai.com/"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Platform",
+          item: "https://elevationai.com/website/platform"
+        }
+      ]
+    },
+    mainEntity: {
+      "@type": "Service",
+      name: heroTitle,
+      description: heroDescription,
+      provider: {
+        "@type": "Organization",
+        name: "Elevation AI",
+        url: "https://elevationai.com"
+      }
+    }
+  }), [heroTitle, heroDescription])
+
   return (
     <PageWrapper>
+      <JsonLd data={platformStructuredData} />
       <MobileOnlyLayout
         header={<MainHeader currentPage="platform" />}
         footer={<WebsiteFooter />}

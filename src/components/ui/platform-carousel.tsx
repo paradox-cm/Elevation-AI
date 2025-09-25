@@ -876,14 +876,14 @@ export function PlatformCarousel({
                       {item.icon && (
                         <div className={cn(
                           "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0",
-                          cardStyle === 'blue' ? 'bg-blue-500/10' :
+                          cardStyle === 'blue' || cardStyle === 'neutral-blue' ? 'bg-blue-500/10' :
                           cardStyle === 'green' ? 'bg-green-500/10' :
                           cardStyle === 'purple' ? 'bg-purple-500/10' :
                           'bg-primary/10'
                         )}>
                           <item.icon className={cn(
                             "text-4xl sm:text-5xl md:text-6xl",
-                            cardStyle === 'blue' ? 'text-blue-500' :
+                            cardStyle === 'blue' || cardStyle === 'neutral-blue' ? 'text-blue-500' :
                             cardStyle === 'green' ? 'text-green-500' :
                             cardStyle === 'purple' ? 'text-purple-500' :
                             'text-primary'

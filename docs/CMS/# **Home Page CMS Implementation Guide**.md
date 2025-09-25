@@ -24,7 +24,7 @@ We successfully converted the static Home page (`/website/home`) into a fully dy
 ### **Phase 1: Database Setup**
 1. **Sync existing content to CMS**:
    ```bash
-   node scripts/sync-home-to-cms.js
+   node scripts/cms-sync/sync-home-to-cms.js
    ```
 2. **Verify data structure** in Supabase dashboard
 
@@ -182,7 +182,7 @@ For each section component:
 - **Section Edit**: `/src/app/admin/pages/[id]/sections/[sectionId]/edit/page.tsx`
 - **CMS Service**: `/src/lib/cms.ts`
 - **Types**: `/src/types/cms.ts`
-- **Sync Script**: `/scripts/sync-home-to-cms.js`
+- **Sync Script**: `/scripts/cms-sync/sync-home-to-cms.js`
 
 ## **🚀 Next Steps**
 

@@ -20,6 +20,7 @@ import { GrowthAnimation } from "@/components/animations/growth-animation"
 import { ConsultationRequestModal } from "@/components/ui/consultation-request-modal"
 import { pagesService } from "@/lib/cms"
 import { PageWithSections } from "@/types/cms"
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Pricing Hero Section Component
 function PricingHeroSection({ onOpenConsultation, data }: { onOpenConsultation: () => void, data?: Record<string, unknown> }) {
@@ -400,6 +401,46 @@ export default function PricingPage() {
   const quoteData = pageData?.sections?.find(s => s.section_type === 'cta' && s.section_order === 3)?.section_data || undefined
   const ctaData = pageData?.sections?.find(s => s.section_type === 'cta' && s.section_order === 4)?.section_data || undefined
 
+  const heroTitle = typeof heroData?.title === 'string' ? heroData.title : 'Elevation AI Pricing'
+  const heroDescription = typeof heroData?.description === 'string'
+    ? heroData.description
+    : 'Discover pricing tailored to your organization with Elevation AI’s modular platform and expert services.'
+
+  const pricingStructuredData = React.useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: heroTitle,
+    description: heroDescription,
+    url: "https://elevationai.com/website/pricing",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://elevationai.com/"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Pricing",
+          item: "https://elevationai.com/website/pricing"
+        }
+      ]
+    },
+    mainEntity: {
+      "@type": "OfferCatalog",
+      name: heroTitle,
+      description: heroDescription,
+      provider: {
+        "@type": "Organization",
+        name: "Elevation AI",
+        url: "https://elevationai.com"
+      }
+    }
+  }), [heroTitle, heroDescription])
+
   if (loading) {
     return (
       <PageWrapper>
@@ -420,6 +461,7 @@ export default function PricingPage() {
 
   return (
     <PageWrapper>
+      <JsonLd data={pricingStructuredData} />
       <MobileOnlyLayout
         header={<MainHeader currentPage="pricing" />}
         footer={<WebsiteFooter />}

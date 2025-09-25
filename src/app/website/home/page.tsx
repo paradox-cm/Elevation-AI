@@ -74,6 +74,7 @@ import {
   EnterpriseSecurity,
   LogoCarousel
 } from "@/components/animations"
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Original Typewriter Text Component (for "The Agentic Platform for" format)
 function OriginalTypewriterText({ 
@@ -1838,7 +1839,37 @@ export default function WireframesHomePage() {
     if (!pageData?.sections) return undefined
     return pageData.sections.find(section => section.section_type === sectionType)?.section_data || undefined
   }
-  
+
+  const heroSection = getSectionData('hero_typewriter') as Record<string, unknown> | undefined
+  const heroTitle = typeof heroSection?.title === 'string' ? heroSection.title : 'Elevation AI | Agentic Platform'
+  const heroDescription = typeof heroSection?.description === 'string'
+    ? heroSection.description
+    : 'Elevation AI orchestrates knowledge, workflows, and secure AI adoption for modern organizations.'
+
+  const homeStructuredData = React.useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: heroTitle,
+    description: heroDescription,
+    url: "https://elevationai.com/",
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://elevationai.com/"
+        }
+      ]
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Elevation AI",
+      url: "https://elevationai.com"
+    }
+  }), [heroTitle, heroDescription])
+
   if (loading) {
     return (
       <PageWrapper>
@@ -1851,6 +1882,7 @@ export default function WireframesHomePage() {
   
   return (
     <PageWrapper>
+      <JsonLd data={homeStructuredData} />
       <MobileOnlyLayout
         header={<MainHeader currentPage="home" />}
         footer={<WebsiteFooter />}
