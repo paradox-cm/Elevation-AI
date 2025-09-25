@@ -66,6 +66,11 @@ export function Carousel({
   const autoPlayIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
   const manualInteractionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const isProgrammaticScrollRef = React.useRef<boolean>(false)
+  const activeCardIndexRef = React.useRef(0)
+  const currentSlideRef = React.useRef(0)
+
+  const isMobileScreen = screenSize === 'sm' || screenSize === 'md'
+  const isNaturalScrollEnabled = naturalScroll || isMobileScreen
 
   // Calculate responsive card width and gap
   const getResponsiveSettings = () => {
@@ -110,7 +115,7 @@ export function Carousel({
       setScreenSize(newScreenSize)
       
       // Recalculate carousel position when viewport changes
-      if (carouselRef.current && !naturalScroll) {
+      if (carouselRef.current && !isNaturalScrollEnabled) {
         const calculateVisibleCards = () => {
           const viewportWidth = window.innerWidth
           const totalCardWidth = responsiveCardWidth + responsiveCardGap
@@ -137,7 +142,7 @@ export function Carousel({
     updateScreenSize()
     window.addEventListener('resize', updateScreenSize)
     return () => window.removeEventListener('resize', updateScreenSize)
-  }, [currentSlide, activeCardIndex, responsiveCardWidth, responsiveCardGap, items.length, naturalScroll])
+  }, [currentSlide, activeCardIndex, responsiveCardWidth, responsiveCardGap, items.length, isNaturalScrollEnabled])
 
   // Calculate responsive padding to match Container padding exactly
   const getResponsivePadding = () => {
@@ -158,6 +163,14 @@ export function Carousel({
   }
 
   const responsivePadding = getResponsivePadding()
+
+  React.useEffect(() => {
+    activeCardIndexRef.current = activeCardIndex
+  }, [activeCardIndex])
+
+  React.useEffect(() => {
+    currentSlideRef.current = currentSlide
+  }, [currentSlide])
 
   // Measure and set maximum card height
   const measureCardHeights = React.useCallback(() => {
@@ -213,33 +226,50 @@ export function Carousel({
 
   // Check if we're at the end of the carousel and update active slide
   const checkScrollPosition = React.useCallback(() => {
-    if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
+    const carousel = carouselRef.current
+    if (carousel) {
+      const { scrollLeft, scrollWidth, clientWidth } = carousel
       const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1 // -1 for rounding errors
       setShowGradient(!isAtEnd)
-      
-      // Don't update slide position if this is a programmatic scroll (from auto-play or indicator click)
+
       if (isProgrammaticScrollRef.current) {
         return
       }
-      
-      // If naturalScroll is enabled, don't track slide position - let it scroll naturally
-      if (naturalScroll) {
+
+      if (isNaturalScrollEnabled) {
+        let closestIndex = activeCardIndexRef.current
+        let smallestDistance = Number.POSITIVE_INFINITY
+        const viewportCenter = carousel.getBoundingClientRect().left + clientWidth / 2
+
+        cardRefs.current.forEach((cardRef, index) => {
+          if (!cardRef) return
+          const cardRect = cardRef.getBoundingClientRect()
+          const cardCenter = cardRect.left + cardRect.width / 2
+          const distance = Math.abs(cardCenter - viewportCenter)
+          if (distance < smallestDistance) {
+            smallestDistance = distance
+            closestIndex = index
+          }
+        })
+
+        if (closestIndex !== activeCardIndexRef.current) {
+          setActiveCardIndex(closestIndex)
+          setProgress(0)
+        }
         return
       }
-      
+
       // Calculate which slide is currently in view based on scroll position (with snapping)
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       const currentSlideIndex = Math.round(scrollLeft / totalCardWidth)
       const clampedSlideIndex = Math.max(0, Math.min(currentSlideIndex, items.length - 1))
-      
-      // Only update if the slide has actually changed to avoid unnecessary re-renders
+
       if (clampedSlideIndex !== currentSlide) {
         setCurrentSlide(clampedSlideIndex)
-        setProgress(0) // Reset progress when manually scrolling
+        setProgress(0)
       }
     }
-  }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide, naturalScroll])
+  }, [isNaturalScrollEnabled, responsiveCardWidth, responsiveCardGap, items.length, currentSlide])
 
   // Detect manual interaction (all devices)
   const handleManualInteraction = React.useCallback(() => {
@@ -257,97 +287,108 @@ export function Carousel({
   }, [])
 
   // Scroll to specific slide
+  const scrollNaturallyToIndex = React.useCallback((index: number) => {
+    const carousel = carouselRef.current
+    const targetCard = cardRefs.current[index]
+    if (!carousel || !targetCard) return
+
+    const firstOffset = cardRefs.current[0]?.offsetLeft ?? 0
+    const targetOffset = Math.max(0, targetCard.offsetLeft - firstOffset)
+
+    isProgrammaticScrollRef.current = true
+    carousel.scrollTo({ left: targetOffset, behavior: 'smooth' })
+    setTimeout(() => {
+      isProgrammaticScrollRef.current = false
+    }, 500)
+  }, [])
+
   const scrollToSlide = (index: number) => {
-    // Calculate how many cards can fit in the viewport
-    const calculateVisibleCards = () => {
-      if (typeof window === 'undefined') return 0
-      const viewportWidth = window.innerWidth
-      const totalCardWidth = responsiveCardWidth + responsiveCardGap
-      return Math.floor(viewportWidth / totalCardWidth)
+    const safeIndex = Math.max(0, Math.min(index, items.length - 1))
+
+    let emittedIndex = safeIndex
+
+    if (isNaturalScrollEnabled) {
+      scrollNaturallyToIndex(safeIndex)
+      setCurrentSlide(safeIndex)
+    } else {
+      const calculateVisibleCards = () => {
+        if (typeof window === 'undefined') return 0
+        const viewportWidth = window.innerWidth
+        const totalCardWidth = responsiveCardWidth + responsiveCardGap
+        return Math.floor(viewportWidth / totalCardWidth)
+      }
+
+      const visibleCards = calculateVisibleCards()
+      const maxSlide = Math.max(0, items.length - visibleCards)
+      const clampedIndex = Math.min(safeIndex, maxSlide)
+      setCurrentSlide(clampedIndex)
+      emittedIndex = clampedIndex
     }
-    
-    const visibleCards = calculateVisibleCards()
-    const maxSlide = Math.max(0, items.length - visibleCards)
-    
-    // Clamp the index to the maximum slide
-    const clampedIndex = Math.min(index, maxSlide)
-    
-    setCurrentSlide(clampedIndex)
-    setActiveCardIndex(index) // Update active card highlighting
+
+    setActiveCardIndex(safeIndex)
     setProgress(0)
-    
-    // Detect manual interaction when user clicks indicators
     handleManualInteraction()
-    
-    // Note: The auto-scroll effect will handle the actual scrolling
-    // when currentSlide changes, so we don't need to scroll here
-    
-    onSlideChange?.(clampedIndex)
+
+    onSlideChange?.(emittedIndex)
   }
 
   // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
   React.useEffect(() => {
-    // Don't auto-play if user has manually interacted or if natural scroll is enabled
-    if (!autoPlay || hasManualInteraction || naturalScroll) return
-    
-    // Calculate how many cards can fit in the viewport
+    if (!autoPlay || hasManualInteraction || items.length <= 1) {
+      return
+    }
+
+    setProgress(0)
+
+    const progressInterval = 80
+    const intervalDuration = Math.max(autoPlayInterval, progressInterval * 2)
+    const progressIncrement = 100 / (intervalDuration / progressInterval)
+
     const calculateVisibleCards = () => {
       if (typeof window === 'undefined') return 0
       const viewportWidth = window.innerWidth
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       return Math.floor(viewportWidth / totalCardWidth)
     }
-    
-    const visibleCards = calculateVisibleCards()
-    const maxSlide = Math.max(0, items.length - visibleCards)
-    
-    // Reset progress when starting
-    setProgress(0)
-    
-    // Calculate progress increment based on auto-play interval
-    const progressIncrement = 2 // 2% every 80ms
-    const progressInterval = 80 // 80ms intervals
-    
+
     let currentProgress = 0
-    let currentActiveIndex = activeCardIndex
-    let currentSlidePosition = currentSlide
-    
-    const progressTimer = setInterval(() => {
+
+    const timer = setInterval(() => {
       currentProgress += progressIncrement
       setProgress(currentProgress)
-      
-      // First card gets 3 seconds longer (extra 37.5% progress)
-      const maxProgress = currentActiveIndex === 0 ? 137.5 : 100
-      
+
+      const activeIndex = activeCardIndexRef.current
+      const firstSlideBoost = 37.5
+      const maxProgress = activeIndex === 0 ? 100 + firstSlideBoost : 100
+
       if (currentProgress >= maxProgress) {
         currentProgress = 0
         setProgress(0)
-        
-        // Always cycle through all cards for active highlighting
-        currentActiveIndex = (currentActiveIndex + 1) % items.length
-        setActiveCardIndex(currentActiveIndex)
-        
-        // Reset scroll position when cycling back to the first card
-        if (currentActiveIndex === 0) {
-          currentSlidePosition = 0
-          setCurrentSlide(0)
+
+        const nextActiveIndex = (activeIndex + 1) % items.length
+        setActiveCardIndex(nextActiveIndex)
+
+        if (isNaturalScrollEnabled) {
+          scrollNaturallyToIndex(nextActiveIndex)
+          setCurrentSlide(nextActiveIndex)
         } else {
-          // Only move scroll position until all cards are visible
-          const nextSlide = currentSlidePosition + 1
-          if (nextSlide >= maxSlide) {
-            currentSlidePosition = maxSlide
-          } else {
-            currentSlidePosition = nextSlide
+          const visibleCards = calculateVisibleCards()
+          const maxSlide = Math.max(0, items.length - visibleCards)
+
+          let nextSlide = currentSlideRef.current + 1
+          if (nextActiveIndex === 0) {
+            nextSlide = 0
+          } else if (nextSlide > maxSlide) {
+            nextSlide = maxSlide
           }
-          setCurrentSlide(currentSlidePosition)
+
+          setCurrentSlide(nextSlide)
         }
       }
     }, progressInterval)
 
-    return () => {
-      clearInterval(progressTimer)
-    }
-  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, responsiveCardWidth, responsiveCardGap])
+    return () => clearInterval(timer)
+  }, [autoPlay, autoPlayInterval, hasManualInteraction, items.length, isNaturalScrollEnabled, responsiveCardWidth, responsiveCardGap, scrollNaturallyToIndex])
 
   // Cleanup timeout on unmount
   React.useEffect(() => {
@@ -360,7 +401,7 @@ export function Carousel({
 
   // Auto-scroll carousel when currentSlide changes (only for non-natural scroll)
   React.useEffect(() => {
-    if (carouselRef.current && !naturalScroll) {
+    if (carouselRef.current && !isNaturalScrollEnabled) {
       const totalCardWidth = responsiveCardWidth + responsiveCardGap
       
       // Set flag to indicate this is a programmatic scroll
@@ -374,7 +415,7 @@ export function Carousel({
         isProgrammaticScrollRef.current = false
       }, 500) // Wait for smooth scroll to complete
     }
-  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize, naturalScroll])
+  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize, isNaturalScrollEnabled])
 
   // Add scroll event listener to check position and detect manual interaction
   React.useEffect(() => {
@@ -409,7 +450,7 @@ export function Carousel({
         carousel.removeEventListener('touchstart', handleTouchStart)
       }
     }
-  }, [checkScrollPosition, handleManualInteraction, screenSize])
+  }, [checkScrollPosition, handleManualInteraction, screenSize, isNaturalScrollEnabled])
 
 
   return (
@@ -477,7 +518,7 @@ export function Carousel({
               )
             })}
           </div>
-        ) : naturalScroll ? (
+        ) : isNaturalScrollEnabled ? (
           <div 
             className="flex overflow-x-auto pb-4 pt-4 scrollbar-hide" 
             ref={carouselRef}

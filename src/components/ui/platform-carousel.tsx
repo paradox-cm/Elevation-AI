@@ -85,6 +85,8 @@ export function PlatformCarousel({
   const autoPlayIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
   const manualInteractionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const isProgrammaticScrollRef = React.useRef<boolean>(false)
+  const activeCardIndexRef = React.useRef(0)
+  const currentSlideRef = React.useRef(0)
   
   // Touch and drag state (for non-natural scroll)
   const [isDragging, setIsDragging] = React.useState(false)
@@ -92,6 +94,9 @@ export function PlatformCarousel({
   const [currentX, setCurrentX] = React.useState(0)
   const [dragOffset, setDragOffset] = React.useState(0)
   const [isTouchDevice, setIsTouchDevice] = React.useState(false)
+
+  const isMobileScreen = screenSize === 'sm' || screenSize === 'md'
+  const isNaturalScrollEnabled = naturalScroll || isMobileScreen
 
   // Responsive configuration
   const getResponsiveConfig = () => {
@@ -107,8 +112,25 @@ export function PlatformCarousel({
     }
   }
 
+  const { cardWidth: responsiveCardWidth, cardGap: responsiveCardGap } = getResponsiveConfig()
+
+  const responsivePadding = React.useMemo(() => {
+    switch (screenSize) {
+      case 'sm':
+        return { paddingLeft: 16, paddingRight: 16 }
+      case 'md':
+        return { paddingLeft: 24, paddingRight: 24 }
+      case 'lg':
+      case 'xl':
+      case '2xl':
+        return { paddingLeft: 32, paddingRight: 32 }
+      default:
+        return { paddingLeft: 16, paddingRight: 16 }
+    }
+  }, [screenSize])
+
   // Check if flexible width should be applied
-  const shouldUseFlexibleWidth = () => {
+  const shouldUseFlexibleWidth = React.useCallback(() => {
     if (!flexibleWidth) return false
     
     // Only apply flexible width on XL/2XL breakpoints
@@ -132,18 +154,14 @@ export function PlatformCarousel({
     
     // Only use flexible width if cards would be at least 300px wide
     return calculatedCardWidth >= minCardWidth
-  }
+  }, [flexibleWidth, screenSize, responsivePadding.paddingLeft, responsivePadding.paddingRight, items.length, responsiveCardGap, responsiveCardWidth])
 
   // Check if all cards are visible and should disable scrolling
-  const shouldDisableScrolling = () => {
+  const shouldDisableScrolling = React.useCallback(() => {
     if (!shouldUseFlexibleWidth()) return false
-    
-    // When using flexible width on XL/2XL, assume all cards are visible
-    // since they will flex to fill the available space
-    return true
-  }
 
-  const { cardWidth: responsiveCardWidth, cardGap: responsiveCardGap } = getResponsiveConfig()
+    return true
+  }, [shouldUseFlexibleWidth])
 
   // Get responsive minHeight
   const getResponsiveMinHeight = () => {
@@ -159,19 +177,13 @@ export function PlatformCarousel({
 
   const responsiveMinHeightValue = getResponsiveMinHeight()
 
-  // Responsive padding calculation (matches Container component: px-4 sm:px-6 lg:px-8)
-  const getResponsivePadding = () => {
-    switch (screenSize) {
-      case 'sm': return { paddingLeft: 16, paddingRight: 16 } // px-4 = 16px
-      case 'md': return { paddingLeft: 24, paddingRight: 24 } // sm:px-6 = 24px
-      case 'lg': return { paddingLeft: 32, paddingRight: 32 } // lg:px-8 = 32px
-      case 'xl': return { paddingLeft: 32, paddingRight: 32 } // lg:px-8 = 32px
-      case '2xl': return { paddingLeft: 32, paddingRight: 32 } // lg:px-8 = 32px
-      default: return { paddingLeft: 16, paddingRight: 16 } // px-4 = 16px
-    }
-  }
+  React.useEffect(() => {
+    activeCardIndexRef.current = activeCardIndex
+  }, [activeCardIndex])
 
-  const responsivePadding = getResponsivePadding()
+  React.useEffect(() => {
+    currentSlideRef.current = currentSlide
+  }, [currentSlide])
 
   // Screen size detection and carousel position adjustment
   React.useEffect(() => {
@@ -194,7 +206,7 @@ export function PlatformCarousel({
       setScreenSize(newScreenSize)
       
       // Recalculate carousel position when viewport changes
-      if (carouselRef.current && !naturalScroll) {
+      if (carouselRef.current && !isNaturalScrollEnabled) {
         const calculateVisibleCards = () => {
           const viewportWidth = window.innerWidth
           const actualCardWidth = Math.max(responsiveCardWidth, 300)
@@ -222,7 +234,7 @@ export function PlatformCarousel({
     updateScreenSize()
     window.addEventListener('resize', updateScreenSize)
     return () => window.removeEventListener('resize', updateScreenSize)
-  }, [currentSlide, activeCardIndex, responsiveCardWidth, responsiveCardGap, items.length, naturalScroll])
+  }, [currentSlide, activeCardIndex, responsiveCardWidth, responsiveCardGap, items.length, isNaturalScrollEnabled])
 
   // Touch device detection
   React.useEffect(() => {
@@ -268,52 +280,68 @@ export function PlatformCarousel({
 
   // Check scroll position for natural scroll
   const checkScrollPosition = React.useCallback(() => {
-    if (!carouselRef.current || !naturalScroll) return
-    
-    const scrollLeft = carouselRef.current.scrollLeft
-    const containerWidth = carouselRef.current.clientWidth
-    
-    // Don't update slide position if this is a programmatic scroll (from indicator click)
+    const carousel = carouselRef.current
+    if (!carousel) return
+
+    const scrollLeft = carousel.scrollLeft
+    const containerWidth = carousel.clientWidth
+
     if (isProgrammaticScrollRef.current) {
       return
     }
-    
-    // If naturalScroll is enabled, don't snap to cards - just track the closest slide for indicators
-    if (naturalScroll) {
-      const actualCardWidth = Math.max(responsiveCardWidth, 248)
-      const totalCardWidth = actualCardWidth + responsiveCardGap
-      
-      // Find which card is most centered in the viewport
-      let bestMatchIndex = 0
-      let minDistance = Infinity
-      
-      for (let i = 0; i < items.length; i++) {
-        // Calculate card position accounting for padding
-        let cardStart = i * totalCardWidth
-        if (i === 0) {
-          cardStart += responsivePadding.paddingLeft
-        }
-        
-        const cardCenter = cardStart + (responsiveCardWidth / 2)
-        const viewportCenter = scrollLeft + (containerWidth / 2)
+
+    if (isNaturalScrollEnabled) {
+      let closestIndex = activeCardIndexRef.current
+      let minDistance = Number.POSITIVE_INFINITY
+      const viewportCenter = carousel.getBoundingClientRect().left + containerWidth / 2
+
+      cardRefs.current.forEach((cardRef, index) => {
+        if (!cardRef) return
+        const cardRect = cardRef.getBoundingClientRect()
+        const cardCenter = cardRect.left + cardRect.width / 2
         const distance = Math.abs(cardCenter - viewportCenter)
-        
         if (distance < minDistance) {
           minDistance = distance
-          bestMatchIndex = i
+          closestIndex = index
         }
-      }
-      
-      const clampedSlideIndex = Math.max(0, Math.min(bestMatchIndex, items.length - 1))
-      
-      // Only update if the slide has actually changed to avoid unnecessary re-renders
-      if (clampedSlideIndex !== currentSlide) {
-        setCurrentSlide(clampedSlideIndex)
-        setProgress(0) // Reset progress when manually scrolling
+      })
+
+      if (closestIndex !== activeCardIndexRef.current) {
+        setActiveCardIndex(closestIndex)
+        setCurrentSlide(closestIndex)
+        setProgress(0)
       }
       return
     }
-  }, [responsiveCardWidth, responsiveCardGap, items.length, currentSlide, naturalScroll, responsivePadding.paddingLeft])
+
+    const actualCardWidth = Math.max(responsiveCardWidth, 248)
+    const totalCardWidth = actualCardWidth + responsiveCardGap
+
+    let bestMatchIndex = 0
+    let minDistance = Infinity
+
+    for (let i = 0; i < items.length; i++) {
+      let cardStart = i * totalCardWidth
+      if (i === 0) {
+        cardStart += responsivePadding.paddingLeft
+      }
+
+      const cardCenter = cardStart + (responsiveCardWidth / 2)
+      const viewportCenter = scrollLeft + (containerWidth / 2)
+      const distance = Math.abs(cardCenter - viewportCenter)
+
+      if (distance < minDistance) {
+        minDistance = distance
+        bestMatchIndex = i
+      }
+    }
+
+    const clampedSlideIndex = Math.max(0, Math.min(bestMatchIndex, items.length - 1))
+    if (clampedSlideIndex !== currentSlide) {
+      setCurrentSlide(clampedSlideIndex)
+      setProgress(0)
+    }
+  }, [isNaturalScrollEnabled, responsiveCardWidth, responsiveCardGap, items.length, currentSlide, responsivePadding.paddingLeft])
 
   // Detect manual interaction (all devices)
   const handleManualInteraction = React.useCallback(() => {
@@ -331,63 +359,41 @@ export function PlatformCarousel({
   }, [])
 
   // Scroll to specific slide
-  const scrollToSlide = (index: number) => {
-    // Always update active card highlighting
-    setActiveCardIndex(index)
-    setProgress(0)
-    
-    // Detect manual interaction when user clicks indicators
-    handleManualInteraction()
-    
-    // Only update slide position if scrolling is not disabled
-    if (!shouldDisableScrolling()) {
-      // Calculate how many cards can fit in the viewport
-      const calculateVisibleCards = () => {
-        if (typeof window === 'undefined') return 0
-        const viewportWidth = window.innerWidth
-        const actualCardWidth = Math.max(responsiveCardWidth, 248)
-        const totalCardWidth = actualCardWidth + responsiveCardGap
-        return Math.floor(viewportWidth / totalCardWidth)
-      }
-      
-      const visibleCards = calculateVisibleCards()
-      const maxSlide = Math.max(0, items.length - visibleCards)
-      
-      // Clamp the index to the maximum slide for scrolling
-      const clampedIndex = Math.min(index, maxSlide)
-      
-      setCurrentSlide(clampedIndex)
-      onSlideChange?.(clampedIndex)
-      
-      if (naturalScroll && carouselRef.current) {
-        const actualCardWidth = Math.max(responsiveCardWidth, 248)
-        const totalCardWidth = actualCardWidth + responsiveCardGap
-        
-        // Set flag to indicate this is a programmatic scroll
-        isProgrammaticScrollRef.current = true
-        
-        carouselRef.current.scrollTo({
-          left: clampedIndex * totalCardWidth,
-          behavior: 'smooth'
-        })
-        
-        // Reset flag after scroll completes
-        setTimeout(() => {
-          isProgrammaticScrollRef.current = false
-        }, 500) // Wait for smooth scroll to complete
-      }
-    } else {
-      // When scrolling is disabled, just update the active card
-      onSlideChange?.(index)
-    }
-  }
+  const scrollNaturallyToIndex = React.useCallback((index: number) => {
+    const carousel = carouselRef.current
+    const targetCard = cardRefs.current[index]
+    if (!carousel || !targetCard) return
 
-  // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
-  React.useEffect(() => {
-    // Don't auto-play if user has manually interacted or if natural scroll is enabled
-    if (!autoPlay || hasManualInteraction || naturalScroll) return
-    
-    // Calculate how many cards can fit in the viewport
+    const firstOffset = cardRefs.current[0]?.offsetLeft ?? 0
+    const targetOffset = Math.max(0, targetCard.offsetLeft - firstOffset)
+
+    isProgrammaticScrollRef.current = true
+    carousel.scrollTo({ left: targetOffset, behavior: 'smooth' })
+    setTimeout(() => {
+      isProgrammaticScrollRef.current = false
+    }, 500)
+  }, [])
+
+  const scrollToSlide = (index: number) => {
+    const safeIndex = Math.max(0, Math.min(index, items.length - 1))
+
+    setActiveCardIndex(safeIndex)
+    setProgress(0)
+    handleManualInteraction()
+
+    if (shouldDisableScrolling()) {
+      setCurrentSlide(safeIndex)
+      onSlideChange?.(safeIndex)
+      return
+    }
+
+    if (isNaturalScrollEnabled) {
+      scrollNaturallyToIndex(safeIndex)
+      setCurrentSlide(safeIndex)
+      onSlideChange?.(safeIndex)
+      return
+    }
+
     const calculateVisibleCards = () => {
       if (typeof window === 'undefined') return 0
       const viewportWidth = window.innerWidth
@@ -395,67 +401,85 @@ export function PlatformCarousel({
       const totalCardWidth = actualCardWidth + responsiveCardGap
       return Math.floor(viewportWidth / totalCardWidth)
     }
-    
+
     const visibleCards = calculateVisibleCards()
     const maxSlide = Math.max(0, items.length - visibleCards)
-    
-    // Reset progress when starting
+    const clampedIndex = Math.min(safeIndex, maxSlide)
+
+    setCurrentSlide(clampedIndex)
+    onSlideChange?.(clampedIndex)
+  }
+
+  // Auto-play functionality with hybrid behavior (natural scroll + smooth positioning)
+  React.useEffect(() => {
+    if (!autoPlay || hasManualInteraction || items.length <= 1) {
+      return
+    }
+
     setProgress(0)
-    
-    // Calculate progress increment based on auto-play interval
-    const progressIncrement = 2 // 2% every 80ms
-    const progressInterval = 80 // 80ms intervals
-    const totalProgressSteps = autoPlayInterval / progressInterval // Total steps needed
-    
+
+    const progressInterval = 80
+    const intervalDuration = Math.max(autoPlayInterval, progressInterval * 2)
+    const progressIncrement = 100 / (intervalDuration / progressInterval)
+
+    const calculateVisibleCards = () => {
+      if (typeof window === 'undefined') return 0
+      const viewportWidth = window.innerWidth
+      const actualCardWidth = Math.max(responsiveCardWidth, 248)
+      const totalCardWidth = actualCardWidth + responsiveCardGap
+      return Math.floor(viewportWidth / totalCardWidth)
+    }
+
     let currentProgress = 0
-    let currentActiveIndex = activeCardIndex
-    let currentSlidePosition = currentSlide
-    
-    const progressTimer = setInterval(() => {
+
+    const timer = setInterval(() => {
       currentProgress += progressIncrement
       setProgress(currentProgress)
-      
-      // First card gets 3 seconds longer (137.5% progress instead of 100%)
-      const progressThreshold = currentActiveIndex === 0 ? 137.5 : 100
-      
+
+      const activeIndex = activeCardIndexRef.current
+      const progressThreshold = activeIndex === 0 ? 137.5 : 100
+
       if (currentProgress >= progressThreshold) {
         currentProgress = 0
         setProgress(0)
-        
-        // Always cycle through all cards for active highlighting
-        currentActiveIndex = (currentActiveIndex + 1) % items.length
-        setActiveCardIndex(currentActiveIndex)
-        
-        // Only update slide position if scrolling is not disabled
-        if (!shouldDisableScrolling()) {
-          // Reset scroll position when cycling back to the first card
-          if (currentActiveIndex === 0) {
-            currentSlidePosition = 0
-            setCurrentSlide(0)
-          } else {
-            // Only move scroll position until all cards are visible
-            const nextSlide = currentSlidePosition + 1
-            // If we've reached the point where all cards are visible, stay there
-            if (nextSlide >= maxSlide) {
-              currentSlidePosition = maxSlide
-            } else {
-              currentSlidePosition = nextSlide
-            }
-            setCurrentSlide(currentSlidePosition)
+
+        const nextActiveIndex = (activeIndex + 1) % items.length
+        setActiveCardIndex(nextActiveIndex)
+
+        if (shouldDisableScrolling()) {
+          setCurrentSlide(nextActiveIndex)
+          onSlideChange?.(nextActiveIndex)
+          return
+        }
+
+        if (isNaturalScrollEnabled) {
+          scrollNaturallyToIndex(nextActiveIndex)
+          setCurrentSlide(nextActiveIndex)
+          onSlideChange?.(nextActiveIndex)
+        } else {
+          const visibleCards = calculateVisibleCards()
+          const maxSlide = Math.max(0, items.length - visibleCards)
+
+          let nextSlide = currentSlideRef.current + 1
+          if (nextActiveIndex === 0) {
+            nextSlide = 0
+          } else if (nextSlide > maxSlide) {
+            nextSlide = maxSlide
           }
+
+          setCurrentSlide(nextSlide)
+          onSlideChange?.(Math.min(nextSlide, items.length - 1))
         }
       }
     }, progressInterval)
 
-    return () => {
-      clearInterval(progressTimer)
-    }
-  }, [autoPlay, autoPlayInterval, items.length, hasManualInteraction, screenSize, responsiveCardWidth, responsiveCardGap])
+    return () => clearInterval(timer)
+  }, [autoPlay, autoPlayInterval, hasManualInteraction, items.length, isNaturalScrollEnabled, responsiveCardWidth, responsiveCardGap, scrollNaturallyToIndex, onSlideChange, flexibleWidth, screenSize, shouldDisableScrolling])
 
   // Auto-scroll carousel when currentSlide changes (for natural scroll)
   // Only auto-scroll if naturalScroll is disabled and scrolling is not disabled
   React.useEffect(() => {
-    if (carouselRef.current && !naturalScroll && !shouldDisableScrolling()) {
+    if (carouselRef.current && !isNaturalScrollEnabled && !shouldDisableScrolling()) {
       const actualCardWidth = Math.max(responsiveCardWidth, 248)
       const totalCardWidth = actualCardWidth + responsiveCardGap
       
@@ -472,12 +496,12 @@ export function PlatformCarousel({
         isProgrammaticScrollRef.current = false
       }, 500) // Wait for smooth scroll to complete
     }
-  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize, naturalScroll])
+  }, [currentSlide, responsiveCardWidth, responsiveCardGap, screenSize, isNaturalScrollEnabled, shouldDisableScrolling])
 
   // Add scroll event listener to check position and detect manual interaction
   React.useEffect(() => {
     const carousel = carouselRef.current
-    if (carousel && naturalScroll) {
+    if (carousel && isNaturalScrollEnabled) {
       let scrollTimeout: ReturnType<typeof setTimeout>
       
       const handleScroll = () => {
@@ -504,13 +528,13 @@ export function PlatformCarousel({
         carousel.removeEventListener('touchstart', handleTouchStart)
       }
     }
-  }, [checkScrollPosition, handleManualInteraction, naturalScroll])
+  }, [checkScrollPosition, handleManualInteraction, isNaturalScrollEnabled])
 
   // Progress tracking
   React.useEffect(() => {
     if (!autoPlay) return
-    if (naturalScroll) return // Disable progress tracking for natural scroll
-
+    if (isNaturalScrollEnabled) return // Disable progress tracking for natural scroll
+  
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         const increment = 100 / (autoPlayInterval / 100)
@@ -519,7 +543,7 @@ export function PlatformCarousel({
     }, 100)
 
     return () => clearInterval(progressInterval)
-  }, [autoPlay, autoPlayInterval, naturalScroll])
+  }, [autoPlay, autoPlayInterval, isNaturalScrollEnabled])
 
   // Card height calculation
   React.useEffect(() => {
@@ -539,18 +563,7 @@ export function PlatformCarousel({
   }, [items])
 
   const handleSlideChange = (index: number) => {
-    if (naturalScroll) {
-      scrollToSlide(index)
-    } else if (shouldDisableScrolling()) {
-      // When scrolling is disabled, just update the active card
-      setActiveCardIndex(index)
-      setProgress(0)
-      onSlideChange?.(index)
-    } else {
-      setCurrentSlide(index)
-      setProgress(0)
-      onSlideChange?.(index)
-    }
+    scrollToSlide(index)
   }
 
   const nextSlide = () => {
@@ -683,7 +696,7 @@ export function PlatformCarousel({
       )}
 
       {/* Carousel Container */}
-      {naturalScroll ? (
+      {isNaturalScrollEnabled ? (
         <div 
           className={cn(
             "flex pb-4 pt-4 platform-carousel-container",
@@ -694,62 +707,100 @@ export function PlatformCarousel({
             gap: `${responsiveCardGap}px`
           }}
         >
-          {items.map((item, index) => (
-            <div
-              key={item.id}
-              ref={(el) => {
-                cardRefs.current[index] = el
-              }}
-              className="platform-carousel-card flex-shrink-0"
-              style={{ 
-                minWidth: shouldUseFlexibleWidth() ? 'auto' : `${Math.max(responsiveCardWidth, 300)}px`, 
-                maxWidth: shouldUseFlexibleWidth() ? 'none' : `${Math.max(responsiveCardWidth, 300)}px`,
-                flex: shouldUseFlexibleWidth() ? '1' : 'none',
-                height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
-                minHeight: responsiveMinHeightValue,
-                marginLeft: index === 0 ? `${responsivePadding.paddingLeft}px` : '0',
-                marginRight: index === items.length - 1 ? `${responsivePadding.paddingRight}px` : '0'
-              }}
-            >
-              <div className={cn(
-                "w-full h-full rounded-lg border transition-all duration-300",
-                cardStyle === 'filled' 
-                  ? 'bg-card border-border' 
-                  : cardStyle === 'outline'
-                    ? 'bg-transparent border-border'
-                    : cardStyle === 'blue'
+          {items.map((item, index) => {
+            const cardClasses = cn(
+              "w-full h-full rounded-lg border transition-all duration-300",
+              cardStyle === 'filled'
+                ? 'bg-card border-border'
+                : cardStyle === 'outline'
+                  ? 'bg-transparent border-border'
+                  : cardStyle === 'blue'
+                    ? highlightActiveCard && index === activeCardIndex
+                      ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                      : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
+                    : cardStyle === 'green'
                       ? highlightActiveCard && index === activeCardIndex
-                        ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                        : 'border-blue-500/20 bg-blue-500/5 dark:bg-blue-500/8 hover:bg-blue-500/10 hover:border-blue-500/30'
-                      : cardStyle === 'neutral-blue'
+                        ? 'border-green-500/30 bg-green-500/10 dark:bg-green-500/15 shadow-green-500/20 shadow-sm'
+                        : 'border-green-500/20 bg-green-500/5 dark:bg-green-500/8 hover:bg-green-500/10 hover:border-green-500/30'
+                      : cardStyle === 'purple'
                         ? highlightActiveCard && index === activeCardIndex
-                          ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
-                          : 'bg-card border-border'
-                        : highlightActiveCard && index === activeCardIndex 
-                          ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm' 
-                          : 'border-border bg-card'
-              )}>
-                <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
-                  <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
-                    {item.icon && (
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4 flex-shrink-0">
-                        <item.icon className="text-4xl sm:text-5xl md:text-6xl" />
+                          ? 'border-purple-500/30 bg-purple-500/10 dark:bg-purple-500/15 shadow-purple-500/20 shadow-sm'
+                          : 'border-purple-500/20 bg-purple-500/5 dark:bg-purple-500/8 hover:bg-purple-500/10 hover:border-purple-500/30'
+                        : cardStyle === 'neutral-blue'
+                          ? highlightActiveCard && index === activeCardIndex
+                            ? 'border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/15 shadow-blue-500/20 shadow-sm'
+                            : 'bg-card border-border'
+                          : highlightActiveCard && index === activeCardIndex
+                            ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-sm'
+                            : 'border-border bg-card'
+            )
+
+            const iconWrapperClass = cn(
+              "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center mb-4 flex-shrink-0",
+              cardStyle === 'blue'
+                ? 'bg-blue-500/10'
+                : cardStyle === 'green'
+                  ? 'bg-green-500/10'
+                  : cardStyle === 'purple'
+                    ? 'bg-purple-500/10'
+                    : cardStyle === 'neutral-blue'
+                      ? 'bg-blue-500/10'
+                      : 'bg-primary/10'
+            )
+
+            const iconClass = cn(
+              "text-4xl sm:text-5xl md:text-6xl",
+              cardStyle === 'blue'
+                ? 'text-blue-500'
+                : cardStyle === 'green'
+                  ? 'text-green-500'
+                  : cardStyle === 'purple'
+                    ? 'text-purple-500'
+                    : cardStyle === 'neutral-blue'
+                      ? 'text-blue-500'
+                      : 'text-primary'
+            )
+
+            return (
+              <div
+                key={item.id}
+                ref={(el) => {
+                  cardRefs.current[index] = el
+                }}
+                className="platform-carousel-card flex-shrink-0"
+                style={{ 
+                  minWidth: shouldUseFlexibleWidth() ? 'auto' : `${Math.max(responsiveCardWidth, 300)}px`, 
+                  maxWidth: shouldUseFlexibleWidth() ? 'none' : `${Math.max(responsiveCardWidth, 300)}px`,
+                  flex: shouldUseFlexibleWidth() ? '1' : 'none',
+                  height: hugContent ? responsiveMinHeightValue : (maxCardHeight > 0 ? `${maxCardHeight}px` : 'auto'),
+                  minHeight: responsiveMinHeightValue,
+                  marginLeft: index === 0 ? `${responsivePadding.paddingLeft}px` : '0',
+                  marginRight: index === items.length - 1 ? `${responsivePadding.paddingRight}px` : '0'
+                }}
+              >
+                <div className={cardClasses}>
+                  <div className={hugContent ? "flex flex-col justify-end h-full" : "flex flex-col h-full"}>
+                    <div className={customPadding || (hugContent ? "p-6" : "p-6 pb-4")}>
+                      {item.icon && (
+                        <div className={iconWrapperClass}>
+                          <item.icon className={iconClass} />
+                        </div>
+                      )}
+                      <div className="flex flex-col flex-1">
+                        <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
+                        <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+                      </div>
+                    </div>
+                    {item.content && (
+                      <div className={`flex-shrink-0 mt-auto ${customContentPadding || ''}`}>
+                        {item.content}
                       </div>
                     )}
-                    <div className="flex flex-col flex-1">
-                      <h4 className="text-xl font-semibold text-foreground leading-tight mb-3">{item.title}</h4>
-                      <p className="text-base text-muted-foreground leading-relaxed flex-1">{item.description}</p>
-                    </div>
                   </div>
-                  {item.content && (
-                    <div className={`flex-shrink-0 mt-auto ${customContentPadding || ''}`}>
-                      {item.content}
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       ) : (
         <div 

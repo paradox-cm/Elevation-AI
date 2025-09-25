@@ -39,17 +39,17 @@ export interface PeopleCarouselProps {
 }
 
 export function PeopleCarousel(props: PeopleCarouselProps) {
-  const [isMobile, setIsMobile] = useState(false)
+  const [isCompactViewport, setIsCompactViewport] = useState(false)
 
   // Detect mobile devices
   useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768) // sm breakpoint
+    const checkViewport = () => {
+      setIsCompactViewport(window.innerWidth < 1024) // disable gradients up to lg breakpoint
     }
     
-    checkIsMobile()
-    window.addEventListener('resize', checkIsMobile)
-    return () => window.removeEventListener('resize', checkIsMobile)
+    checkViewport()
+    window.addEventListener('resize', checkViewport)
+    return () => window.removeEventListener('resize', checkViewport)
   }, [])
 
   // Use custom padding that matches the original Carousel component
@@ -60,7 +60,7 @@ export function PeopleCarousel(props: PeopleCarouselProps) {
     indicatorColor: props.indicatorColor || 'primary', // Default to primary if not specified
     customPadding: 'p-6', // Use the same padding as original Carousel component
     customContentPadding: 'p-6 pt-0', // People page needs separate content padding for badges
-    showGradients: isMobile ? false : (props.showGradients ?? true) // Disable gradients on mobile
+    showGradients: isCompactViewport ? false : (props.showGradients ?? true) // Disable gradients on mobile & tablet
   }
 
   return <PlatformCarousel {...peopleProps} />
