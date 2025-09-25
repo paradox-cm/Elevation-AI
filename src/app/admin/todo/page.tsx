@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,14 +13,11 @@ import {
   AlertTriangle, 
   CheckSquare, 
   Square,
-  Filter,
   Search,
   Plus,
   Edit,
-  Trash2,
-  ExternalLink
 } from 'lucide-react'
-import { TodoCreationForm } from '@/components/admin/todo-creation-form'
+import { TodoCreationForm, TodoFormPayload } from '@/components/admin/todo-creation-form'
 import { useTodos, TodoItem } from '@/hooks/use-todos'
 import { cn } from '@/lib/utils'
 
@@ -53,7 +50,9 @@ export default function TodoPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [showCompleted, setShowCompleted] = useState(true)
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | null>(null)
-  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [formMode, setFormMode] = useState<'create' | 'edit'>('create')
+  const [selectedTodo, setSelectedTodo] = useState<TodoItem | null>(null)
 
   // Handle save status feedback
   const handleSaveStatus = (status: 'saving' | 'saved') => {
@@ -88,14 +87,66 @@ export default function TodoPage() {
     }
   }
 
-  const handleSaveNewTodo = async (newTodo: Omit<TodoItem, 'id' | 'status' | 'created_at' | 'updated_at'>) => {
+  const openCreateForm = () => {
+    setFormMode('create')
+    setSelectedTodo(null)
+    setIsFormOpen(true)
+  }
+
+  const openEditForm = (todo: TodoItem) => {
+    setFormMode('edit')
+    setSelectedTodo(todo)
+    setIsFormOpen(true)
+  }
+
+  const closeForm = () => {
+    setIsFormOpen(false)
+    setSelectedTodo(null)
+  }
+
+  const handleCreateTodo = async (formValues: TodoFormPayload) => {
     try {
       handleSaveStatus('saving')
-      await createTodo(newTodo)
-      setShowCreateForm(false)
+      await createTodo({
+        title: formValues.title,
+        description: formValues.description,
+        phase: formValues.phase,
+        category: formValues.category,
+        priority: formValues.priority,
+        estimatedEffort: formValues.estimatedEffort,
+        tags: formValues.tags,
+        dependencies: formValues.dependencies
+      })
+      closeForm()
       handleSaveStatus('saved')
     } catch (error) {
       console.error('Error saving new todo:', error)
+      setSaveStatus(null)
+    }
+  }
+
+  const handleUpdateTodo = async (formValues: TodoFormPayload) => {
+    if (!formValues.id) {
+      return
+    }
+
+    try {
+      handleSaveStatus('saving')
+      await updateTodo(formValues.id, {
+        title: formValues.title,
+        description: formValues.description,
+        phase: formValues.phase,
+        category: formValues.category,
+        priority: formValues.priority,
+        estimatedEffort: formValues.estimatedEffort,
+        tags: formValues.tags,
+        dependencies: formValues.dependencies
+      })
+      closeForm()
+      handleSaveStatus('saved')
+    } catch (error) {
+      console.error('Error updating todo:', error)
+      setSaveStatus(null)
     }
   }
 
@@ -190,7 +241,7 @@ export default function TodoPage() {
               </div>
             )}
             <Button 
-              onClick={() => setShowCreateForm(true)}
+              onClick={openCreateForm}
               className="flex items-center space-x-2"
             >
               <Plus className="h-4 w-4" />
@@ -410,6 +461,17 @@ export default function TodoPage() {
                           </div>
                         )}
                       </div>
+                      <div className="ml-4 flex items-center space-x-1">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => openEditForm(todo)}
+                          aria-label={`Edit ${todo.title}`}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -428,12 +490,14 @@ export default function TodoPage() {
       )}
 
       {/* Todo Creation Form */}
-      {showCreateForm && (
+      {isFormOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <TodoCreationForm
-              onSave={handleSaveNewTodo}
-              onCancel={() => setShowCreateForm(false)}
+              mode={formMode}
+              initialTodo={selectedTodo}
+              onSave={formMode === 'edit' ? handleUpdateTodo : handleCreateTodo}
+              onCancel={closeForm}
               existingTodos={todos}
             />
           </div>

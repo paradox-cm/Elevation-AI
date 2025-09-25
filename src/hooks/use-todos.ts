@@ -17,6 +17,78 @@ export interface TodoItem {
   completed_at?: string
   created_by?: string
   assigned_to?: string
+  createdAt?: string
+  updatedAt?: string
+  completedAt?: string
+  createdBy?: string
+  assignedTo?: string
+}
+
+type RawTodo = {
+  id: string
+  title: string
+  description: string
+  phase: TodoItem['phase']
+  category: string
+  status: TodoItem['status']
+  priority: TodoItem['priority']
+  estimated_effort?: TodoItem['estimatedEffort']
+  estimatedEffort?: TodoItem['estimatedEffort']
+  tags?: string[] | null
+  dependencies?: string[] | null
+  notes?: string | null
+  created_at?: string | null
+  updated_at?: string | null
+  completed_at?: string | null
+  created_by?: string | null
+  assigned_to?: string | null
+}
+
+const mapRawTodo = (todo: RawTodo): TodoItem => {
+  const estimatedEffort = todo.estimated_effort ?? todo.estimatedEffort ?? 'medium'
+
+  return {
+    id: todo.id,
+    title: todo.title,
+    description: todo.description,
+    phase: todo.phase,
+    category: todo.category,
+    status: todo.status,
+    priority: todo.priority,
+    estimatedEffort,
+    tags: todo.tags ?? [],
+    dependencies: todo.dependencies ?? [],
+    notes: todo.notes ?? undefined,
+    created_at: todo.created_at ?? undefined,
+    updated_at: todo.updated_at ?? undefined,
+    completed_at: todo.completed_at ?? undefined,
+    created_by: todo.created_by ?? undefined,
+    assigned_to: todo.assigned_to ?? undefined,
+    createdAt: todo.created_at ?? undefined,
+    updatedAt: todo.updated_at ?? undefined,
+    completedAt: todo.completed_at ?? undefined,
+    createdBy: todo.created_by ?? undefined,
+    assignedTo: todo.assigned_to ?? undefined
+  }
+}
+
+const serializeTodoPayload = (data: Partial<TodoItem>) => {
+  const payload: Record<string, unknown> = {}
+
+  if (data.title !== undefined) payload.title = data.title
+  if (data.description !== undefined) payload.description = data.description
+  if (data.phase !== undefined) payload.phase = data.phase
+  if (data.category !== undefined) payload.category = data.category
+  if (data.status !== undefined) payload.status = data.status
+  if (data.priority !== undefined) payload.priority = data.priority
+  if (data.estimatedEffort !== undefined) payload.estimated_effort = data.estimatedEffort
+  if (data.tags !== undefined) payload.tags = data.tags
+  if (data.dependencies !== undefined) payload.dependencies = data.dependencies
+  if (data.notes !== undefined) payload.notes = data.notes
+  if (data.created_by !== undefined) payload.created_by = data.created_by
+  if (data.assigned_to !== undefined) payload.assigned_to = data.assigned_to
+
+  return payload
 }
 
 export function useTodos() {
@@ -35,17 +107,8 @@ export function useTodos() {
         throw new Error('Failed to fetch todos')
       }
       
-      const data = await response.json()
-      // Map database field names to camelCase
-      const mappedTodos = (data.todos || []).map((todo: any) => ({
-        ...todo,
-        estimatedEffort: todo.estimated_effort || todo.estimatedEffort,
-        createdAt: todo.created_at,
-        updatedAt: todo.updated_at,
-        completedAt: todo.completed_at,
-        createdBy: todo.created_by,
-        assignedTo: todo.assigned_to
-      }))
+      const data = (await response.json()) as { todos?: RawTodo[] }
+      const mappedTodos = (data.todos ?? []).map(mapRawTodo)
       setTodos(mappedTodos)
     } catch (err) {
       console.error('Error fetching todos:', err)
@@ -63,24 +126,15 @@ export function useTodos() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(todoData),
+        body: JSON.stringify(serializeTodoPayload(todoData)),
       })
 
       if (!response.ok) {
         throw new Error('Failed to create todo')
       }
 
-      const data = await response.json()
-      // Map database field names to camelCase
-      const mappedTodo = {
-        ...data.todo,
-        estimatedEffort: data.todo.estimated_effort || data.todo.estimatedEffort,
-        createdAt: data.todo.created_at,
-        updatedAt: data.todo.updated_at,
-        completedAt: data.todo.completed_at,
-        createdBy: data.todo.created_by,
-        assignedTo: data.todo.assigned_to
-      }
+      const data = (await response.json()) as { todo: RawTodo }
+      const mappedTodo = mapRawTodo(data.todo)
       setTodos(prev => [mappedTodo, ...prev])
       return mappedTodo
     } catch (err) {
@@ -98,24 +152,15 @@ export function useTodos() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updates),
+        body: JSON.stringify(serializeTodoPayload(updates)),
       })
 
       if (!response.ok) {
         throw new Error('Failed to update todo')
       }
 
-      const data = await response.json()
-      // Map database field names to camelCase
-      const mappedTodo = {
-        ...data.todo,
-        estimatedEffort: data.todo.estimated_effort || data.todo.estimatedEffort,
-        createdAt: data.todo.created_at,
-        updatedAt: data.todo.updated_at,
-        completedAt: data.todo.completed_at,
-        createdBy: data.todo.created_by,
-        assignedTo: data.todo.assigned_to
-      }
+      const data = (await response.json()) as { todo: RawTodo }
+      const mappedTodo = mapRawTodo(data.todo)
       setTodos(prev => prev.map(todo => 
         todo.id === id ? mappedTodo : todo
       ))

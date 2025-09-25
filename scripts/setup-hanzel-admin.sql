@@ -14,7 +14,7 @@ INSERT INTO admin_profiles (
   last_name,
   preferences
 ) VALUES (
-  'USER_ID_HERE', -- Replace with actual user ID
+  'd35336e7-b613-4d4b-b11a-f8360c9a121f', -- Replace with actual user ID
   'Hanzsel',
   'Hanzel',
   'Corella',

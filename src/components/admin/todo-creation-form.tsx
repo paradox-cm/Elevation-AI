@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,14 +19,29 @@ import {
   Plus, 
   Save, 
   AlertCircle,
-  CheckCircle
+  Edit
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { TodoItem } from '@/hooks/use-todos'
+
+export interface TodoFormPayload {
+  id?: string
+  title: string
+  description: string
+  phase: 'critical' | 'high' | 'medium' | 'low'
+  category: string
+  priority: 'urgent' | 'high' | 'medium' | 'low'
+  estimatedEffort: 'quick' | 'medium' | 'extensive'
+  tags: string[]
+  dependencies: string[]
+}
 
 interface TodoCreationFormProps {
-  onSave: (todo: any) => void
+  mode?: 'create' | 'edit'
+  initialTodo?: TodoItem | null
+  onSave: (todo: TodoFormPayload) => Promise<void> | void
   onCancel: () => void
-  existingTodos?: any[]
+  existingTodos?: TodoItem[]
 }
 
 interface TodoFormData {
@@ -81,22 +96,30 @@ const categoryOptions = [
   'Other'
 ]
 
-export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoCreationFormProps) {
-  const [formData, setFormData] = useState<TodoFormData>({
-    title: '',
-    description: '',
-    phase: 'medium',
-    category: '',
-    priority: 'medium',
-    estimatedEffort: 'medium',
-    tags: [],
-    dependencies: [],
-    newTag: '',
-    newDependency: ''
-  })
+const buildInitialFormState = (todo?: TodoItem | null): TodoFormData => ({
+  title: todo?.title ?? '',
+  description: todo?.description ?? '',
+  phase: (todo?.phase ?? 'medium') as TodoFormData['phase'],
+  category: todo?.category ?? '',
+  priority: (todo?.priority ?? 'medium') as TodoFormData['priority'],
+  estimatedEffort: (todo?.estimatedEffort ?? 'medium') as TodoFormData['estimatedEffort'],
+  tags: todo?.tags ?? [],
+  dependencies: todo?.dependencies ?? [],
+  newTag: '',
+  newDependency: ''
+})
+
+export function TodoCreationForm({ mode = 'create', initialTodo = null, onSave, onCancel, existingTodos = [] }: TodoCreationFormProps) {
+  const [formData, setFormData] = useState<TodoFormData>(() => buildInitialFormState(initialTodo))
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const isEditMode = mode === 'edit' && !!initialTodo
+
+  useEffect(() => {
+    setFormData(buildInitialFormState(initialTodo))
+    setErrors({})
+  }, [initialTodo])
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -127,37 +150,24 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
     setIsSubmitting(true)
 
     try {
-      const newTodo = {
-        id: `todo-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      const payload: TodoFormPayload = {
+        id: initialTodo?.id,
         title: formData.title.trim(),
         description: formData.description.trim(),
         phase: formData.phase,
         category: formData.category.trim(),
-        status: 'pending' as const,
         priority: formData.priority,
         estimatedEffort: formData.estimatedEffort,
         tags: formData.tags,
-        dependencies: formData.dependencies,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        dependencies: formData.dependencies
       }
 
-      await onSave(newTodo)
-      
-      // Reset form
-      setFormData({
-        title: '',
-        description: '',
-        phase: 'medium',
-        category: '',
-        priority: 'medium',
-        estimatedEffort: 'medium',
-        tags: [],
-        dependencies: [],
-        newTag: '',
-        newDependency: ''
-      })
-      setErrors({})
+      await onSave(payload)
+
+      if (!isEditMode) {
+        setFormData(buildInitialFormState())
+        setErrors({})
+      }
     } catch (error) {
       console.error('Error saving todo:', error)
     } finally {
@@ -210,11 +220,17 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
-          <Plus className="h-5 w-5" />
-          <span>Create New Todo Item</span>
+          {isEditMode ? (
+            <Edit className="h-5 w-5" />
+          ) : (
+            <Plus className="h-5 w-5" />
+          )}
+          <span>{isEditMode ? 'Edit Todo Item' : 'Create New Todo Item'}</span>
         </CardTitle>
         <CardDescription>
-          Add a new todo item to the production readiness checklist
+          {isEditMode
+            ? 'Update the details of this todo item'
+            : 'Add a new todo item to the production readiness checklist'}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -262,7 +278,7 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
               <Label htmlFor="phase">Phase</Label>
               <Select
                 value={formData.phase}
-                onValueChange={(value: any) => setFormData(prev => ({ ...prev, phase: value }))}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, phase: value as TodoFormData['phase'] }))}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -285,7 +301,7 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
               <Label htmlFor="priority">Priority</Label>
               <Select
                 value={formData.priority}
-                onValueChange={(value: any) => setFormData(prev => ({ ...prev, priority: value }))}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, priority: value as TodoFormData['priority'] }))}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -335,7 +351,7 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
               <Label htmlFor="effort">Estimated Effort</Label>
               <Select
                 value={formData.estimatedEffort}
-                onValueChange={(value: any) => setFormData(prev => ({ ...prev, estimatedEffort: value }))}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, estimatedEffort: value as TodoFormData['estimatedEffort'] }))}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -408,7 +424,8 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
                 </SelectTrigger>
                 <SelectContent>
                   {existingTodos
-                    .filter(todo => todo.id !== formData.newDependency && !formData.dependencies.includes(todo.id))
+                    .filter(todo => todo.id !== initialTodo?.id)
+                    .filter(todo => !formData.dependencies.includes(todo.id))
                     .map((todo) => (
                       <SelectItem key={todo.id} value={todo.id}>
                         {todo.title}
@@ -442,7 +459,7 @@ export function TodoCreationForm({ onSave, onCancel, existingTodos = [] }: TodoC
               ) : (
                 <>
                   <Save className="h-4 w-4 mr-2" />
-                  Save Todo
+                  {isEditMode ? 'Update Todo' : 'Save Todo'}
                 </>
               )}
             </Button>
