@@ -219,7 +219,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .order('updated_at', { ascending: false })
 
     if (!error && pages) {
-      dynamicPages = pages.map((page) => ({
+      dynamicPages = pages.map((page: { slug: string; updated_at: string }) => ({
         url: `https://elevationai.com/website/${page.slug}`,
         lastModified: new Date(page.updated_at),
         changeFrequency: 'weekly' as const,
@@ -241,7 +241,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .order('updated_at', { ascending: false })
 
     if (!error && blogPosts) {
-      blogPages = blogPosts.map((post) => ({
+      blogPages = blogPosts.map((post: { slug: string; updated_at: string }) => ({
         url: `https://elevationai.com/website/blog/${post.slug}`,
         lastModified: new Date(post.updated_at),
         changeFrequency: 'monthly' as const,

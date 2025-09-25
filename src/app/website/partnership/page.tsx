@@ -509,24 +509,26 @@ function PartnershipFormContent() {
                       <Card>
                         <CardContent className="pt-6">
                           <div className="space-y-4">
-                            <div className="flex items-start space-x-2">
+                            <div className="flex items-start space-x-3 sm:space-x-2">
                               <Checkbox
                                 id="agreeToTerms"
                                 checked={formData.agreeToTerms}
                                 onCheckedChange={(checked) => handleInputChange('agreeToTerms', checked as boolean)}
                                 required
+                                className="mt-0.5 flex-shrink-0"
                               />
-                              <Label htmlFor="agreeToTerms" className="text-sm">
-                                I agree to the <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a> *
+                              <Label htmlFor="agreeToTerms" className="text-sm leading-relaxed">
+                                I agree to the <a href="/terms" className="text-primary hover:underline break-words">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline break-words">Privacy Policy</a> *
                               </Label>
                             </div>
-                            <div className="flex items-start space-x-2">
+                            <div className="flex items-start space-x-3 sm:space-x-2">
                               <Checkbox
                                 id="agreeToMarketing"
                                 checked={formData.agreeToMarketing}
                                 onCheckedChange={(checked) => handleInputChange('agreeToMarketing', checked as boolean)}
+                                className="mt-0.5 flex-shrink-0"
                               />
-                              <Label htmlFor="agreeToMarketing" className="text-sm">
+                              <Label htmlFor="agreeToMarketing" className="text-sm leading-relaxed">
                                 I'd like to receive updates about Elevation AI's products and services
                               </Label>
                             </div>

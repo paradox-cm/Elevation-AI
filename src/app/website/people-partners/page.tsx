@@ -16,7 +16,7 @@ import { LoadingSpinner } from "@/components/ui/loading"
 import { MobileOnlyLayout } from "@/components/ui/layout/mobile-only-layout"
 import { MobileMenuDrawer } from "@/components/ui/mobile-menu-drawer"
 import { WebsiteFooter } from "@/components/ui/website-footer"
-import { Users, Building2, Shield, Zap, Target, Sparkles, CheckCircle, ArrowRight, Star, Award, UserCheck, Brain, Globe, Handshake } from "lucide-react"
+import { Users, Building2, Shield, Zap, Target, Sparkles, CheckCircle, ArrowRight, Star, Award, UserCheck, Brain, Globe, Handshake, GitMerge } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import Icon from "@/components/ui/icon"
@@ -120,7 +120,7 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> | null }
         <div className="space-y-6 sm:space-y-8">
           {/* Section Header */}
           <div className="text-center space-y-2">
-            <H3 className="text-muted-foreground">
+            <H3 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl 2xl:text-xl text-muted-foreground">
               {typeof data?.title === 'string' ? data.title : 'Led by industry veterans from:'}
             </H3>
           </div>
@@ -455,7 +455,7 @@ export default function PeoplePartnersPage() {
                                 id: 'merger-integration',
                                 title: 'Merger & Integration',
                                 description: 'Expert support for post-merger integration and organizational restructuring.',
-                                icon: Shield,
+                                icon: GitMerge,
                                 content: (
                                   <div className="flex flex-wrap gap-2">
                                     <Badge variant="secondary" className="text-sm bg-green-500/10 text-green-500 border-green-500/20">Integration Planning</Badge>

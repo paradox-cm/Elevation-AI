@@ -120,7 +120,7 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> | null }
         <div className="space-y-6 sm:space-y-8">
           {/* Section Header */}
           <div className="text-center space-y-2">
-            <H3 className="text-muted-foreground">
+            <H3 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl 2xl:text-xl text-muted-foreground">
               {typeof data?.title === 'string' ? data.title : 'Led by industry veterans from:'}
             </H3>
           </div>

@@ -71,6 +71,12 @@ export function Navigation({
               {link.label}
             </a>
           ))}
+          <Button variant="ghost" size="sm" asChild className="text-sm hover:bg-muted/50">
+            <Link href="/admin">
+              <Icon name="settings-3-line" className="h-4 w-4 mr-1" />
+              Admin
+            </Link>
+          </Button>
           <ThemeToggle />
         </div>
 

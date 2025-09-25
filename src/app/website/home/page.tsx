@@ -993,14 +993,6 @@ function PlatformSection({ data }: { data?: Record<string, unknown> }) {
     <Section paddingY="lg">
       <Container size="2xl">
         <div className="space-y-6 sm:space-y-8 lg:space-y-12">
-          {/* Section Headline */}
-          <div className="text-center space-y-3 lg:space-y-2 mb-8 lg:mb-12">
-            <H1>{title}</H1>
-            <P className="text-muted-foreground max-w-4xl mx-auto">
-              {description}
-            </P>
-          </div>
-
           {/* Mobile/Tablet Layout - Original Scroll-triggered Tabbed Interface */}
           <div className="block lg:hidden -mx-4 sm:-mx-6 lg:-mx-8 mb-0">
             {/* Section Headline */}
@@ -1332,7 +1324,7 @@ function LogoCarouselSection({ data }: { data?: Record<string, unknown> | null }
         <div className="space-y-6 sm:space-y-8">
           {/* Section Header */}
           <div className="text-center space-y-2">
-            <H3 className="text-muted-foreground">
+            <H3 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl 2xl:text-xl text-muted-foreground">
               {title}
             </H3>
           </div>

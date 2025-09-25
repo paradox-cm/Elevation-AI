@@ -11,7 +11,8 @@ export function MobileNavigation() {
   const navigationLinks = [
     { href: "/", label: "Home", active: pathname === "/" },
     { href: "/design-system", label: "Design System", active: pathname === "/design-system" },
-    { href: "/website", label: "Website", active: pathname.startsWith("/website") }
+    { href: "/website", label: "Website", active: pathname.startsWith("/website") },
+    { href: "/admin", label: "Admin", active: pathname.startsWith("/admin") }
   ]
 
   return (
@@ -38,6 +39,7 @@ export function MobileNavigation() {
                     name={
                       link.href === "/" ? "home-line" :
                       link.href === "/design-system" ? "palette-line" :
+                      link.href === "/admin" ? "settings-3-line" :
                       "layout-line"
                     } 
                     className="h-4 w-4 text-blue-500" 

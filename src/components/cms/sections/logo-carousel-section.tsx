@@ -25,7 +25,7 @@ export function LogoCarouselSection({ data, section }: LogoCarouselSectionProps)
         <div className="space-y-8">
           {title && (
             <div className="text-center">
-              <H3 className="text-lg text-muted-foreground">{title}</H3>
+              <H3 className="text-sm sm:text-lg text-muted-foreground">{title}</H3>
             </div>
           )}
           <div className="flex items-center justify-center space-x-8 overflow-x-auto">
