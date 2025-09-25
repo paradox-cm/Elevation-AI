@@ -25,7 +25,7 @@ export default function Icon({ name, className, size = "md" }: IconProps) {
         className
       )} 
       aria-hidden="true"
-      focusable="false"
+      tabIndex={-1}
     />
   )
 }
