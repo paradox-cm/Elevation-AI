@@ -27,17 +27,17 @@ import { cn } from '@/lib/utils'
 // Original todos are now stored in the database and loaded via the useTodos hook
 
 const phaseColors = {
-  critical: 'bg-red-100 text-red-800 border-red-200',
-  high: 'bg-orange-100 text-orange-800 border-orange-200',
-  medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  low: 'bg-green-100 text-green-800 border-green-200'
+  critical: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800',
+  high: 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/20 dark:text-orange-300 dark:border-orange-800',
+  medium: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800',
+  low: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800'
 }
 
 const priorityColors = {
-  urgent: 'bg-red-500',
-  high: 'bg-orange-500',
-  medium: 'bg-yellow-500',
-  low: 'bg-green-500'
+  urgent: 'bg-red-500 dark:bg-red-600',
+  high: 'bg-orange-500 dark:bg-orange-600',
+  medium: 'bg-yellow-500 dark:bg-yellow-600',
+  low: 'bg-green-500 dark:bg-green-600'
 }
 
 const statusIcons = {
@@ -147,7 +147,7 @@ export default function TodoPage() {
         </div>
         <Card>
           <CardContent className="p-8 text-center">
-            <div className="flex items-center justify-center space-x-2 text-red-600 mb-4">
+            <div className="flex items-center justify-center space-x-2 text-red-600 dark:text-red-400 mb-4">
               <AlertTriangle className="h-5 w-5" />
               <span className="font-medium">Failed to load todos</span>
             </div>
@@ -183,8 +183,8 @@ export default function TodoPage() {
                 )}
                 {saveStatus === 'saved' && (
                   <>
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-600">Saved</span>
+                    <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <span className="text-green-600 dark:text-green-400">Saved</span>
                   </>
                 )}
               </div>
@@ -202,31 +202,34 @@ export default function TodoPage() {
 
       {/* Status Overview */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <Card className={cn("border-orange-200", statusStats.in_progress > 0 && "bg-orange-50/50")}>
+        <Card className={cn(
+          "border-orange-200 dark:border-orange-800", 
+          statusStats.in_progress > 0 && "bg-orange-50/50 dark:bg-orange-900/10"
+        )}>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4 text-orange-600" />
-              <span className="text-sm font-medium">In Progress</span>
+              <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+              <span className="text-sm font-medium text-foreground">In Progress</span>
             </div>
-            <div className="text-2xl font-bold mt-1 text-orange-600">{statusStats.in_progress}</div>
+            <div className="text-2xl font-bold mt-1 text-orange-600 dark:text-orange-400">{statusStats.in_progress}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <Circle className="h-4 w-4 text-gray-600" />
-              <span className="text-sm font-medium">Pending</span>
+              <Circle className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <span className="text-sm font-medium text-foreground">Pending</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{statusStats.pending}</div>
+            <div className="text-2xl font-bold mt-1 text-foreground">{statusStats.pending}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="h-4 w-4 text-green-600" />
-              <span className="text-sm font-medium">Completed</span>
+              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <span className="text-sm font-medium text-foreground">Completed</span>
             </div>
-            <div className="text-2xl font-bold mt-1 text-green-600">{statusStats.completed}</div>
+            <div className="text-2xl font-bold mt-1 text-green-600 dark:text-green-400">{statusStats.completed}</div>
           </CardContent>
         </Card>
       </div>
@@ -236,37 +239,37 @@ export default function TodoPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-              <span className="text-sm font-medium">Critical</span>
+              <div className="w-3 h-3 bg-red-500 dark:bg-red-600 rounded-full"></div>
+              <span className="text-sm font-medium text-foreground">Critical</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{phaseStats.critical}</div>
+            <div className="text-2xl font-bold mt-1 text-foreground">{phaseStats.critical}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-              <span className="text-sm font-medium">High</span>
+              <div className="w-3 h-3 bg-orange-500 dark:bg-orange-600 rounded-full"></div>
+              <span className="text-sm font-medium text-foreground">High</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{phaseStats.high}</div>
+            <div className="text-2xl font-bold mt-1 text-foreground">{phaseStats.high}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <span className="text-sm font-medium">Medium</span>
+              <div className="w-3 h-3 bg-yellow-500 dark:bg-yellow-600 rounded-full"></div>
+              <span className="text-sm font-medium text-foreground">Medium</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{phaseStats.medium}</div>
+            <div className="text-2xl font-bold mt-1 text-foreground">{phaseStats.medium}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-sm font-medium">Low</span>
+              <div className="w-3 h-3 bg-green-500 dark:bg-green-600 rounded-full"></div>
+              <span className="text-sm font-medium text-foreground">Low</span>
             </div>
-            <div className="text-2xl font-bold mt-1">{phaseStats.low}</div>
+            <div className="text-2xl font-bold mt-1 text-foreground">{phaseStats.low}</div>
           </CardContent>
         </Card>
       </div>
@@ -288,7 +291,7 @@ export default function TodoPage() {
             <select
               value={filterPhase}
               onChange={(e) => setFilterPhase(e.target.value)}
-              className="px-3 py-2 border rounded-md"
+              className="px-3 py-2 border rounded-md bg-background text-foreground border-input dark:bg-background dark:text-foreground dark:border-border"
             >
               <option value="all">All Phases</option>
               <option value="critical">Critical</option>
@@ -300,7 +303,7 @@ export default function TodoPage() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 border rounded-md"
+              className="px-3 py-2 border rounded-md bg-background text-foreground border-input dark:bg-background dark:text-foreground dark:border-border"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -331,8 +334,8 @@ export default function TodoPage() {
             <Card 
               key={todo.id} 
               className={cn(
-                "hover:shadow-md transition-shadow",
-                isInProgress && "border-orange-200 bg-orange-50/50 shadow-orange-100"
+                "hover:shadow-md transition-shadow dark:hover:shadow-lg",
+                isInProgress && "border-orange-200 bg-orange-50/50 shadow-orange-100 dark:border-orange-800 dark:bg-orange-900/10 dark:shadow-orange-900/20"
               )}
             >
               <CardContent className="p-6">
@@ -342,12 +345,12 @@ export default function TodoPage() {
                     className="mt-1 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {todo.status === 'completed' ? (
-                      <CheckSquare className="h-5 w-5 text-green-600" />
+                      <CheckSquare className="h-5 w-5 text-green-600 dark:text-green-400" />
                     ) : todo.status === 'in_progress' ? (
                       <div className="relative">
-                        <Square className="h-5 w-5 text-orange-500" />
+                        <Square className="h-5 w-5 text-orange-500 dark:text-orange-400" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                          <div className="w-2 h-2 bg-orange-500 dark:bg-orange-400 rounded-full animate-pulse"></div>
                         </div>
                       </div>
                     ) : (
@@ -391,7 +394,7 @@ export default function TodoPage() {
                             {(todo.tags || []).map((tag) => (
                               <span
                                 key={tag}
-                                className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded"
+                                className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded dark:bg-muted/50 dark:text-muted-foreground"
                               >
                                 #{tag}
                               </span>
