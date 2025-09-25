@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
-import { Canvas, MiniChip, WithTooltip } from "@/components/infographics/primitives";
+import { MobileCanvas, MiniChip, WithTooltip } from "@/components/infographics/primitives";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { motion } from "framer-motion";
 
@@ -14,18 +14,14 @@ type Row = {
   masked?: boolean;
 };
 
-export default function HomeSecurity({ className }: { className?: string }) {
-  const outer = 12;
-  const titleStrip = 36;
-
-
+export default function MobileHomeSecurity({ className }: { className?: string }) {
   const [activeTab, setActiveTab] = useState<"User" | "Policy" | "Resource" | "Outcome">("User");
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [evidencePackIndex, setEvidencePackIndex] = useState(0);
   const reduced = usePrefersReducedMotion();
   
-  // Evidence pack variations
+  // Evidence pack variations - exact same as desktop
   const evidencePacks = [
     {
       title: "Evidence Pack",
@@ -48,8 +44,8 @@ export default function HomeSecurity({ className }: { className?: string }) {
       description: "Track data flow and transformations across all AI model interactions."
     }
   ];
-  
-  // Mock data for each tab
+
+  // Mock data for each tab - exact same as desktop
   const tabData = {
     User: [
       { time: "09:12", user: "u-14…", action: "Read", resource: "Doc:{redacted}", policy: "PII Masking", outcome: "Allow", masked: true },
@@ -128,64 +124,51 @@ export default function HomeSecurity({ className }: { className?: string }) {
     setTimeout(() => setShowSuccess(false), 2000);
   }
 
-  const colW = { time: 50, user: 60, action: 90, resource: 140, policy: 100, outcome: 60 };
-
-  function HeaderCell({ label, width }: { label: string; width: number }) {
-    return (
-      <div className="text-[11px] text-muted-foreground whitespace-nowrap" style={{ width }}>{label}</div>
-    );
-  }
-  function Cell({ children, width }: { children: React.ReactNode; width: number }) {
-    return (
-      <div className="truncate whitespace-nowrap text-xs min-w-0" style={{ width }}>{children}</div>
-    );
-  }
-
   return (
-    <Canvas className={className} aspectW={600} aspectH={360} maxWidth={600}>
-      <div className="absolute inset-0" style={{ padding: outer, paddingTop: outer + 40 }} />
+    <MobileCanvas className={className}>
+      <div className="flex flex-col h-full p-4">
+        {/* Header */}
+        <div className="flex-shrink-0 mb-4">
+          <h3 className="text-sm font-semibold leading-none">Enterprise Security</h3>
+          <p className="text-[11px] text-muted-foreground leading-none mt-2">Comprehensive security monitoring</p>
+        </div>
 
-      {/* Filters + Export (spacing clarified) */}
-      <div className="absolute left-3 right-3" style={{ top: outer + 40 }}>
-        <div className="flex items-center justify-between h-7">
-          <div className="flex items-center gap-2">
+        {/* Tab Filters */}
+        <div className="flex-shrink-0 mb-4">
+          <div className="flex items-center gap-2 overflow-x-auto">
             {(["User", "Policy", "Resource", "Outcome"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveTab(f)}
-                className={`h-7 rounded-full border px-3 text-xs transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:shadow-sm ${activeTab === f ? "bg-primary text-primary-foreground" : ""}`}
+                className={`h-7 rounded-full border px-3 text-xs transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:shadow-sm whitespace-nowrap ${activeTab === f ? "bg-primary text-primary-foreground" : ""}`}
                 aria-pressed={activeTab === f}
               >
                 {f}
               </button>
             ))}
           </div>
-          <button className="h-7 rounded-full border px-3 text-xs transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:shadow-sm">Export</button>
         </div>
-      </div>
 
-      {/* Timeline table + Right panel */}
-      <div className="absolute left-3 right-3 bottom-3" style={{ top: outer + 36 + 40 }}>
-        <div className="grid h-full" style={{ gridTemplateColumns: "420px 1fr", gap: 12 }}>
-          {/* Table */}
-          <div className="rounded-md border bg-background/50 text-[12px]">
+        {/* Security Events Table */}
+        <div className="flex-1 min-h-0 mb-4">
+          <div className="rounded-md border bg-background/50 h-full flex flex-col">
             {/* Header */}
-            <div className="flex items-center border-b px-2" style={{ height: 28 }}>
-              <HeaderCell label="Time" width={colW.time} />
-              <HeaderCell label="User" width={colW.user} />
-              <HeaderCell label="Action" width={colW.action} />
-              <HeaderCell label="Resource" width={colW.resource} />
-              <HeaderCell label="Policy" width={colW.policy} />
-              <HeaderCell label="Outcome" width={colW.outcome} />
+            <div className="flex items-center border-b px-3 py-2 text-xs text-muted-foreground font-medium">
+              <div className="w-12">Time</div>
+              <div className="w-12">User</div>
+              <div className="w-16">Action</div>
+              <div className="w-20">Resource</div>
+              <div className="w-16">Policy</div>
+              <div className="w-16">Outcome</div>
             </div>
             {/* Rows */}
-            <div className="divide-y">
+            <div className="flex-1 overflow-y-auto">
               {rows.map((r, i) => (
-                <div key={i} className="flex items-center px-2" style={{ height: 28 }}>
-                  <Cell width={colW.time}>{r.time}</Cell>
-                  <Cell width={colW.user}>{r.user}</Cell>
-                  <Cell width={colW.action}>{r.action}</Cell>
-                  <Cell width={colW.resource}>
+                <div key={i} className="flex items-center px-3 py-2 text-xs border-b last:border-b-0">
+                  <div className="w-12 truncate">{r.time}</div>
+                  <div className="w-12 truncate">{r.user}</div>
+                  <div className="w-16 truncate">{r.action}</div>
+                  <div className="w-20 truncate">
                     {(r as any).masked ? (
                       <WithTooltip label="Requires permission">
                         <span className="inline-flex items-center gap-1">
@@ -196,9 +179,9 @@ export default function HomeSecurity({ className }: { className?: string }) {
                     ) : (
                       r.resource
                     )}
-                  </Cell>
-                  <Cell width={colW.policy}>{r.policy}</Cell>
-                  <Cell width={colW.outcome}>
+                  </div>
+                  <div className="w-16 truncate">{r.policy}</div>
+                  <div className="w-16 truncate">
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] ${
                       r.outcome === "Allow" 
                         ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-700" 
@@ -206,14 +189,23 @@ export default function HomeSecurity({ className }: { className?: string }) {
                     }`}>
                       {r.outcome}
                     </span>
-                  </Cell>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Right panel */}
-          <div className="rounded-md border bg-background p-3 flex flex-col">
+        {/* Export Button - Edge to Edge */}
+        <div className="flex-shrink-0 mb-4">
+          <button className="w-full h-8 rounded-md border px-3 text-sm transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:shadow-sm">
+            Export
+          </button>
+        </div>
+
+        {/* Evidence Pack Panel */}
+        <div className="flex-shrink-0">
+          <div className="rounded-md border bg-background p-3">
             <motion.div 
               key={evidencePackIndex}
               initial={{ opacity: 0, y: 10 }}
@@ -228,39 +220,35 @@ export default function HomeSecurity({ className }: { className?: string }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-xs text-muted-foreground"
+              className="text-xs text-muted-foreground mb-3"
             >
               {evidencePacks[evidencePackIndex].description}
             </motion.div>
-            <div className="mt-auto pt-2">
-              <button 
-                className="h-7 rounded-full border px-3 text-xs transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:shadow-sm"
-                onClick={handleGenerate}
-              >
-                Generate
-              </button>
-            </div>
+            <button 
+              className="h-7 rounded-full border px-3 text-xs transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:shadow-sm"
+              onClick={handleGenerate}
+            >
+              Generate
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Mock Success Notification */}
-      {showSuccess && (
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-          className="absolute bottom-3 right-3 bg-green-500 text-white px-3 py-2 rounded-md shadow-lg text-xs font-medium z-50"
-        >
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-white rounded-full"></div>
-            {successMessage}
-          </div>
-        </motion.div>
-      )}
-    </Canvas>
+        {/* Mock Success Notification */}
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-3 right-3 bg-green-500 text-white px-3 py-2 rounded-md shadow-lg text-xs font-medium z-50"
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              {successMessage}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </MobileCanvas>
   );
 }
-
-

@@ -493,9 +493,11 @@ module.exports = {
                         </div>
                       </div>
                       
-                      <Button variant="outline" size="sm" className="w-full">
-                        View Detailed Guide
-                        <Icon name="arrow-right-line" className="h-4 w-4 ml-1" />
+                      <Button variant="outline" size="sm" asChild className="w-full">
+                        <Link href={framework.name === "Next.js 15" ? "https://nextjs.org/docs" : framework.name === "Vite + React" ? "https://vitejs.dev/guide/" : "https://create-react-app.dev/docs/getting-started"} target="_blank" rel="noopener noreferrer">
+                          View Detailed Guide
+                          <Icon name="arrow-right-line" className="h-4 w-4 ml-1" />
+                        </Link>
                       </Button>
                     </CardContent>
                   </Card>

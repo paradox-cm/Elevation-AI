@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,14 +20,74 @@ export function SectionTitle({ title, subtitle, className }: { title: string; su
 }
 
 export function Canvas({ children, className, maxWidth = 600, aspectW = 600, aspectH = 360 }: React.PropsWithChildren<WithClassName & { maxWidth?: number; aspectW?: number; aspectH?: number }>) {
-  // 600×360 default responsive wrapper using CSS aspect-ratio to avoid build-time class generation issues
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.offsetWidth;
+        const newScale = Math.min(1, containerWidth / maxWidth);
+        setScale(newScale);
+      }
+    };
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, [maxWidth]);
+
+  // 600×360 default responsive wrapper that scales proportionally when browser becomes narrower
   return (
-    <div className={cn("w-full mx-auto", className)} style={{ maxWidth }}>
+    <div ref={containerRef} className={cn("w-full mx-auto", className)} style={{ maxWidth }}>
       <div
-        className="relative w-full rounded-lg border bg-background overflow-hidden"
-        style={{ aspectRatio: `${aspectW} / ${aspectH}` }}
+        className="relative w-full rounded-lg border bg-background dark:bg-transparent overflow-hidden"
+        style={{ 
+          aspectRatio: `${aspectW} / ${aspectH}`,
+          // Scale down proportionally when container is smaller than maxWidth
+          transform: `scale(${scale})`,
+          transformOrigin: 'center top'
+        }}
       >
-        {children}
+        {/* macOS-like top menu bar */}
+        <div className="absolute top-0 left-0 right-0 h-8 bg-muted/30 border-b border-border/50 flex items-center px-3 z-10">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Content with top padding to account for menu bar */}
+        <div className="relative w-full h-full pt-8">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function MobileCanvas({ children, className }: React.PropsWithChildren<WithClassName>) {
+  // iPhone-style mobile canvas with proper proportions
+  return (
+    <div className={cn("w-full mx-auto flex justify-center", className)}>
+      <div
+        className="relative rounded-[2rem] border border-border bg-background dark:bg-transparent overflow-hidden shadow-lg"
+        style={{ 
+          width: "clamp(240px, 80vw, 360px)",
+          height: "clamp(600px, 200vw, 900px)", // Taller iPhone aspect ratio
+          maxHeight: "700px" // Increased max height
+        }}
+      >
+        {/* iPhone notch simulation */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-background rounded-b-2xl border-x border-b border-border z-20"></div>
+        
+        {/* Content fills the entire iPhone screen with notch spacing */}
+        <div className="relative w-full h-full pt-8">
+          {children}
+        </div>
       </div>
     </div>
   );

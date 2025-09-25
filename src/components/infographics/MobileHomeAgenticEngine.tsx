@@ -1,22 +1,19 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Canvas, MiniChip, CardBody } from "@/components/infographics/primitives";
+import { motion, AnimatePresence } from "framer-motion";
+import { MobileCanvas, MiniChip } from "@/components/infographics/primitives";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { CheckSquare, Square } from "lucide-react";
 
-type Step = { id: number; title: string; metrics: { label: string; value: string }[] };
-
-export default function HomeAgenticEngine({ className }: { className?: string }) {
+export default function MobileHomeAgenticEngine({ className }: { className?: string }) {
   const reduced = usePrefersReducedMotion();
   const [currentFlowIndex, setCurrentFlowIndex] = useState(0);
 
-  // Different agentic flow configurations
-  const flowSets = [
-    // Flow 1: Content Processing
+  // Dynamic flow sets - exact same as desktop
+  const flowSets = useMemo(() => [
+    // Flow 1: Document Processing
     {
       steps: [
-        { id: 1, title: "Fetch Context", metrics: [{ label: "latency", value: "110ms" }, { label: "cost", value: "0.2" }] },
+        { id: 1, title: "Parse", metrics: [{ label: "latency", value: "95ms" }, { label: "cost", value: "0.1" }] },
         { id: 2, title: "Plan", metrics: [{ label: "latency", value: "95ms" }, { label: "cost", value: "0.1" }] },
         { id: 3, title: "Call: Summarizer", metrics: [{ label: "latency", value: "120ms" }, { label: "cost", value: "0.3" }] },
         { id: 4, title: "Call: Retrieval", metrics: [{ label: "latency", value: "130ms" }, { label: "cost", value: "0.2" }] },
@@ -81,12 +78,12 @@ export default function HomeAgenticEngine({ className }: { className?: string })
         { name: "Model Validation", enabled: true }
       ]
     }
-  ];
+  ], []);
 
   const currentFlow = flowSets[currentFlowIndex];
   const steps = currentFlow.steps;
 
-  // Auto-cycle through different flows
+  // Auto-cycle through different flows - exact same logic as desktop
   useEffect(() => {
     if (reduced) return;
     
@@ -97,57 +94,51 @@ export default function HomeAgenticEngine({ className }: { className?: string })
     return () => clearInterval(interval);
   }, [reduced]);
 
-  const outer = 12;
-  const cardW = 90; // Larger cards to fill available space
-  const cardH = 80; // Taller cards to fill available height
-  const gap = 8;
-  const dwell = 0.45;
-
   return (
-    <Canvas className={className} aspectW={600} aspectH={360} maxWidth={600}>
-      <div className="absolute inset-0 flex flex-col" style={{ padding: outer, paddingTop: outer + 40 }}>
-        {/* Agentic Engine Header */}
-        <div className="mb-4 flex-shrink-0">
+    <MobileCanvas className={className}>
+      <div className="flex flex-col h-full p-4">
+        {/* Header */}
+        <div className="flex-shrink-0 mb-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center">
                 <div className="w-4 h-4 rounded-sm bg-primary"></div>
               </div>
               <div>
-                <h3 className="text-[14px] font-semibold leading-none">Agentic Engine</h3>
+                <h3 className="text-sm font-semibold leading-none">Agentic Engine</h3>
                 <p className="text-[11px] text-muted-foreground leading-none mt-1">Configure your AI workflow</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className="text-[10px] text-muted-foreground">Active</span>
+                <span className="text-xs text-muted-foreground">Active</span>
               </div>
-              <div className="text-[10px] text-muted-foreground bg-muted px-2 py-1 rounded">
+              <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
                 v2.1.3
               </div>
             </div>
           </div>
         </div>
 
-        {/* Top section - Tools, Models, Policies */}
-        <div className="mb-4 flex-shrink-0">
-          <div className="rounded-md border bg-card text-card-foreground shadow-sm p-2">
+        {/* Tools, Models, Policies */}
+        <div className="flex-shrink-0 mb-4">
+          <div className="rounded-md border bg-card text-card-foreground shadow-sm p-3">
             <div className="grid grid-cols-3 gap-4">
               {/* Tools */}
               <div className="flex flex-col">
-                <div className="text-[11px] text-muted-foreground mb-1 leading-none">Tools</div>
-                <div className="space-y-0.5">
+                <div className="text-sm text-muted-foreground mb-2 leading-none">Tools</div>
+                <div className="space-y-1">
                   {currentFlow.tools.map((tool, index) => (
                     <motion.div
                       key={`${currentFlowIndex}-${tool}`}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-center gap-2 text-[12px]"
+                      className="flex items-center gap-2 text-sm"
                     >
                       <div className="h-2 w-2 rounded-full bg-muted" />
-                      <span>{tool}</span>
+                      <span className="truncate">{tool}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -155,18 +146,18 @@ export default function HomeAgenticEngine({ className }: { className?: string })
 
               {/* Models */}
               <div className="flex flex-col">
-                <div className="text-[11px] text-muted-foreground mb-1 leading-none">Models</div>
-                <div className="space-y-0.5">
+                <div className="text-sm text-muted-foreground mb-2 leading-none">Models</div>
+                <div className="space-y-1">
                   {currentFlow.models.map((model, index) => (
                     <motion.div
                       key={`${currentFlowIndex}-${model}`}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-center gap-2 text-[12px]"
+                      className="flex items-center gap-2 text-sm"
                     >
-                      <div className="h-2 w-2 rounded-full bg-muted" />
-                      <span>{model}</span>
+                      <div className="h-2 w-2 rounded-full bg-primary" />
+                      <span className="truncate">{model}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -174,22 +165,18 @@ export default function HomeAgenticEngine({ className }: { className?: string })
 
               {/* Policies */}
               <div className="flex flex-col">
-                <div className="text-[11px] text-muted-foreground mb-1 leading-none">Policies</div>
-                <div className="space-y-0.5">
+                <div className="text-sm text-muted-foreground mb-2 leading-none">Policies</div>
+                <div className="space-y-1">
                   {currentFlow.policies.map((policy, index) => (
                     <motion.div
                       key={`${currentFlowIndex}-${policy.name}`}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-center gap-2 text-[12px]"
+                      className="flex items-center gap-2 text-sm"
                     >
-                      {policy.enabled ? (
-                        <CheckSquare className="h-3 w-3 text-primary" />
-                      ) : (
-                        <Square className="h-3 w-3 text-muted-foreground" />
-                      )}
-                      <span>{policy.name}</span>
+                      <div className={`h-2 w-2 rounded-full ${policy.enabled ? "bg-green-500" : "bg-muted"}`} />
+                      <span className="truncate">{policy.name}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -198,10 +185,50 @@ export default function HomeAgenticEngine({ className }: { className?: string })
           </div>
         </div>
 
+        {/* Workflow Steps */}
+        <div className="flex-1 min-h-0 flex flex-col">
+          <div className="text-sm text-muted-foreground mb-3 flex-shrink-0">Workflow Steps</div>
+          <div className="space-y-3 flex-1 min-h-0 overflow-y-auto">
+            {steps.map((step, index) => (
+              <motion.div
+                key={`${currentFlowIndex}-${step.id}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="rounded-md border bg-card text-card-foreground shadow-sm p-3"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium">
+                      {step.id}
+                    </div>
+                    <div className="text-sm font-medium">{step.title}</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {step.metrics.map((metric, metricIndex) => (
+                      <div key={metricIndex} className="text-xs text-muted-foreground">
+                        <span className="font-mono">{metric.value}</span>
+                        <span className="ml-1">{metric.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full bg-muted rounded-full h-1">
+                  <motion.div
+                    className="bg-primary h-1 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
-        {/* Flow indicator */}
-        <div className="mb-3 flex-shrink-0">
-          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+        {/* Status Bar */}
+        <div className="flex-shrink-0 mt-4">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
               <span>Flow {currentFlowIndex + 1} of {flowSets.length}</span>
@@ -212,98 +239,7 @@ export default function HomeAgenticEngine({ className }: { className?: string })
             </div>
           </div>
         </div>
-
-        {/* Horizontal flow - Steps */}
-        <div className="flex-1 flex items-center">
-          <div className="relative w-full h-full">
-            {/* SVG overlay for connectors and token */}
-            <svg
-              className="pointer-events-none absolute inset-0 text-muted-foreground/40"
-              width="100%"
-              height="100%"
-              viewBox="0 0 600 120"
-              aria-hidden
-            >
-              <defs>
-                <marker id="ae-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                  <path d="M 0 0 L 10 5 L 0 10 z" className="fill-current" />
-                </marker>
-              </defs>
-              
-              {/* Connector arrows */}
-              {steps.map((_, i) => {
-                if (i === steps.length - 1) return null;
-                const x1 = (i + 0.5) * (100); // 100 units per card
-                const x2 = (i + 1.5) * (100);
-                const y = 60; // Center vertically in the 120px viewBox
-                return (
-                  <line
-                    key={`arrow-${i}`}
-                    x1={x1}
-                    y1={y}
-                    x2={x2}
-                    y2={y}
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                    markerEnd="url(#ae-arrow)"
-                    strokeLinecap="round"
-                  />
-                );
-              })}
-              
-              {/* Animated token */}
-              <motion.circle
-                r={3}
-                cx={50}
-                cy={60}
-                initial={{ opacity: reduced ? 1 : 0 }}
-                animate={{ 
-                  cx: steps.map((_, i) => (i + 0.5) * 100),
-                  opacity: 1 
-                }}
-                transition={{ 
-                  duration: reduced ? 0 : dwell * steps.length, 
-                  ease: "linear",
-                  repeat: Infinity,
-                  repeatDelay: 1
-                }}
-                className="fill-foreground"
-              />
-            </svg>
-
-            {/* Step cards */}
-            <div className="absolute inset-0 flex" style={{ gap }}>
-              {steps.map((s, i) => (
-                <motion.div
-                  key={`${currentFlowIndex}-${s.id}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="relative flex-1 h-full"
-                >
-                  <div className={`rounded-md border bg-card text-card-foreground shadow-sm w-full h-full ${
-                    s.title.includes("Redact") || s.title.includes("Quality Check") || s.title.includes("Aggregate") || s.title.includes("Insight Generation") ? "ring-1 ring-primary/20 bg-primary/5" : ""
-                  }`}>
-                    <CardBody className="p-3 h-full flex flex-col justify-between">
-                      <div className="text-[12px] leading-none font-medium">{s.title}</div>
-                      <div className="flex flex-col gap-1">
-                        <MiniChip className="h-4 px-2 text-[10px] whitespace-nowrap">
-                          {s.metrics[0].label} {s.metrics[0].value}
-                        </MiniChip>
-                        <MiniChip className="h-4 px-2 text-[10px] whitespace-nowrap">
-                          {s.metrics[1].label} {s.metrics[1].value}
-                        </MiniChip>
-                      </div>
-                    </CardBody>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
-    </Canvas>
+    </MobileCanvas>
   );
 }
-
-

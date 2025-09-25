@@ -21,11 +21,34 @@ import React from "react"
 import { FutureReadyColored } from "@/components/animations"
 import { ShaderAnimation } from "@/components/animations/shader-animation"
 import { ShaderAnimationLight } from "@/components/animations/shader-animation-light"
+import { PerspectiveGrid } from "@/components/animations/perspective-grid"
+import PlatformPrivateBrain from "@/components/infographics/PlatformPrivateBrain"
+import PlatformWorkspaces from "@/components/infographics/PlatformWorkspaces"
+import PlatformConnectSecurely from "@/components/infographics/PlatformConnectSecurely"
+import PlatformLibrary from "@/components/infographics/PlatformLibrary"
+import PlatformCommandCenter from "@/components/infographics/PlatformCommandCenter"
+import MobilePlatformPrivateBrain from "@/components/infographics/MobilePlatformPrivateBrain"
+import MobilePlatformWorkspaces from "@/components/infographics/MobilePlatformWorkspaces"
+import MobilePlatformConnectSecurely from "@/components/infographics/MobilePlatformConnectSecurely"
+import MobilePlatformLibrary from "@/components/infographics/MobilePlatformLibrary"
+import MobilePlatformCommandCenter from "@/components/infographics/MobilePlatformCommandCenter"
+import HomeKnowledgeBlocks from "@/components/infographics/HomeKnowledgeBlocks"
+import MobileHomeKnowledgeBlocks from "@/components/infographics/MobileHomeKnowledgeBlocks"
+import HomeWorkspaces from "@/components/infographics/HomeWorkspaces"
+import MobileHomeWorkspaces from "@/components/infographics/MobileHomeWorkspaces"
+import HomeSecurity from "@/components/infographics/HomeSecurity"
+import MobileHomeSecurity from "@/components/infographics/MobileHomeSecurity"
+import HomeCopilot from "@/components/infographics/HomeCopilot"
+import MobileHomeCopilot from "@/components/infographics/MobileHomeCopilot"
+import HomeAgenticEngine from "@/components/infographics/HomeAgenticEngine"
+import MobileHomeAgenticEngine from "@/components/infographics/MobileHomeAgenticEngine"
 import { useThemeProvider } from "@/hooks/use-theme"
 import { Carousel, CarouselItem } from "@/components/ui/carousel"
 import { PlatformPageCarousel, PlatformCarouselItem } from "@/components/ui/platform-page-carousel"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { usePageCache } from '@/hooks/use-page-cache'
+import { motion, AnimatePresence } from "framer-motion"
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion"
 
 // Platform Hero Section Component
 function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
@@ -124,8 +147,475 @@ function PlatformHeroSection({ data }: { data?: Record<string, unknown> }) {
 }
 
 
+// Animated Private Brain Component
+function AnimatedPrivateBrain({ isMobile }: { isMobile: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const reduced = usePrefersReducedMotion();
+
+  // Smart timing: longer for complex content
+  const slideTimings = [10000, 8000]; // 10s for Private Brain, 8s for Knowledge Blocks
+  const currentTiming = slideTimings[currentSlide];
+
+  useEffect(() => {
+    if (reduced || isPaused || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 2);
+    }, currentTiming);
+
+    return () => clearInterval(interval);
+  }, [reduced, isPaused, isHovered, currentTiming]);
+
+  const infographics = [
+    // Current Private Brain infographic
+    isMobile ? (
+      <div key="private-brain" className="w-full max-w-md">
+        <MobilePlatformPrivateBrain />
+      </div>
+    ) : (
+      <PlatformPrivateBrain key="private-brain" className="w-full" />
+    ),
+    // Home Knowledge Blocks infographic
+    isMobile ? (
+      <div key="knowledge-blocks" className="w-full max-w-md">
+        <MobileHomeKnowledgeBlocks />
+      </div>
+    ) : (
+      <HomeKnowledgeBlocks key="knowledge-blocks" className="w-full" />
+    )
+  ];
+
+  const handleSlideClick = (index: number) => {
+    setCurrentSlide(index);
+    setIsPaused(true);
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsPaused(false), 10000);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="w-full h-full flex items-center justify-center"
+        >
+          {infographics[currentSlide]}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Carousel Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+        {[0, 1].map((index) => (
+          <button
+            key={index}
+            onClick={() => handleSlideClick(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+              currentSlide === index 
+                ? 'bg-primary scale-125' 
+                : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            title={index === 0 ? 'Private Brain' : 'Knowledge Blocks'}
+          />
+        ))}
+      </div>
+      
+      {/* Pause indicator */}
+      {isPaused && (
+        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full p-2 z-10">
+          <Icon name="pause-line" size="sm" className="text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Animated Workspaces Component
+function AnimatedWorkspaces({ isMobile }: { isMobile: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const reduced = usePrefersReducedMotion();
+
+  // Smart timing: longer for interactive content
+  const slideTimings = [9000, 8000]; // 9s for Platform Workspaces, 8s for Home Workspaces
+  const currentTiming = slideTimings[currentSlide];
+
+  useEffect(() => {
+    if (reduced || isPaused || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 2);
+    }, currentTiming);
+
+    return () => clearInterval(interval);
+  }, [reduced, isPaused, isHovered, currentTiming]);
+
+  const infographics = [
+    // Current Platform Workspaces infographic
+    isMobile ? (
+      <div key="platform-workspaces" className="w-full max-w-md">
+        <MobilePlatformWorkspaces />
+      </div>
+    ) : (
+      <PlatformWorkspaces key="platform-workspaces" className="w-full" />
+    ),
+    // Home Workspaces & Canvases infographic
+    isMobile ? (
+      <div key="home-workspaces" className="w-full max-w-md">
+        <MobileHomeWorkspaces />
+      </div>
+    ) : (
+      <HomeWorkspaces key="home-workspaces" className="w-full" />
+    )
+  ];
+
+  const handleSlideClick = (index: number) => {
+    setCurrentSlide(index);
+    setIsPaused(true);
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsPaused(false), 10000);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="w-full h-full flex items-center justify-center"
+        >
+          {infographics[currentSlide]}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Carousel Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+        {[0, 1].map((index) => (
+          <button
+            key={index}
+            onClick={() => handleSlideClick(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+              currentSlide === index 
+                ? 'bg-primary scale-125' 
+                : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            title={index === 0 ? 'Platform Workspaces' : 'Home Workspaces'}
+          />
+        ))}
+      </div>
+      
+      {/* Pause indicator */}
+      {isPaused && (
+        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full p-2 z-10">
+          <Icon name="pause-line" size="sm" className="text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Animated Connect Securely Component
+function AnimatedConnectSecurely({ isMobile }: { isMobile: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const reduced = usePrefersReducedMotion();
+
+  // Smart timing: longer for integration flow content
+  const slideTimings = [8000, 7000]; // 8s for Connect Securely, 7s for Security
+  const currentTiming = slideTimings[currentSlide];
+
+  useEffect(() => {
+    if (reduced || isPaused || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 2);
+    }, currentTiming);
+
+    return () => clearInterval(interval);
+  }, [reduced, isPaused, isHovered, currentTiming]);
+
+  const infographics = [
+    // Current Platform Connect Securely infographic
+    isMobile ? (
+      <div key="platform-connect" className="w-full max-w-md">
+        <MobilePlatformConnectSecurely />
+      </div>
+    ) : (
+      <PlatformConnectSecurely key="platform-connect" className="w-full" />
+    ),
+    // Home Enterprise Security infographic
+    isMobile ? (
+      <div key="home-security" className="w-full max-w-md">
+        <MobileHomeSecurity />
+      </div>
+    ) : (
+      <HomeSecurity key="home-security" className="w-full" />
+    )
+  ];
+
+  const handleSlideClick = (index: number) => {
+    setCurrentSlide(index);
+    setIsPaused(true);
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsPaused(false), 10000);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="w-full h-full flex items-center justify-center"
+        >
+          {infographics[currentSlide]}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Carousel Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+        {[0, 1].map((index) => (
+          <button
+            key={index}
+            onClick={() => handleSlideClick(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+              currentSlide === index 
+                ? 'bg-primary scale-125' 
+                : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            title={index === 0 ? 'Connect Securely' : 'Enterprise Security'}
+          />
+        ))}
+      </div>
+      
+      {/* Pause indicator */}
+      {isPaused && (
+        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full p-2 z-10">
+          <Icon name="pause-line" size="sm" className="text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Animated Command Center Component
+function AnimatedCommandCenter({ isMobile }: { isMobile: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const reduced = usePrefersReducedMotion();
+
+  // Smart timing: longer for command interface content
+  const slideTimings = [9000, 8000]; // 9s for Command Center, 8s for Copilot
+  const currentTiming = slideTimings[currentSlide];
+
+  useEffect(() => {
+    if (reduced || isPaused || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 2);
+    }, currentTiming);
+
+    return () => clearInterval(interval);
+  }, [reduced, isPaused, isHovered, currentTiming]);
+
+  const infographics = [
+    // Current Platform Command Center infographic
+    isMobile ? (
+      <div key="platform-command" className="w-full max-w-md">
+        <MobilePlatformCommandCenter />
+      </div>
+    ) : (
+      <PlatformCommandCenter key="platform-command" className="w-full" />
+    ),
+    // Home Personal Co-pilot infographic
+    isMobile ? (
+      <div key="home-copilot" className="w-full max-w-md">
+        <MobileHomeCopilot />
+      </div>
+    ) : (
+      <HomeCopilot key="home-copilot" className="w-full" />
+    )
+  ];
+
+  const handleSlideClick = (index: number) => {
+    setCurrentSlide(index);
+    setIsPaused(true);
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsPaused(false), 10000);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="w-full h-full flex items-center justify-center"
+        >
+          {infographics[currentSlide]}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Carousel Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+        {[0, 1].map((index) => (
+          <button
+            key={index}
+            onClick={() => handleSlideClick(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+              currentSlide === index 
+                ? 'bg-primary scale-125' 
+                : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            title={index === 0 ? 'Command Center' : 'Personal Copilot'}
+          />
+        ))}
+      </div>
+      
+      {/* Pause indicator */}
+      {isPaused && (
+        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full p-2 z-10">
+          <Icon name="pause-line" size="sm" className="text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Animated Library Component
+function AnimatedLibrary({ isMobile }: { isMobile: boolean }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const reduced = usePrefersReducedMotion();
+
+  // Smart timing: longer for library content
+  const slideTimings = [8000, 9000]; // 8s for Platform Library, 9s for Agentic Engine
+  const currentTiming = slideTimings[currentSlide];
+
+  useEffect(() => {
+    if (reduced || isPaused || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 2);
+    }, currentTiming);
+
+    return () => clearInterval(interval);
+  }, [reduced, isPaused, isHovered, currentTiming]);
+
+  const infographics = [
+    // Current Platform Library infographic
+    isMobile ? (
+      <div key="platform-library" className="w-full max-w-md">
+        <MobilePlatformLibrary />
+      </div>
+    ) : (
+      <PlatformLibrary key="platform-library" className="w-full" />
+    ),
+    // Home Agentic Engine infographic
+    isMobile ? (
+      <div key="home-agentic-engine" className="w-full max-w-md">
+        <MobileHomeAgenticEngine />
+      </div>
+    ) : (
+      <HomeAgenticEngine key="home-agentic-engine" className="w-full" />
+    )
+  ];
+
+  const handleSlideClick = (index: number) => {
+    setCurrentSlide(index);
+    setIsPaused(true);
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsPaused(false), 10000);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="w-full h-full flex items-center justify-center"
+        >
+          {infographics[currentSlide]}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Carousel Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+        {[0, 1].map((index) => (
+          <button
+            key={index}
+            onClick={() => handleSlideClick(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
+              currentSlide === index 
+                ? 'bg-primary scale-125' 
+                : 'bg-muted-foreground/50 hover:bg-muted-foreground'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+            title={index === 0 ? 'Platform Library' : 'Agentic Engine'}
+          />
+        ))}
+      </div>
+      
+      {/* Pause indicator */}
+      {isPaused && (
+        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full p-2 z-10">
+          <Icon name="pause-line" size="sm" className="text-muted-foreground" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Platform Features Section
 function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
+  const isMobile = useMediaQuery("(max-width: 1023px)")
+  
   // Extract CMS data with fallbacks
   const title = typeof data?.title === 'string' ? data.title : 'Platform Features'
   const description = typeof data?.description === 'string' ? data.description : 'Our platform consists of five core features that work together to create a comprehensive AI-powered operating system for your organization.'
@@ -134,7 +624,7 @@ function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
   return (
     <Section paddingY="lg">
       <Container size="2xl" className="lg:max-w-[1400px] xl:max-w-[1920px] 2xl:max-w-[2560px]">
-        <div className="space-y-16">
+        <div className="space-y-12">
           <div className="text-center space-y-4 max-w-4xl mx-auto">
             <H1>{typeof title === 'string' ? title : 'Title'}</H1>
             <P className="text-muted-foreground">
@@ -147,14 +637,14 @@ function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
             <div 
               key={typeof feat.id === 'string' ? feat.id : index}
               data-section={feat.id} 
-              className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[400px] lg:h-[845px] ${feat.imagePosition === 'left' ? '' : ''}`}
+              className={`grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center min-h-[500px] md:min-h-[600px] lg:h-[845px] ${feat.imagePosition === 'left' ? '' : ''}`}
             >
-              <div className={`lg:col-span-6 space-y-6 flex flex-col justify-center ${feat.imagePosition === 'left' ? 'order-2 lg:order-2' : 'order-1 lg:order-1'}`}>
+              <div className={`lg:col-span-6 space-y-4 flex flex-col justify-center order-1 ${feat.imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1'}`}>
                 <H2>{typeof feat.title === 'string' ? feat.title : 'Feature'}</H2>
               <P className="text-muted-foreground">
                   {typeof feat.description === 'string' ? feat.description : 'Description'}
               </P>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                   {(Array.isArray(feat.features) ? feat.features : []).map((item: string, itemIndex: number) => (
                     <li key={itemIndex} className="flex items-start gap-4">
                   <div className="w-3 h-3 bg-primary rounded-full mt-1 flex-shrink-0"></div>
@@ -163,8 +653,38 @@ function PlatformFeaturesSection({ data }: { data?: Record<string, unknown> }) {
                   ))}
               </ul>
             </div>
-              <div className={`lg:col-span-6 h-[300px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center ${feat.imagePosition === 'left' ? 'order-1 lg:order-1' : 'order-2 lg:order-2'}`}>
-                <P className="text-muted-foreground text-lg">{typeof feat.imagePlaceholder === 'string' ? feat.imagePlaceholder : 'Image Placeholder'}</P>
+              <div className={`lg:col-span-6 h-[850px] md:h-[900px] lg:h-[845px] rounded-3xl border border-border/50 flex items-center justify-center p-0.5 sm:p-1 md:p-1 lg:p-1 xl:p-2 relative overflow-hidden order-2 ${feat.imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'}`}>
+                {/* Perspective Grid Background */}
+                <PerspectiveGrid 
+                  className="absolute inset-0 z-0" 
+                  speed={0.2}
+                  gridSize={48}
+                  opacity={0.15}
+                />
+                
+                {/* Infographic Content */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center">
+                  {(() => {
+                    const featureId = typeof feat.id === 'string' ? feat.id : '';
+                    const featureTitle = typeof feat.title === 'string' ? feat.title : '';
+                    
+                    // Map feature IDs/titles to appropriate infographics (mobile vs desktop)
+                    if (featureId.includes('private-brain') || featureId.includes('knowledge-graph') || featureTitle.toLowerCase().includes('private brain') || featureTitle.toLowerCase().includes('knowledge')) {
+                      return <AnimatedPrivateBrain isMobile={isMobile} />;
+                    } else if (featureId.includes('workspace') || featureId.includes('workspaces') || featureTitle.toLowerCase().includes('workspace') || featureTitle.toLowerCase().includes('place to work')) {
+                      return <AnimatedWorkspaces isMobile={isMobile} />;
+                    } else if (featureId.includes('connect') || featureId.includes('integration') || featureTitle.toLowerCase().includes('connect') || featureTitle.toLowerCase().includes('secure') || featureTitle.toLowerCase().includes('integration')) {
+                      return <AnimatedConnectSecurely isMobile={isMobile} />;
+                    } else if (featureId.includes('library') || featureId.includes('template') || featureTitle.toLowerCase().includes('library') || featureTitle.toLowerCase().includes('template') || featureTitle.toLowerCase().includes('arsenal')) {
+                      return <AnimatedLibrary isMobile={isMobile} />;
+                    } else if (featureId.includes('command') || featureId.includes('center') || featureTitle.toLowerCase().includes('command') || featureTitle.toLowerCase().includes('center')) {
+                      return <AnimatedCommandCenter isMobile={isMobile} />;
+                    } else {
+                      // Fallback to placeholder for unmapped features
+                      return <P className="text-muted-foreground text-lg">{typeof feat.imagePlaceholder === 'string' ? feat.imagePlaceholder : 'Image Placeholder'}</P>;
+                    }
+                  })()}
+                </div>
             </div>
           </div>
           )})}
