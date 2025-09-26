@@ -408,9 +408,8 @@ function HeroSection() {
   return (
     <Section
       paddingY="xl"
-      className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-background"
+      className="relative overflow-hidden"
     >
-      <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.18),transparent_60%)]" aria-hidden="true" />
       <Container size="2xl" className="relative z-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="max-w-3xl space-y-6">
