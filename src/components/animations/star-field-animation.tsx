@@ -122,7 +122,8 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
           ctx.globalAlpha = opacity
           
           // Make stars larger in light mode for better visibility
-          const starSize = theme === 'dark' ? 1 : Math.max(1, Math.floor(2 + (1 - star.z / Z_MAX) * 2))
+      const baseStarSize = Math.max(1, Math.floor(2 + (1 - star.z / Z_MAX) * 2))
+      const starSize = baseStarSize
           const halfSize = Math.floor(starSize / 2)
           
           ctx.fillRect(

@@ -31,24 +31,29 @@ import { cn } from "@/lib/utils"
 
 const differentiators = [
   {
-    title: "Product intuition wins",
-    description: "Your brief is a real Elevation AI challenge. We care more about customer insight and storytelling than perfect architecture.",
+    title: "It isn&apos;t a hackathon",
+    description: "Vibathon is a vibe coding sprint—no boilerplate problem sets or mass grading, just an invite-only build with purpose.",
     icon: Compass,
   },
   {
-    title: "Build with our stack",
-    description: "Ship proofs-of-concept on the Elevation AI platform with access to our private libraries, data sets, and partner tools.",
-    icon: Layers,
+    title: "Product intuition over specs",
+    description: "We&apos;re evaluating how you frame the customer insight, storyboard the flow, and ship something people can feel.",
+    icon: Gauge,
   },
   {
-    title: "AI-first toolchain",
-    description: "Flow across Replit, Cursor, Supabase, n8n, Zapier, Make, Windsurf, and more. We want to watch you orchestrate modern agentic workflows.",
+    title: "Real client challenges",
+    description: "You tackle live Elevation AI briefs so your prototype maps to the work our Vibe Prototypers run every week.",
     icon: FileCode2,
   },
   {
-    title: "Guided one-day sprint",
-    description: "Expect structured checkpoints with Elevation AI mentors, async feedback loops, and a crisp final handoff - no all-nighters required.",
-    icon: Gauge,
+    title: "Access to our platform",
+    description: "Build on Elevation AI with our private libraries, data, and agentic toolchain while you iterate at speed.",
+    icon: Layers,
+  },
+  {
+    title: "Obsessed with experience",
+    description: "We care as much about the storytelling, UX polish, and handoff clarity as the underlying stack.",
+    icon: Flame,
   },
 ]
 
@@ -73,22 +78,22 @@ const tools = [
 const benefits = [
   {
     title: "Full-time Vibe Prototyper offer",
-    description: "Top performers skip the recruiting maze and land a direct offer to join Elevation AI's product acceleration team.",
+    description: "Top performers earn a direct offer to join Elevation AI as a Vibe Prototyper—no recruiting maze required.",
     icon: Trophy,
   },
   {
-    title: "Agentic AI playground",
-    description: "Work side-by-side with our platform team on the latest agent frameworks, orchestration layers, and knowledge graph tooling.",
+    title: "Cutting-edge agentic tools",
+    description: "Build with the newest orchestration layers, knowledge graph assets, and AI-first workflows alongside our platform team.",
     icon: Rocket,
   },
   {
-    title: "Executive visibility",
-    description: "Present to our CEO, CTO, and CPO group. Your work fuels content, investor updates, and customer showcases.",
+    title: "Executive stage time",
+    description: "Demo to the CEO, CTO, and CPO collective so the work you ship influences how we brief customers and investors.",
     icon: Users,
   },
   {
-    title: "Swag & storytelling",
-    description: "Earn the limited Elevation AI swag kit, social features, and post-event amplification across our channels.",
+    title: "Exclusive Elevation swag",
+    description: "Lock in the limited-edition Elevation AI swag kit and post-event amplification across our channels.",
     icon: Sparkles,
   },
 ]
@@ -516,11 +521,11 @@ function VibeCoderSection() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {vibeCoderTraits.map((trait) => (
-                  <li key={trait} className="flex items-start gap-2 rounded-lg border border-border/50 bg-background/80 p-4">
-                    <Check className="mt-1 h-4 w-4 text-primary" />
-                    <span className="text-sm leading-relaxed text-muted-foreground">
+                  <li key={trait} className="flex items-start gap-3 rounded-xl border border-border/50 bg-background/80 p-5">
+                    <Check className="mt-1 h-5 w-5 text-primary" />
+                    <span className="text-lg leading-relaxed text-muted-foreground">
                       {trait}
                     </span>
                   </li>
@@ -580,7 +585,7 @@ function BenefitsSection() {
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
-                <p className="text-2xl sm:text-3xl leading-snug text-foreground">
+                <p className="text-xl sm:text-2xl leading-relaxed text-foreground">
                   {benefit.description}
                 </p>
               </CardContent>
@@ -596,7 +601,7 @@ function EvaluationSection() {
   return (
     <Section paddingY="lg" id="evaluation">
       <Container size="2xl">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
           <div className="space-y-5 max-w-3xl lg:max-w-xl">
             <div className="space-y-3">
               <H2>How we evaluate</H2>
@@ -623,14 +628,14 @@ function EvaluationSection() {
               </CardContent>
             </Card>
           </div>
-          <Card className="border-border/60 bg-background/95 lg:p-2">
+          <Card className="border-border/60 bg-background/95 lg:p-2 h-full flex flex-col">
             <CardHeader>
               <CardTitle className="text-lg">What great submissions include</CardTitle>
               <CardDescription>
                 Lifted from the application brief—hit these beats to stand out.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-5 text-sm text-muted-foreground lg:text-base lg:leading-relaxed">
+            <CardContent className="space-y-5 text-sm text-muted-foreground lg:text-base lg:leading-relaxed flex-1 flex flex-col">
               <div className="rounded-xl border border-border/50 bg-muted/15 p-5">
                 <p className="font-medium text-foreground text-base lg:text-lg">Start with user insight</p>
                 <p>Show the signal you uncovered in the real client scenario and how it shaped the product story.</p>
@@ -799,9 +804,9 @@ function ApplicationFormSection({
 
 function AdditionalInfoSection() {
   return (
-    <Section paddingY="lg" className="bg-muted/20">
-      <Container size="2xl" className="grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr]">
-        <div className="space-y-6">
+    <Section paddingY="lg" className="bg-muted/20 px-0">
+      <div className="space-y-10">
+        <Container size="2xl" className="space-y-6">
           <div className="space-y-4">
             <H3 className="text-lg font-semibold">About Elevation AI</H3>
             <P className="text-muted-foreground">
@@ -816,23 +821,32 @@ function AdditionalInfoSection() {
               </Badge>
             </div>
           </div>
-          <div className="relative w-full overflow-hidden rounded-3xl border border-border/40 bg-background/80">
-            <div className="absolute inset-0">
-              <BusinessDataAnimation />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <Image
-                src="/images/branding/E-AI-Arrow.svg"
-                alt="Elevation AI Arrow"
-                width={120}
-                height={120}
-                className="opacity-80"
-              />
-            </div>
-            <div className="relative aspect-[3/2]" />
+        </Container>
+        <div className="relative w-full overflow-hidden rounded-none lg:rounded-3xl border-y border-border/40 lg:border lg:mx-auto lg:max-w-6xl bg-background/80">
+          <div className="absolute inset-0">
+            <BusinessDataAnimation />
           </div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <Image
+              src="/images/branding/E-AI-Arrow.svg"
+              alt="Elevation AI Arrow"
+              width={120}
+              height={120}
+              className="opacity-80 dark:invert"
+            />
+          </div>
+          <div className="relative pt-[42.5%]" />
         </div>
-        <Card className="border-border/60 bg-background/90">
+      </div>
+    </Section>
+  )
+}
+
+function QuestionsSection() {
+  return (
+    <Section paddingY="lg" className="bg-background">
+      <Container size="2xl">
+        <Card className="border-border/60 bg-background/95">
           <CardHeader>
             <CardTitle className="text-base">Questions?</CardTitle>
             <CardDescription>
@@ -946,6 +960,7 @@ export default function VibathonPage() {
               resetStatus={reset}
             />
             <AdditionalInfoSection />
+            <QuestionsSection />
           </main>
         </div>
       </MobileOnlyLayout>
