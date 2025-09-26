@@ -95,7 +95,7 @@ export function PlatformCarousel({
   const [dragOffset, setDragOffset] = React.useState(0)
   const [isTouchDevice, setIsTouchDevice] = React.useState(false)
 
-  const isMobileScreen = screenSize === 'sm' || screenSize === 'md'
+  const isMobileScreen = screenSize === 'sm' || screenSize === 'md' || screenSize === 'lg'
   const isNaturalScrollEnabled = naturalScroll || isMobileScreen
 
   // Responsive configuration

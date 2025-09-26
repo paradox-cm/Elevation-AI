@@ -69,7 +69,7 @@ export function Carousel({
   const activeCardIndexRef = React.useRef(0)
   const currentSlideRef = React.useRef(0)
 
-  const isMobileScreen = screenSize === 'sm' || screenSize === 'md'
+  const isMobileScreen = screenSize === 'sm' || screenSize === 'md' || screenSize === 'lg'
   const isNaturalScrollEnabled = naturalScroll || isMobileScreen
 
   // Calculate responsive card width and gap

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useThemeProvider } from '@/hooks/use-theme'
-import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface StarFieldAnimationProps {
   className?: string
@@ -14,11 +13,9 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
   const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [mounted, setMounted] = useState(false)
   const { theme } = useThemeProvider()
-  const isMobile = useMediaQuery("(max-width: 1023px)")
-  
-  // Performance optimizations for mobile
+
   const lastFrameTimeRef = useRef(0)
-  const frameInterval = isMobile ? 1000 / 20 : 1000 / 30 // 20 FPS on mobile, 30 FPS on desktop
+  const frameInterval = 1000 / 30
   
   // Always animate indefinitely like a screensaver - no scroll interactions
   const shouldAnimate = true
@@ -39,15 +36,15 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
     ctx.imageSmoothingEnabled = false
 
     const stars: { x: number; y: number; z: number; originalX: number; originalY: number }[] = []
-    const starCount = isMobile ? 150 : 300 // Fewer stars on mobile for better performance
-    const speed = isMobile ? 0.3 : 0.5 // Slower on mobile for stability
+    const starCount = 300
+    const speed = 0.5
     const Z_MAX = 1000
     const Z_MIN = 0.1
 
     // Function to set canvas buffer size and initialize/re-initialize stars
     const initializeCanvasAndStars = () => {
       // Use lower DPR on mobile to reduce memory usage
-      const dpr = isMobile ? 1 : (window.devicePixelRatio || 1)
+      const dpr = window.devicePixelRatio || 1
       if (canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
         animationRef.current = requestAnimationFrame(initializeCanvasAndStars)
         return false
@@ -184,7 +181,7 @@ export function StarFieldAnimation({ className = "" }: StarFieldAnimationProps) 
       }
       animationRunning = false
     }
-  }, [mounted, theme, shouldAnimate, isMobile])
+  }, [mounted, theme, shouldAnimate, frameInterval])
 
   if (!mounted) {
     return null
